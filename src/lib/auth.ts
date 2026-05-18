@@ -1,0 +1,67 @@
+import { NextAuthOptions } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcryptjs"
+import prisma from "./prisma"
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "E-mail", type: "email" },
+        password: { label: "Senha", type: "password" },
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null
+
+        const user = await prisma.usuario.findUnique({
+          where: { email: credentials.email },
+        })
+
+        if (!user) return null
+
+        const valid = await bcrypt.compare(credentials.password, user.senha)
+        if (!valid) return null
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.nome,
+          role: user.role,
+          faixa: user.faixa,
+          grau: user.grau,
+          academiaId: user.academiaId,
+        }
+      },
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+        token.faixa = user.faixa
+        token.grau = user.grau
+        token.academiaId = user.academiaId
+        token.id = user.id
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = token.role as string
+        session.user.faixa = token.faixa as string
+        session.user.grau = token.grau as number
+        session.user.academiaId = token.academiaId as string
+        session.user.id = token.id as string
+      }
+      return session
+    },
+  },
+  pages: {
+    signIn: "/login",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+}

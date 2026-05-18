@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  --black: #0a0a0a;
+  --gold: #c9a84c;
+  --gold-dark: #a8882e;
+  --red: #8b1a1a;
+  --dark-card: #1a1a1a;
+  --dark-border: #2a2a2a;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease forwards;
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #c9a84c 0%, #a8882e 100%);
+}
+
+.gradient-hero {
+  background: radial-gradient(ellipse at 30% 50%, rgba(139, 26, 26, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 50%, rgba(201, 168, 76, 0.06) 0%, transparent 60%);
+}
+
+.belt-white { background: #e5e5e5; color: #333; }
+.belt-blue { background: #1a3a8a; color: #fff; }
+.belt-purple { background: #5a1a8a; color: #fff; }
+.belt-brown { background: #5c3a1a; color: #fff; }
+.belt-black { background: #111; color: #c9a84c; border: 1px solid #333; }

@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Academia {
+  id        String   @id @default(cuid())
+  nome      String
+  endereco  String
+  cidade    String
+  estado    String
+  lat       Float
+  lng       Float
+  raio      Int      @default(200)
+  responsavel String
+  telefone  String
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  usuarios   Usuario[]
+  turmas     Turma[]
+  graduacoes Graduacao[]
+}
+
+model Usuario {
+  id         String   @id @default(cuid())
+  nome       String
+  email      String   @unique
+  senha      String
+  role       String   @default("aluno")
+  telefone   String?
+  avatar     String?
+  faixa      String   @default("Branca")
+  grau       Int      @default(0)
+  dataInicio DateTime?
+  categoria  String   @default("adulto")
+  academiaId String
+  academia   Academia @relation(fields: [academiaId], references: [id])
+  professorId String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  presencas     Presenca[]
+  turmasAluno   TurmaAluno[]
+  turmas        Turma[]
+  alunos        Usuario[]    @relation("ProfessorAlunos")
+  professor     Usuario?     @relation("ProfessorAlunos", fields: [professorId], references: [id])
+}
+
+model Turma {
+  id          String   @id @default(cuid())
+  nome        String
+  horario     String
+  dias        String
+  maxAlunos   Int      @default(30)
+  academiaId  String
+  academia    Academia @relation(fields: [academiaId], references: [id])
+  professorId String
+  professor   Usuario  @relation(fields: [professorId], references: [id])
+  createdAt   DateTime @default(now())
+
+  alunos TurmaAluno[]
+}
+
+model TurmaAluno {
+  id       String @id @default(cuid())
+  turmaId  String
+  turma    Turma  @relation(fields: [turmaId], references: [id])
+  alunoId  String
+  aluno    Usuario @relation(fields: [alunoId], references: [id])
+}
+
+model Presenca {
+  id          String   @id @default(cuid())
+  alunoId     String
+  aluno       Usuario  @relation(fields: [alunoId], references: [id])
+  data        DateTime
+  horario     String
+  status      String   @default("pendente")
+  turma       String?
+  observacao  String?
+  confirmadoPor String?
+  createdAt   DateTime @default(now())
+}
+
+model Graduacao {
+  id              String @id @default(cuid())
+  academiaId      String
+  academia        Academia @relation(fields: [academiaId], references: [id])
+  categoria       String @default("adulto")
+  faixa           String
+  graus           Int
+  aulasPorGrau    Int
+  aulasProxFx     Int?
+}
+
+model Conquista {
+  id          String @id @default(cuid())
+  nome        String
+  icone       String
+  descricao   String
+  tipo        String
+  condicao    Int
+
+  alunosConquista AlunoConquista[]
+}
+
+model AlunoConquista {
+  id          String   @id @default(cuid())
+  alunoId     String
+  conquistaId String
+  conquista   Conquista @relation(fields: [conquistaId], references: [id])
+  createdAt   DateTime @default(now())
+}
