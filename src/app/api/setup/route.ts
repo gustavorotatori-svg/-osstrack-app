@@ -8,6 +8,10 @@ export async function GET(request: Request) {
     const force = url.searchParams.get("force") === "true"
 
     if (force) {
+      await prisma.postagemMural.deleteMany()
+      await prisma.missaoDiaria.deleteMany()
+      await prisma.metaSemanal.deleteMany()
+      await prisma.mestreDoMes.deleteMany()
       await prisma.alunoConquista.deleteMany()
       await prisma.presenca.deleteMany()
       await prisma.turmaAluno.deleteMany()
@@ -68,6 +72,45 @@ export async function GET(request: Request) {
     for (const g of graduacoes) {
       await prisma.graduacao.create({ data: { ...g, academiaId: academia.id, categoria: "adulto" } })
     }
+
+    if (aluno && turma) {
+      await prisma.turmaAluno.create({ data: { turmaId: turma.id, alunoId: aluno.id } })
+
+      const now = new Date()
+      const presencas = []
+      for (let d = 0; d < 15; d++) {
+        const dia = new Date(now.getFullYear(), now.getMonth(), now.getDate() - d)
+        if (dia.getDay() !== 0 && dia.getDay() !== 6) {
+          presencas.push({
+            alunoId: aluno.id,
+            data: dia,
+            horario: "18:30",
+            status: "confirmed",
+            turma: "Jiu-Jitsu Adulto",
+            confirmadoPor: professor!.id,
+          })
+        }
+      }
+      if (presencas.length > 0) {
+        await prisma.presenca.createMany({ data: presencas })
+      }
+
+      await prisma.mestreDoMes.create({
+        data: { academiaId: academia.id, alunoId: aluno.id, mes: now.getMonth() + 1, ano: now.getFullYear(), totalAulas: presencas.length },
+      })
+    }
+
+    const conquistas = await prisma.conquista.createMany({
+      data: [
+        { nome: "Primeiro Check-in", icone: "✅", descricao: "Fez o primeiro check-in", tipo: "primeiro", condicao: 1 },
+        { nome: "Sequência de Bronze", icone: "🥉", descricao: "5 dias seguidos de treino", tipo: "streak", condicao: 5 },
+        { nome: "Sequência de Prata", icone: "🥈", descricao: "7 dias seguidos de treino", tipo: "streak", condicao: 7 },
+        { nome: "Sequência de Ouro", icone: "🥇", descricao: "10 dias seguidos de treino", tipo: "streak", condicao: 10 },
+        { nome: "Dedicação Total", icone: "🔥", descricao: "50 aulas confirmadas", tipo: "aulas", condicao: 50 },
+        { nome: "Veterano", icone: "⚡", descricao: "100 aulas confirmadas", tipo: "aulas", condicao: 100 },
+        { nome: "Maratona", icone: "🏃", descricao: "30 aulas em um mês", tipo: "mensal", condicao: 30 },
+      ],
+    })
 
     return NextResponse.json({
       message: "Banco populado com sucesso!",

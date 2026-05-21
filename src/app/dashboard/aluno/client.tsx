@@ -2,6 +2,7 @@
 
 import { DashboardShell } from "@/components/dashboard/shell"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
+import { DailyMissions } from "@/components/gamification/daily-missions"
 
 type Props = {
   aluno: {
@@ -45,15 +46,15 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
             { value: aluno.totalAulas, label: "Total de Aulas" },
             { value: ultimasPresencas.filter(p => p.status === "confirmed").length, label: "Presenças" },
             { value: "🔥 5", label: "Sequência" },
-          ].map((s) => (
-            <div key={s.label} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-4 text-center">
+          ].map((s, i) => (
+            <div key={s.label} className={`bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-4 text-center animate-fade-in hover-card stagger-${i + 1}`}>
               <div className="text-2xl font-extrabold text-[var(--gold)]">{s.value}</div>
               <div className="text-[11px] text-[var(--white-muted)] mt-1">{s.label}</div>
             </div>
           ))}
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
+        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 hover-card">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold">Próximo Grau</h3>
             <span className="text-xs text-[var(--gold)] font-semibold">{restamGrau} aulas restam</span>
@@ -68,7 +69,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         </div>
 
         {progressoFaixa !== null && (
-          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
+          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 hover-card">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold">Próxima Faixa</h3>
               <span className="text-xs text-[var(--white-muted)]">{restamFaixa} aulas</span>
@@ -83,7 +84,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           </div>
         )}
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
+        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 hover-card">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold">📅 Maio 2026</h3>
           </div>
@@ -112,7 +113,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           </div>
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
+        <DailyMissions />
+
+        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 hover-card">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold">🏆 Conquistas</h3>
           </div>
@@ -130,7 +133,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           </div>
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
+        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 hover-card">
           <h3 className="font-bold mb-3">📋 Últimos Check-ins</h3>
           {ultimasPresencas.length === 0 ? (
             <p className="text-sm text-[var(--white-muted)] text-center py-4">Nenhum check-in ainda</p>

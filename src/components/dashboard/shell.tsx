@@ -2,15 +2,16 @@
 
 import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
-import { ReactNode } from "react"
+import { ReactNode, useState, useEffect } from "react"
+import { OnboardingTour } from "@/components/onboarding/tour"
 
 const navItems = {
   aluno: [
     { href: "/dashboard/aluno", label: "Início", icon: "▦" },
-    { href: "/dashboard/aluno/checkin", label: "Check-in", icon: "✓" },
+    { href: "/dashboard/aluno/checkin", label: "Check-in", icon: "📍" },
     { href: "/dashboard/aluno/evolucao", label: "Evolução", icon: "📈" },
-    { href: "/dashboard/aluno/conquistas", label: "Conquistas", icon: "🏆" },
-    { href: "/dashboard/aluno/ranking", label: "Ranking", icon: "🥇" },
+    { href: "/dashboard/aluno/mural", label: "Mural", icon: "📢" },
+    { href: "/dashboard/aluno/ranking", label: "Ranking", icon: "🏆" },
   ],
   professor: [
     { href: "/dashboard/professor", label: "Início", icon: "▦" },
@@ -38,9 +39,23 @@ export function DashboardShell({
   const pathname = usePathname()
   const router = useRouter()
   const items = navItems[role as keyof typeof navItems] || []
+  const [showTour, setShowTour] = useState(false)
+
+  useEffect(() => {
+    const seen = localStorage.getItem(`osstrack_tour_${role}`)
+    if (!seen) {
+      setShowTour(true)
+    }
+  }, [role])
+
+  function completeTour() {
+    localStorage.setItem(`osstrack_tour_${role}`, "true")
+    setShowTour(false)
+  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
+      {showTour && <OnboardingTour role={role} onComplete={completeTour} />}
       <header className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-[var(--dark-border)] sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <span className="text-xl">🥋</span>

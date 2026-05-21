@@ -29,5 +29,13 @@ export default async function RankingPage() {
     }))
     .sort((a, b) => b.totalAulas - a.totalAulas)
 
-  return <RankingClient ranking={ranking} alunoId={session.user.id} />
+  const belts = [...new Set(ranking.map((a) => a.faixa))].sort()
+
+  const now = new Date()
+  const mestre = await prisma.mestreDoMes.findFirst({
+    where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear() },
+    include: { aluno: { select: { nome: true, faixa: true, grau: true } } },
+  })
+
+  return <RankingClient ranking={ranking} alunoId={session.user.id} belts={belts} mestre={mestre ? { nome: mestre.aluno.nome, faixa: mestre.aluno.faixa, grau: mestre.aluno.grau, totalAulas: mestre.totalAulas } : null} />
 }

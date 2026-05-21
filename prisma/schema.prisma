@@ -22,9 +22,11 @@ model Academia {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  usuarios   Usuario[]
-  turmas     Turma[]
-  graduacoes Graduacao[]
+  usuarios        Usuario[]
+  turmas          Turma[]
+  graduacoes      Graduacao[]
+  mestresDoMes    MestreDoMes[]
+  postagensMural  PostagemMural[]
 }
 
 model Usuario {
@@ -45,11 +47,15 @@ model Usuario {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  presencas     Presenca[]
-  turmasAluno   TurmaAluno[]
-  turmas        Turma[]
-  alunos        Usuario[]    @relation("ProfessorAlunos")
-  professor     Usuario?     @relation("ProfessorAlunos", fields: [professorId], references: [id])
+  presencas       Presenca[]
+  turmasAluno     TurmaAluno[]
+  turmas          Turma[]
+  alunos          Usuario[]           @relation("ProfessorAlunos")
+  professor       Usuario?            @relation("ProfessorAlunos", fields: [professorId], references: [id])
+  metasSemanais   MetaSemanal[]
+  missoesDiarias  MissaoDiaria[]
+  postagensMural  PostagemMural[]
+  mestreDoMes     MestreDoMes[]
 }
 
 model Turma {
@@ -116,4 +122,53 @@ model AlunoConquista {
   conquistaId String
   conquista   Conquista @relation(fields: [conquistaId], references: [id])
   createdAt   DateTime @default(now())
+}
+
+model MestreDoMes {
+  id        String   @id @default(cuid())
+  academiaId String
+  academia  Academia @relation(fields: [academiaId], references: [id])
+  alunoId   String
+  aluno     Usuario  @relation(fields: [alunoId], references: [id])
+  mes       Int
+  ano       Int
+  totalAulas Int
+  createdAt DateTime @default(now())
+
+  @@unique([academiaId, mes, ano])
+}
+
+model MetaSemanal {
+  id        String   @id @default(cuid())
+  alunoId   String
+  aluno     Usuario  @relation(fields: [alunoId], references: [id])
+  semanaInicio DateTime
+  aulasAlvo Int      @default(5)
+  aulasFeitas Int    @default(0)
+  concluida Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MissaoDiaria {
+  id          String   @id @default(cuid())
+  alunoId     String
+  aluno       Usuario  @relation(fields: [alunoId], references: [id])
+  dia         Int
+  titulo      String
+  descricao   String
+  icone       String
+  concluida   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model PostagemMural {
+  id        String   @id @default(cuid())
+  academiaId String
+  academia  Academia @relation(fields: [academiaId], references: [id])
+  alunoId   String
+  aluno     Usuario  @relation(fields: [alunoId], references: [id])
+  tipo      String
+  conteudo  String
+  createdAt DateTime @default(now())
 }

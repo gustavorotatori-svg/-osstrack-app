@@ -1,27 +1,64 @@
 "use client"
 
+import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
   ranking: { id: string; nome: string; faixa: string; grau: number; totalAulas: number }[]
   alunoId: string
+  belts: string[]
+  mestre: { nome: string; faixa: string; grau: number; totalAulas: number } | null
 }
 
-export function RankingClient({ ranking, alunoId }: Props) {
+export function RankingClient({ ranking, alunoId, belts, mestre }: Props) {
+  const [beltFilter, setBeltFilter] = useState("Todas")
   const myPos = ranking.findIndex((a) => a.id === alunoId)
+
+  const filtered = beltFilter === "Todas" ? ranking : ranking.filter((a) => a.faixa === beltFilter)
+  const myPosFiltered = filtered.findIndex((a) => a.id === alunoId)
+  const firstInFiltered = filtered[0]
 
   return (
     <DashboardShell role="aluno">
       <div className="animate-fade-in space-y-4">
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
+        {mestre && (
+          <div className="bg-gradient-to-br from-[rgba(201,168,76,0.12)] to-[rgba(201,168,76,0.04)] border border-[var(--gold)]/30 rounded-xl p-5 text-center relative overflow-hidden animate-pulse-glow">
+            <div className="absolute top-0 right-0 text-6xl opacity-10 animate-float">👑</div>
+            <div className="text-3xl mb-1">👑</div>
+            <h3 className="font-bold text-[var(--gold)]">Mestre do Mês</h3>
+            <p className="text-lg font-extrabold mt-1">{mestre.nome}</p>
+            <span className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold mt-1 ${getBeltColor(mestre.faixa)}`}>
+              {getBeltEmoji(mestre.faixa)} {mestre.faixa} · {mestre.grau + 1}º Grau
+            </span>
+            <p className="text-xs text-[var(--white-muted)] mt-2">{mestre.totalAulas} aulas no mês</p>
+          </div>
+        )}
+
+        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center hover-card">
           <div className="text-3xl mb-2">🏆</div>
           <h3 className="font-bold">Ranking da Academia</h3>
           <p className="text-xs text-[var(--white-muted)]">Veja sua posição</p>
         </div>
 
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {["Todas", ...belts].map((b) => (
+            <button
+              key={b}
+              onClick={() => setBeltFilter(b)}
+              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                beltFilter === b
+                  ? "bg-[var(--gold)] text-black"
+                  : "bg-[var(--dark-border)] text-[var(--white-muted)] hover:text-white"
+              }`}
+            >
+              {b === "Todas" ? "📋 Todas" : `${getBeltEmoji(b)} ${b}`}
+            </button>
+          ))}
+        </div>
+
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl px-3 py-2">
-          {ranking.map((a, i) => {
+          {filtered.map((a, i) => {
             const isMe = a.id === alunoId
             return (
               <div
@@ -37,7 +74,7 @@ export function RankingClient({ ranking, alunoId }: Props) {
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-semibold">
-                    {isMe && "👉 "}{a.nome}
+                    {mestre && mestre.nome === a.nome && "👑 "}{isMe && "👉 "}{a.nome}
                   </div>
                   <div className="text-[11px] text-[var(--white-muted)]">
                     {getBeltEmoji(a.faixa)} {a.faixa} {'★'.repeat(a.grau + 1)}
@@ -50,13 +87,20 @@ export function RankingClient({ ranking, alunoId }: Props) {
         </div>
 
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
-          <p className="text-xs text-[var(--white-muted)]">
-            🔥 Você está na <strong className="text-[var(--gold)]">{myPos + 1}ª</strong> posição
-          </p>
-          {myPos > 0 && (
-            <p className="text-xs text-[var(--gold)] mt-1">
-              Faltam {ranking[0].totalAulas - ranking[myPos].totalAulas} aulas para alcançar o 1º lugar!
-            </p>
+          {myPosFiltered >= 0 ? (
+            <>
+              <p className="text-xs text-[var(--white-muted)]">
+                🔥 Você está na <strong className="text-[var(--gold)]">{myPosFiltered + 1}ª</strong> posição
+                {beltFilter !== "Todas" && <span className="text-[var(--white-muted)]"> na faixa {beltFilter}</span>}
+              </p>
+              {myPosFiltered > 0 && firstInFiltered && (
+                <p className="text-xs text-[var(--gold)] mt-1">
+                  Faltam {firstInFiltered.totalAulas - filtered[myPosFiltered].totalAulas} aulas para alcançar o 1º lugar!
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-xs text-[var(--white-muted)]">Você não está no ranking desta faixa</p>
           )}
         </div>
       </div>
