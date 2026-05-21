@@ -2,11 +2,25 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url)
+    const force = url.searchParams.get("force") === "true"
+
+    if (force) {
+      await prisma.alunoConquista.deleteMany()
+      await prisma.presenca.deleteMany()
+      await prisma.turmaAluno.deleteMany()
+      await prisma.turma.deleteMany()
+      await prisma.graduacao.deleteMany()
+      await prisma.conquista.deleteMany()
+      await prisma.usuario.deleteMany()
+      await prisma.academia.deleteMany()
+    }
+
     const existing = await prisma.usuario.findFirst()
-    if (existing) {
-      return NextResponse.json({ message: "Banco já populado", users: 3 })
+    if (existing && !force) {
+      return NextResponse.json({ message: "Banco já populado. Use ?force=true para recriar.", count: 3 })
     }
 
     const senha = await bcrypt.hash("123456", 10)
