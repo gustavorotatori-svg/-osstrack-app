@@ -12,44 +12,63 @@ const feed = [
   { id: "6", user: "Felipe Rocha", belt: "Marrom", degree: 2, action: "completou 200 aulas! 💯", time: "4d atrás", avatar: "FR", type: "milestone" },
 ]
 
+const beltColors: Record<string, string> = {
+  Branca: "bg-gray-100 text-gray-900",
+  Azul: "bg-blue-700 text-white",
+  Roxa: "bg-purple-700 text-white",
+  Marrom: "bg-amber-800 text-white",
+  Preta: "bg-black text-yellow-400 border border-gray-600",
+}
+
 export default function MuralPage() {
   const { data: session } = useSession()
 
   return (
     <DashboardShell role="aluno">
-      <div className="animate-fade-in space-y-4">
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 text-center">
           <div className="text-3xl mb-2">📢</div>
           <h3 className="font-bold">Mural da Academia</h3>
-          <p className="text-xs text-[var(--white-muted)]">Acompanhe as conquistas dos seus companheiros</p>
+          <p className="text-xs text-[var(--white-muted)]">Acompanhe as conquistas dos colegas</p>
         </div>
 
         <div className="space-y-3">
           {feed.map((item) => (
-            <div key={item.id} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-4 animate-fade-in">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--gold-dark)] flex items-center justify-center text-sm font-bold text-black flex-shrink-0">
+            <div key={item.id} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4 hover-card">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center text-sm font-bold text-black shrink-0">
                   {item.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-sm">{item.user}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full border border-[var(--dark-border)] text-[var(--white-muted)]">
-                      {item.belt} {item.degree + 1}º
+                    <span className="text-sm font-semibold">{item.user}</span>
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${beltColors[item.belt] || "bg-gray-100 text-gray-900"}`}>
+                      {item.belt} · {item.degree + 1}º
                     </span>
                   </div>
-                  <p className="text-sm text-[var(--white-muted)] mt-0.5">{item.action}</p>
-                  <p className="text-[10px] text-[var(--gray)] mt-1">{item.time}</p>
+                  <p className="text-sm text-[var(--white-muted)] mt-1">{item.action}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-[10px] text-[var(--gray)]">{item.time}</span>
+                    <button className="text-[10px] text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors font-semibold">
+                      🎉 Celebrar
+                    </button>
+                  </div>
                 </div>
-                <span className="text-lg">{item.type === "achievement" ? "🏅" : item.type === "streak" ? "🔥" : item.type === "promotion" ? "⬆️" : item.type === "first" ? "🎯" : "🎉"}</span>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center py-4">
-          <button className="px-5 py-2.5 rounded-lg font-semibold text-sm border border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all">
-            🎉 Compartilhar minha conquista
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 text-center">
+          <button className="btn-gold px-6 py-3 text-sm inline-flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            Compartilhar minha conquista
           </button>
         </div>
       </div>

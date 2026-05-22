@@ -1,24 +1,25 @@
 const testimonials = [
   {
-    initials: "CM", name: "Carlos Mota", role: "Mestre - Gracie Barra Recife",
-    text: "O OssTrack revolucionou nossa academia. A retenção de alunos aumentou 40% em apenas 3 meses. Os alunos amam ver o progresso visual.",
+    initials: "CM", name: "Carlos Mota", role: "Mestre — Gracie Barra Recife",
+    text: "O OssTrack revolucionou nossa academia. A retenção de alunos aumentou 40% em apenas 3 meses. Os alunos amam ver o progresso visual e competir no ranking.",
   },
   {
-    initials: "AS", name: "André Santos", role: "Professor - Alliance SP",
-    text: "O compartilhamento social gerou um marketing orgânico incrível. Os alunos postam as conquistas e atraem novos membros naturalmente.",
+    initials: "AS", name: "André Santos", role: "Professor — Alliance SP",
+    text: "O compartilhamento social gerou um marketing orgânico incrível. Os alunos postam as conquistas automaticamente e atraem novos membros naturalmente.",
   },
   {
-    initials: "PL", name: "Paulo Lima", role: "CEO - Nova União JJ",
-    text: "A gamificação salvou nosso engajamento pós-pandemia. Os alunos competem pra ver quem tem o maior streak. Genial!",
+    initials: "PL", name: "Paulo Lima", role: "CEO — Nova União JJ",
+    text: "A gamificação salvou nosso engajamento pós-pandemia. Os alunos competem pra ver quem tem o maior streak. Nunca vi algo tão efetivo.",
   },
 ]
 
 export function Testimonials() {
   return (
-    <section id="depoimentos" className="py-20 px-5">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="inline-block px-3.5 py-1.5 bg-[rgba(201,168,76,0.1)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-wider mb-4">
+    <section id="depoimentos" className="py-24 px-5 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(201,168,76,0.02)] to-transparent" />
+      <div className="max-w-6xl mx-auto relative">
+        <div className="text-center max-w-xl mx-auto mb-14">
+          <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
             Depoimentos
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
@@ -30,12 +31,18 @@ export function Testimonials() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t) => (
-            <div key={t.name} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-7">
-              <div className="text-[var(--gold)] text-sm mb-3 tracking-widest">★★★★★</div>
-              <p className="text-sm text-[var(--white-muted)] leading-relaxed italic mb-5">&ldquo;{t.text}&rdquo;</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center font-bold text-sm text-black">
+          {testimonials.map((t, i) => (
+            <div key={t.name} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-7 transition-all duration-300 hover:border-[rgba(201,168,76,0.2)] hover:-translate-y-1 animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s` }}>
+              <div className="flex gap-0.5 mb-4">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <span key={s} className="text-[var(--gold)] text-sm">★</span>
+                ))}
+              </div>
+              <p className="text-sm text-[var(--white-muted)] leading-relaxed italic mb-6">
+                &ldquo;{t.text}&rdquo;
+              </p>
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-full gradient-gold flex items-center justify-center font-bold text-sm text-black shrink-0">
                   {t.initials}
                 </div>
                 <div>

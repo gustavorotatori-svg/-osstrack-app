@@ -1,7 +1,6 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
-import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
   professor: { nome: string; faixa: string; grau: number }
@@ -13,73 +12,75 @@ type Props = {
 export function ProfessorDashboardClient({ professor, alunos, turmas, presencasHoje }: Props) {
   return (
     <DashboardShell role="professor">
-      <div className="animate-fade-in space-y-4">
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
-          <div className="w-16 h-16 rounded-full gradient-gold flex items-center justify-center text-2xl font-extrabold text-black mx-auto mb-3">
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 text-center">
+          <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center text-2xl font-extrabold text-black mx-auto mb-3.5 shadow-lg">
             {professor.nome.charAt(0).toUpperCase()}
           </div>
-          <h2 className="text-xl font-extrabold">Prof. {professor.nome}</h2>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mt-2 belt-black">
+          <h2 className="text-xl font-extrabold tracking-tight">Prof. {professor.nome}</h2>
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2.5 belt-black">
             ⬛ {professor.faixa} · {professor.grau}º Grau
           </span>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
           {[
-            { value: alunos.length, label: "Alunos" },
-            { value: presencasHoje.filter(p => p.status === "confirmed").length, label: "Presentes Hoje" },
-            { value: presencasHoje.filter(p => p.status === "pending").length, label: "Pendentes" },
-          ].map((s) => (
-            <div key={s.label} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-4 text-center">
-              <div className={`text-2xl font-extrabold ${
-                s.label === "Presentes Hoje" ? "text-emerald-500" : s.label === "Pendentes" ? "text-yellow-500" : "text-[var(--gold)]"
-              }`}>
-                {s.value}
-              </div>
-              <div className="text-[11px] text-[var(--white-muted)] mt-1">{s.label}</div>
+            { value: alunos.length, label: "Alunos", icon: "👥", color: "text-[var(--gold)]" },
+            { value: presencasHoje.filter(p => p.status === "confirmed").length, label: "Presentes Hoje", icon: "✅", color: "text-emerald-500" },
+            { value: presencasHoje.filter(p => p.status === "pending").length, label: "Pendentes", icon: "⏳", color: "text-yellow-500" },
+          ].map((s, i) => (
+            <div key={s.label} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card animate-scale-in" style={{ animationDelay: `${i * 0.08}s` }}>
+              <div className="text-lg mb-1.5">{s.icon}</div>
+              <div className={`text-2xl font-extrabold ${s.color}`}>{s.value}</div>
+              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">{s.label}</div>
             </div>
           ))}
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold">📋 Presenças de Hoje</h3>
-            <span className="text-xs text-[var(--white-muted)]">{presencasHoje.length} registros</span>
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+          <div className="flex items-center justify-between mb-3.5">
+            <h3 className="font-bold text-sm tracking-tight">📋 Presenças de Hoje</h3>
+            <span className="badge-gold text-[10px]">{presencasHoje.length} registros</span>
           </div>
           {presencasHoje.length === 0 ? (
-            <p className="text-sm text-[var(--white-muted)] text-center py-4">Nenhum check-in hoje</p>
+            <p className="text-sm text-[var(--white-muted)] text-center py-6">Nenhum check-in hoje</p>
           ) : (
-            presencasHoje.map((p) => (
-              <div key={p.id} className="flex items-center gap-3 py-2.5 border-b border-[var(--dark-border)] last:border-0">
-                <div className="w-9 h-9 rounded-full bg-[var(--dark-border)] flex items-center justify-center text-sm font-bold flex-shrink-0">
-                  {p.aluno.nome.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex-1">
-                  <div className="text-sm font-semibold">{p.aluno.nome}</div>
-                  <div className="text-[11px] text-[var(--white-muted)]">{p.aluno.faixa} · {p.turma} · {p.horario}</div>
-                </div>
-                {p.status === "confirmed" ? (
-                  <span className="text-xs font-semibold text-emerald-500 bg-emerald-500/15 px-2.5 py-1 rounded-full">✓ Presente</span>
-                ) : (
-                  <div className="flex gap-1">
-                    <button className="btn btn-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg px-2.5 py-1 text-xs font-bold transition-colors">✓</button>
-                    <button className="btn btn-sm bg-red-700 hover:bg-red-600 text-white rounded-lg px-2.5 py-1 text-xs font-bold transition-colors">✗</button>
+            <div className="space-y-1">
+              {presencasHoje.map((p) => (
+                <div key={p.id} className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl border border-transparent hover:bg-[var(--dark-border)]/30 transition-all">
+                  <div className="w-9 h-9 rounded-xl bg-[var(--dark-border)] flex items-center justify-center text-sm font-bold shrink-0">
+                    {p.aluno.nome.charAt(0).toUpperCase()}
                   </div>
-                )}
-              </div>
-            ))
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold truncate">{p.aluno.nome}</div>
+                    <div className="text-[11px] text-[var(--white-muted)]">{p.aluno.faixa} · {p.turma} · {p.horario}</div>
+                  </div>
+                  {p.status === "confirmed" ? (
+                    <span className="badge-emerald text-[10px] shrink-0">Presente</span>
+                  ) : (
+                    <div className="flex gap-1.5 shrink-0">
+                      <button className="w-8 h-8 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold transition-all">✓</button>
+                      <button className="w-8 h-8 rounded-xl bg-red-700/80 hover:bg-red-700 text-white flex items-center justify-center text-xs font-bold transition-all">✗</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5">
-          <h3 className="font-bold mb-3">📅 Minhas Turmas</h3>
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+          <h3 className="font-bold text-sm tracking-tight mb-3.5">📅 Minhas Turmas</h3>
           {turmas.map((t) => (
-            <div key={t.id} className="bg-black border border-[var(--dark-border)] rounded-xl p-4 mb-3 last:mb-0">
-              <div className="flex items-center justify-between mb-1">
+            <div key={t.id} className="bg-black/40 border border-[var(--dark-border)] rounded-2xl p-4 mb-3 last:mb-0 transition-all hover:border-[rgba(201,168,76,0.15)]">
+              <div className="flex items-center justify-between mb-1.5">
                 <h4 className="font-bold text-sm">{t.nome}</h4>
-                <span className="text-xs text-[var(--white-muted)]">{t.totalAlunos}/{t.maxAlunos}</span>
+                <span className="badge text-[10px] text-[var(--white-muted)] bg-[var(--dark-border)]">{t.totalAlunos}/{t.maxAlunos}</span>
               </div>
-              <p className="text-xs text-[var(--white-muted)]">🕐 {t.horario} · {t.dias}</p>
+              <div className="flex items-center gap-3 text-xs text-[var(--white-muted)]">
+                <span>🕐 {t.horario}</span>
+                <span>📅 {t.dias}</span>
+              </div>
             </div>
           ))}
         </div>
