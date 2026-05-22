@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { Avatar } from "@/components/ui/avatar"
 
 type Props = {
   professor: { nome: string; faixa: string; grau: number }
@@ -48,9 +49,7 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
             <div className="space-y-1">
               {presencasHoje.map((p) => (
                 <div key={p.id} className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl border border-transparent hover:bg-[var(--dark-border)]/30 transition-all">
-                  <div className="w-9 h-9 rounded-xl bg-[var(--dark-border)] flex items-center justify-center text-sm font-bold shrink-0">
-                    {p.aluno.nome.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar name={p.aluno.nome} faixa={p.aluno.faixa} size={36} />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-semibold truncate">{p.aluno.nome}</div>
                     <div className="text-[11px] text-[var(--white-muted)]">{p.aluno.faixa} · {p.turma} · {p.horario}</div>

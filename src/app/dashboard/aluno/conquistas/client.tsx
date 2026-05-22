@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { EmptyState } from "@/components/ui/empty-state"
 
 type Props = {
   conquistas: { id: string; nome: string; icone: string; descricao: string; desbloqueada: boolean }[]
@@ -33,7 +34,9 @@ export function AchievementsClient({ conquistas }: Props) {
               </div>
             ))}
             {desbloqueadas.length === 0 && (
-              <p className="text-sm text-[var(--white-muted)] col-span-4 text-center py-6">Nenhuma conquista ainda. Continue treinando!</p>
+              <div className="col-span-4">
+                <EmptyState icon="trophy" title="Nenhuma conquista ainda" description="Continue treinando para desbloquear suas primeiras conquistas!" />
+              </div>
             )}
           </div>
         </div>

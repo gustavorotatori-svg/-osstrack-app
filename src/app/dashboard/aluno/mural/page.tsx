@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
 
 const feed = [
@@ -36,9 +37,7 @@ export default function MuralPage() {
           {feed.map((item) => (
             <div key={item.id} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4 hover-card">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center text-sm font-bold text-black shrink-0">
-                  {item.avatar}
-                </div>
+                <Avatar name={item.user} faixa={item.belt} size={40} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-semibold">{item.user}</span>

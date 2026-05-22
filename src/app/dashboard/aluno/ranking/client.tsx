@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {

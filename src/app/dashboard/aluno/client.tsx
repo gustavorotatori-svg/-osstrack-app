@@ -1,6 +1,8 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { Avatar } from "@/components/ui/avatar"
+import { EmptyState } from "@/components/ui/empty-state"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { DailyMissions } from "@/components/gamification/daily-missions"
 
@@ -12,6 +14,8 @@ type Props = {
 }
 
 export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas }: Props) {
+  const beltMap: Record<string, string> = { Branca: "white", Azul: "blue", Roxa: "purple", Marrom: "brown", Preta: "black" }
+  const beltKey = beltMap[aluno.faixa] || "white"
   const classesProxGrau = graduacao ? (aluno.grau + 1) * graduacao.aulasPorGrau : 0
   const progressoGrau = graduacao ? Math.min(100, (aluno.totalAulas / classesProxGrau) * 100) : 0
   const restamGrau = Math.max(0, classesProxGrau - aluno.totalAulas)
@@ -28,9 +32,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
           <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-[var(--gold)]/5 rounded-full blur-2xl" />
-          <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center text-2xl font-extrabold text-black mx-auto mb-3.5 shadow-lg">
-            {aluno.nome.charAt(0).toUpperCase()}
-          </div>
+          <div className="mx-auto mb-3.5">{<Avatar name={aluno.nome} faixa={aluno.faixa} size={64} />}</div>
           <h2 className="text-xl font-extrabold tracking-tight">{aluno.nome}</h2>
           <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2.5 ${getBeltColor(aluno.faixa)}`}>
             {getBeltEmoji(aluno.faixa)} {aluno.faixa} · {aluno.grau + 1}º Grau
@@ -56,8 +58,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           ))}
         </div>
 
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
-          <div className="flex items-center justify-between mb-3.5">
+        <div className={`bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card relative overflow-hidden`}>
+          <div className={`absolute inset-0 opacity-[0.04] belt-texture-${beltKey}`} />
+          <div className="flex items-center justify-between mb-3.5 relative">
             <h3 className="font-bold text-sm tracking-tight">Próximo Grau</h3>
             <span className="badge-gold text-[10px]">{restamGrau} aulas restam</span>
           </div>
@@ -71,8 +74,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         </div>
 
         {progressoFaixa !== null && (
-          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
-            <div className="flex items-center justify-between mb-3.5">
+          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card relative overflow-hidden">
+            <div className={`absolute inset-0 opacity-[0.04] belt-texture-${beltKey}`} />
+            <div className="flex items-center justify-between mb-3.5 relative">
               <h3 className="font-bold text-sm tracking-tight">Próxima Faixa</h3>
               <span className="badge text-[10px] bg-[rgba(139,26,26,0.15)] text-[var(--red)]">{restamFaixa} aulas</span>
             </div>
@@ -143,7 +147,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
           <h3 className="font-bold text-sm tracking-tight mb-3.5">📋 Últimos Check-ins</h3>
           {ultimasPresencas.length === 0 ? (
-            <p className="text-sm text-[var(--white-muted)] text-center py-6">Nenhum check-in ainda</p>
+            <EmptyState icon="checkin" title="Nenhum check-in ainda" description="Seu histórico de presenças vai aparecer aqui depois do primeiro check-in." />
           ) : (
             <div className="space-y-1">
               {ultimasPresencas.slice(0, 5).map((p) => (

@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
@@ -44,9 +45,7 @@ export function OwnerDashboardClient({ academia, stats, alunos, presencas, gradu
           <div className="space-y-1">
             {alunos.slice(0, 5).map((a) => (
               <div key={a.id} className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl border border-transparent hover:bg-[var(--dark-border)]/30 transition-all">
-                <div className="w-9 h-9 rounded-xl bg-[var(--dark-border)] flex items-center justify-center text-sm font-bold shrink-0">
-                  {a.nome.charAt(0).toUpperCase()}
-                </div>
+                <Avatar name={a.nome} faixa={a.faixa} size={36} />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold truncate">{a.nome}</div>
                   <div className="text-[11px] text-[var(--white-muted)]">{a.faixa} {'★'.repeat(a.grau + 1)}</div>

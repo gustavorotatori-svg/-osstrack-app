@@ -9,7 +9,7 @@ import { Navbar } from "@/components/layout/navbar"
 
 export default function Home() {
   return (
-    <main>
+    <main className="tatame-bg">
       <Navbar />
       <Hero />
       <Features />
