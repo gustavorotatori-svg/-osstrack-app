@@ -31,7 +31,7 @@ const plans = [
     tag: "MAIS POPULAR",
   },
   {
-    name: "Professor", price: "Grátis", period: "Sempre", featured: false,
+    name: "Professor", price: "Grátis", period: "Pra sempre", featured: false,
     features: [
       "Confirmar presenças dos alunos",
       "Gerenciar turmas e horários",
