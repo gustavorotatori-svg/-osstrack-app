@@ -74,6 +74,18 @@ function SettingsIcon({ active }: IconProps) {
   )
 }
 
+function StopwatchIcon({ active }: IconProps) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <polyline points="12 7 12 12 15 15" />
+      <line x1="12" y1="2" x2="12" y2="5" />
+      <line x1="7" y1="2" x2="9" y2="3" />
+      <line x1="17" y1="2" x2="15" y2="3" />
+    </svg>
+  )
+}
+
 function CheckIcon({ active }: IconProps) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -126,6 +138,7 @@ const navItems: Record<string, { href: string; label: string; icon: (p: IconProp
   aluno: [
     { href: "/dashboard/aluno", label: "Início", icon: HomeIcon },
     { href: "/dashboard/aluno/checkin", label: "Check-in", icon: CheckinIcon },
+    { href: "/dashboard/aluno/treino", label: "Treino", icon: StopwatchIcon },
     { href: "/dashboard/aluno/evolucao", label: "Evolução", icon: ChartIcon },
     { href: "/dashboard/aluno/mural", label: "Mural", icon: BellIcon },
     { href: "/dashboard/aluno/ranking", label: "Ranking", icon: AwardIcon },

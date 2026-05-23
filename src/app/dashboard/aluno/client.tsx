@@ -7,6 +7,18 @@ import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { DailyMissions } from "@/components/gamification/daily-missions"
 import { PremiumBanner } from "@/components/ui/premium-lock"
 import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+
+const quotes = [
+  "\"O Jiu-Jitsu é uma arte de adaptação. Não é o mais forte que sobrevive, mas o que melhor se adapta.\"",
+  "\"Faixa preta é uma faixa branca que nunca desistiu.\"",
+  "\"A disciplina é a ponte entre seus objetivos e suas conquistas.\"",
+  "\"O tapete não mente. Ele mostra quem você realmente é.\"",
+  "\"Um round de cada vez. Uma aula de cada vez. Uma faixa de cada vez.\"",
+  "\"Oss! O respeito vem antes do kimono.\"",
+  "\"Treino duro, guerra fácil.\"",
+  "\"Não é sobre ser o melhor. É sobre ser melhor do que você foi ontem.\"",
+]
 
 type Props = {
   aluno: { id: string; nome: string; faixa: string; grau: number; totalAulas: number; dataInicio: string; academia: string }
@@ -18,6 +30,21 @@ type Props = {
 
 export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas, streak: streakInicial }: Props) {
   const router = useRouter()
+  const [treinandoAgora, setTreinandoAgora] = useState<{ nome: string; faixa: string }[]>([])
+
+  useEffect(() => {
+    fetch("/api/treino")
+      .then((r) => r.json())
+      .then((data) => setTreinandoAgora(data.treinando || []))
+      .catch(() => {})
+    const id = setInterval(() => {
+      fetch("/api/treino")
+        .then((r) => r.json())
+        .then((data) => setTreinandoAgora(data.treinando || []))
+        .catch(() => {})
+    }, 30000)
+    return () => clearInterval(id)
+  }, [])
   const beltMap: Record<string, string> = { Branca: "white", Azul: "blue", Roxa: "purple", Marrom: "brown", Preta: "black" }
   const beltKey = beltMap[aluno.faixa] || "white"
   const classesProxGrau = graduacao ? (aluno.grau + 1) * graduacao.aulasPorGrau : 0
@@ -31,9 +58,20 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
   const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1).getDay()
   const diasNoMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate()
 
+  const quoteIndex = new Date().getDate() % quotes.length
+
   return (
     <DashboardShell role="aluno">
       <div className="space-y-4">
+        {/* Quote do Dia */}
+        <div className="bg-gradient-to-br from-[rgba(139,26,26,0.06)] to-[rgba(201,168,76,0.03)] border border-[rgba(139,26,26,0.12)] rounded-2xl p-4 text-center relative overflow-hidden">
+          <div className="absolute top-[-10px] right-[-10px] text-6xl opacity-[0.04] select-none">🥋</div>
+          <p className="text-xs text-[var(--white-muted)] italic leading-relaxed relative">
+            {quotes[quoteIndex]}
+          </p>
+          <div className="text-[9px] text-[var(--gray)] mt-2 uppercase tracking-widest">Quote do Dia</div>
+        </div>
+
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
           <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-[var(--gold)]/5 rounded-full blur-2xl" />
           <div className="mx-auto mb-3.5">{<Avatar name={aluno.nome} faixa={aluno.faixa} size={64} />}</div>
@@ -45,22 +83,40 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         </div>
 
         <div className="grid grid-cols-3 gap-3">
-          {[
-            { value: aluno.totalAulas, label: "Total de Aulas", icon: "🥋" },
-            { value: ultimasPresencas.filter(p => p.status === "confirmed").length, label: "Presenças", icon: "✅" },
-            { value: `🔥 ${streakInicial}`, label: "Sequência", icon: "🔥" },
-          ].map((s, i) => (
-            <div
-              key={s.label}
-              className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card animate-scale-in"
-              style={{ animationDelay: `${i * 0.08}s` }}
-            >
-              <div className="text-lg mb-1.5">{s.icon}</div>
-              <div className="text-2xl font-extrabold text-[var(--gold)]">{s.value}</div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">{s.label}</div>
-            </div>
-          ))}
+          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card animate-scale-in">
+            <div className="text-lg mb-1.5">🥋</div>
+            <div className="text-2xl font-extrabold text-[var(--gold)]">{aluno.totalAulas}</div>
+            <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">Total de Aulas</div>
+          </div>
+          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card animate-scale-in" style={{ animationDelay: "0.08s" }}>
+            <div className="text-lg mb-1.5">✅</div>
+            <div className="text-2xl font-extrabold text-[var(--gold)]">{ultimasPresencas.filter(p => p.status === "confirmed").length}</div>
+            <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">Presenças</div>
+          </div>
+          <div className={`bg-[var(--dark-card)] border rounded-2xl p-4 text-center hover-card animate-scale-in ${streakInicial > 0 ? "border-[rgba(255,140,0,0.2)] animate-fire-glow" : "border-[var(--dark-border)]"}`} style={{ animationDelay: "0.16s" }}>
+            <div className={`text-lg mb-1.5 ${streakInicial > 0 ? "animate-fire" : ""}`}>🔥</div>
+            <div className="text-2xl font-extrabold text-[var(--gold)]">{streakInicial}</div>
+            <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">Sequência</div>
+          </div>
         </div>
+
+        {treinandoAgora.length > 0 && (
+          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+            <h3 className="font-bold text-sm tracking-tight mb-3 flex items-center gap-2">
+              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              Treinando agora
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {treinandoAgora.map((p, i) => (
+                <div key={i} className="flex items-center gap-2 bg-[rgba(201,168,76,0.06)] border border-[rgba(201,168,76,0.12)] rounded-xl px-3 py-1.5 text-xs">
+                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                  <span className="font-semibold">{p.nome}</span>
+                  <span className="text-[var(--white-muted)]">· {p.faixa}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className={`bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card relative overflow-hidden`}>
           <div className={`absolute inset-0 opacity-[0.04] belt-texture-${beltKey}`} />
