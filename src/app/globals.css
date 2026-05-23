@@ -136,6 +136,93 @@ body.light {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-18px) rotate(3deg); }
+  66% { transform: translateY(-6px) rotate(-2deg); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-12px) translateX(6px); }
+  50% { transform: translateY(4px) translateX(-4px); }
+  75% { transform: translateY(-8px) translateX(8px); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes heroFadeUp {
+  0% { opacity: 0; transform: translateY(30px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes textReveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes shimmerGold {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes beltSway {
+  0%, 100% { transform: rotate(-5deg) translateY(0); }
+  50% { transform: rotate(5deg) translateY(-6px); }
+}
+
+@keyframes pulseGlowGold {
+  0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.15); }
+  50% { box-shadow: 0 0 40px rgba(201,168,76,0.3); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-float-up {
+  animation: floatUp var(--dur, 4s) ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: floatSlow var(--dur, 6s) ease-in-out infinite;
+}
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+}
+.animate-hero-fade-up {
+  animation: heroFadeUp 0.8s ease forwards;
+}
+.animate-text-reveal {
+  animation: textReveal 1.2s cubic-bezier(0.77, 0, 0.18, 1) forwards;
+}
+.animate-shimmer-gold {
+  background-size: 200% auto;
+  animation: shimmerGold 3s linear infinite;
+}
+.animate-belt-sway {
+  animation: beltSway 3s ease-in-out infinite;
+}
+.animate-pulse-glow-gold {
+  animation: pulseGlowGold 2s ease-in-out infinite;
+}
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease forwards;
+}
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease forwards;
+}
+
 @keyframes fireFlicker {
   0%, 100% { transform: scale(1) rotate(-2deg); filter: brightness(1); }
   25% { transform: scale(1.08) rotate(1deg); filter: brightness(1.2); }
