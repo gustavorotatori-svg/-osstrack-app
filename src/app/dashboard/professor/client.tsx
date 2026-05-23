@@ -1,7 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
+import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
   professor: { nome: string; faixa: string; grau: number }
@@ -10,7 +12,35 @@ type Props = {
   presencasHoje: { id: string; aluno: { id: string; nome: string; faixa: string }; data: string; horario: string; status: string; turma: string }[]
 }
 
+const beltList = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
+
 export function ProfessorDashboardClient({ professor, alunos, turmas, presencasHoje }: Props) {
+  const [promovendo, setPromovendo] = useState<string | null>(null)
+  const [showPromote, setShowPromote] = useState<string | null>(null)
+
+  async function confirmarPresenca(presencaId: string, status: string) {
+    await fetch("/api/presenca/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ presencaId, status }),
+    })
+  }
+
+  async function promover(alunoId: string, novaFaixa: string, novoGrau: number) {
+    await fetch("/api/promocao", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ alunoId, novaFaixa, novoGrau }),
+    })
+    setPromovendo(null)
+    setShowPromote(null)
+  }
+
+  const faixasDisponiveis = (faixaAtual: string) => {
+    const idx = beltList.indexOf(faixaAtual)
+    return beltList.slice(idx)
+  }
+
   return (
     <DashboardShell role="professor">
       <div className="space-y-4">
@@ -58,14 +88,59 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
                     <span className="badge-emerald text-[10px] shrink-0">Presente</span>
                   ) : (
                     <div className="flex gap-1.5 shrink-0">
-                      <button className="w-8 h-8 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold transition-all">✓</button>
-                      <button className="w-8 h-8 rounded-xl bg-red-700/80 hover:bg-red-700 text-white flex items-center justify-center text-xs font-bold transition-all">✗</button>
+                      <button onClick={() => confirmarPresenca(p.id, "confirmed")} className="w-8 h-8 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white flex items-center justify-center text-xs font-bold transition-all">✓</button>
+                      <button onClick={() => confirmarPresenca(p.id, "rejected")} className="w-8 h-8 rounded-xl bg-red-700/80 hover:bg-red-700 text-white flex items-center justify-center text-xs font-bold transition-all">✗</button>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           )}
+        </div>
+
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+          <h3 className="font-bold text-sm tracking-tight mb-3.5">👥 Meus Alunos</h3>
+          {alunos.map((a) => (
+            <div key={a.id} className="flex items-center gap-3.5 py-2.5 px-3 rounded-xl border border-transparent hover:bg-[var(--dark-border)]/30 transition-all">
+              <Avatar name={a.nome} faixa={a.faixa} size={36} />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold truncate">{a.nome}</div>
+                <div className="text-[11px] text-[var(--white-muted)]">{a.faixa} · {'★'.repeat(a.grau + 1)}</div>
+              </div>
+              {showPromote === a.id ? (
+                <div className="flex gap-1.5 shrink-0">
+                  <select
+                    className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-lg text-[10px] px-1 py-1 text-white"
+                    value={promovendo?.split("|")[1] || a.faixa}
+                    onChange={(e) => setPromovendo(`${a.id}|${e.target.value}|${a.grau}`)}
+                  >
+                    {faixasDisponiveis(a.faixa).map((f) => (
+                      <option key={f} value={f}>{f}</option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => {
+                      const parts = (promovendo || `${a.id}|${a.faixa}|${a.grau}`).split("|")
+                      const novaFaixa = parts[1]
+                      const novoGrau = a.faixa !== novaFaixa ? 0 : Math.min(a.grau + 1, 4)
+                      promover(a.id, novaFaixa, novoGrau)
+                    }}
+                    className="w-8 h-8 rounded-xl gradient-gold text-black flex items-center justify-center text-xs font-bold"
+                  >
+                    ✓
+                  </button>
+                  <button onClick={() => setShowPromote(null)} className="w-8 h-8 rounded-xl bg-[var(--dark-border)] text-[var(--white-muted)] flex items-center justify-center text-xs">✗</button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowPromote(a.id)}
+                  className="btn-gold px-3 py-1.5 text-[10px] shrink-0"
+                >
+                  Promover
+                </button>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">

@@ -11,9 +11,10 @@ type Props = {
   graduacao: { aulasPorGrau: number; aulasProxFx: number | null; graus: number } | null
   ultimasPresencas: { id: string; data: string; horario: string; status: string; turma: string }[]
   conquistas: { id: string; nome: string; icone: string; descricao: string; desbloqueada: boolean }[]
+  streak: number
 }
 
-export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas }: Props) {
+export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas, streak: streakInicial }: Props) {
   const beltMap: Record<string, string> = { Branca: "white", Azul: "blue", Roxa: "purple", Marrom: "brown", Preta: "black" }
   const beltKey = beltMap[aluno.faixa] || "white"
   const classesProxGrau = graduacao ? (aluno.grau + 1) * graduacao.aulasPorGrau : 0
@@ -44,7 +45,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {[
             { value: aluno.totalAulas, label: "Total de Aulas", icon: "🥋" },
             { value: ultimasPresencas.filter(p => p.status === "confirmed").length, label: "Presenças", icon: "✅" },
-            { value: "🔥 5", label: "Sequência", icon: "🔥" },
+            { value: `🔥 ${streakInicial}`, label: "Sequência", icon: "🔥" },
           ].map((s, i) => (
             <div
               key={s.label}

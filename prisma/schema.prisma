@@ -56,6 +56,9 @@ model Usuario {
   missoesDiarias  MissaoDiaria[]
   postagensMural  PostagemMural[]
   mestreDoMes     MestreDoMes[]
+  notificacoes    Notificacao[]
+  comentariosMural ComentarioMural[]
+  streak          Streak?
 }
 
 model Turma {
@@ -171,4 +174,38 @@ model PostagemMural {
   tipo      String
   conteudo  String
   createdAt DateTime @default(now())
+
+  comentarios ComentarioMural[]
+}
+
+model ComentarioMural {
+  id         String   @id @default(cuid())
+  postagemId String
+  postagem   PostagemMural @relation(fields: [postagemId], references: [id], onDelete: Cascade)
+  usuarioId  String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  conteudo   String
+  createdAt  DateTime @default(now())
+}
+
+model Notificacao {
+  id        String   @id @default(cuid())
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  tipo      String
+  titulo    String
+  descricao String
+  lida      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+}
+
+model Streak {
+  id              String   @id @default(cuid())
+  usuarioId       String   @unique
+  usuario         Usuario  @relation(fields: [usuarioId], references: [id])
+  currentStreak   Int      @default(0)
+  bestStreak      Int      @default(0)
+  lastCheckinDate DateTime?
+  updatedAt       DateTime @updatedAt
 }

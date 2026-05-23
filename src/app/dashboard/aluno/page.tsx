@@ -39,6 +39,10 @@ export default async function AlunoDashboard() {
     where: { academiaId: aluno.academiaId, categoria: aluno.categoria, faixa: aluno.faixa },
   })
 
+  const streakData = await prisma.streak.findUnique({
+    where: { usuarioId: aluno.id },
+  })
+
   return (
     <StudentDashboardClient
       aluno={{
@@ -66,6 +70,7 @@ export default async function AlunoDashboard() {
         ...c,
         desbloqueada: conquistas.some((ac) => ac.conquistaId === c.id),
       }))}
+      streak={streakData?.currentStreak || 0}
     />
   )
 }

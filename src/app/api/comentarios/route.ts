@@ -1,0 +1,53 @@
+import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
+import prisma from "@/lib/prisma"
+
+export async function GET(request: Request) {
+  const session = await getServerSession(authOptions)
+  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+
+  const { searchParams } = new URL(request.url)
+  const postagemId = searchParams.get("postagemId")
+
+  if (!postagemId) return NextResponse.json({ error: "postagemId é obrigatório" }, { status: 400 })
+
+  const comentarios = await prisma.comentarioMural.findMany({
+    where: { postagemId },
+    include: { usuario: { select: { id: true, nome: true, faixa: true } } },
+    orderBy: { createdAt: "asc" },
+  })
+
+  return NextResponse.json(comentarios)
+}
+
+export async function POST(request: Request) {
+  const session = await getServerSession(authOptions)
+  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+
+  const { postagemId, conteudo } = await request.json()
+
+  if (!postagemId || !conteudo?.trim()) {
+    return NextResponse.json({ error: "postagemId e conteudo são obrigatórios" }, { status: 400 })
+  }
+
+  const comentario = await prisma.comentarioMural.create({
+    data: { postagemId, usuarioId: session.user.id, conteudo: conteudo.trim() },
+    include: { usuario: { select: { id: true, nome: true, faixa: true } } },
+  })
+
+  const postagem = await prisma.postagemMural.findUnique({ where: { id: postagemId } })
+  if (postagem && postagem.alunoId !== session.user.id) {
+    await prisma.notificacao.create({
+      data: {
+        usuarioId: postagem.alunoId,
+        tipo: "comentario",
+        titulo: "Novo comentário",
+        descricao: `${session.user.name} comentou na sua publicação`,
+        link: "/dashboard/aluno/mural",
+      },
+    })
+  }
+
+  return NextResponse.json(comentario)
+}

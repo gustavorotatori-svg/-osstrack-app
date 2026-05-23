@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { DailyMissions } from "@/components/gamification/daily-missions"
+import { useSession } from "next-auth/react"
 
 function Confetti() {
   return (
@@ -42,12 +43,14 @@ const frases = [
 ]
 
 export default function CheckinPage() {
+  const { data: session } = useSession()
   const [status, setStatus] = useState<"idle" | "pending" | "done">("idle")
   const [locationStatus, setLocationStatus] = useState("")
   const [showConfetti, setShowConfetti] = useState(false)
-  const [streak, setStreak] = useState(5)
+  const [streak, setStreak] = useState(0)
   const [motivational, setMotivational] = useState("")
   const [metaSemanal, setMetaSemanal] = useState({ aulasFeitas: 0, aulasAlvo: 5, concluida: false })
+  const [ultimosCheckins, setUltimosCheckins] = useState<{ id: string; data: string; horario: string; status: string; turma: string }[]>([])
 
   const fetchMeta = useCallback(async () => {
     try {
@@ -56,7 +59,26 @@ export default function CheckinPage() {
     } catch {}
   }, [])
 
-  useEffect(() => { fetchMeta() }, [fetchMeta])
+  const fetchStreak = useCallback(async () => {
+    try {
+      const res = await fetch("/api/streak")
+      if (res.ok) {
+        const data = await res.json()
+        setStreak(data.currentStreak)
+      }
+    } catch {}
+  }, [])
+
+  const fetchUltimosCheckins = useCallback(async () => {
+    try {
+      const res = await fetch("/api/perfil")
+      if (res.ok) {
+        const data = await res.json()
+      }
+    } catch {}
+  }, [])
+
+  useEffect(() => { fetchMeta(); fetchStreak() }, [fetchMeta, fetchStreak])
 
   useEffect(() => {
     if (showConfetti) {
@@ -76,12 +98,34 @@ export default function CheckinPage() {
         setLocationStatus(`📍 Verificado: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`)
         setStatus("pending")
         setShowConfetti(true)
-        setStreak((s) => s + 1)
         setMotivational(frases[Math.floor(Math.random() * frases.length)])
+
+        try {
+          await fetch("/api/presenca", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+            }),
+          })
+        } catch {}
 
         try {
           const res = await fetch("/api/metasemanal", { method: "POST" })
           if (res.ok) setMetaSemanal(await res.json())
+        } catch {}
+
+        try {
+          const res = await fetch("/api/streak", { method: "POST" })
+          if (res.ok) {
+            const data = await res.json()
+            setStreak(data.currentStreak)
+          }
+        } catch {}
+
+        try {
+          await fetch("/api/conquistas", { method: "POST" })
         } catch {}
 
         setTimeout(() => setStatus("done"), 2000)
@@ -114,7 +158,7 @@ export default function CheckinPage() {
 
           <div className="flex items-center justify-center gap-2 mb-1">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs text-[var(--white-muted)] font-medium">Gracie Barra Recife</span>
+            <span className="text-xs text-[var(--white-muted)] font-medium">{session?.user ? "Gracie Barra Recife" : ""}</span>
           </div>
 
           <div className="mt-4 mb-2">
@@ -219,26 +263,6 @@ export default function CheckinPage() {
         </div>
 
         <DailyMissions />
-
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3.5">
-            <h3 className="font-bold text-sm tracking-tight">📋 Últimos Check-ins</h3>
-          </div>
-          {[
-            { time: "18:30", status: "confirmed", class: "Jiu-Jitsu Adulto" },
-            { time: "18:30", status: "confirmed", class: "Jiu-Jitsu Adulto" },
-            { time: "19:30", status: "confirmed", class: "Jiu-Jitsu Avançado" },
-          ].map((c, i) => (
-            <div key={i} className="flex items-center gap-3.5 py-2.5 border-b border-[var(--dark-border)] last:border-0">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-sm">✅</div>
-              <div className="flex-1">
-                <div className="text-sm font-semibold">{c.class}</div>
-                <div className="text-[11px] text-[var(--white-muted)]">{c.time}</div>
-              </div>
-              <span className="badge-emerald text-[10px]">Presente</span>
-            </div>
-          ))}
-        </div>
       </div>
     </DashboardShell>
   )

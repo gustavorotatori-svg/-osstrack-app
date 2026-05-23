@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
 import { OnboardingTour } from "@/components/onboarding/tour"
+import { useTheme } from "@/components/layout/providers"
 
 type IconProps = { active: boolean }
 
@@ -112,6 +113,15 @@ function ReportIcon({ active }: IconProps) {
   )
 }
 
+function UserIcon({ active }: IconProps) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  )
+}
+
 const navItems: Record<string, { href: string; label: string; icon: (p: IconProps) => ReactElement }[]> = {
   aluno: [
     { href: "/dashboard/aluno", label: "Início", icon: HomeIcon },
@@ -135,13 +145,24 @@ const navItems: Record<string, { href: string; label: string; icon: (p: IconProp
   ],
 }
 
+const topNavItems: Record<string, { href: string; label: string; icon: (p: IconProps) => ReactElement }[]> = {
+  aluno: [
+    { href: "/dashboard/aluno/notificacoes", label: "Notificações", icon: BellIcon },
+    { href: "/dashboard/aluno/conquistas", label: "Conquistas", icon: AwardIcon },
+    { href: "/dashboard/aluno/perfil", label: "Perfil", icon: UserIcon },
+  ],
+}
+
 export function DashboardShell({ children, role }: { children: ReactNode; role: string }) {
   const { data: session } = useSession()
+  const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
   const router = useRouter()
   const items = navItems[role as keyof typeof navItems] || []
+  const topItems = topNavItems[role as keyof typeof topNavItems] || []
   const [showTour, setShowTour] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [notifCount, setNotifCount] = useState(0)
 
   useEffect(() => {
     const seen = localStorage.getItem(`osstrack_tour_${role}`)
@@ -153,6 +174,13 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
+  useEffect(() => {
+    fetch("/api/notificacoes")
+      .then((r) => r.json())
+      .then((data) => setNotifCount(data.filter((n: { lida: boolean }) => !n.lida).length))
+      .catch(() => {})
+  }, [pathname])
 
   function completeTour() {
     localStorage.setItem(`osstrack_tour_${role}`, "true")
@@ -177,16 +205,107 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             {role === "dono" ? "Dono" : role === "professor" ? "Professor" : "Aluno"}
           </span>
         </div>
-        <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-ghost text-xs">
-          Sair
-        </button>
+        <div className="flex items-center gap-0.5">
+          {topItems.map((item) => {
+            const isActive = pathname === item.href
+            const Icon = item.icon
+            return (
+              <button
+                key={item.href}
+                onClick={() => router.push(item.href)}
+                className={`relative p-2 rounded-xl transition-all ${
+                  isActive ? "text-[var(--gold)] bg-[rgba(201,168,76,0.08)]" : "text-[var(--gray)] hover:text-[var(--white-muted)]"
+                }`}
+              >
+                <Icon active={isActive} />
+                {item.label === "Notificações" && notifCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 gradient-gold rounded-full text-[8px] text-black font-bold flex items-center justify-center">
+                    {notifCount > 9 ? "9+" : notifCount}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+          <button onClick={toggleTheme} className="btn-ghost text-xs" title="Alternar tema">
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
+          <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-ghost text-xs ml-1">
+            Sair
+          </button>
+        </div>
       </header>
 
-      <div className="flex-1 max-w-lg mx-auto w-full px-4 py-4 pb-28" id="page-content">
-        <div className="animate-fade-in">{children}</div>
+      <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-64 lg:w-72 bg-[var(--black)]/90 backdrop-blur-2xl border-r border-[var(--dark-border)] flex-col py-4">
+        <div className="flex items-center gap-3 px-5 mb-8 mt-2">
+          <div className="w-9 h-9 gradient-gold rounded-xl flex items-center justify-center text-sm text-black font-bold shrink-0">
+            🥋
+          </div>
+          <div>
+            <span className="font-bold text-sm">OssTrack</span>
+            <span className="badge-gold text-[9px] block mt-0.5 w-fit">
+              {role === "dono" ? "Dono" : role === "professor" ? "Professor" : "Aluno"}
+            </span>
+          </div>
+        </div>
+        <div className="flex-1 px-3 space-y-1">
+          {items.map((item) => {
+            const isActive = pathname === item.href
+            const Icon = item.icon
+            return (
+              <button
+                key={item.href}
+                onClick={() => router.push(item.href)}
+                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all text-sm font-medium ${
+                  isActive ? "bg-[rgba(201,168,76,0.1)] text-[var(--gold)] border border-[rgba(201,168,76,0.15)]" : "text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]"
+                }`}
+              >
+                <Icon active={isActive} />
+                <span>{item.label}</span>
+                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] ml-auto" />}
+              </button>
+            )
+          })}
+        </div>
+        <div className="px-3 mt-auto space-y-1">
+          {topItems.map((item) => {
+            const isActive = pathname === item.href
+            const Icon = item.icon
+            return (
+              <button
+                key={item.href}
+                onClick={() => router.push(item.href)}
+                className={`w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl transition-all text-sm font-medium relative ${
+                  isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]"
+                }`}
+              >
+                <Icon active={isActive} />
+                <span>{item.label}</span>
+                {item.label === "Notificações" && notifCount > 0 && (
+                  <span className="ml-auto w-5 h-5 gradient-gold rounded-full text-[9px] text-black font-bold flex items-center justify-center">
+                    {notifCount > 9 ? "9+" : notifCount}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+          <div className="border-t border-[var(--dark-border)] pt-2 mt-2">
+            <button onClick={toggleTheme} className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)] transition-all">
+              {theme === "dark" ? "☀️" : "🌙"} <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
+            </button>
+            <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)] transition-all">
+              🚪 <span>Sair</span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--black)]/95 backdrop-blur-2xl border-t border-[var(--dark-border)] flex items-center justify-around py-1.5 pb-[max(4px,env(safe-area-inset-bottom))]">
+      <div className="flex-1 w-full px-4 py-4 pb-28 md:pb-4 md:ml-64 lg:ml-72 transition-all" id="page-content">
+        <div className="max-w-lg mx-auto md:max-w-3xl lg:max-w-5xl">
+          <div className="animate-fade-in">{children}</div>
+        </div>
+      </div>
+
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--black)]/95 backdrop-blur-2xl border-t border-[var(--dark-border)] flex items-center justify-around py-1.5 pb-[max(4px,env(safe-area-inset-bottom))]">
         {items.map((item) => {
           const isActive = pathname === item.href
           const Icon = item.icon
