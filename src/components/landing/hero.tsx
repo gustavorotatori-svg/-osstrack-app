@@ -21,8 +21,8 @@ export function Hero() {
         </h1>
 
         <p className="text-[clamp(1rem,2.5vw,1.3rem)] text-[var(--white-muted)] max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up stagger-1">
-          Transforme frequência, disciplina e evolução no Jiu-Jitsu em metas claras e compartilháveis. 
-          Aumente retenção e engajamento dos seus alunos.
+          De academias a treinos em condomínios — professores autônomos, alunos que treinam em mais de uma academia. 
+          Tudo de graça para quem ensina. Só o aluno paga R$4,90 se quiser recursos extras.
         </p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap animate-fade-in-up stagger-2">

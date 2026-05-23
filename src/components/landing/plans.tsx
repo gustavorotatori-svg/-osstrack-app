@@ -4,8 +4,8 @@ const plans = [
   {
     name: "Academia", price: "R$0", period: "Pra sempre", featured: false,
     features: [
-      "Cadastrar professores e alunos",
-      "Aceitar ou recusar cadastros",
+      "Cadastrar vários professores (vários horários)",
+      "Cadastrar ou aceitar alunos",
       "Gerenciar graduações (faixas)",
       "Relatórios de frequência",
       "Mural social da academia",
@@ -18,8 +18,8 @@ const plans = [
   {
     name: "Aluno Premium", price: "R$4,90", period: "Por aluno/mês", featured: true,
     features: [
-      "Se cadastrar e se associar a uma academia",
-      "Ser aceito por professor ou academia",
+      "Se cadastrar e escolher professor ou academia",
+      "Pode treinar em mais de uma academia",
       "Check-in com geolocalização",
       "Histórico ilimitado de treinos",
       "Arte para Instagram 🎨",
@@ -33,11 +33,11 @@ const plans = [
   {
     name: "Professor", price: "Grátis", period: "Pra sempre", featured: false,
     features: [
-      "Receber convite por email da academia",
-      "Aceitar vínculo com academia",
-      "Confirmar presenças dos alunos",
-      "Promover alunos de faixa",
-      "Gerenciar turmas e horários",
+      "Funciona com ou sem academia",
+      "Dar aulas em condomínios, parques, etc",
+      "Cadastrar e aceitar alunos próprios",
+      "Receber convite por email de academia",
+      "Confirmar presenças e promover faixas",
       "Grátis vitalício",
     ],
     cta: "Sou professor",
@@ -58,7 +58,7 @@ export function Plans() {
             Academia e professor: R$0. Aluno premium: R$4,90.
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Sua academia não tira nada do bolso. Professor tem acesso completo de graça. Quem quiser recursos extras paga só um café por mês.
+            Professor pode dar aula com ou sem academia. Aluno pode treinar em mais de uma. Academia gerencia vários professores.
           </p>
         </div>
 
