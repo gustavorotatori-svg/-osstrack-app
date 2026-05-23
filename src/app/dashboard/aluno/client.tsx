@@ -5,6 +5,8 @@ import { Avatar } from "@/components/ui/avatar"
 import { EmptyState } from "@/components/ui/empty-state"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { DailyMissions } from "@/components/gamification/daily-missions"
+import { PremiumBanner } from "@/components/ui/premium-lock"
+import { useRouter } from "next/navigation"
 
 type Props = {
   aluno: { id: string; nome: string; faixa: string; grau: number; totalAulas: number; dataInicio: string; academia: string }
@@ -15,6 +17,7 @@ type Props = {
 }
 
 export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas, streak: streakInicial }: Props) {
+  const router = useRouter()
   const beltMap: Record<string, string> = { Branca: "white", Azul: "blue", Roxa: "purple", Marrom: "brown", Preta: "black" }
   const beltKey = beltMap[aluno.faixa] || "white"
   const classesProxGrau = graduacao ? (aluno.grau + 1) * graduacao.aulasPorGrau : 0
@@ -122,6 +125,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           </div>
         </div>
 
+        <PremiumBanner onClick={() => router.push("/dashboard/aluno/premium")} />
         <DailyMissions />
 
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">

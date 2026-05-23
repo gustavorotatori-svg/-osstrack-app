@@ -1,14 +1,30 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function CompartilharPage() {
   const { data: session } = useSession()
+  const router = useRouter()
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [isPremium, setIsPremium] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/premium").then((r) => r.json()).then((d) => {
+      setIsPremium(d.isPremium)
+      setLoading(false)
+    })
+  }, [])
 
   function generateImage() {
+    if (!isPremium) {
+      router.push("/dashboard/aluno/premium")
+      return
+    }
+
     const canvas = canvasRef.current
     if (!canvas || !session?.user) return
 
@@ -74,13 +90,17 @@ export default function CompartilharPage() {
     link.click()
   }
 
+  if (loading) return null
+
   return (
     <DashboardShell role="aluno">
       <div className="animate-fade-in space-y-4">
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
-          <div className="text-3xl mb-2">📱</div>
+          <div className="text-3xl mb-2">{isPremium ? "📱" : "🔒"}</div>
           <h3 className="font-bold">Compartilhar</h3>
-          <p className="text-xs text-[var(--white-muted)]">Gere artes incríveis para compartilhar suas conquistas</p>
+          <p className="text-xs text-[var(--white-muted)]">
+            {isPremium ? "Gere artes incríveis para compartilhar suas conquistas" : "Disponível apenas para assinantes Premium"}
+          </p>
         </div>
 
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
@@ -107,18 +127,23 @@ export default function CompartilharPage() {
           </div>
         </div>
 
-        <button onClick={generateImage} className="w-full py-3.5 rounded-lg font-bold gradient-gold text-black transition-all">
-          📸 Gerar Arte para Compartilhar
+        <button
+          onClick={generateImage}
+          className="w-full py-3.5 rounded-lg font-bold gradient-gold text-black transition-all"
+        >
+          {isPremium ? "📸 Gerar Arte para Compartilhar" : "🔓 Desbloquear com Premium"}
         </button>
 
-        <div className="flex gap-3">
-          <button onClick={generateImage} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] transition-all">
-            💬 WhatsApp
-          </button>
-          <button onClick={generateImage} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] transition-all">
-            💼 LinkedIn
-          </button>
-        </div>
+        {isPremium && (
+          <div className="flex gap-3">
+            <button onClick={generateImage} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] transition-all">
+              💬 WhatsApp
+            </button>
+            <button onClick={generateImage} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] transition-all">
+              💼 LinkedIn
+            </button>
+          </div>
+        )}
 
         <canvas ref={canvasRef} className="hidden" />
       </div>

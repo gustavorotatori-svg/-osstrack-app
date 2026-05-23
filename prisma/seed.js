@@ -59,7 +59,14 @@ async function main() {
       categoria: "adulto",
       academiaId: academia.id,
       professorId: professor.id,
+      plano: "free",
+      planoInicio: new Date(),
+      planoExpiracao: new Date(Date.now() + 30 * 86400000),
     },
+  })
+
+  await prisma.streak.create({
+    data: { usuarioId: aluno.id, currentStreak: 3, bestStreak: 3, lastCheckinDate: new Date("2026-05-14") },
   })
 
   const turma1 = await prisma.turma.create({

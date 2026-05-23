@@ -44,6 +44,10 @@ model Usuario {
   academiaId String
   academia   Academia @relation(fields: [academiaId], references: [id])
   professorId String?
+  plano      String   @default("free")
+  planoInicio DateTime?
+  planoExpiracao DateTime?
+  stripeCustomerId String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -59,6 +63,22 @@ model Usuario {
   notificacoes    Notificacao[]
   comentariosMural ComentarioMural[]
   streak          Streak?
+  pagamentos      Pagamento[]
+}
+
+model Pagamento {
+  id             String   @id @default(cuid())
+  usuarioId      String
+  usuario        Usuario  @relation(fields: [usuarioId], references: [id])
+  valor          Int
+  status         String   @default("pending")
+  metodo         String?
+  stripeId       String?
+  stripeSessionId String?
+  mesReferencia  Int
+  anoReferencia  Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Turma {

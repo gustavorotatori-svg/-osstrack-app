@@ -149,6 +149,7 @@ const topNavItems: Record<string, { href: string; label: string; icon: (p: IconP
   aluno: [
     { href: "/dashboard/aluno/notificacoes", label: "Notificações", icon: BellIcon },
     { href: "/dashboard/aluno/conquistas", label: "Conquistas", icon: AwardIcon },
+    { href: "/dashboard/aluno/premium", label: "Premium", icon: AwardIcon },
     { href: "/dashboard/aluno/perfil", label: "Perfil", icon: UserIcon },
   ],
 }
