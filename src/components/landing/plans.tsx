@@ -2,23 +2,24 @@ import Link from "next/link"
 
 const plans = [
   {
-    name: "Academia Grátis", price: "R$0", period: "Pra sempre", featured: false,
+    name: "Academia", price: "R$0", period: "Pra sempre", featured: false,
     features: [
       "Academia cadastrada sem custo",
-      "Check-in geolocalizado",
-      "Dashboard do aluno",
-      "Controle de presença",
-      "Ranking da academia",
-      "Mural social",
+      "Gestão de alunos e turmas",
+      "Mural social da academia",
+      "Relatórios de frequência",
+      "Ranking entre alunos",
+      "Suporte prioritário",
     ],
     cta: "Cadastrar academia",
     href: "/cadastro",
+    tag: null,
   },
   {
     name: "Aluno Premium", price: "R$4,90", period: "Por aluno/mês", featured: true,
     features: [
-      "Tudo do Free",
-      "Histórico ilimitado",
+      "Check-in com geolocalização",
+      "Histórico ilimitado de treinos",
       "Arte para Instagram 🎨",
       "Metas semanais personalizadas",
       "Badge Mestre do Mês 👑",
@@ -27,19 +28,21 @@ const plans = [
     ],
     cta: "Quero Premium",
     href: "/login",
+    tag: "MAIS POPULAR",
   },
   {
-    name: "Academia Premium", price: "Grátis", period: "Seus alunos pagam", featured: false,
+    name: "Professor", price: "Grátis", period: "Sempre", featured: false,
     features: [
-      "Academia 100% free",
-      "Zero investimento",
-      "Seus alunos viram atletas",
-      "Relatórios mensais",
-      "Suporte prioritário",
-      "Sem taxa de adesão",
+      "Confirmar presenças dos alunos",
+      "Gerenciar turmas e horários",
+      "Promover alunos de faixa",
+      "Acompanhar evolução da turma",
+      "Perfil de professor destacado",
+      "Sem custo — gratuito vitalício",
     ],
-    cta: "Quero para minha academia",
+    cta: "Quero ser professor",
     href: "/cadastro",
+    tag: null,
   },
 ]
 
@@ -52,10 +55,10 @@ export function Plans() {
             Planos
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            Academia grátis. Aluno paga R$4,90.
+            Academia e professor: R$0. Aluno premium: R$4,90.
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Sua academia não tira nada do bolso. Quem quiser recursos premium, paga só o valor de um café por mês.
+            Sua academia não tira nada do bolso. Professor tem acesso completo de graça. Quem quiser recursos extras paga só um café por mês.
           </p>
         </div>
 
@@ -70,9 +73,9 @@ export function Plans() {
               }`}
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              {p.featured && (
+              {p.tag && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-5 py-1.5 gradient-gold rounded-full text-[11px] font-bold text-black tracking-wider shadow-lg">
-                  MAIS POPULAR
+                  {p.tag}
                 </div>
               )}
               <div className="text-lg font-bold mb-1.5">{p.name}</div>
