@@ -117,6 +117,72 @@ async function main() {
     })
   }
 
+  // === SEGUNDA ACADEMIA ===
+  const academia2 = await prisma.academia.create({
+    data: {
+      nome: "Caveirinha Jiu-Jitsu",
+      endereco: "Av. Boa Viagem, 500",
+      cidade: "Recife",
+      estado: "PE",
+      lat: -8.126,
+      lng: -34.902,
+      raio: 200,
+      responsavel: "Felipe Costa",
+      telefone: "(81) 98888-7777",
+    },
+  })
+
+  await prisma.usuario.create({
+    data: {
+      nome: "Felipe Costa",
+      email: "felipe@email.com",
+      senha,
+      role: "dono",
+      telefone: "(81) 98888-7777",
+      faixa: "Preta",
+      grau: 4,
+      academiaId: academia2.id,
+    },
+  })
+
+  const prof2 = await prisma.usuario.create({
+    data: {
+      nome: "Marcos Paulo",
+      email: "marcos@email.com",
+      senha,
+      role: "professor",
+      telefone: "(81) 97777-6666",
+      faixa: "Roxa",
+      grau: 2,
+      academiaId: academia2.id,
+    },
+  })
+
+  const aluno2 = await prisma.usuario.create({
+    data: {
+      nome: "João Vitor",
+      email: "joao@email.com",
+      senha,
+      role: "aluno",
+      telefone: "(81) 96666-5555",
+      faixa: "Branca",
+      grau: 1,
+      dataInicio: new Date("2025-06-01"),
+      categoria: "adulto",
+      academiaId: academia2.id,
+      professorId: prof2.id,
+      plano: "premium",
+      planoInicio: new Date(),
+      planoExpiracao: new Date(Date.now() + 30 * 86400000),
+    },
+  })
+
+  for (const g of graduacoes) {
+    await prisma.graduacao.create({
+      data: { ...g, academiaId: academia2.id, categoria: "adulto" },
+    })
+  }
+
   const conquistas = [
     { nome: "Primeiro Check-in", icone: "🎯", descricao: "Primeiro treino registrado", tipo: "primeiro", condicao: 1 },
     { nome: "Dedicação", icone: "🔥", descricao: "5 dias consecutivos de treino", tipo: "streak", condicao: 5 },
@@ -130,9 +196,14 @@ async function main() {
   }
 
   console.log("✅ Seed concluído!")
-  console.log("   Dono: carlos@email.com / 123456")
-  console.log("   Professor: leandro@email.com / 123456")
-  console.log("   Aluno: rafael@email.com / 123456")
+  console.log("   Academia 1 — Gracie Barra Recife")
+  console.log("     Dono: carlos@email.com / 123456")
+  console.log("     Professor: leandro@email.com / 123456")
+  console.log("     Aluno: rafael@email.com / 123456")
+  console.log("   Academia 2 — Caveirinha Jiu-Jitsu")
+  console.log("     Dono: felipe@email.com / 123456")
+  console.log("     Professor: marcos@email.com / 123456")
+  console.log("     Aluno: joao@email.com / 123456 (Premium)")
 }
 
 main()
