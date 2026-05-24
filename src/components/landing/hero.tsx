@@ -223,22 +223,24 @@ export function Hero() {
 
         {/* Rotating phrase */}
         <motion.div
-          className="h-12 flex items-center justify-center overflow-hidden mb-10"
+          className="flex items-center justify-center overflow-hidden mb-10"
           initial={{ opacity: 0 }}
           animate={titleDone ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <AnimatePresence mode="wait">
-            <motion.p
+            <motion.div
               key={phraseIdx}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="text-[clamp(0.9rem,2vw,1.15rem)] text-[var(--white-muted)] max-w-xl mx-auto leading-relaxed font-light"
+              initial={{ opacity: 0, y: 16, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -16, scale: 0.95 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="px-5 py-3 rounded-2xl bg-[rgba(17,17,17,0.6)] border border-[var(--dark-border)] backdrop-blur-sm"
             >
-              {phrases[phraseIdx]}
-            </motion.p>
+              <p className="text-[clamp(0.9rem,2vw,1.15rem)] text-[var(--gold)] max-w-xl mx-auto leading-snug font-bold tracking-tight">
+                "{phrases[phraseIdx]}"
+              </p>
+            </motion.div>
           </AnimatePresence>
         </motion.div>
 
