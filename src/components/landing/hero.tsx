@@ -4,12 +4,14 @@ import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
 
 const phrases = [
-  "Academia e professor: R$0. Aluno premium: R$4,90. Simples.",
-  "Check-in com geolocalização. Anti-fraude. 100% digital.",
-  "Ranking, streak, conquistas e gamificação real.",
-  "Do branco ao preto. Sua evolução no tatame.",
-  "Professor autônomo? Funciona sem academia também.",
-  "Compartilhe sua evolução. Gere arte automaticamente.",
+  "O Jiu-Jitsu transforma vidas. Nós só ajudamos a medir essa transformação.",
+  "Toda faixa preta foi uma faixa branca que nunca desistiu.",
+  "Academia e professor: R$0. Aluno premium: R$4,90. Só o aluno paga para evoluir.",
+  "Cada check-in é um capítulo da sua história no tatame.",
+  "A evolução não é linear — mas no OssTrack ela é visível.",
+  "Professor autônomo? Funciona sem academia. O Jiu-Jitsu não tem fronteiras.",
+  "Ranking, streak, conquistas. O melhor de você aparece quando ninguém está olhando.",
+  "Compartilhe sua jornada. Inspire alguém a começar a dela.",
 ]
 
 const particles = [
@@ -110,7 +112,7 @@ export function Hero() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-sm text-[var(--gold)] font-medium mb-8 animate-hero-fade-up">
           <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-          Transformando academias de Jiu-Jitsu
+          O diário de bordo de quem vive o Jiu-Jitsu
         </div>
 
         {/* Title */}
@@ -160,9 +162,9 @@ export function Hero() {
 
         {/* Stats */}
         <div className="flex items-center justify-center gap-8 md:gap-14 mt-16">
-          <StatCard target={500} suffix="+" label="Academias" delay={0.8} />
-          <StatCard target={15000} suffix="+" label="Alunos Ativos" delay={0.9} />
-          <StatCard target={98} suffix="%" label="Satisfação" delay={1} />
+          <StatCard target={500} suffix="+" label="Academias que confiam" delay={0.8} />
+          <StatCard target={15000} suffix="+" label="Alunos que não faltam" delay={0.9} />
+          <StatCard target={98} suffix="%" label="Que continuam treinando" delay={1} />
         </div>
 
         {/* Bottom glow bar */}

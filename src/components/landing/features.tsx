@@ -1,33 +1,33 @@
 const features = [
   {
     icon: "📍",
-    title: "Check-in Inteligente",
-    desc: "Check-in com geolocalização. O aluno só consegue marcar presença dentro do perímetro da academia. Anti-fraude integrado.",
+    title: "Cada presença importa",
+    desc: "Check-in com geolocalização. O aluno só marca dentro do perímetro da academia. Anti-fraude integrado. Cada minuto no tatame é registrado como um passo na sua jornada.",
   },
   {
     icon: "📈",
-    title: "Evolução Visual",
-    desc: "Acompanhamento automático de graus e faixas. Barras de progresso motivacionais que mostram exatamente o quanto falta para o próximo nível.",
+    title: "Sua evolução em cada grau",
+    desc: "Acompanhamento automático de graus e faixas. Barras de progresso que mostram exatamente onde você está e o que falta para o próximo nível. Cada aula te aproxima do seu melhor.",
   },
   {
     icon: "🏆",
-    title: "Gamificação Completa",
-    desc: "Streaks, medalhas, ranking interno, Mestre do Mês e conquistas desbloqueáveis. Seus alunos vão competir para treinar mais.",
+    title: "O jogo de virar melhor",
+    desc: "Streaks, medalhas, ranking interno, Mestre do Mês e conquistas que só quem treina de verdade conquista. Seus alunos vão competir para ser a melhor versão de si mesmos.",
   },
   {
     icon: "📊",
-    title: "Relatórios Poderosos",
-    desc: "Métricas de retenção, frequência por faixa, crescimento mensal e evolução individual. Decisões baseadas em dados reais.",
+    title: "Dados que contam histórias",
+    desc: "Métricas de retenção, frequência por faixa, crescimento mensal e evolução individual. Decisões baseadas em dados reais, não em achismo.",
   },
   {
     icon: "📱",
-    title: "Compartilhamento Social",
-    desc: "Artes automáticas para Instagram. Seus alunos compartilham conquistas e promovem sua academia organicamente.",
+    title: "Sua jornada merece ser vista",
+    desc: "Artes automáticas para Instagram com suas estatísticas reais. Compartilhe sua evolução e inspire sua comunidade. O melhor marketing é a história de quem transformou a vida no tatame.",
   },
   {
     icon: "👨‍🏫",
-    title: "Gestão Completa",
-    desc: "Cada professor gerencia suas turmas e confirma presenças. Controle total para o dono com visão geral da academia.",
+    title: "OssTrack é de todos",
+    desc: "Cada professor gerencia suas turmas e confirma presenças. Dono tem visão completa. Aluno acompanha cada passo. Jiu-Jitsu é coletivo — a gestão também.",
   },
 ]
 
@@ -38,13 +38,13 @@ export function Features() {
       <div className="max-w-6xl mx-auto relative">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
-            Recursos
+            Por trás do código
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            Tudo que sua academia precisa
+            O tatame não mente. O OssTrack também não.
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Uma plataforma completa para gestão de evolução, frequência e engajamento dos seus alunos.
+            Não somos mais um sistema de academia. Somos o diário de bordo de quem vive o Jiu-Jitsu de verdade.
           </p>
         </div>
 

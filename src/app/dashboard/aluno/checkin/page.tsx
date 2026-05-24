@@ -34,14 +34,16 @@ function Confetti() {
 }
 
 const frases = [
-  "Mais um treino que ninguém tira! 💪",
-  "Toda presença conta. Continue assim! 🥋",
-  "Oss! Mais um passo na sua jornada. ⬆️",
-  "Disciplina é o que separa os grandes. 🔥",
-  "Seu future black belt agradece! ⬛",
-  "Um grau de cada vez. Você está no caminho! 🎯",
-  "O campeão existe em cada treino. 🏆",
-  "A evolução é real. Continue aparecendo! ⚡",
+  "Você apareceu hoje. E é isso que separa quem sonha de quem realiza. 🥋",
+  "Toda faixa preta foi uma faixa branca que não faltou. Continue. 🔥",
+  "Esse check-in é mais um degrau na sua jornada. A faixa preta é consequência. ⬆️",
+  "O tatame não mente. E hoje você mostrou a ele que está aqui. 💪",
+  "Um round de cada vez. Uma aula de cada vez. Uma vida de cada vez. 🎯",
+  "A evolução não é um sprint. É uma maratona de check-ins. E você acabou de completar mais um. ⚡",
+  "O campeão existe em cada treino que ninguém viu. A gente viu. 🏆",
+  "Você não precisa ser o melhor. Precisa ser melhor do que ontem. E hoje você foi. 🌟",
+  "Oss. Obrigado por confiar no processo. A faixa preta é só o começo. 🙏",
+  "Cada presença é uma vitória contra o ontem. Você está mais perto. 🔥",
 ]
 
 export default function CheckinPage() {

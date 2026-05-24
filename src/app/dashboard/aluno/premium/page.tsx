@@ -32,12 +32,12 @@ export default function PremiumPage() {
   }
 
   const features = [
-    { icon: "🎨", name: "Arte para Instagram", desc: "Gere artes incríveis para compartilhar suas conquistas" },
-    { icon: "📊", name: "Histórico Ilimitado", desc: "Acesse todo seu histórico de presenças sem restrição" },
-    { icon: "🎯", name: "Metas Semanais", desc: "Metas personalizadas de treinos por semana" },
-    { icon: "👑", name: "Badge Mestre do Mês", desc: "Apareça como Mestre do Mês no seu perfil" },
-    { icon: "🏅", name: "Onboarding Completo", desc: "7 dias de missões gamificadas" },
-    { icon: "📤", name: "Compartilhar Evolução", desc: "Compartilhe sua jornada nas redes sociais" },
+    { icon: "🎨", name: "Sua jornada em arte", desc: "Transforme suas estatísticas em artes prontas para Instagram. Sua história merece ser vista." },
+    { icon: "📊", name: "Histórico sem fim", desc: "Acesse cada aula, cada grau, cada check-in desde o primeiro dia. Sua linha do tempo no tatame." },
+    { icon: "🎯", name: "Metas que te movem", desc: "Metas semanais de treino que se adaptam a você. O único objetivo é continuar aparecendo." },
+    { icon: "👑", name: "Mestre do Mês", desc: "O título que todo mundo quer. Quem mais treinou no mês leva o badge de honra no perfil." },
+    { icon: "🏅", name: "7 dias de missões", desc: "Onboarding gamificado que transforma seus primeiros 7 dias em uma jornada de descoberta." },
+    { icon: "📤", name: "Inspire quem vem atrás", desc: "Compartilhe sua evolução nas redes sociais. Cada post seu pode ser o empurrão que alguém precisa pra começar." },
   ]
 
   return (

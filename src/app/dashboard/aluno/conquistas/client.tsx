@@ -35,7 +35,7 @@ export function AchievementsClient({ conquistas }: Props) {
             ))}
             {desbloqueadas.length === 0 && (
               <div className="col-span-4">
-                <EmptyState icon="trophy" title="Nenhuma conquista ainda" description="Continue treinando para desbloquear suas primeiras conquistas!" />
+                <EmptyState icon="trophy" title="Ainda não chegou lá" description="Cada aula, cada streak, cada check-in te aproxima de uma nova conquista. O tatame vai recompensar seu esforço." />
               </div>
             )}
           </div>

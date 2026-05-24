@@ -1,8 +1,8 @@
 const steps = [
-  { num: "1", title: "Cadastre sua Academia", desc: "Informe os dados da sua academia, defina o raio de check-in e pronto. Menos de 5 minutos." },
-  { num: "2", title: "Adicione Professores", desc: "Vinculando professores às turmas e horários. Cada um com seu painel de controle." },
-  { num: "3", title: "Alunos fazem Check-in", desc: "Com geolocalização, dentro do perímetro da academia. Anti-fraude ativo 100% do tempo." },
-  { num: "4", title: "Acompanhe a Evolução", desc: "Graus, faixas, streaks, ranking e conquistas. Tudo automático e em tempo real." },
+  { num: "1", title: "Sua academia no mapa", desc: "Cadastre sua academia, defina o perímetro e pronto. Em menos de 5 minutos seu tatame existe no mundo digital." },
+  { num: "2", title: "Seu time, suas regras", desc: "Adicione professores às turmas e horários. Cada um com seu painel. O dono enxerga tudo. O professor enxerga o que importa." },
+  { num: "3", title: "Viver o Jiu-Jitsu", desc: "Alunos fazem check-in com geolocalização. Cada presença é um degrau. Cada streak, uma prova de compromisso. Anti-fraude protege a verdade do tatame." },
+  { num: "4", title: "A história se escreve sozinha", desc: "Graus, faixas, streaks, ranking, conquistas. Tudo automático. Enquanto você ensina e treina, o OssTrack cuida do resto." },
 ]
 
 export function HowItWorks() {
@@ -11,13 +11,13 @@ export function HowItWorks() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
-            Como Funciona
+            Como funciona
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            Simples como um golpe básico
+            Menos burocracia. Mais Jiu-Jitsu.
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Em poucos passos sua academia está funcionando com o OssTrack.
+            Você se dedicou anos para construir sua academia. A gente criou o OssTrack pra você não precisar se dedicar a planilhas.
           </p>
         </div>
 

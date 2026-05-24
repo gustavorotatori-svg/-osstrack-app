@@ -10,14 +10,16 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 
 const quotes = [
-  "\"O Jiu-Jitsu é uma arte de adaptação. Não é o mais forte que sobrevive, mas o que melhor se adapta.\"",
-  "\"Faixa preta é uma faixa branca que nunca desistiu.\"",
-  "\"A disciplina é a ponte entre seus objetivos e suas conquistas.\"",
-  "\"O tapete não mente. Ele mostra quem você realmente é.\"",
+  "\"Toda faixa preta foi uma faixa branca que nunca desistiu.\"",
+  "\"O tapete não mente. Ele devolve exatamente o que você dá a ele.\"",
+  "\"A evolução não é sobre ser melhor que os outros. É sobre ser melhor que você ontem.\"",
   "\"Um round de cada vez. Uma aula de cada vez. Uma faixa de cada vez.\"",
-  "\"Oss! O respeito vem antes do kimono.\"",
-  "\"Treino duro, guerra fácil.\"",
-  "\"Não é sobre ser o melhor. É sobre ser melhor do que você foi ontem.\"",
+  "\"Disciplina é fazer o que precisa ser feito, mesmo quando ninguém está olhando.\"",
+  "\"O Jiu-Jitsu não te transforma em um lutador. Ele te transforma em quem você deveria ser.\"",
+  "\"Oss não é só uma palavra. É um compromisso de continuar.\"",
+  "\"Não é sobre quantas vezes você cai. É sobre quantas vezes você levanta e volta pro tatame.\"",
+  "\"Seu maior oponente não está do outro lado do tatame. Está na sua cabeça dizendo 'amanhã eu vou'.\"",
+  "\"A faixa preta não é um destino. É um jeito de viver.\"",
 ]
 
 type Props = {
@@ -208,7 +210,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
           <h3 className="font-bold text-sm tracking-tight mb-3.5">📋 Últimos Check-ins</h3>
           {ultimasPresencas.length === 0 ? (
-            <EmptyState icon="checkin" title="Nenhum check-in ainda" description="Seu histórico de presenças vai aparecer aqui depois do primeiro check-in." />
+            <EmptyState icon="checkin" title="Toda jornada começa com um primeiro passo" description="Faça seu primeiro check-in e comece a escrever sua história no tatame. Cada presença conta." />
           ) : (
             <div className="space-y-1">
               {ultimasPresencas.slice(0, 5).map((p) => (

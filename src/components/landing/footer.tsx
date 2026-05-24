@@ -13,8 +13,8 @@ export function Footer() {
         </div>
         <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.3)] to-transparent mb-6" />
         <div className="text-xs text-[var(--gray)] leading-relaxed">
-          <p className="font-semibold text-[var(--white-muted)] mb-1">&ldquo;Toda presença conta.&rdquo;</p>
-          <p>© 2026 OssTrack. Feito com dedicação para o Jiu-Jitsu brasileiro.</p>
+          <p className="font-semibold text-[var(--white-muted)] mb-1">&ldquo;Toda faixa preta foi uma faixa branca que nunca desistiu.&rdquo;</p>
+          <p>© 2026 OssTrack. Feito no tatame, para o tatame.</p>
         </div>
       </div>
     </footer>

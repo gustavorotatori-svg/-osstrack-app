@@ -48,7 +48,7 @@ export default function NotificacoesPage() {
 
         {notificacoes.length === 0 ? (
           <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl">
-            <EmptyState icon="checkin" title="Nenhuma notificação" description="Você será notificado sobre conquistas, promoções e confirmações de presença." />
+            <EmptyState icon="checkin" title="Silêncio por enquanto" description="Toda conquista, promoção e novidade aparece aqui. Continue treinando que as notificações vão chegar." />
           </div>
         ) : (
           <div className="space-y-2">
