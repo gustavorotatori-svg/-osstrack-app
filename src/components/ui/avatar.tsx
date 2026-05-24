@@ -1,17 +1,21 @@
-export function Avatar({ name, faixa, size = 40 }: { name: string; faixa: string; size?: number }) {
+export function Avatar({ name, faixa, size = 40, mood = "normal" }: { name: string; faixa: string; size?: number; mood?: "normal" | "fire" | "party" }) {
   const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
 
   const beltColors: Record<string, string> = {
-    Branca: "#e5e5e5",
-    Azul: "#1a3a8a",
-    Roxa: "#5a1a8a",
-    Marrom: "#5c3a1a",
-    Preta: "#1a1a1a",
+    Branca: "#e5e5e5", Azul: "#1a3a8a", Roxa: "#5a1a8a", Marrom: "#5c3a1a", Preta: "#1a1a1a",
   }
 
   const bg = beltColors[faixa] || "#c9a84c"
   const textColor = faixa === "Branca" ? "#333" : faixa === "Preta" ? "#c9a84c" : "#fff"
   const half = size / 2
+
+  const moodDecorations: Record<string, { extra: string }> = {
+    normal: { extra: "" },
+    fire: { extra: "🔥" },
+    party: { extra: "🎉" },
+  }
+
+  const deco = mood === "party" ? "🎉" : mood === "fire" ? "🔥" : ""
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0">
@@ -29,10 +33,19 @@ export function Avatar({ name, faixa, size = 40 }: { name: string; faixa: string
           </linearGradient>
         )}
       </defs>
-      <rect width={size} height={size} rx={size * 0.25} fill={faixa === "Preta" || faixa === "Branca" ? `url(#belt-${name})` : bg} />
+      <rect
+        width={size} height={size}
+        rx={mood === "party" ? size * 0.35 : size * 0.25}
+        fill={faixa === "Preta" || faixa === "Branca" ? `url(#belt-${name})` : bg}
+      />
+      {deco && (
+        <text x={half} y={size * 0.2} textAnchor="middle" fontSize={size * 0.22} fill="currentColor">
+          {deco}
+        </text>
+      )}
       <text
         x={half}
-        y={half}
+        y={deco ? half + size * 0.04 : half}
         textAnchor="middle"
         dominantBaseline="central"
         fill={textColor}

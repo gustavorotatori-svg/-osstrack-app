@@ -6,6 +6,7 @@ import { Testimonials } from "@/components/landing/testimonials"
 import { Plans } from "@/components/landing/plans"
 import { Footer } from "@/components/landing/footer"
 import { Navbar } from "@/components/layout/navbar"
+import { AmbientSoundToggle } from "@/components/landing/ambient-sound"
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <Testimonials />
       <Plans />
       <Footer />
+      <AmbientSoundToggle />
     </main>
   )
 }

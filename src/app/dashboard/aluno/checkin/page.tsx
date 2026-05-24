@@ -3,7 +3,9 @@
 import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { DailyMissions } from "@/components/gamification/daily-missions"
+import { CelebrationOverlay } from "@/components/ui/celebration"
 import { useSession } from "next-auth/react"
+import { playCheckinSound, playStreakSound, playCelebrationSound } from "@/lib/sound"
 
 function Confetti() {
   return (
@@ -36,7 +38,7 @@ const frases = [
   "Toda presença conta. Continue assim! 🥋",
   "Oss! Mais um passo na sua jornada. ⬆️",
   "Disciplina é o que separa os grandes. 🔥",
-  "Seu futuro black belt agradece! ⬛",
+  "Seu future black belt agradece! ⬛",
   "Um grau de cada vez. Você está no caminho! 🎯",
   "O campeão existe em cada treino. 🏆",
   "A evolução é real. Continue aparecendo! ⚡",
@@ -48,50 +50,30 @@ export default function CheckinPage() {
   const [locationStatus, setLocationStatus] = useState("")
   const [showConfetti, setShowConfetti] = useState(false)
   const [streak, setStreak] = useState(0)
+  const [prevStreak, setPrevStreak] = useState(0)
   const [motivational, setMotivational] = useState("")
   const [metaSemanal, setMetaSemanal] = useState({ aulasFeitas: 0, aulasAlvo: 5, concluida: false })
-  const [ultimosCheckins, setUltimosCheckins] = useState<{ id: string; data: string; horario: string; status: string; turma: string }[]>([])
+  const [showCelebration, setShowCelebration] = useState(false)
+  const [celebrationMsg, setCelebrationMsg] = useState("")
+  const [showMetaCelebration, setShowMetaCelebration] = useState(false)
+  const [novasConquistas, setNovasConquistas] = useState<string[]>([])
 
   const fetchMeta = useCallback(async () => {
-    try {
-      const res = await fetch("/api/metasemanal")
-      if (res.ok) setMetaSemanal(await res.json())
-    } catch {}
+    try { const res = await fetch("/api/metasemanal"); if (res.ok) setMetaSemanal(await res.json()) } catch {}
   }, [])
 
   const fetchStreak = useCallback(async () => {
-    try {
-      const res = await fetch("/api/streak")
-      if (res.ok) {
-        const data = await res.json()
-        setStreak(data.currentStreak)
-      }
-    } catch {}
-  }, [])
-
-  const fetchUltimosCheckins = useCallback(async () => {
-    try {
-      const res = await fetch("/api/perfil")
-      if (res.ok) {
-        const data = await res.json()
-      }
-    } catch {}
+    try { const res = await fetch("/api/streak"); if (res.ok) { const d = await res.json(); setPrevStreak(d.currentStreak); setStreak(d.currentStreak) } } catch {}
   }, [])
 
   useEffect(() => { fetchMeta(); fetchStreak() }, [fetchMeta, fetchStreak])
 
   useEffect(() => {
-    if (showConfetti) {
-      const timer = setTimeout(() => setShowConfetti(false), 4000)
-      return () => clearTimeout(timer)
-    }
+    if (showConfetti) { const t = setTimeout(() => setShowConfetti(false), 4000); return () => clearTimeout(t) }
   }, [showConfetti])
 
   async function handleCheckin() {
-    if (!navigator.geolocation) {
-      setLocationStatus("Geolocalização não disponível")
-      return
-    }
+    if (!navigator.geolocation) { setLocationStatus("Geolocalização não disponível"); return }
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
@@ -99,40 +81,70 @@ export default function CheckinPage() {
         setStatus("pending")
         setShowConfetti(true)
         setMotivational(frases[Math.floor(Math.random() * frases.length)])
+        playCheckinSound()
 
         try {
           await fetch("/api/presenca", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-            }),
+            body: JSON.stringify({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
           })
         } catch {}
 
         try {
           const res = await fetch("/api/metasemanal", { method: "POST" })
-          if (res.ok) setMetaSemanal(await res.json())
+          if (res.ok) {
+            const data = await res.json()
+            if (data.concluida && !metaSemanal.concluida) {
+              setShowMetaCelebration(true)
+              setCelebrationMsg("Meta Semanal Concluída! 🎯")
+              setTimeout(() => setShowMetaCelebration(false), 5000)
+            }
+            setMetaSemanal(data)
+          }
         } catch {}
 
         try {
           const res = await fetch("/api/streak", { method: "POST" })
           if (res.ok) {
             const data = await res.json()
-            setStreak(data.currentStreak)
+            const newStreak = data.currentStreak
+            setPrevStreak(streak)
+            setStreak(newStreak)
+            playStreakSound(newStreak)
+            if (newStreak >= 10 && newStreak > prevStreak && (newStreak % 5 === 0 || newStreak % 10 === 0 || newStreak >= 30)) {
+              setCelebrationMsg(newStreak >= 30 ? `🔥 ${newStreak} dias de streak! Lenda!` : `🔥 ${newStreak} dias de streak!`)
+              setShowCelebration(true)
+              setTimeout(() => setShowCelebration(false), 5000)
+            }
           }
         } catch {}
 
         try {
-          await fetch("/api/conquistas", { method: "POST" })
+          const res = await fetch("/api/conquistas", { method: "POST" })
+          if (res.ok) {
+            const data = await res.json()
+            if (data?.novas?.length) {
+              setNovasConquistas(data.novas)
+              setCelebrationMsg(`🏆 Nova Conquista! ${data.novas[0]}`)
+              setShowCelebration(true)
+              setTimeout(() => setShowCelebration(false), 5000)
+              playCelebrationSound()
+            }
+          }
+        } catch {}
+
+        try {
+          await fetch("/api/mural", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tipo: "checkin", conteudo: "Feito check-in no treino de hoje! 🥋" }),
+          })
         } catch {}
 
         setTimeout(() => setStatus("done"), 2000)
       },
-      () => {
-        setLocationStatus("❌ Não foi possível obter localização. Verifique as permissões.")
-      },
+      () => { setLocationStatus("❌ Não foi possível obter localização. Verifique as permissões.") },
       { enableHighAccuracy: true, timeout: 10000 }
     )
   }
@@ -147,6 +159,8 @@ export default function CheckinPage() {
   return (
     <DashboardShell role="aluno">
       {showConfetti && <Confetti />}
+      <CelebrationOverlay show={showCelebration} message={celebrationMsg} submessage="Continue assim! Oss 🥋" />
+      <CelebrationOverlay show={showMetaCelebration} message="Meta Semanal Concluída! 🎯" submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
           {showConfetti && (
@@ -162,8 +176,11 @@ export default function CheckinPage() {
           </div>
 
           <div className="mt-4 mb-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(201,168,76,0.1)] border border-[rgba(201,168,76,0.15)]">
-              <span className="text-sm">🔥</span>
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${
+              streak >= 10 ? "bg-[rgba(255,140,0,0.12)] border-[rgba(255,140,0,0.3)] animate-fire-glow"
+              : "bg-[rgba(201,168,76,0.1)] border-[rgba(201,168,76,0.15)]"
+            }`}>
+              <span className={`text-sm ${streak >= 10 ? "animate-fire" : ""}`}>🔥</span>
               <span className="text-xs font-semibold text-[var(--gold)]">Streak: {streak} dias</span>
             </div>
           </div>
@@ -199,14 +216,10 @@ export default function CheckinPage() {
                 {status === "pending" && (
                   <>
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
-                      <line x1="12" y1="2" x2="12" y2="6" />
-                      <line x1="12" y1="18" x2="12" y2="22" />
-                      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" />
-                      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
-                      <line x1="2" y1="12" x2="6" y2="12" />
-                      <line x1="18" y1="12" x2="22" y2="12" />
-                      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" />
-                      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
+                      <line x1="12" y1="2" x2="12" y2="6" /><line x1="12" y1="18" x2="12" y2="22" />
+                      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76" /><line x1="16.24" y1="16.24" x2="19.07" y2="19.07" />
+                      <line x1="2" y1="12" x2="6" y2="12" /><line x1="18" y1="12" x2="22" y2="12" />
+                      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24" /><line x1="16.24" y1="7.76" x2="19.07" y2="4.93" />
                     </svg>
                     <span className="text-xs">Verificando...</span>
                   </>
@@ -232,8 +245,7 @@ export default function CheckinPage() {
           <div className="mt-4 px-4 py-2.5 bg-emerald-500/8 border border-emerald-500/15 rounded-xl">
             <div className="flex items-center justify-center gap-2 text-xs text-emerald-500">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
               Anti-fraude ativo · Localização segura
             </div>
@@ -252,12 +264,12 @@ export default function CheckinPage() {
               {metaSemanal.concluida ? "✅ Meta concluída!" : `Faltam ${restamMeta} treinos`}
             </div>
           </div>
-          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card">
-            <div className="text-xl mb-2">🔥</div>
+          <div className={`bg-gradient-to-br from-[var(--dark-card)] to-black/40 border rounded-2xl p-4 text-center hover-card ${streak >= 10 ? "animate-fire-glow border-[rgba(255,140,0,0.2)]" : "border-[var(--dark-border)]"}`}>
+            <div className={`text-xl mb-2 ${streak >= 10 ? "animate-fire" : ""}`}>🔥</div>
             <div className="text-xs font-bold uppercase tracking-wide">Sequência</div>
             <div className="text-2xl font-extrabold text-[var(--gold)] mt-1.5">{streak} dias</div>
             <div className="text-[10px] text-[var(--white-muted)] mt-1.5">
-              {streak >= 10 ? "🥇 Medalha de Ouro!" : streak >= 7 ? "🥈 Medalha de Prata!" : streak >= 5 ? "🥉 Medalha de Bronze!" : "Continue treinando!"}
+              {streak >= 30 ? "👑 Lenda!" : streak >= 10 ? "🥇 Medalha de Ouro!" : streak >= 7 ? "🥈 Medalha de Prata!" : streak >= 5 ? "🥉 Medalha de Bronze!" : "Continue treinando!"}
             </div>
           </div>
         </div>

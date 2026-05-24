@@ -22,3 +22,27 @@ export async function GET() {
 
   return NextResponse.json(postagens)
 }
+
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions)
+  if (!session || !["aluno", "professor"].includes(session.user.role)) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
+
+  const { tipo, conteudo } = await req.json()
+
+  if (!tipo || !conteudo) {
+    return NextResponse.json({ error: "tipo e conteudo são obrigatórios" }, { status: 400 })
+  }
+
+  const postagem = await prisma.postagemMural.create({
+    data: {
+      academiaId: session.user.academiaId,
+      alunoId: session.user.id,
+      tipo,
+      conteudo,
+    },
+  })
+
+  return NextResponse.json(postagem, { status: 201 })
+}

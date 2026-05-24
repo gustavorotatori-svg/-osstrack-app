@@ -48,6 +48,7 @@ model Usuario {
   planoInicio DateTime?
   planoExpiracao DateTime?
   stripeCustomerId String?
+  pushSubscription String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
