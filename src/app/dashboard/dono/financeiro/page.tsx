@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { WhatsAppButton } from "@/components/ui/whatsapp-button"
 import Link from "next/link"
 
 export default function DonoFinanceiroPage() {
@@ -75,13 +76,16 @@ export default function DonoFinanceiroPage() {
             <div className="space-y-2">
               {atrasados.slice(0, 5).map((c: any) => (
                 <div key={c.id} className="flex items-center justify-between bg-black/30 rounded-xl px-3 py-2">
-                  <div>
-                    <span className="text-xs font-semibold">{c.aluno?.nome}</span>
-                    <span className="text-[10px] text-[var(--white-muted)] ml-2">{c.contrato?.plano?.nome}</span>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-xs font-semibold truncate block">{c.aluno?.nome}</span>
+                    <span className="text-[10px] text-[var(--white-muted)]">{c.contrato?.plano?.nome}</span>
                   </div>
-                  <div className="text-right">
-                    <div className="text-xs font-bold text-red-500">R$ {c.valor.toFixed(2)}</div>
-                    <div className="text-[9px] text-[var(--white-muted)]">Venceu {new Date(c.dataVencimento).toLocaleDateString("pt-BR")}</div>
+                  <div className="text-right flex items-center gap-2 shrink-0">
+                    <div>
+                      <div className="text-xs font-bold text-red-500">R$ {c.valor.toFixed(2)}</div>
+                      <div className="text-[9px] text-[var(--white-muted)]">Venceu {new Date(c.dataVencimento).toLocaleDateString("pt-BR")}</div>
+                    </div>
+                    <WhatsAppButton acao="cobranca" alunoId={c.alunoId} alunoNome={c.aluno?.nome} valor={c.valor} dataVencimento={c.dataVencimento} size="sm" variant="ghost" label="" />
                   </div>
                 </div>
               ))}

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
+import { WhatsAppButton } from "@/components/ui/whatsapp-button"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
@@ -132,12 +133,15 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
                   <button onClick={() => setShowPromote(null)} className="w-8 h-8 rounded-xl bg-[var(--dark-border)] text-[var(--white-muted)] flex items-center justify-center text-xs">✗</button>
                 </div>
               ) : (
-                <button
-                  onClick={() => setShowPromote(a.id)}
-                  className="btn-gold px-3 py-1.5 text-[10px] shrink-0"
-                >
-                  Promover
-                </button>
+                <div className="flex gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setShowPromote(a.id)}
+                    className="btn-gold px-3 py-1.5 text-[10px]"
+                  >
+                    Promover
+                  </button>
+                  <WhatsAppButton acao="promocao" alunoId={a.id} alunoNome={a.nome} size="sm" variant="emerald" />
+                </div>
               )}
             </div>
           ))}
