@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
 
 export async function GET() {
-  return NextResponse.json({
-    env: {
-      DATABASE_URL: process.env.DATABASE_URL ? "set" : "not set",
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ? "set" : "not set",
-      NEXTAUTH_URL: process.env.NEXTAUTH_URL || "not set",
-      VERCEL_URL: process.env.VERCEL_URL || "not set",
-      NODE_ENV: process.env.NODE_ENV || "not set",
-      VERCEL: process.env.VERCEL || "not set",
-      all: Object.keys(process.env).filter((k) => k.includes("URL") || k.includes("SECRET") || k.includes("VERCEL") || k.includes("NODE") || k.includes("DATABASE")),
-    },
-  })
+  try {
+    await prisma.$connect()
+    const userCount = await prisma.usuario.count()
+    return NextResponse.json({ db: "ok", users: userCount })
+  } catch (e: any) {
+    return NextResponse.json({ db: "error", message: e.message, stack: e.stack?.split("\n").slice(0, 5) }, { status: 500 })
+  }
 }
