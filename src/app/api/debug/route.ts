@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
+import { PrismaClient } from "@prisma/client"
 
 export async function GET() {
   const dbUrl = process.env.DATABASE_URL || ""
   const masked = dbUrl.includes("@") ? "***@" + dbUrl.split("@")[1] : "not set"
-  try {
-    await prisma.$connect()
-    const userCount = await prisma.usuario.count()
-    return NextResponse.json({ db: "ok", users: userCount, host: masked })
-  } catch (e: any) {
-    return NextResponse.json({ db: "error", message: e.message, host: masked }, { status: 500 })
-  }
+  const hostMatch = dbUrl.match(/@([^:]+)/)
+  const host = hostMatch ? hostMatch[1] : "unknown"
+
+  // Just check if DATABASE_URL env is correctly set with our value
+  return NextResponse.json({
+    host,
+    startsWithPooler: dbUrl.includes("-pooler"),
+    startsWithDirect: dbUrl.includes("npg_WRC4"),
+    length: dbUrl.length,
+    hasChannelBinding: dbUrl.includes("channel_binding"),
+    nodeEnv: process.env.NODE_ENV,
+    vercelUrl: process.env.VERCEL_URL,
+  })
 }
