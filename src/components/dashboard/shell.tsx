@@ -216,7 +216,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           scrolled ? "glass-strong" : "bg-transparent"
         }`}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 md:hidden">
           <div className="w-8 h-8 gradient-gold rounded-lg flex items-center justify-center text-xs text-black font-bold shrink-0">
             🥋
           </div>
