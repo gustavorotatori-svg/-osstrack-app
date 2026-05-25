@@ -1,9 +1,17 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
+import crypto from "crypto"
 import prisma from "./prisma"
 
+function getSecret(): string {
+  if (process.env.NEXTAUTH_SECRET) return process.env.NEXTAUTH_SECRET
+  const stable = "osstrack-" + process.env.VERCEL_URL + "-production-secret"
+  return crypto.createHash("sha256").update(stable).digest("hex")
+}
+
 export const authOptions: NextAuthOptions = {
+  secret: getSecret(),
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -63,5 +71,4 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
 }
