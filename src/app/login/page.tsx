@@ -46,7 +46,7 @@ export default function Login() {
           <p className="text-sm text-[var(--white-muted)] mt-1.5">Faça login para continuar</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4.5">
+        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4">
           <div>
             <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">E-mail</label>
             <input

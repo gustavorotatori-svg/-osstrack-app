@@ -5,11 +5,45 @@ import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "professor") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || !["dono", "professor"].includes(session.user.role)) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
 
-  const { presencaId, status } = await request.json()
+  const { presencaId, userId, alunoId } = await request.json()
 
-  if (!presencaId || !["confirmed", "rejected"].includes(status)) {
+  // busca por userId (do QR code) — acha presença pendente mais recente
+  const targetId = userId || alunoId
+  if (targetId) {
+    const presenca = await prisma.presenca.findFirst({
+      where: { alunoId: targetId, status: "pendente" },
+      orderBy: { createdAt: "desc" },
+      include: { aluno: true },
+    })
+
+    if (!presenca) {
+      return NextResponse.json({ error: "Nenhuma presença pendente encontrada para este aluno" }, { status: 404 })
+    }
+
+    await prisma.presenca.update({
+      where: { id: presenca.id },
+      data: { status: "confirmed", confirmadoPor: session.user.id },
+    })
+
+    await prisma.notificacao.create({
+      data: {
+        usuarioId: presenca.alunoId,
+        tipo: "presenca",
+        titulo: "Presença confirmada!",
+        descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
+        link: "/dashboard/aluno",
+      },
+    })
+
+    return NextResponse.json({ success: true, alunoNome: presenca.aluno.nome, horario: presenca.horario })
+  }
+
+  // busca por presencaId direta
+  if (!presencaId) {
     return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
   }
 
@@ -22,20 +56,18 @@ export async function POST(request: Request) {
 
   await prisma.presenca.update({
     where: { id: presencaId },
-    data: { status, confirmadoPor: session.user.id },
+    data: { status: "confirmed", confirmadoPor: session.user.id },
   })
 
-  if (status === "confirmed") {
-    await prisma.notificacao.create({
-      data: {
-        usuarioId: presenca.alunoId,
-        tipo: "presenca",
-        titulo: "Presença confirmada!",
-        descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
-        link: "/dashboard/aluno",
-      },
-    })
-  }
+  await prisma.notificacao.create({
+    data: {
+      usuarioId: presenca.alunoId,
+      tipo: "presenca",
+      titulo: "Presença confirmada!",
+      descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
+      link: "/dashboard/aluno",
+    },
+  })
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true, alunoNome: presenca.aluno.nome, horario: presenca.horario })
 }

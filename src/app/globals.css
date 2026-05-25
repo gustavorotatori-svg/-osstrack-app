@@ -224,10 +224,18 @@ body.light {
 }
 
 @keyframes fireFlicker {
-  0%, 100% { transform: scale(1) rotate(-2deg); filter: brightness(1); }
-  25% { transform: scale(1.08) rotate(1deg); filter: brightness(1.2); }
-  50% { transform: scale(0.95) rotate(-1deg); filter: brightness(0.9); }
-  75% { transform: scale(1.05) rotate(2deg); filter: brightness(1.15); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes scanLine {
+  0% { top: 30%; }
+  50% { top: 70%; }
+  100% { top: 30%; }
+}
+
+.animate-scan-line {
+  animation: scanLine 2.5s ease-in-out infinite;
 }
 
 @keyframes fireGlow {
