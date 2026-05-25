@@ -17,7 +17,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono") {
+  if (!session || !["dono", "professor"].includes(session.user.role)) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono") {
+  if (!session || !["dono", "professor"].includes(session.user.role)) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 

@@ -143,7 +143,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                         <span className="text-lg">{beltIcons[g.faixa] || "🥋"}</span>
                         <h4 className="font-bold text-sm">{g.faixa}</h4>
                       </div>
-                      {role === "dono" && (
+                      {(role === "dono" || role === "professor") && (
                         <button onClick={() => startEdit(g)}
                           className="text-[10px] text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors font-semibold">✏️ Editar</button>
                       )}
