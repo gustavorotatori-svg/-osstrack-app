@@ -62,7 +62,7 @@ export function Hero() {
   const subtitleLine = "começa aqui."
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-5 pt-36 pb-20 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center px-5 pt-24 md:pt-36 pb-20 overflow-hidden">
       {/* Deep background */}
       <div className="absolute inset-0 z-0 bg-[#0a0a0a]" />
       <div className="absolute inset-0 z-[1] opacity-[0.02]" style={{
@@ -113,8 +113,8 @@ export function Hero() {
               position: "absolute",
               top: `${38 + i * 6}%`,
               height: 5 + i * 1.5,
-              width: `${55 - i * 5}vw`,
-              maxWidth: 600,
+              width: `${65 - i * 5}vw`,
+              maxWidth: 500,
               borderRadius: 4,
               background: belt.color,
               boxShadow: `0 0 20px ${belt.shadow}, 0 4px 15px rgba(0,0,0,0.3)`,
