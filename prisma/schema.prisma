@@ -131,14 +131,19 @@ model Presenca {
 }
 
 model Graduacao {
-  id              String @id @default(cuid())
+  id              String   @id @default(cuid())
   academiaId      String
   academia        Academia @relation(fields: [academiaId], references: [id])
-  categoria       String @default("adulto")
+  categoria       String   @default("adulto")
   faixa           String
   graus           Int
   aulasPorGrau    Int
   aulasProxFx     Int?
+  aulasMinimasAno Int?
+  dataProva       DateTime?
+  regraTroca      String   @default("graus")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Conquista {

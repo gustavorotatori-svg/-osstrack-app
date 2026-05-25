@@ -151,6 +151,7 @@ const navItems: Record<string, { href: string; label: string; icon: (p: IconProp
     { href: "/dashboard/professor/alunos", label: "Alunos", icon: UsersIcon },
     { href: "/dashboard/professor/turmas", label: "Turmas", icon: CalendarIcon },
     { href: "/dashboard/professor/agenda", label: "Agenda", icon: CalendarIcon },
+    { href: "/dashboard/professor/graduacoes", label: "Graduações", icon: AwardIcon },
   ],
   dono: [
     { href: "/dashboard/dono", label: "Dashboard", icon: HomeIcon },
