@@ -30,7 +30,6 @@ export default function Login() {
     }
 
     router.push("/dashboard")
-    router.refresh()
   }
 
   return (
