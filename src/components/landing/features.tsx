@@ -1,9 +1,9 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 export function Features() {
-  const t = useTranslations("features")
+  const t = useT("features")
 
   const features = [
     { icon: "📍", titleKey: "checkin", descKey: "checkinDesc" },

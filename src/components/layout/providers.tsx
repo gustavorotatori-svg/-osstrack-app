@@ -1,17 +1,10 @@
 "use client"
 
 import { SessionProvider } from "next-auth/react"
-import { NextIntlClientProvider } from "next-intl"
 import { ReactNode, createContext, useContext, useState, useEffect } from "react"
-import pt from "../../../messages/pt.json"
-import en from "../../../messages/en.json"
-import es from "../../../messages/es.json"
-
-const messages: Record<string, any> = { pt, en, es }
+import type { Locale } from "@/lib/i18n"
 
 type Theme = "dark" | "light"
-
-type Locale = "pt" | "en" | "es"
 
 const LocaleContext = createContext<{
   locale: Locale
@@ -44,7 +37,6 @@ export function Providers({ children }: { children: ReactNode }) {
     const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
     if (storedLocale && ["pt", "en", "es"].includes(storedLocale)) {
       setLocaleState(storedLocale)
-      document.cookie = `NEXT_LOCALE=${storedLocale};path=/;max-age=31536000`
     }
   }, [])
 
@@ -54,22 +46,21 @@ export function Providers({ children }: { children: ReactNode }) {
     localStorage.setItem("osstrack_theme", theme)
   }, [theme])
 
+  useEffect(() => {
+    localStorage.setItem("osstrack_locale", locale)
+  }, [locale])
+
   function setLocale(l: Locale) {
     setLocaleState(l)
-    localStorage.setItem("osstrack_locale", l)
-    document.cookie = `NEXT_LOCALE=${l};path=/;max-age=31536000`
-    window.location.reload()
   }
 
   return (
     <SessionProvider>
-      <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="America/Sao_Paulo">
-        <LocaleContext.Provider value={{ locale, setLocale }}>
-          <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
-            {mounted ? children : <div className="min-h-screen bg-[#0a0a0a]" />}
-          </ThemeContext.Provider>
-        </LocaleContext.Provider>
-      </NextIntlClientProvider>
+      <LocaleContext.Provider value={{ locale, setLocale }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
+          {mounted ? children : <div className="min-h-screen bg-[#0a0a0a]" />}
+        </ThemeContext.Provider>
+      </LocaleContext.Provider>
     </SessionProvider>
   )
 }

@@ -2,20 +2,19 @@
 
 import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 export function Hero() {
   const [phraseIdx, setPhraseIdx] = useState(0)
   const [loaded, setLoaded] = useState(false)
-  const t = useTranslations("hero")
-  const frases = useTranslations("frases")
+  const t = useT("hero")
 
   const phrases = [
-    frases("0"),
-    frases("1"),
-    frases("2"),
-    frases("3"),
-    frases("4"),
+    "Toda faixa preta foi uma faixa branca que nunca desistiu.",
+    "Academia e professor: R$0. Aluno premium: R$4,90.",
+    "Cada check-in é um capítulo da sua história no tatame.",
+    "A evolução não é linear — no OssTrack ela é visível.",
+    "O melhor de você aparece quando ninguém está olhando.",
   ]
 
   useEffect(() => {

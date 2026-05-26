@@ -3,13 +3,13 @@
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
 
 export function Navbar() {
   const { data: session } = useSession()
   const [scrolled, setScrolled] = useState(false)
-  const t = useTranslations("nav")
+  const t = useT("nav")
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
