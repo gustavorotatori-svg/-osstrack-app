@@ -1,6 +1,6 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 const testimonials = [
   {
@@ -18,7 +18,7 @@ const testimonials = [
 ]
 
 export function Testimonials() {
-  const t = useTranslations("testimonials")
+  const t = useT("testimonials")
 
   return (
     <section id="depoimentos" className="py-24 px-5 relative">

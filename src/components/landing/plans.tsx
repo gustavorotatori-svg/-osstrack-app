@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 export function Plans() {
-  const t = useTranslations("planos")
+  const t = useT("planos")
 
   const plans = [
     {

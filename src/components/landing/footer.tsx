@@ -1,11 +1,13 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 export function Footer() {
-  const t = useTranslations("footer")
-  const tNav = useTranslations("nav")
-  const tFrases = useTranslations("frases")
+  const t = useT("footer")
+
+  const tNav = useT("nav")
+
+  const tFrases = useT("frases")
 
   return (
     <footer className="py-16 px-5 border-t border-[var(--dark-border)] text-center relative">

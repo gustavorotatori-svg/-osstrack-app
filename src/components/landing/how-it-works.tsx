@@ -1,9 +1,9 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 
 export function HowItWorks() {
-  const t = useTranslations("comoFunciona")
+  const t = useT("comoFunciona")
 
   const steps = [
     { num: "1", titleKey: "passo1", descKey: "passo1Desc" },

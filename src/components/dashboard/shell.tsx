@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
-import { useTranslations } from "next-intl"
+import { useT } from "@/lib/use-t"
 import { OnboardingTour } from "@/components/onboarding/tour"
 import { useTheme } from "@/components/layout/providers"
 
@@ -179,7 +179,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
   const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
   const router = useRouter()
-  const t = useTranslations("dashboard")
+  const t = useT("dashboard")
   const items = navItems[role as keyof typeof navItems] || []
   const topItems = topNavItems[role as keyof typeof topNavItems] || []
   const [showTour, setShowTour] = useState(false)
