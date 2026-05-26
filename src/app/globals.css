@@ -198,10 +198,20 @@ body.light {
 
 /* ===== CARDS ===== */
 .hover-card {
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
 }
 .hover-card:hover {
-  border-color: rgba(201, 168, 76, 0.15);
+  transform: translateY(-2px);
+  border-color: rgba(201, 168, 76, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== TATAME BG (subtle) ===== */
+.tatame-bg {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(139, 26, 26, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+    var(--black-soft);
 }
 
 /* ===== BELTS ===== */
