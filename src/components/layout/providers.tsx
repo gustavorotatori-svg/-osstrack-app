@@ -1,9 +1,22 @@
 "use client"
 
 import { SessionProvider } from "next-auth/react"
+import { NextIntlClientProvider } from "next-intl"
 import { ReactNode, createContext, useContext, useState, useEffect } from "react"
+import pt from "../../../messages/pt.json"
+import en from "../../../messages/en.json"
+import es from "../../../messages/es.json"
+
+const messages: Record<string, any> = { pt, en, es }
 
 type Theme = "dark" | "light"
+
+type Locale = "pt" | "en" | "es"
+
+const LocaleContext = createContext<{
+  locale: Locale
+  setLocale: (l: Locale) => void
+}>({ locale: "pt", setLocale: () => {} })
 
 const ThemeContext = createContext<{
   theme: Theme
@@ -14,12 +27,25 @@ export function useTheme() {
   return useContext(ThemeContext)
 }
 
+export function useLocale() {
+  return useContext(LocaleContext)
+}
+
 export function Providers({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark")
+  const [locale, setLocaleState] = useState<Locale>("pt")
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem("osstrack_theme") as Theme | null
-    if (stored) setTheme(stored)
+    setMounted(true)
+    const storedTheme = localStorage.getItem("osstrack_theme") as Theme | null
+    if (storedTheme) setTheme(storedTheme)
+
+    const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
+    if (storedLocale && ["pt", "en", "es"].includes(storedLocale)) {
+      setLocaleState(storedLocale)
+      document.cookie = `NEXT_LOCALE=${storedLocale};path=/;max-age=31536000`
+    }
   }, [])
 
   useEffect(() => {
@@ -28,45 +54,22 @@ export function Providers({ children }: { children: ReactNode }) {
     localStorage.setItem("osstrack_theme", theme)
   }, [theme])
 
-  useEffect(() => {
-    if ("serviceWorker" in navigator && "PushManager" in window) {
-      navigator.serviceWorker.register("/sw.js").then((reg) => {
-        if (Notification.permission === "granted") {
-          reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(
-              "BEl62iUYgU8iF_c3sLp1ZnB3Kq4Z7KQwWZ1n0Zq8Z7KQwWZ1n0Zq8Z7KQwWZ1n0Zq8Z7KQwWZ1n0Zq8"
-            ),
-          }).then((sub) => {
-            fetch("/api/notificar", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ subscription: sub.toJSON() }),
-            }).catch(() => {})
-          }).catch(() => {})
-        }
-      }).catch(() => {})
-    }
-  }, [])
-
-  function toggleTheme() {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+  function setLocale(l: Locale) {
+    setLocaleState(l)
+    localStorage.setItem("osstrack_locale", l)
+    document.cookie = `NEXT_LOCALE=${l};path=/;max-age=31536000`
+    window.location.reload()
   }
 
   return (
     <SessionProvider>
-      <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        {children}
-      </ThemeContext.Provider>
+      <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="America/Sao_Paulo">
+        <LocaleContext.Provider value={{ locale, setLocale }}>
+          <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
+            {mounted ? children : <div className="min-h-screen bg-[#0a0a0a]" />}
+          </ThemeContext.Provider>
+        </LocaleContext.Provider>
+      </NextIntlClientProvider>
     </SessionProvider>
   )
-}
-
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
-  const rawData = atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i)
-  return outputArray
 }

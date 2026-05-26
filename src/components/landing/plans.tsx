@@ -1,52 +1,47 @@
-import Link from "next/link"
+"use client"
 
-const plans = [
-  {
-    name: "Academia", price: "R$0", period: "Pra sempre", featured: false,
-    features: [
-      "Cadastrar vários professores (vários horários)",
-      "Cadastrar ou aceitar alunos",
-      "Gerenciar graduações (faixas)",
-      "Relatórios de frequência",
-      "Mural social da academia",
-      "Dashboard completo do dono",
-    ],
-    cta: "Sou dono de academia",
-    href: "/cadastro",
-    tag: null,
-  },
-  {
-    name: "Aluno Premium", price: "R$4,90", period: "Por aluno/mês", featured: true,
-    features: [
-      "Se cadastrar e escolher professor ou academia",
-      "Pode treinar em mais de uma academia",
-      "Check-in com geolocalização",
-      "Histórico ilimitado de treinos",
-      "Arte para Instagram 🎨",
-      "Metas e streak personalizados",
-      "Badge Mestre do Mês e conquistas",
-    ],
-    cta: "Sou aluno",
-    href: "/login",
-    tag: "MAIS POPULAR",
-  },
-  {
-    name: "Professor", price: "Grátis", period: "Pra sempre", featured: false,
-    features: [
-      "Funciona com ou sem academia",
-      "Dar aulas em condomínios, parques, etc",
-      "Cadastrar e aceitar alunos próprios",
-      "Receber convite por email de academia",
-      "Confirmar presenças e promover faixas",
-      "Grátis vitalício",
-    ],
-    cta: "Sou professor",
-    href: "/cadastro",
-    tag: null,
-  },
-]
+import Link from "next/link"
+import { useTranslations } from "next-intl"
 
 export function Plans() {
+  const t = useTranslations("planos")
+
+  const plans = [
+    {
+      nameKey: "gratis",
+      priceKey: "gratisPreco",
+      period: null,
+      featured: false,
+      descKey: "gratisDesc",
+      featuresCount: 4,
+      cta: "Começar Grátis",
+      href: "/cadastro",
+      tag: null,
+    },
+    {
+      nameKey: "premium",
+      priceKey: "premiumPreco",
+      periodKey: "premiumPeriodo",
+      featured: true,
+      descKey: "premiumDesc",
+      featuresCount: 6,
+      cta: "Sou aluno",
+      href: "/login",
+      tagKey: "maisPopulares",
+    },
+    {
+      nameKey: "academia",
+      priceKey: "academiaPreco",
+      period: null,
+      featured: false,
+      descKey: "academiaDesc",
+      featuresCount: 7,
+      cta: "Sou dono de academia",
+      href: "/cadastro",
+      tag: null,
+    },
+  ]
+
   return (
     <section id="planos" className="py-24 px-5">
       <div className="max-w-6xl mx-auto">
@@ -55,17 +50,17 @@ export function Plans() {
             Preço justo
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            Academia não paga nada. Nunca.
+            {t("titulo")}
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Professor dá aula com ou sem academia. Aluno treina onde quiser. Dono só paga se quiser — e mesmo assim é R$0. Acreditamos que o Jiu-Jitsu cresce quando a burocracia não atrapalha.
+            {t("subtitulo")}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 items-start max-w-5xl mx-auto">
           {plans.map((p, i) => (
             <div
-              key={p.name}
+              key={p.nameKey}
               className={`rounded-2xl p-8 transition-all duration-300 animate-fade-in-up relative ${
                 p.featured
                   ? "gradient-gold-border bg-[var(--dark-card)] scale-[1.02] md:scale-105"
@@ -73,21 +68,23 @@ export function Plans() {
               }`}
               style={{ animationDelay: `${i * 0.08}s` }}
             >
-              {p.tag && (
+              {p.tagKey && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-5 py-1.5 gradient-gold rounded-full text-[11px] font-bold text-black tracking-wider shadow-lg">
-                  {p.tag}
+                  {t(p.tagKey)}
                 </div>
               )}
-              <div className="text-lg font-bold mb-1.5">{p.name}</div>
-              <div className="text-sm text-[var(--white-muted)] mb-6">{p.period}</div>
+              <div className="text-lg font-bold mb-1.5">{t(p.nameKey)}</div>
+              <div className="text-sm text-[var(--white-muted)] mb-6">{t(p.descKey)}</div>
               <div className="text-[2.75rem] font-black tracking-tight mb-6">
-                {p.price} <span className="text-sm font-normal text-[var(--white-muted)]">/mês</span>
+                {t(p.priceKey)} <span className="text-sm font-normal text-[var(--white-muted)]">{p.periodKey ? t(p.periodKey) : ""}</span>
               </div>
               <ul className="space-y-3.5 mb-8">
-                {p.features.map((f) => (
-                  <li key={f} className="text-sm flex items-center gap-3">
+                {Array.from({ length: p.featuresCount }).map((_, idx) => (
+                  <li key={idx} className="text-sm flex items-center gap-3">
                     <span className="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center text-emerald-500 text-xs shrink-0">✓</span>
-                    {f}
+                    {p.nameKey === "gratis" && t(`gratisFeatures.${idx}`)}
+                    {p.nameKey === "premium" && t(`premiumFeatures.${idx}`)}
+                    {p.nameKey === "academia" && t(`academiaFeatures.${idx}`)}
                   </li>
                 ))}
               </ul>

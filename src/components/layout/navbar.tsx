@@ -3,10 +3,13 @@
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
+import { useTranslations } from "next-intl"
+import { LocaleSwitcher } from "@/components/ui/locale-switcher"
 
 export function Navbar() {
   const { data: session } = useSession()
   const [scrolled, setScrolled] = useState(false)
+  const t = useTranslations("nav")
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -23,8 +26,8 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 font-extrabold text-lg tracking-tight group">
-          <span className="w-9 h-9 gradient-gold rounded-xl flex items-center justify-center text-sm text-black transition-transform duration-300 group-hover:scale-105">
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight group">
+          <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center text-xs text-black transition-transform duration-300 group-hover:scale-105">
             🥋
           </span>
           <span className="hidden sm:inline">OssTrack</span>
@@ -32,38 +35,39 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-8">
           {[
-            { href: "/#recursos", label: "Recursos" },
-            { href: "/#funciona", label: "Como Funciona" },
-            { href: "/#planos", label: "Planos" },
+            { href: "/#recursos", label: t("recursos") },
+            { href: "/#funciona", label: t("comoFunciona") },
+            { href: "/#planos", label: t("planos") },
           ].map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm text-[var(--white-muted)] hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1.5px] after:bg-[var(--gold)] after:transition-all hover:after:w-full"
+              className="text-sm text-[var(--white-muted)] hover:text-white transition-colors"
             >
               {l.label}
             </Link>
           ))}
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          <LocaleSwitcher />
           {session ? (
             <Link
               href={`/dashboard/${session.user.role}`}
-              className="btn-gold px-5 py-2.5 text-sm"
+              className="btn-gold px-5 py-2 text-sm"
             >
-              Dashboard
+              {t("dashboard")}
             </Link>
           ) : (
             <>
               <Link
                 href="/login"
-                className="px-5 py-2.5 rounded-xl font-semibold text-sm text-[var(--white-muted)] hover:text-white transition-colors"
+                className="px-4 py-2 rounded-xl font-semibold text-sm text-[var(--white-muted)] hover:text-white transition-colors"
               >
-                Entrar
+                {t("entrar")}
               </Link>
-              <Link href="/cadastro" className="btn-gold px-5 py-2.5 text-sm">
-                Começar Grátis
+              <Link href="/cadastro" className="btn-gold px-5 py-2 text-sm">
+                {t("cadastro")}
               </Link>
             </>
           )}

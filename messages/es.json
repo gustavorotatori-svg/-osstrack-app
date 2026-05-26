@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "entrar": "Iniciar Sesión",
+    "cadastro": "Empezar Gratis",
+    "dashboard": "Dashboard",
+    "recursos": "Funciones",
+    "comoFunciona": "Cómo Funciona",
+    "planos": "Planes"
+  },
+  "hero": {
+    "titulo1": "Tu viaje en el",
+    "titulo2": "comienza aquí.",
+    "cta": "Empezar Gratis",
+    "login": "Iniciar Sesión",
+    "badge": "El cuaderno de bitácora del Jiu-Jitsu",
+    "statsAcademias": "Academias",
+    "statsAlunos": "Alumnos activos",
+    "statsRetencao": "Retención"
+  },
+  "frases": [
+    "Todo cinturón negro fue un cinturón blanco que nunca se rindió.",
+    "Academia y profesor: $0. Alumno premium: $4,90.",
+    "Cada check-in es un capítulo de tu historia en el tatami.",
+    "La evolución no es lineal — en OssTrack es visible.",
+    "Tu mejor versión aparece cuando nadie está mirando."
+  ],
+  "features": {
+    "titulo": "Todo lo que tu academia necesita",
+    "subtitulo": "Una plataforma completa para convertir la asistencia en evolución.",
+    "checkin": "Check-in Inteligente",
+    "checkinDesc": "Código QR con geolocalización. Tu alumno registra presencia en segundos.",
+    "evolucao": "Evolución Visual",
+    "evolucaoDesc": "Cada clase cuenta. Cada grado importa. La progresión es clara para todos.",
+    "gamificacao": "Gamificación",
+    "gamificacaoDesc": "Rachas, logros y ranking. Convierte la disciplina en juego.",
+    "financas": "Gestión Financiera",
+    "financasDesc": "Planes, contratos y cobros automatizados. Menos hoja de cálculo, más Jiu-Jitsu.",
+    "whatsapp": "WhatsApp Integrado",
+    "whatsappDesc": "Notificaciones y cobros por WhatsApp. Sin app adicional.",
+    "graduacao": "Reglas de Graduación",
+    "graduacaoDesc": "Configura criterios objetivos de cinturón. Promueve con justicia."
+  },
+  "comoFunciona": {
+    "titulo": "Cómo Funciona",
+    "subtitulo": "En 3 pasos tu academia está en línea.",
+    "passo1": "Crea tu academia",
+    "passo1Desc": "Registra tu academia, define las reglas de graduación y listo.",
+    "passo2": "Agrega alumnos y profesores",
+    "passo2Desc": "Cada uno tiene su perfil, cinturón e historial. Todo sincronizado.",
+    "passo3": "Sigue la evolución",
+    "passo3Desc": "Check-ins, rachas, logros. Datos que motivan."
+  },
+  "planos": {
+    "gratis": "Free",
+    "gratisPreco": "$0",
+    "gratisDesc": "Para alumnos que quieren empezar",
+    "gratisFeatures": ["Check-in por QR", "Historial de presencias", "Rachas básicas", "Ranking de la academia"],
+    "premium": "Premium",
+    "premiumPreco": "$4,90",
+    "premiumPeriodo": "/mes",
+    "premiumDesc": "Para alumnos que quieren evolucionar de verdad",
+    "premiumFeatures": ["Todo de Free", "Gráficos de evolución", "Logros exclusivos", "Maestro del Mes", "Comparación con compañeros", "Soporte prioritario"],
+    "academia": "Academia",
+    "academiaPreco": "$0",
+    "academiaDesc": "Gestión completa de tu academia",
+    "academiaFeatures": ["Dashboard completo", "Registro ilimitado de alumnos", "Múltiples profesores", "Reglas de graduación", "Reportes financieros", "Integración WhatsApp", "QR para check-in"],
+    "maisPopulares": "Más popular"
+  },
+  "testimonials": {
+    "titulo": "Lo que dicen los maestros"
+  },
+  "footer": {
+    "direitos": "Todos los derechos reservados.",
+    "termos": "Términos de Uso",
+    "privacidade": "Privacidad"
+  },
+  "dashboard": {
+    "inicio": "Inicio",
+    "checkin": "Check-in",
+    "treino": "Entrenamiento",
+    "evolucao": "Evolución",
+    "mural": "Muro",
+    "ranking": "Ranking",
+    "agenda": "Agenda",
+    "financeiro": "Finanzas",
+    "presencas": "Asistencias",
+    "alunos": "Alumnos",
+    "turmas": "Clases",
+    "graduacoes": "Graduaciones",
+    "relatorios": "Reportes",
+    "config": "Config",
+    "sair": "Cerrar Sesión",
+    "notificacoes": "Notificaciones",
+    "conquistas": "Logros",
+    "premium": "Premium",
+    "perfil": "Perfil",
+    "dono": "Dueño",
+    "professor": "Profesor",
+    "aluno": "Alumno"
+  }
+}

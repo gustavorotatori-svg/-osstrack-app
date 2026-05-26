@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
+import { useTranslations } from "next-intl"
 import { OnboardingTour } from "@/components/onboarding/tour"
 import { useTheme } from "@/components/layout/providers"
 
@@ -134,42 +135,42 @@ function UserIcon({ active }: IconProps) {
   )
 }
 
-const navItems: Record<string, { href: string; label: string; icon: (p: IconProps) => ReactElement }[]> = {
+const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps) => ReactElement }[]> = {
   aluno: [
-    { href: "/dashboard/aluno", label: "Início", icon: HomeIcon },
-    { href: "/dashboard/aluno/checkin", label: "Check-in", icon: CheckinIcon },
-    { href: "/dashboard/aluno/treino", label: "Treino", icon: StopwatchIcon },
-    { href: "/dashboard/aluno/evolucao", label: "Evolução", icon: ChartIcon },
-    { href: "/dashboard/aluno/mural", label: "Mural", icon: BellIcon },
-    { href: "/dashboard/aluno/ranking", label: "Ranking", icon: AwardIcon },
-    { href: "/dashboard/aluno/agenda", label: "Agenda", icon: CalendarIcon },
-    { href: "/dashboard/aluno/financeiro", label: "Financeiro", icon: CheckIcon },
+    { href: "/dashboard/aluno", tkey: "inicio", icon: HomeIcon },
+    { href: "/dashboard/aluno/checkin", tkey: "checkin", icon: CheckinIcon },
+    { href: "/dashboard/aluno/treino", tkey: "treino", icon: StopwatchIcon },
+    { href: "/dashboard/aluno/evolucao", tkey: "evolucao", icon: ChartIcon },
+    { href: "/dashboard/aluno/mural", tkey: "mural", icon: BellIcon },
+    { href: "/dashboard/aluno/ranking", tkey: "ranking", icon: AwardIcon },
+    { href: "/dashboard/aluno/agenda", tkey: "agenda", icon: CalendarIcon },
+    { href: "/dashboard/aluno/financeiro", tkey: "financeiro", icon: CheckIcon },
   ],
   professor: [
-    { href: "/dashboard/professor", label: "Início", icon: HomeIcon },
-    { href: "/dashboard/professor/presencas", label: "Presenças", icon: CheckIcon },
-    { href: "/dashboard/professor/alunos", label: "Alunos", icon: UsersIcon },
-    { href: "/dashboard/professor/turmas", label: "Turmas", icon: CalendarIcon },
-    { href: "/dashboard/professor/agenda", label: "Agenda", icon: CalendarIcon },
-    { href: "/dashboard/professor/graduacoes", label: "Graduações", icon: AwardIcon },
+    { href: "/dashboard/professor", tkey: "inicio", icon: HomeIcon },
+    { href: "/dashboard/professor/presencas", tkey: "presencas", icon: CheckIcon },
+    { href: "/dashboard/professor/alunos", tkey: "alunos", icon: UsersIcon },
+    { href: "/dashboard/professor/turmas", tkey: "turmas", icon: CalendarIcon },
+    { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
+    { href: "/dashboard/professor/graduacoes", tkey: "graduacoes", icon: AwardIcon },
   ],
   dono: [
-    { href: "/dashboard/dono", label: "Dashboard", icon: HomeIcon },
-    { href: "/dashboard/dono/alunos", label: "Alunos", icon: UsersIcon },
-    { href: "/dashboard/dono/agenda", label: "Agenda", icon: CalendarIcon },
-    { href: "/dashboard/dono/financeiro", label: "Financeiro", icon: CheckIcon },
-    { href: "/dashboard/dono/relatorios", label: "Relatórios", icon: ReportIcon },
-    { href: "/dashboard/dono/graduacoes", label: "Graduações", icon: AwardIcon },
-    { href: "/dashboard/dono/config", label: "Config", icon: SettingsIcon },
+    { href: "/dashboard/dono", tkey: "inicio", icon: HomeIcon },
+    { href: "/dashboard/dono/alunos", tkey: "alunos", icon: UsersIcon },
+    { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
+    { href: "/dashboard/dono/financeiro", tkey: "financeiro", icon: CheckIcon },
+    { href: "/dashboard/dono/relatorios", tkey: "relatorios", icon: ReportIcon },
+    { href: "/dashboard/dono/graduacoes", tkey: "graduacoes", icon: AwardIcon },
+    { href: "/dashboard/dono/config", tkey: "config", icon: SettingsIcon },
   ],
 }
 
-const topNavItems: Record<string, { href: string; label: string; icon: (p: IconProps) => ReactElement }[]> = {
+const topNavItems: Record<string, { href: string; tkey: string; icon: (p: IconProps) => ReactElement }[]> = {
   aluno: [
-    { href: "/dashboard/aluno/notificacoes", label: "Notificações", icon: BellIcon },
-    { href: "/dashboard/aluno/conquistas", label: "Conquistas", icon: AwardIcon },
-    { href: "/dashboard/aluno/premium", label: "Premium", icon: AwardIcon },
-    { href: "/dashboard/aluno/perfil", label: "Perfil", icon: UserIcon },
+    { href: "/dashboard/aluno/notificacoes", tkey: "notificacoes", icon: BellIcon },
+    { href: "/dashboard/aluno/conquistas", tkey: "conquistas", icon: AwardIcon },
+    { href: "/dashboard/aluno/premium", tkey: "premium", icon: AwardIcon },
+    { href: "/dashboard/aluno/perfil", tkey: "perfil", icon: UserIcon },
   ],
 }
 
@@ -178,6 +179,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
   const { theme, toggleTheme } = useTheme()
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations("dashboard")
   const items = navItems[role as keyof typeof navItems] || []
   const topItems = topNavItems[role as keyof typeof topNavItems] || []
   const [showTour, setShowTour] = useState(false)
@@ -222,7 +224,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           </div>
           <span className="font-bold text-sm">OssTrack</span>
           <span className="badge-gold text-[10px]">
-            {role === "dono" ? "Dono" : role === "professor" ? "Professor" : "Aluno"}
+            {t(role)}
           </span>
         </div>
         <div className="flex items-center gap-0.5">
@@ -238,7 +240,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                 }`}
               >
                 <Icon active={isActive} />
-                {item.label === "Notificações" && notifCount > 0 && (
+                {t(item.tkey) === "Notificações" && notifCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 gradient-gold rounded-full text-[8px] text-black font-bold flex items-center justify-center">
                     {notifCount > 9 ? "9+" : notifCount}
                   </span>
@@ -250,7 +252,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
           <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-ghost text-xs ml-1">
-            Sair
+            {t("sair")}
           </button>
         </div>
       </header>
@@ -263,7 +265,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           <div>
             <span className="font-bold text-sm">OssTrack</span>
             <span className="badge-gold text-[9px] block mt-0.5 w-fit">
-              {role === "dono" ? "Dono" : role === "professor" ? "Professor" : "Aluno"}
+              {t(role)}
             </span>
           </div>
         </div>
@@ -280,7 +282,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                 }`}
               >
                 <Icon active={isActive} />
-                <span>{item.label}</span>
+                <span>{t(item.tkey)}</span>
                 {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] ml-auto" />}
               </button>
             )
@@ -299,8 +301,8 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                 }`}
               >
                 <Icon active={isActive} />
-                <span>{item.label}</span>
-                {item.label === "Notificações" && notifCount > 0 && (
+                <span>{t(item.tkey)}</span>
+                {t(item.tkey) === "Notificações" && notifCount > 0 && (
                   <span className="ml-auto w-5 h-5 gradient-gold rounded-full text-[9px] text-black font-bold flex items-center justify-center">
                     {notifCount > 9 ? "9+" : notifCount}
                   </span>
@@ -313,7 +315,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
               {theme === "dark" ? "☀️" : "🌙"} <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
             </button>
             <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full flex items-center gap-3.5 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)] transition-all">
-              🚪 <span>Sair</span>
+              🚪 <span>{t("sair")}</span>
             </button>
           </div>
         </div>
@@ -341,7 +343,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                 <Icon active={isActive} />
               </div>
               <span className={`text-[9px] font-medium tracking-tight ${isActive ? "text-[var(--gold)]" : ""}`}>
-                {item.label}
+                {t(item.tkey)}
               </span>
               {isActive && <div className="w-4 h-0.5 bg-[var(--gold)] rounded-full mt-0.5" />}
             </button>
