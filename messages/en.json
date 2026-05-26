@@ -1,0 +1,101 @@
+{
+  "nav": {
+    "entrar": "Sign In",
+    "cadastro": "Start Free",
+    "dashboard": "Dashboard",
+    "recursos": "Features",
+    "comoFunciona": "How It Works",
+    "planos": "Pricing"
+  },
+  "hero": {
+    "titulo1": "Your journey on the",
+    "titulo2": "starts here.",
+    "cta": "Start Free",
+    "login": "Sign In",
+    "badge": "The Jiu-Jitsu logbook",
+    "statsAcademias": "Academies",
+    "statsAlunos": "Active students",
+    "statsRetencao": "Retention"
+  },
+  "frases": [
+    "Every black belt was once a white belt who never gave up.",
+    "Academy and professor: $0. Premium student: $4.90.",
+    "Every check-in is a chapter in your mat story.",
+    "Evolution isn't linear — on OssTrack it's visible.",
+    "Your best self shows up when no one is watching."
+  ],
+  "features": {
+    "titulo": "Everything your academy needs",
+    "subtitulo": "A complete platform to turn attendance into evolution.",
+    "checkin": "Smart Check-in",
+    "checkinDesc": "QR code with geolocation. Your student checks in in seconds.",
+    "evolucao": "Visual Evolution",
+    "evolucaoDesc": "Every class counts. Every degree matters. Progression is clear to everyone.",
+    "gamificacao": "Gamification",
+    "gamificacaoDesc": "Streaks, achievements and ranking. Turn discipline into a game.",
+    "financas": "Financial Management",
+    "financasDesc": "Plans, contracts and automated billing. Less spreadsheet, more Jiu-Jitsu.",
+    "whatsapp": "WhatsApp Integration",
+    "whatsappDesc": "Notifications and billing via WhatsApp. No additional app.",
+    "graduacao": "Graduation Rules",
+    "graduacaoDesc": "Set objective belt criteria. Promote with fairness."
+  },
+  "comoFunciona": {
+    "titulo": "How It Works",
+    "subtitulo": "3 steps to get your academy online.",
+    "passo1": "Create your academy",
+    "passo1Desc": "Register your academy, set graduation rules and you're ready.",
+    "passo2": "Add students and professors",
+    "passo2Desc": "Each has their own profile, belt and history. Fully synced.",
+    "passo3": "Track evolution",
+    "passo3Desc": "Check-ins, streaks, achievements. Data that motivates."
+  },
+  "planos": {
+    "gratis": "Free",
+    "gratisPreco": "$0",
+    "gratisDesc": "For students who want to start",
+    "gratisFeatures": ["QR code check-in", "Attendance history", "Basic streaks", "Academy ranking"],
+    "premium": "Premium",
+    "premiumPreco": "$4.90",
+    "premiumPeriodo": "/mo",
+    "premiumDesc": "For students who want to truly evolve",
+    "premiumFeatures": ["Everything in Free", "Evolution charts", "Exclusive achievements", "Master of the Month", "Compare with peers", "Priority support"],
+    "academia": "Academy",
+    "academiaPreco": "$0",
+    "academiaDesc": "Complete academy management",
+    "academiaFeatures": ["Full dashboard", "Unlimited student registration", "Multiple professors", "Graduation rules", "Financial reports", "WhatsApp integration", "QR code check-in"],
+    "maisPopulares": "Most popular"
+  },
+  "testimonials": {
+    "titulo": "What the masters say"
+  },
+  "footer": {
+    "direitos": "All rights reserved.",
+    "termos": "Terms of Service",
+    "privacidade": "Privacy"
+  },
+  "dashboard": {
+    "inicio": "Home",
+    "checkin": "Check-in",
+    "treino": "Training",
+    "evolucao": "Evolution",
+    "mural": "Wall",
+    "ranking": "Ranking",
+    "agenda": "Schedule",
+    "financeiro": "Financial",
+    "presencas": "Attendance",
+    "alunos": "Students",
+    "turmas": "Classes",
+    "graduacoes": "Graduations",
+    "relatorios": "Reports",
+    "config": "Settings",
+    "sair": "Sign Out",
+    "notificacoes": "Notifications",
+    "conquistas": "Achievements",
+    "premium": "Premium",
+    "perfil": "Profile",
+    "dono": "Owner",
+    "professor": "Professor",
+    "aluno": "Student"
+  }
+}

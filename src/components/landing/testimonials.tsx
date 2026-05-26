@@ -1,3 +1,7 @@
+"use client"
+
+import { useTranslations } from "next-intl"
+
 const testimonials = [
   {
     initials: "CM", name: "Carlos Mota", role: "Mestre — Gracie Barra Recife",
@@ -14,6 +18,8 @@ const testimonials = [
 ]
 
 export function Testimonials() {
+  const t = useTranslations("testimonials")
+
   return (
     <section id="depoimentos" className="py-24 px-5 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(201,168,76,0.02)] to-transparent" />
@@ -23,7 +29,7 @@ export function Testimonials() {
             Depoimentos
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            Quem vive o tatame aprovou
+            {t("titulo")}
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
             Mestres e professores que transformaram a gestão das suas academias — e a relação dos alunos com o treino.
