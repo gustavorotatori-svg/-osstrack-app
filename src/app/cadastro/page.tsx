@@ -95,29 +95,16 @@ export default function Cadastro() {
     setError("")
 
     if (step === 1 && form.role === "dono") { avancarStep(); setLoading(false); return }
-    if (step === 1 && form.role === "professor" && !form.codigoConvite && !form.academiaId) {
-      avancarStep(); setLoading(false); return
-    }
-    if (step === 1 && form.role === "aluno" && !form.codigoConvite && !form.academiaId) {
-      avancarStep(); setLoading(false); return
-    }
-
+    if (step === 1 && form.role === "professor" && !form.codigoConvite && !form.academiaId) { avancarStep(); setLoading(false); return }
+    if (step === 1 && form.role === "aluno") { avancarStep(); setLoading(false); return }
     if (step === 2 && form.role === "dono") {
       if (!form.academiaNome) { setError("Informe o nome da academia"); setLoading(false); return }
       avancarStep(); setLoading(false); return
     }
-
-    if (step === 2 && form.role === "professor" && !form.academiaId) {
-      avancarStep(); setLoading(false); return
-    }
-
-    if (step === 2 && form.role === "aluno" && !form.academiaId) {
-      setError("Selecione uma academia"); setLoading(false); return
-    }
-
-    if ((form.role === "aluno") && step === 3) {
-      avancarStep(); setLoading(false); return
-    }
+    if (step === 2 && form.role === "professor" && !form.academiaId) { avancarStep(); setLoading(false); return }
+    if (step === 2 && form.role === "aluno" && !form.academiaId) { setError("Selecione uma academia"); setLoading(false); return }
+    if (step === 2 && form.role === "aluno" && form.academiaId) { avancarStep(); setLoading(false); return }
+    if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
 
     try {
       const body: Record<string, unknown> = {
