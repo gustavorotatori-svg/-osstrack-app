@@ -32,6 +32,9 @@ export default function GraduacoesClient({ role }: { role: string }) {
   const [editing, setEditing] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<Graduacao | null>(null)
   const [saving, setSaving] = useState(false)
+  const [showCriar, setShowCriar] = useState(false)
+  const [novo, setNovo] = useState({ faixa: "Branca", graus: 4, aulasPorGrau: 20, aulasProxFx: "", aulasMinimasAno: "", dataProva: "", regraTroca: "graus" })
+  const [criando, setCriando] = useState(false)
 
   useEffect(() => {
     fetch("/api/graduacoes").then(r => r.json()).then(setGraduacoes).catch(() => {})
@@ -84,6 +87,66 @@ export default function GraduacoesClient({ role }: { role: string }) {
               >{c}</button>
             ))}
           </div>
+
+          <button onClick={() => setShowCriar(!showCriar)}
+            className="w-full mb-4 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">
+            {showCriar ? "− Cancelar" : "+ Criar Regra"}
+          </button>
+
+          {showCriar && (
+            <div className="bg-black/40 border border-[var(--dark-border)] rounded-2xl p-4 mb-4 space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Faixa</label>
+                  <select className="input-premium text-sm mt-1" value={novo.faixa} onChange={e => setNovo({ ...novo, faixa: e.target.value })}>
+                    {Object.keys(beltIcons).map(f => <option key={f} value={f}>{beltIcons[f]} {f}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Graus</label>
+                  <input type="number" className="input-premium text-sm mt-1" value={novo.graus} onChange={e => setNovo({ ...novo, graus: Number(e.target.value) })} min={1} max={10} />
+                </div>
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas por Grau</label>
+                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasPorGrau} onChange={e => setNovo({ ...novo, aulasPorGrau: Number(e.target.value) })} min={1} />
+                </div>
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas p/ próx. faixa</label>
+                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasProxFx} onChange={e => setNovo({ ...novo, aulasProxFx: e.target.value })} placeholder="Automático" />
+                </div>
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas mín/ano</label>
+                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasMinimasAno} onChange={e => setNovo({ ...novo, aulasMinimasAno: e.target.value })} placeholder="Opcional" />
+                </div>
+                <div>
+                  <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Regra</label>
+                  <select className="input-premium text-sm mt-1" value={novo.regraTroca} onChange={e => setNovo({ ...novo, regraTroca: e.target.value })}>
+                    {regrasTroca.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Data do exame</label>
+                <input type="date" className="input-premium text-sm mt-1" value={novo.dataProva} onChange={e => setNovo({ ...novo, dataProva: e.target.value })} />
+              </div>
+              <button onClick={async () => {
+                setCriando(true)
+                const res = await fetch("/api/graduacoes", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ ...novo, categoria, aulasProxFx: novo.aulasProxFx ? Number(novo.aulasProxFx) : null, aulasMinimasAno: novo.aulasMinimasAno ? Number(novo.aulasMinimasAno) : null }),
+                })
+                if (res.ok) {
+                  const created = await res.json()
+                  setGraduacoes(prev => [...prev, created])
+                  setShowCriar(false)
+                  setNovo({ faixa: "Branca", graus: 4, aulasPorGrau: 20, aulasProxFx: "", aulasMinimasAno: "", dataProva: "", regraTroca: "graus" })
+                }
+                setCriando(false)
+              }} disabled={criando}
+                className="w-full py-2.5 rounded-xl text-xs font-bold btn-gold">{criando ? "Criando..." : "Criar Regra"}</button>
+            </div>
+          )}
 
           <div className="space-y-3">
             {filtered.map(g => (
