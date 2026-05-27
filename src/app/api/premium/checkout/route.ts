@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { stripe } from "@/lib/stripe"
 import prisma from "@/lib/prisma"
 
 export async function POST() {
@@ -14,42 +15,24 @@ export async function POST() {
     return NextResponse.json({ error: "Já é premium" }, { status: 400 })
   }
 
-  const agora = new Date()
-  const expiracao = new Date(agora)
-  expiracao.setDate(expiracao.getDate() + 30)
+  if (usuario.stripeSubscriptionId) {
+    return NextResponse.json({ url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=pending` })
+  }
 
-  await prisma.usuario.update({
-    where: { id: session.user.id },
-    data: {
-      plano: "premium",
-      planoInicio: agora,
-      planoExpiracao: expiracao,
-    },
-  })
+  try {
+    const checkoutSession = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      payment_method_types: ["card"],
+      line_items: [{ price: process.env.STRIPE_PREMIUM_PRICE_ID!, quantity: 1 }],
+      customer_email: usuario.email,
+      metadata: { usuarioId: usuario.id },
+      success_url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=success`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=cancel`,
+    })
 
-  const mes = agora.getMonth() + 1
-  const ano = agora.getFullYear()
-
-  await prisma.pagamento.create({
-    data: {
-      usuarioId: session.user.id,
-      valor: 490,
-      status: "confirmed",
-      metodo: "cartao",
-      mesReferencia: mes,
-      anoReferencia: ano,
-    },
-  })
-
-  await prisma.notificacao.create({
-    data: {
-      usuarioId: session.user.id,
-      tipo: "sistema",
-      titulo: "Bem-vindo ao Premium!",
-      descricao: "Você agora tem acesso a todas as funcionalidades. Aproveite! 🥋",
-      link: "/dashboard/aluno/premium",
-    },
-  })
-
-  return NextResponse.json({ success: true, plano: "premium", expiracao })
+    return NextResponse.json({ url: checkoutSession.url })
+  } catch (err: any) {
+    console.error("Stripe checkout error:", err)
+    return NextResponse.json({ error: "Erro ao criar sessão de pagamento" }, { status: 500 })
+  }
 }

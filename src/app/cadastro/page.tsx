@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Cadastro() {
   const searchParams = useSearchParams()
@@ -34,6 +35,7 @@ export default function Cadastro() {
   const [resultados, setResultados] = useState<{ id: string; nome: string; cidade: string; estado: string }[]>([])
   const [buscando, setBuscando] = useState(false)
   const [professores, setProfessores] = useState<{ id: string; nome: string }[]>([])
+  const [buscaProf, setBuscaProf] = useState("")
 
   useEffect(() => {
     const convite = searchParams.get("convite")
@@ -144,14 +146,6 @@ export default function Cadastro() {
 
       if (!res.ok) { setError(data.error || "Erro ao criar conta"); setLoading(false); return }
 
-      if (form.role === "aluno") {
-        await fetch("/api/premium/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plano: "premium" }),
-        })
-      }
-
       const result = await signIn("credentials", {
         email: form.email,
         password: form.senha,
@@ -159,6 +153,17 @@ export default function Cadastro() {
       })
 
       if (result?.error) { router.push("/login"); return }
+
+      if (form.role === "aluno") {
+        const checkoutRes = await fetch("/api/premium/checkout", { method: "POST" })
+        if (checkoutRes.ok) {
+          const checkoutData = await checkoutRes.json()
+          if (checkoutData.url) {
+            window.location.href = checkoutData.url
+            return
+          }
+        }
+      }
 
       router.push(data.redirect || "/dashboard/aluno")
     } catch {
@@ -306,50 +311,41 @@ export default function Cadastro() {
       return (
         <div className="space-y-4">
           <p className="text-sm text-[var(--white-muted)]">Selecione seu professor (opcional):</p>
-          {professores.length === 0 ? (
-            <div>
-              <input
-                type="text"
-                className="input-premium"
-                placeholder="Nome do professor..."
-                value={form.professorId}
-                onChange={async (e) => {
-                  update("professorId", e.target.value)
-                  if (e.target.value.length < 2) return
-                  const res = await fetch(`/api/professores?q=${encodeURIComponent(e.target.value)}&academiaId=${form.academiaId}`)
-                  if (res.ok) {
-                    const data = await res.json()
-                    setProfessores(data)
-                  }
-                }}
-              />
-              {professores.length > 0 && (
-                <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden mt-2">
-                  {professores.map((prof) => (
-                    <button
-                      key={prof.id}
-                      type="button"
-                      className="w-full text-left px-4 py-3 hover:bg-[var(--gold)]/10 transition-colors"
-                      onClick={() => { update("professorId", prof.id); setProfessores([]) }}
-                    >
-                      {prof.nome}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
+          <div className="relative">
+            <input
+              type="text"
+              className="input-premium"
+              placeholder="Digite o nome do professor..."
+              value={buscaProf}
+              onChange={(e) => {
+                setBuscaProf(e.target.value)
+                if (e.target.value.length < 2) { setProfessores([]); return }
+                fetch(`/api/professores?q=${encodeURIComponent(e.target.value)}&academiaId=${form.academiaId}`)
+                  .then(r => r.json())
+                  .then(setProfessores)
+                  .catch(() => setProfessores([]))
+              }}
+            />
+            <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">Buscar</span>
+          </div>
+          {professores.length > 0 && (
             <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
               {professores.map((prof) => (
                 <button
                   key={prof.id}
                   type="button"
                   className="w-full text-left px-4 py-3 hover:bg-[var(--gold)]/10 transition-colors border-b border-[var(--dark-border)] last:border-0"
-                  onClick={() => selecionarProfessor(prof)}
+                  onClick={() => { update("professorId", prof.id); setProfessores([]); setBuscaProf(prof.nome) }}
                 >
                   {prof.nome}
                 </button>
               ))}
+            </div>
+          )}
+          {form.professorId && (
+            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3">
+              <p className="text-xs text-emerald-400 font-semibold">Professor selecionado</p>
+              <p className="text-sm font-medium">{buscaProf}</p>
             </div>
           )}
           <p className="text-xs text-[var(--white-muted)] text-center pt-2">Pode pular essa etapa.</p>
@@ -359,34 +355,18 @@ export default function Cadastro() {
 
     if (form.role === "aluno" && step === 4) {
       return (
-        <div className="space-y-4">
-          <div className="text-center">
-            <div className="text-3xl mb-2">💳</div>
-            <h3 className="text-lg font-bold">Plano Premium</h3>
-            <p className="text-2xl font-extrabold text-[var(--gold)]">R$ 4,90<span className="text-sm text-[var(--white-muted)] font-normal">/mês</span></p>
-            <p className="text-xs text-[var(--white-muted)] mt-1">Acesso completo por apenas R$4,90/mês. Cancele quando quiser.</p>
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Número do cartão</label>
-            <input type="text" className="input-premium" placeholder="0000 0000 0000 0000" />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Validade</label>
-              <input type="text" className="input-premium" placeholder="MM/AA" />
-            </div>
-            <div>
-              <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">CVV</label>
-              <input type="text" className="input-premium" placeholder="123" />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Nome no cartão</label>
-            <input type="text" className="input-premium" placeholder="Como está no cartão" />
-          </div>
-          <p className="text-[10px] text-[var(--white-muted)] text-center">
-            * Simulação. Em produção, integração com Stripe será ativada.
-          </p>
+        <div className="space-y-4 text-center">
+          <div className="text-5xl mb-4">💳</div>
+          <h3 className="text-xl font-extrabold">Assinar Premium</h3>
+          <p className="text-4xl font-black text-[var(--gold)]">R$ 4,90<span className="text-base text-[var(--white-muted)] font-normal">/mês</span></p>
+          <ul className="text-left space-y-2 text-sm text-[var(--white-muted)] bg-black/30 rounded-xl p-4">
+            <li className="flex items-center gap-2">✅ Check-in com geolocalização</li>
+            <li className="flex items-center gap-2">✅ Acompanhamento de evolução</li>
+            <li className="flex items-center gap-2">✅ Ranking e gamificação</li>
+            <li className="flex items-center gap-2">✅ Mural da academia</li>
+            <li className="flex items-center gap-2">✅ Cancele quando quiser</li>
+          </ul>
+          <p className="text-xs text-[var(--white-muted)]">Pagamento 100% seguro via <span className="text-[#635bff] font-semibold">Stripe</span>. Seu cartão não fica salvo no OssTrack.</p>
         </div>
       )
     }
@@ -408,7 +388,9 @@ export default function Cadastro() {
 
       <div className="w-full max-w-sm relative">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg">🥋</div>
+          <motion.div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg animate-pulse-glow-gold" animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 3, repeat: Infinity }}>
+            🥋
+          </motion.div>
           <h1 className="text-2xl font-extrabold tracking-tight">Criar Conta</h1>
           <p className="text-sm text-[var(--white-muted)] mt-1.5">
             {form.role === "aluno" ? (
@@ -419,8 +401,12 @@ export default function Cadastro() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4">
-          {renderStep()}
+        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4 animate-breathe-gold">
+          <AnimatePresence mode="wait">
+            <motion.div key={step} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.25 }}>
+              {renderStep()}
+            </motion.div>
+          </AnimatePresence>
 
           {error && (
             <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">{error}</div>
@@ -437,7 +423,7 @@ export default function Cadastro() {
               disabled={loading}
               className={`flex-1 py-3.5 rounded-xl font-bold text-sm ${loading ? "bg-[var(--dark-border)] text-[var(--gray)] cursor-not-allowed" : "btn-gold"}`}
             >
-              {loading ? "Criando conta..." : step === 1 && form.role === "dono" ? "Próximo" : step < totalSteps ? "Próximo" : form.role === "aluno" ? "Assinar R$ 4,90" : "Criar Conta Grátis"}
+              {loading ? "Criando conta..." : step === 1 && form.role === "dono" ? "Próximo" : step < totalSteps ? "Próximo" : form.role === "aluno" ? "Continuar para Pagamento" : "Criar Conta Grátis"}
             </button>
           </div>
 
