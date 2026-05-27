@@ -16,7 +16,7 @@ export default async function AlunoDashboard() {
     },
   })
 
-  if (!aluno) redirect("/login")
+  if (!aluno || !aluno.academiaId) redirect("/login")
 
   const totalAulas = await prisma.presenca.count({
     where: { alunoId: aluno.id, status: "confirmed" },
@@ -52,7 +52,7 @@ export default async function AlunoDashboard() {
         grau: aluno.grau,
         totalAulas,
         dataInicio: aluno.dataInicio?.toISOString() || "",
-        academia: aluno.academia.nome,
+        academia: aluno.academia?.nome || "",
       }}
       graduacao={graduacao ? {
         aulasPorGrau: graduacao.aulasPorGrau,

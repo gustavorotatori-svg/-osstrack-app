@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   })
 
   if (!aluno) return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
+  if (!aluno.academiaId) return NextResponse.json({ error: "Aluno sem academia vinculada" }, { status: 400 })
 
   const updated = await prisma.usuario.update({
     where: { id: alunoId },
