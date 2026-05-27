@@ -58,6 +58,13 @@ export default function PerfilPage() {
             </button>
           </div>
 
+          {!editando && (
+            <button onClick={() => setEditando(true)}
+              className="absolute top-4 right-4 px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">
+              ✏️ Editar Perfil
+            </button>
+          )}
+
           {editando ? (
             <div className="mt-4 space-y-3 max-w-xs mx-auto">
               <input
@@ -72,11 +79,21 @@ export default function PerfilPage() {
                 onChange={(e) => setTelefone(e.target.value)}
                 placeholder="Telefone"
               />
+              <div>
+                <label className="text-[10px] text-[var(--white-muted)] font-semibold block mb-2">Escolha um avatar:</label>
+                <div className="grid grid-cols-6 gap-2">
+                  {["🥋", "🤼", "👊", "💪", "🔥", "⚡", "🦅", "🐯", "🦁", "🐺", "🛡️", "👑"].map((emoji) => (
+                    <button key={emoji} type="button" onClick={() => setAvatarUrl(emoji)}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all ${avatarUrl === emoji ? "bg-[var(--gold)] ring-2 ring-[var(--gold)]" : "bg-black/40 border border-[var(--dark-border)] hover:border-[var(--gold)]"}`}
+                    >{emoji}</button>
+                  ))}
+                </div>
+              </div>
               <input
-                className="input-premium text-center"
+                className="input-premium text-center text-sm"
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
-                placeholder="URL da foto de perfil"
+                placeholder="Ou cole URL da foto"
               />
               <div className="flex gap-2">
                 <button onClick={salvar} disabled={saving} className="btn-gold flex-1 py-2.5 text-xs">

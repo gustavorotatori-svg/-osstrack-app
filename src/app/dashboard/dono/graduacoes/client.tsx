@@ -145,7 +145,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                       </div>
                       {(role === "dono" || role === "professor") && (
                         <button onClick={() => startEdit(g)}
-                          className="text-[10px] text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors font-semibold">✏️ Editar</button>
+                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ Editar</button>
                       )}
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
