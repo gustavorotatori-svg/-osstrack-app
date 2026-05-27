@@ -116,6 +116,22 @@ body.light {
   50% { box-shadow: 0 0 40px rgba(201,168,76,0.3); }
 }
 
+@keyframes goldShimmer {
+  0% { background-position: -300% 0; }
+  100% { background-position: 300% 0; }
+}
+
+@keyframes breatheGold {
+  0%, 100% { border-color: rgba(201,168,76,0.15); box-shadow: 0 0 15px rgba(201,168,76,0.05); }
+  50% { border-color: rgba(201,168,76,0.35); box-shadow: 0 0 30px rgba(201,168,76,0.15); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @keyframes fireFlicker {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
@@ -148,6 +164,9 @@ body.light {
 .animate-slide-in-left { animation: fadeUp 0.6s ease forwards; }
 .animate-pulse-glow-gold { animation: pulseGlowGold 2s ease-in-out infinite; }
 .animate-float-up { animation: float 3s ease-in-out infinite; }
+.animate-gold-shimmer { background: linear-gradient(90deg, #c9a84c 0%, #e8d48b 25%, #c9a84c 50%, #a8882e 75%, #c9a84c 100%); background-size: 300% 100%; animation: goldShimmer 3s infinite; }
+.animate-breathe-gold { animation: breatheGold 2.5s ease-in-out infinite; }
+.animate-gradient-shift { background: linear-gradient(135deg, #c9a84c, #e8d48b, #a8882e, #c9a84c); background-size: 300% 300%; animation: gradientShift 4s ease infinite; }
 
 /* ===== GRADIENTS ===== */
 .gradient-gold {
@@ -163,8 +182,9 @@ body.light {
 
 /* ===== GRADIENT HERO ===== */
 .gradient-hero {
-  background: radial-gradient(ellipse at 30% 40%, rgba(139, 26, 26, 0.1) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 60%, rgba(201, 168, 76, 0.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 20% 35%, rgba(139, 26, 26, 0.15) 0%, transparent 55%),
+              radial-gradient(ellipse at 75% 40%, rgba(201, 168, 76, 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(201, 168, 76, 0.04) 0%, transparent 40%);
 }
 
 .gradient-gold-border {
@@ -264,7 +284,13 @@ body.light {
   justify-content: center;
 }
 .btn-gold:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  box-shadow: 0 4px 25px rgba(201, 168, 76, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
 }
 
 .btn-ghost {
