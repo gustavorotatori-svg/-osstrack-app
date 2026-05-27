@@ -78,7 +78,7 @@ export async function POST(request: Request) {
           role: "professor",
           faixa: "Preta",
           grau: 3,
-          academiaId: body.academiaId || "",
+          academiaId: body.academiaId || null,
         },
       })
       return NextResponse.json({ redirect: "/dashboard/professor" })
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
         role: "aluno",
         faixa: "Branca",
         grau: 0,
-        academiaId: body.academiaId || "",
+        academiaId: body.academiaId || null,
         professorId: body.professorId || null,
       },
     })

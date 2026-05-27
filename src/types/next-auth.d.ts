@@ -5,7 +5,7 @@ declare module "next-auth" {
     role?: string
     faixa?: string
     grau?: number
-    academiaId?: string
+    academiaId?: string | null
   }
   interface Session {
     user: {
@@ -26,6 +26,6 @@ declare module "next-auth/jwt" {
     role?: string
     faixa?: string
     grau?: number
-    academiaId?: string
+    academiaId?: string | null
   }
 }

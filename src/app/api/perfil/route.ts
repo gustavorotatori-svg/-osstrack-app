@@ -38,7 +38,7 @@ export async function GET() {
     faixa: usuario.faixa,
     grau: usuario.grau,
     dataInicio: usuario.dataInicio,
-    academia: usuario.academia.nome,
+    academia: usuario.academia?.nome || "",
     totalAulas,
     totalPresencas,
     thisMonth,

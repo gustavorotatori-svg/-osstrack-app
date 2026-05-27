@@ -13,7 +13,7 @@ export default async function EvolucaoPage() {
     include: { academia: true },
   })
 
-  if (!aluno) redirect("/login")
+  if (!aluno || !aluno.academiaId) redirect("/login")
 
   const totalAulas = await prisma.presenca.count({
     where: { alunoId: aluno.id, status: "confirmed" },

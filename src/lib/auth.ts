@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as string
         session.user.faixa = token.faixa as string
         session.user.grau = token.grau as number
-        session.user.academiaId = token.academiaId as string
+        session.user.academiaId = token.academiaId ?? ""
         session.user.id = token.id as string
       }
       return session

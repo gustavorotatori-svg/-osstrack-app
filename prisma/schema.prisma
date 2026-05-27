@@ -48,8 +48,8 @@ model Usuario {
   grau       Int      @default(0)
   dataInicio DateTime?
   categoria  String   @default("adulto")
-  academiaId String
-  academia   Academia @relation(fields: [academiaId], references: [id])
+  academiaId String?
+  academia   Academia? @relation(fields: [academiaId], references: [id])
   professorId String?
   plano      String   @default("free")
   planoInicio DateTime?
