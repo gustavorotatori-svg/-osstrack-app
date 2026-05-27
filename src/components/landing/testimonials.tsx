@@ -4,7 +4,7 @@ import { useT } from "@/lib/use-t"
 
 const testimonials = [
   {
-    initials: "CM", name: "Carlos Mota", role: "Mestre — Gracie Barra Recife",
+    initials: "CM", name: "Carlos Mota", role: "Mestre — Nova União JJ",
     text: "O OssTrack nos fez perceber que cada presença é uma história. Meus alunos não faltam mais porque não querem quebrar o streak. O engajamento subiu 40% em 3 meses. Mas o mais bonito é ver eles celebrando cada grau como se fosse o primeiro.",
   },
   {

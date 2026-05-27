@@ -118,7 +118,14 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
   }
 
   return (
-    <div className="min-h-screen bg-[var(--black-soft)] flex flex-col">
+    <div className="min-h-screen bg-[var(--black-soft)] flex flex-col relative">
+      {/* Ambient background orbs */}
+      <div className="ambient-orbs">
+        <div className="ambient-orb ambient-orb-1" />
+        <div className="ambient-orb ambient-orb-2" />
+        <div className="ambient-orb ambient-orb-3" />
+      </div>
+
       {showTour && <OnboardingTour role={role} onComplete={completeTour} />}
 
       {/* DESKTOP SIDEBAR */}
@@ -136,7 +143,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const Icon = item.icon
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-medium ${isActive ? "bg-[rgba(201,168,76,0.1)] text-[var(--gold)]" : "text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]"}`}>
+                className={`sidebar-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium ${isActive ? "active text-[var(--gold)]" : "text-[var(--white-muted)] hover:text-white"}`}>
                 <Icon active={isActive} />
                 <span>{t(item.tkey)}</span>
               </button>
@@ -149,18 +156,18 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const Icon = item.icon
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all text-sm font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]"}`}>
+                className={`micro-press w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]"}`}>
                 <Icon active={isActive} />
                 <span>{t(item.tkey)}</span>
               </button>
             )
           })}
           <button onClick={toggleTheme}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)] transition-all">
+            className="micro-press w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]">
             {theme === "dark" ? "☀️" : "🌙"} <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
           </button>
           <button onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)] transition-all">
+            className="micro-press w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)]">
             🚪 <span>{t("sair")}</span>
           </button>
         </div>
@@ -189,8 +196,8 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       </header>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 w-full md:ml-60">
-        <div className="max-w-lg mx-auto md:max-w-3xl lg:max-w-5xl px-3 py-3 pb-28 md:pb-6 dashboard-content">
+      <div className="flex-1 w-full md:ml-60 relative z-10">
+        <div className="px-4 py-4 pb-28 md:pb-6 md:px-6 lg:px-8 dashboard-content">
           {children}
         </div>
       </div>
@@ -202,7 +209,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           const Icon = item.icon
           return (
             <button key={item.href} onClick={() => router.push(item.href)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all min-w-[56px] ${isActive ? "text-[var(--gold)]" : "text-[var(--gray)]"}`}>
+              className={`micro-press flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl min-w-[56px] ${isActive ? "text-[var(--gold)]" : "text-[var(--gray)]"}`}>
               <div className={isActive ? "scale-110 transition-transform" : ""}><Icon active={isActive} /></div>
               <span className={`text-[9px] font-medium ${isActive ? "text-[var(--gold)]" : ""}`}>{t(item.tkey)}</span>
             </button>

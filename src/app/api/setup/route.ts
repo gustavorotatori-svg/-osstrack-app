@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 
     const academia = await prisma.academia.create({
       data: {
-        nome: "Gracie Barra Recife",
+        nome: "Academia Modelo",
         endereco: "Rua da Academia, 123",
         cidade: "Recife",
         estado: "PE",

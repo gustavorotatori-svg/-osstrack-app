@@ -211,7 +211,7 @@ export default function Cadastro() {
         <>
           <div>
             <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Nome da Academia</label>
-            <input type="text" className="input-premium" placeholder="Ex: Gracie Barra Recife" required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
+            <input type="text" className="input-premium" placeholder="Ex: Nova União" required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
           </div>
           <div>
             <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Endereço</label>
