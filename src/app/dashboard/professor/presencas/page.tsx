@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
-import { ProfessorDashboardClient } from "../client"
+import { PresencasClient } from "./client"
 
 export default async function PresencasPage() {
   const session = await getServerSession(authOptions)
@@ -10,15 +10,6 @@ export default async function PresencasPage() {
 
   const professor = await prisma.usuario.findUnique({ where: { id: session.user.id } })
   if (!professor) redirect("/login")
-
-  const alunos = await prisma.usuario.findMany({
-    where: { professorId: professor.id, role: "aluno" },
-  })
-
-  const turmas = await prisma.turma.findMany({
-    where: { professorId: professor.id },
-    include: { alunos: true },
-  })
 
   const hoje = new Date()
   hoje.setHours(0, 0, 0, 0)
@@ -32,10 +23,7 @@ export default async function PresencasPage() {
   })
 
   return (
-    <ProfessorDashboardClient
-      professor={{ nome: professor.nome, faixa: professor.faixa, grau: professor.grau }}
-      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
-      turmas={turmas.map((t) => ({ id: t.id, nome: t.nome, horario: t.horario, dias: t.dias, maxAlunos: t.maxAlunos, totalAlunos: t.alunos.length }))}
+    <PresencasClient
       presencasHoje={presencasHoje.map((p) => ({
         id: p.id,
         aluno: { id: p.aluno.id, nome: p.aluno.nome, faixa: p.aluno.faixa },
