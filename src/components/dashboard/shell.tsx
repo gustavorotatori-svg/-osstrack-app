@@ -171,6 +171,12 @@ const topNavItems: Record<string, { href: string; tkey: string; icon: (p: IconPr
     { href: "/dashboard/aluno/premium", tkey: "premium", icon: AwardIcon },
     { href: "/dashboard/aluno/perfil", tkey: "perfil", icon: UserIcon },
   ],
+  professor: [
+    { href: "/dashboard/professor/perfil", tkey: "perfil", icon: UserIcon },
+  ],
+  dono: [
+    { href: "/dashboard/dono/perfil", tkey: "perfil", icon: UserIcon },
+  ],
 }
 
 export function DashboardShell({ children, role }: { children: ReactNode; role: string }) {
