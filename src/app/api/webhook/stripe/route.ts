@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
   const body = await request.text()
   const sig = request.headers.get("stripe-signature") || ""
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Webhook não configurado" }, { status: 500 })
+  }
 
   let event
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!)
-  } catch {
+    const stripe = getStripe()
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+  } catch (err: any) {
+    console.error("Stripe webhook signature error:", err.message)
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 })
   }
+
+  const stripe = getStripe()
 
   switch (event.type) {
     case "checkout.session.completed": {
@@ -34,9 +43,6 @@ export async function POST(request: Request) {
         },
       })
 
-      const mes = agora.getMonth() + 1
-      const ano = agora.getFullYear()
-
       await prisma.pagamento.create({
         data: {
           usuarioId,
@@ -44,8 +50,8 @@ export async function POST(request: Request) {
           status: "confirmed",
           metodo: "stripe",
           stripeId: session.id,
-          mesReferencia: mes,
-          anoReferencia: ano,
+          mesReferencia: agora.getMonth() + 1,
+          anoReferencia: agora.getFullYear(),
         },
       })
 
@@ -86,8 +92,6 @@ export async function POST(request: Request) {
           },
         })
 
-        const mes = new Date().getMonth() + 1
-        const ano = new Date().getFullYear()
         await prisma.pagamento.create({
           data: {
             usuarioId: usuario.id,
@@ -95,8 +99,8 @@ export async function POST(request: Request) {
             status: "confirmed",
             metodo: "stripe",
             stripeId: invoice.id,
-            mesReferencia: mes,
-            anoReferencia: ano,
+            mesReferencia: new Date().getMonth() + 1,
+            anoReferencia: new Date().getFullYear(),
           },
         })
       } else {
@@ -106,8 +110,6 @@ export async function POST(request: Request) {
           data: { planoExpiracao: expiracao },
         })
 
-        const mes = new Date().getMonth() + 1
-        const ano = new Date().getFullYear()
         await prisma.pagamento.create({
           data: {
             usuarioId,
@@ -115,8 +117,8 @@ export async function POST(request: Request) {
             status: "confirmed",
             metodo: "stripe",
             stripeId: invoice.id,
-            mesReferencia: mes,
-            anoReferencia: ano,
+            mesReferencia: new Date().getMonth() + 1,
+            anoReferencia: new Date().getFullYear(),
           },
         })
       }
