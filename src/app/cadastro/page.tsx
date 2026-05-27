@@ -26,6 +26,8 @@ export default function Cadastro() {
     academiaId: "",
     professorId: "",
     codigoConvite: "",
+    faixa: "Branca",
+    grau: 0,
   })
 
   const [busca, setBusca] = useState("")
@@ -95,16 +97,17 @@ export default function Cadastro() {
     setError("")
 
     if (step === 1 && form.role === "dono") { avancarStep(); setLoading(false); return }
-    if (step === 1 && form.role === "professor" && !form.codigoConvite && !form.academiaId) { avancarStep(); setLoading(false); return }
+    if (step === 1 && form.role === "professor") { avancarStep(); setLoading(false); return }
     if (step === 1 && form.role === "aluno") { avancarStep(); setLoading(false); return }
     if (step === 2 && form.role === "dono") {
       if (!form.academiaNome) { setError("Informe o nome da academia"); setLoading(false); return }
       avancarStep(); setLoading(false); return
     }
-    if (step === 2 && form.role === "professor" && !form.academiaId) { avancarStep(); setLoading(false); return }
+    if (step === 2 && form.role === "professor") { avancarStep(); setLoading(false); return }
     if (step === 2 && form.role === "aluno" && !form.academiaId) { setError("Selecione uma academia"); setLoading(false); return }
     if (step === 2 && form.role === "aluno" && form.academiaId) { avancarStep(); setLoading(false); return }
     if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
+    if (step === 3 && form.role === "professor" && !form.codigoConvite && !form.academiaId) { avancarStep(); setLoading(false); return }
 
     try {
       const body: Record<string, unknown> = {
@@ -127,6 +130,8 @@ export default function Cadastro() {
       } else {
         body.academiaId = form.academiaId || undefined
         body.professorId = form.professorId || undefined
+        body.faixa = form.faixa
+        body.grau = form.grau
       }
 
       const res = await fetch("/api/auth/register", {
@@ -230,7 +235,28 @@ export default function Cadastro() {
       )
     }
 
-    if ((step === 2 && form.role === "professor") || (step === 2 && form.role === "aluno")) {
+    if (step === 2 && form.role === "professor") {
+      const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-[var(--white-muted)]">Informe sua graduação atual:</p>
+          <div>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Faixa</label>
+            <select className="input-premium" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
+              {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Grau</label>
+            <select className="input-premium" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+              {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{g}º Grau</option>)}
+            </select>
+          </div>
+        </div>
+      )
+    }
+
+    if ((step === 3 && form.role === "professor") || (step === 2 && form.role === "aluno")) {
       return (
         <div className="space-y-4">
           <p className="text-sm text-[var(--white-muted)]">
@@ -373,7 +399,7 @@ export default function Cadastro() {
     setProfessores([])
   }
 
-  const totalSteps = form.role === "dono" ? 2 : form.role === "professor" ? (form.academiaId || form.codigoConvite ? 1 : 2) : form.codigoConvite && form.academiaId ? 4 : 4
+  const totalSteps = form.role === "dono" ? 2 : form.role === "professor" ? (form.academiaId || form.codigoConvite ? 2 : 3) : 4
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">

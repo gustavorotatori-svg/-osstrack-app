@@ -84,8 +84,8 @@ export async function POST(request: Request) {
           senha: hashed,
           telefone: telefone || "",
           role: "professor",
-          faixa: "Preta",
-          grau: 3,
+          faixa: body.faixa || "Preta",
+          grau: body.grau ?? 3,
           academiaId: body.academiaId || null,
         },
       })
