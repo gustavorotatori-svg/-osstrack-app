@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       const subscriptionId = invoice.subscription
       if (!subscriptionId) break
 
-      const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any
       const usuarioId = subscription.metadata?.usuarioId
 
       if (!usuarioId) {
