@@ -317,8 +317,8 @@ body.light {
 }
 .glass-card:hover {
   border-color: rgba(201,168,76,0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 60px rgba(201,168,76,0.04);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 80px rgba(201,168,76,0.06);
 }
 
 /* Glass card with gold accent */
@@ -586,6 +586,132 @@ body.light {
 
 /* Tighter cards */
 .glass-card.compact { padding: 12px 14px !important; }
+
+/* ===== AMBIENT BACKGROUND ===== */
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  25% { transform: translate(30px, -20px) scale(1.1); opacity: 0.4; }
+  50% { transform: translate(-20px, 30px) scale(0.9); opacity: 0.25; }
+  75% { transform: translate(20px, -10px) scale(1.05); opacity: 0.35; }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+  33% { transform: translate(-20px, 20px) scale(1.15); opacity: 0.3; }
+  66% { transform: translate(30px, -30px) scale(0.85); opacity: 0.15; }
+}
+.ambient-orbs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+.ambient-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(201,168,76,0.08), transparent);
+  top: 5%;
+  left: -5%;
+  animation: orbDrift 20s ease-in-out infinite;
+}
+.ambient-orb-2 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(139,26,26,0.06), transparent);
+  bottom: 10%;
+  right: -5%;
+  animation: orbDrift2 25s ease-in-out infinite;
+}
+.ambient-orb-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201,168,76,0.04), transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: orbDrift 18s ease-in-out infinite reverse;
+}
+
+/* ===== SIDEBAR HOVER LIFE ===== */
+.sidebar-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sidebar-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent);
+  transition: opacity 0.3s ease;
+}
+.sidebar-btn:hover::after {
+  opacity: 1;
+}
+.sidebar-btn:active {
+  transform: scale(0.97);
+}
+.sidebar-btn.active {
+  background: rgba(201,168,76,0.1);
+}
+.sidebar-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  border-radius: 0 3px 3px 0;
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(201,168,76,0.3);
+}
+
+/* ===== MICRO INTERACTIONS ===== */
+.micro-press {
+  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.micro-press:active {
+  transform: scale(0.94);
+}
+.micro-lift {
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.micro-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+/* ===== LIVE INDICATOR PULSE ===== */
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+/* ===== CARD BREATHE ===== */
+@keyframes cardBreathe {
+  0%, 100% { border-color: rgba(30,30,30,0.8); }
+  50% { border-color: rgba(201,168,76,0.08); }
+}
+.card-breathe {
+  animation: cardBreathe 4s ease-in-out infinite;
+}
 
 /* ===== BADGES ===== */
 .badge {
