@@ -150,7 +150,6 @@ const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps
     { href: "/dashboard/professor", tkey: "inicio", icon: HomeIcon },
     { href: "/dashboard/professor/presencas", tkey: "presencas", icon: CheckIcon },
     { href: "/dashboard/professor/alunos", tkey: "alunos", icon: UsersIcon },
-    { href: "/dashboard/professor/turmas", tkey: "turmas", icon: CalendarIcon },
     { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/professor/graduacoes", tkey: "graduacoes", icon: AwardIcon },
   ],
@@ -250,9 +249,6 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           })}
           <button onClick={toggleTheme} className="btn-ghost text-xs" title="Alternar tema">
             {theme === "dark" ? "☀️" : "🌙"}
-          </button>
-          <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-ghost text-xs ml-1">
-            {t("sair")}
           </button>
         </div>
       </header>

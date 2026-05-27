@@ -1,4 +1,4 @@
-export function Avatar({ name, faixa, size = 40, mood = "normal" }: { name: string; faixa: string; size?: number; mood?: "normal" | "fire" | "party" }) {
+export function Avatar({ name, faixa, size = 40, mood = "normal", src }: { name: string; faixa: string; size?: number; mood?: "normal" | "fire" | "party"; src?: string | null }) {
   const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
 
   const beltColors: Record<string, string> = {
@@ -9,13 +9,16 @@ export function Avatar({ name, faixa, size = 40, mood = "normal" }: { name: stri
   const textColor = faixa === "Branca" ? "#333" : faixa === "Preta" ? "#c9a84c" : "#fff"
   const half = size / 2
 
-  const moodDecorations: Record<string, { extra: string }> = {
-    normal: { extra: "" },
-    fire: { extra: "🔥" },
-    party: { extra: "🎉" },
-  }
-
   const deco = mood === "party" ? "🎉" : mood === "fire" ? "🔥" : ""
+
+  if (src) {
+    return (
+      <div className="shrink-0 relative" style={{ width: size, height: size }}>
+        <img src={src} alt={name} className="w-full h-full object-cover rounded-xl" style={{ borderRadius: mood === "party" ? size * 0.35 : size * 0.25 }} />
+        {deco && <span className="absolute -top-1 -right-1 text-xs">{deco}</span>}
+      </div>
+    )
+  }
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0">

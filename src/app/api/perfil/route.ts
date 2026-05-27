@@ -35,6 +35,7 @@ export async function GET() {
     nome: usuario.nome,
     email: usuario.email,
     telefone: usuario.telefone,
+    avatar: usuario.avatar,
     faixa: usuario.faixa,
     grau: usuario.grau,
     dataInicio: usuario.dataInicio,
