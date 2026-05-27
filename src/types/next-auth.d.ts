@@ -6,6 +6,7 @@ declare module "next-auth" {
     faixa?: string
     grau?: number
     academiaId?: string | null
+    academiaNome?: string | null
   }
   interface Session {
     user: {
@@ -16,6 +17,7 @@ declare module "next-auth" {
       faixa: string
       grau: number
       academiaId: string
+      academiaNome: string | null
       image?: string | null
     }
   }
@@ -27,5 +29,6 @@ declare module "next-auth/jwt" {
     faixa?: string
     grau?: number
     academiaId?: string | null
+    academiaNome?: string | null
   }
 }

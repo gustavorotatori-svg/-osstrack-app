@@ -8,7 +8,7 @@ type Props = {
   alunoNome: string
   valor?: number
   dataVencimento?: string
-  mensagem?: string
+  linkPersonalizado?: string
   label?: string
   variant?: "gold" | "ghost" | "emerald"
   size?: "sm" | "md"
@@ -20,7 +20,7 @@ export function WhatsAppButton({
   alunoNome,
   valor,
   dataVencimento,
-  mensagem,
+  linkPersonalizado,
   label = "WhatsApp",
   variant = "emerald",
   size = "sm",
@@ -35,7 +35,7 @@ export function WhatsAppButton({
       const body: Record<string, unknown> = { acao, alunoId }
       if (valor !== undefined) body.valor = valor
       if (dataVencimento) body.dataVencimento = dataVencimento
-      if (mensagem) body.linkPersonalizado = mensagem
+      if (linkPersonalizado) body.linkPersonalizado = linkPersonalizado
 
       const res = await fetch("/api/whatsapp", {
         method: "POST",

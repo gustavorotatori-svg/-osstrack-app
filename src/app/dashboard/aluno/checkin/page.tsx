@@ -174,7 +174,7 @@ export default function CheckinPage() {
 
           <div className="flex items-center justify-center gap-2 mb-1">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs text-[var(--white-muted)] font-medium">{session?.user ? "Gracie Barra Recife" : ""}</span>
+            <span className="text-xs text-[var(--white-muted)] font-medium">{session?.user?.academiaNome || "OssTrack"}</span>
           </div>
 
           <div className="mt-4 mb-2">

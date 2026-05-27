@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "professor") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || !["professor", "dono"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
   const { alunoId, novaFaixa, novoGrau } = await request.json()
 
