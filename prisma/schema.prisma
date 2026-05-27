@@ -34,6 +34,7 @@ model Academia {
   cobrancas       Cobranca[]
   horariosAula    HorarioAula[]
   agendamentos    Agendamento[]
+  convites        Convite[]
 }
 
 model Usuario {
@@ -75,6 +76,7 @@ model Usuario {
   contratos       Contrato[]
   cobrancas       Cobranca[]
   agendamentos    Agendamento[]
+  convites        Convite[]
 }
 
 model Pagamento {
@@ -316,6 +318,22 @@ model HorarioAula {
   updatedAt   DateTime @updatedAt
 
   agendamentos Agendamento[]
+}
+
+model Convite {
+  id          String    @id @default(cuid())
+  tipo        String
+  codigo      String    @unique
+  remetenteId String
+  academiaId  String?
+  professorId String?
+  email       String?
+  usado       Boolean   @default(false)
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  remetente Usuario  @relation(fields: [remetenteId], references: [id])
+  academia  Academia? @relation(fields: [academiaId], references: [id])
 }
 
 model Agendamento {

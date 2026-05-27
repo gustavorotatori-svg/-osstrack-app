@@ -18,6 +18,14 @@ export async function POST(request: Request) {
 
     const hashed = await bcrypt.hash(senha, 10)
 
+    if (body.codigoConvite) {
+      const convite = await prisma.convite.findUnique({ where: { codigo: body.codigoConvite } })
+      if (convite && !convite.usado && (!convite.expiresAt || convite.expiresAt > new Date())) {
+        await prisma.convite.update({ where: { id: convite.id }, data: { usado: true } })
+        if (!body.academiaId && convite.academiaId) body.academiaId = convite.academiaId
+      }
+    }
+
     if (role === "dono") {
       const { academia } = body
       if (!academia?.nome) {
