@@ -168,6 +168,16 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
         </div>
 
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+          <h3 className="font-bold text-sm tracking-tight mb-2">💡 Dicas Rápidas</h3>
+          <div className="space-y-2 text-xs text-[var(--white-muted)]">
+            <p className="flex items-start gap-2"><span className="text-[var(--gold)] mt-0.5">1.</span> Confirme as presenças dos alunos que fizeram check-in</p>
+            <p className="flex items-start gap-2"><span className="text-[var(--gold)] mt-0.5">2.</span> Promova alunos que atingiram os requisitos de graduação</p>
+            <p className="flex items-start gap-2"><span className="text-[var(--gold)] mt-0.5">3.</span> Use a <strong className="text-white">Agenda</strong> para criar seus horários de aula</p>
+            <p className="flex items-start gap-2"><span className="text-[var(--gold)] mt-0.5">4.</span> Compartilhe o link de convite com novos alunos via WhatsApp</p>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
           <h3 className="font-bold text-sm tracking-tight mb-3.5">📲 Convidar Alunos</h3>
           <p className="text-xs text-[var(--white-muted)] mb-3">Gere um link para compartilhar com seus alunos:</p>
           <div className="flex gap-2 mb-2">
