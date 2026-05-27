@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
@@ -21,6 +21,22 @@ export default function PerfilClient({ role }: { role: string }) {
   const [telefone, setTelefone] = useState("")
   const [avatarUrl, setAvatarUrl] = useState("")
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 5 * 1024 * 1024) { alert("Max 5MB"); return }
+    setUploading(true)
+    const reader = new FileReader()
+    reader.onload = () => {
+      setAvatarUrl(reader.result as string)
+      setUploading(false)
+    }
+    reader.onerror = () => { setUploading(false); alert("Erro ao ler arquivo") }
+    reader.readAsDataURL(file)
+  }
 
   useEffect(() => {
     fetch("/api/perfil").then((r) => r.json()).then((d) => {
@@ -70,14 +86,19 @@ export default function PerfilClient({ role }: { role: string }) {
               <input className="input-premium text-center" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Nome" />
               <input className="input-premium text-center" value={telefone} onChange={(e) => setTelefone(e.target.value)} placeholder="Telefone" />
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] font-semibold block mb-2">Escolha um avatar:</label>
-                <div className="grid grid-cols-6 gap-2">
+                <label className="text-[10px] text-[var(--white-muted)] font-semibold block mb-2">Avatar:</label>
+                <div className="grid grid-cols-6 gap-2 mb-3">
                   {["🥋", "🤼", "👊", "💪", "🔥", "⚡", "🦅", "🐯", "🦁", "🐺", "🛡️", "👑"].map((emoji) => (
                     <button key={emoji} type="button" onClick={() => setAvatarUrl(emoji)}
                       className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all ${avatarUrl === emoji ? "bg-[var(--gold)] ring-2 ring-[var(--gold)]" : "bg-black/40 border border-[var(--dark-border)] hover:border-[var(--gold)]"}`}
                     >{emoji}</button>
                   ))}
                 </div>
+                <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
+                <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
+                  className="w-full py-2.5 rounded-xl text-xs font-bold border border-[var(--dark-border)] text-[var(--white-muted)] hover:text-white hover:border-[var(--gold)] transition-all mb-2">
+                  {uploading ? "Enviando..." : "📸 Enviar foto"}
+                </button>
               </div>
               <input className="input-premium text-center text-sm" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)} placeholder="Ou cole URL da foto" />
               <div className="flex gap-2">
