@@ -55,7 +55,7 @@ export function OnboardingTour({ role, onComplete }: { role: string; onComplete:
   }
 
   function goToAction() {
-    if (current.action) router.push(current.action)
+    if (current.action) { finish(); router.push(current.action) }
     else next()
   }
 
