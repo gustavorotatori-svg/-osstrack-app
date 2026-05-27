@@ -3,13 +3,75 @@
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 
+function ConviteCard({ tipo, label, state, setState }: {
+  tipo: string
+  label: string
+  state: { link: string; whatsapp: string; copied: boolean; gerando: boolean }
+  setState: (s: { link: string; whatsapp: string; copied: boolean; gerando: boolean }) => void
+}) {
+  return (
+    <div>
+      <p className="text-xs text-[var(--white-muted)] mb-2">{label}</p>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={state.gerando ? "Gerando..." : state.link || "osstrack.app"}
+          readOnly
+          className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm"
+        />
+        <button
+          type="button"
+          disabled={state.gerando}
+          onClick={async () => {
+            setState({ ...state, gerando: true })
+            const res = await fetch("/api/convites", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ tipo }),
+            })
+            if (res.ok) {
+              const data = await res.json()
+              setState({ link: data.link, whatsapp: data.whatsapp, copied: false, gerando: false })
+            } else {
+              setState({ ...state, gerando: false })
+            }
+          }}
+          className="px-4 py-2.5 rounded-lg font-semibold text-xs btn-gold disabled:opacity-50"
+        >
+          Gerar Link
+        </button>
+      </div>
+      {state.link && (
+        <div className="flex gap-2 mt-2">
+          <button
+            type="button"
+            onClick={() => {
+              navigator.clipboard.writeText(state.link)
+              setState({ ...state, copied: true })
+              setTimeout(() => setState({ ...state, copied: false }), 2000)
+            }}
+            className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all"
+          >
+            {state.copied ? "✅ Copiado!" : "📋 Copiar Link"}
+          </button>
+          <a
+            href={state.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 py-2 rounded-lg text-xs font-semibold text-center bg-green-600/20 text-green-400 border border-green-600/30 hover:bg-green-600/30 transition-all"
+          >
+            📲 WhatsApp
+          </a>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ConfigPage() {
   const [saved, setSaved] = useState(false)
-  const [inviteLink, setInviteLink] = useState("")
-  const [whatsappLink, setWhatsappLink] = useState("")
-  const [copied, setCopied] = useState(false)
-  const [gerandoProf, setGerandoProf] = useState(false)
-  const [gerandoAluno, setGerandoAluno] = useState(false)
+  const [inviteProf, setInviteProf] = useState({ link: "", whatsapp: "", copied: false, gerando: false })
+  const [inviteAluno, setInviteAluno] = useState({ link: "", whatsapp: "", copied: false, gerando: false })
   const [form, setForm] = useState({
     nome: "",
     whatsapp: "",
@@ -119,59 +181,19 @@ export default function ConfigPage() {
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 space-y-4">
           <h3 className="font-bold">📱 Compartilhar</h3>
 
-          <div>
-            <p className="text-xs text-[var(--white-muted)] mb-2">Convidar professor para sua academia:</p>
-            <div className="flex gap-2">
-              <input type="text" value={gerandoProf ? "Gerando..." : inviteLink || "osstrack.app"} readOnly className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm" />
-              <button type="button" disabled={gerandoProf} onClick={async () => {
-                setGerandoProf(true)
-                const res = await fetch("/api/convites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tipo: "professor" }) })
-                const data = await res.json()
-                setInviteLink(data.link)
-                setWhatsappLink(data.whatsapp)
-                setGerandoProf(false)
-              }} className="px-4 py-2.5 rounded-lg font-semibold text-xs btn-gold disabled:opacity-50">
-                Gerar Link
-              </button>
-            </div>
-            {inviteLink && (
-              <div className="flex gap-2 mt-2">
-                <button type="button" onClick={() => { navigator.clipboard.writeText(inviteLink); setCopied(true); setTimeout(() => setCopied(false), 2000) }} className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all">
-                  {copied ? "✅ Copiado!" : "📋 Copiar Link"}
-                </button>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex-1 py-2 rounded-lg text-xs font-semibold text-center bg-green-600/20 text-green-400 border border-green-600/30 hover:bg-green-600/30 transition-all">
-                  📲 WhatsApp
-                </a>
-              </div>
-            )}
-          </div>
+          <ConviteCard
+            tipo="professor"
+            label="Convidar professor para sua academia:"
+            state={inviteProf}
+            setState={setInviteProf}
+          />
 
-          <div>
-            <p className="text-xs text-[var(--white-muted)] mb-2">Convidar aluno para sua academia:</p>
-            <div className="flex gap-2">
-              <input type="text" value={gerandoAluno ? "Gerando..." : whatsappLink.split("?text=")[0] || "osstrack.app"} readOnly className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm" />
-              <button type="button" disabled={gerandoAluno} onClick={async () => {
-                setGerandoAluno(true)
-                const res = await fetch("/api/convites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tipo: "aluno" }) })
-                const data = await res.json()
-                setInviteLink(data.link)
-                setWhatsappLink(data.whatsapp)
-                setGerandoAluno(false)
-              }} className="px-4 py-2.5 rounded-lg font-semibold text-xs btn-gold disabled:opacity-50">
-                Gerar Link
-              </button>
-            </div>
-            {inviteLink && (
-              <div className="flex gap-2 mt-2">
-                <button type="button" onClick={() => { navigator.clipboard.writeText(inviteLink); setCopied(true); setTimeout(() => setCopied(false), 2000) }} className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all">
-                  {copied ? "✅ Copiado!" : "📋 Copiar Link"}
-                </button>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="flex-1 py-2 rounded-lg text-xs font-semibold text-center bg-green-600/20 text-green-400 border border-green-600/30 hover:bg-green-600/30 transition-all">
-                  📲 WhatsApp
-                </a>
-              </div>
-            )}
-          </div>
+          <ConviteCard
+            tipo="aluno"
+            label="Convidar aluno para sua academia:"
+            state={inviteAluno}
+            setState={setInviteAluno}
+          />
         </div>
       </div>
     </DashboardShell>
