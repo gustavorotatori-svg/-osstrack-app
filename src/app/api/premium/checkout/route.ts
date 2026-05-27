@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 import prisma from "@/lib/prisma"
 
 export async function POST() {
@@ -20,10 +20,16 @@ export async function POST() {
   }
 
   try {
+    const stripe = getStripe()
+    const priceId = process.env.STRIPE_PREMIUM_PRICE_ID
+    if (!priceId) {
+      return NextResponse.json({ error: "Stripe não configurado" }, { status: 500 })
+    }
+
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
-      line_items: [{ price: process.env.STRIPE_PREMIUM_PRICE_ID!, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       customer_email: usuario.email,
       metadata: { usuarioId: usuario.id },
       success_url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=success`,
