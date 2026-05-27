@@ -1,65 +1,69 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { playCelebrationSound } from "@/lib/sound"
+import { motion, AnimatePresence } from "framer-motion"
 
-const emojis = ["🥋", "🔥", "💪", "⭐", "🎉", "⚡", "🌟", "🏆", "🎊", "💯", "👊", "🔱"]
+const CONFETTI = ["🥋", "✨", "🔥", "🎉", "⭐", "💪", "👊", "🏆"]
 
-type Particle = { id: number; emoji: string; x: number; delay: number; size: number; duration: number }
+type CelebrationProps = { show: boolean; title?: string; message?: string; submessage?: string; onDone?: () => void }
 
-export function CelebrationOverlay({
-  show, message, submessage, onDone,
-}: {
-  show: boolean; message: string; submessage?: string; onDone?: () => void
-}) {
-  const [particles, setParticles] = useState<Particle[]>([])
+export function Celebration({ show, title, message, submessage, onDone }: CelebrationProps) {
+  const [particles, setParticles] = useState<{ id: number; emoji: string; x: number; delay: number }[]>([])
 
   useEffect(() => {
-    if (!show) { setParticles([]); return }
-    playCelebrationSound()
-    setParticles(
-      Array.from({ length: 50 }, (_, i) => ({
-        id: i, emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        x: Math.random() * 100, delay: Math.random() * 0.8,
-        size: 14 + Math.random() * 22, duration: 2 + Math.random() * 2,
-      }))
-    )
-    const timer = setTimeout(() => { setParticles([]); onDone?.() }, 5000)
+    if (!show) {
+      setParticles([])
+      return
+    }
+    const p = Array.from({ length: 16 }, (_, i) => ({
+      id: i,
+      emoji: CONFETTI[i % CONFETTI.length],
+      x: Math.random() * 100,
+      delay: Math.random() * 0.4,
+    }))
+    setParticles(p)
+    const timer = setTimeout(() => onDone?.(), 2500)
     return () => clearTimeout(timer)
   }, [show])
 
-  if (!show && particles.length === 0) return null
-
   return (
-    <div className="fixed inset-0 z-[100] pointer-events-none">
-      {/* Overlay escuro */}
-      <div className="absolute inset-0 bg-black/60 animate-fade-in" />
-
-      {/* Partículas */}
-      {particles.map((p) => (
-        <div
-          key={p.id}
-          className="absolute"
-          style={{
-            left: `${p.x}%`, top: `-10%`, fontSize: `${p.size}px`,
-            animation: `confettiFall ${p.duration}s linear forwards`,
-            animationDelay: `${p.delay}s`,
-          }}
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm"
         >
-          {p.emoji}
-        </div>
-      ))}
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ type: "spring", damping: 15 }}
+            className="glass-card-gold p-8 text-center mx-4 max-w-xs"
+          >
+            <div className="text-5xl mb-3">🎉</div>
+            <h3 className="text-lg font-extrabold text-white mb-1">{title || message || ""}</h3>
+            {submessage && <p className="text-xs text-[var(--white-muted)]">{submessage}</p>}
+            {!submessage && <p className="text-xs text-[var(--white-muted)]">Continue evoluindo!</p>}
+          </motion.div>
 
-      {/* Texto central */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center animate-hero-fade-up" style={{ animationDuration: "0.6s" }}>
-          <div className="text-7xl mb-4 animate-float-up" style={{ "--dur": "2s" } as any}>🥋</div>
-          <h2 className="text-4xl md:text-5xl font-black gradient-gold-text leading-tight">{message}</h2>
-          {submessage && (
-            <p className="text-lg text-[var(--white-muted)] mt-3 font-medium">{submessage}</p>
-          )}
-        </div>
-      </div>
-    </div>
+          {particles.map((p) => (
+            <motion.div
+              key={p.id}
+              initial={{ y: "100vh", x: `${p.x}vw`, opacity: 1, rotate: 0 }}
+              animate={{ y: "-20vh", opacity: 0, rotate: 720 }}
+              transition={{ duration: 2, delay: p.delay, ease: "easeOut" }}
+              className="fixed text-2xl pointer-events-none"
+              style={{ left: `${p.x}vw`, top: 0 }}
+            >
+              {p.emoji}
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
+
+export { Celebration as CelebrationOverlay }

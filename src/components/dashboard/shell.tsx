@@ -190,7 +190,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       {/* MAIN CONTENT */}
       <div className="flex-1 w-full md:ml-60">
-        <div className="max-w-lg mx-auto md:max-w-3xl lg:max-w-5xl px-4 py-5 pb-28 md:pb-8">
+        <div className="max-w-lg mx-auto md:max-w-3xl lg:max-w-5xl px-3 py-3 pb-28 md:pb-6 dashboard-content">
           {children}
         </div>
       </div>

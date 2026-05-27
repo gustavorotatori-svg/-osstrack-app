@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react"
 import { ReactNode, createContext, useContext, useState, useEffect } from "react"
+import { Toaster } from "sonner"
 import type { Locale } from "@/lib/i18n"
 
 type Theme = "dark" | "light"
@@ -59,6 +60,17 @@ export function Providers({ children }: { children: ReactNode }) {
       <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
           {mounted ? children : <div className="min-h-screen bg-[#0a0a0a]" />}
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                background: '#111',
+                border: '1px solid #1e1e1e',
+                color: '#fff',
+                borderRadius: '12px',
+              },
+            }}
+          />
         </ThemeContext.Provider>
       </LocaleContext.Provider>
     </SessionProvider>
