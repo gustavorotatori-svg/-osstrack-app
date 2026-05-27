@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type PerfilData = {
-  nome: string; email: string; telefone: string | null
+  nome: string; email: string; telefone: string | null; avatar: string | null
   faixa: string; grau: number; dataInicio: string | null
   academia: string; totalAulas: number; totalPresencas: number
   thisMonth: number; currentStreak: number; bestStreak: number
@@ -19,24 +19,27 @@ export default function PerfilPage() {
   const [editando, setEditando] = useState(false)
   const [nome, setNome] = useState("")
   const [telefone, setTelefone] = useState("")
+  const [avatarUrl, setAvatarUrl] = useState("")
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     fetch("/api/perfil").then((r) => r.json()).then((d) => {
-      setData(d); setNome(d.nome); setTelefone(d.telefone || "")
+      setData(d); setNome(d.nome); setTelefone(d.telefone || ""); setAvatarUrl(d.avatar || "")
     })
   }, [])
 
   async function salvar() {
     setSaving(true)
+    const body: Record<string, string> = { nome, telefone }
+    if (avatarUrl) body.avatar = avatarUrl
     await fetch("/api/perfil", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, telefone }),
+      body: JSON.stringify(body),
     })
     setSaving(false)
     setEditando(false)
-    setData((prev) => prev ? { ...prev, nome, telefone } : prev)
+    setData((prev) => prev ? { ...prev, nome, telefone, avatar: avatarUrl } : prev)
   }
 
   if (!data) return null
@@ -46,7 +49,7 @@ export default function PerfilPage() {
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
           <div className="relative inline-block">
-            <Avatar name={data.nome} faixa={data.faixa} size={72} />
+            <Avatar name={data.nome} faixa={data.faixa} size={72} src={data.avatar} />
             <button
               onClick={() => setEditando(!editando)}
               className="absolute -bottom-1 -right-1 w-6 h-6 gradient-gold rounded-full flex items-center justify-center text-[10px] text-black font-bold shadow-lg"
@@ -68,6 +71,12 @@ export default function PerfilPage() {
                 value={telefone}
                 onChange={(e) => setTelefone(e.target.value)}
                 placeholder="Telefone"
+              />
+              <input
+                className="input-premium text-center"
+                value={avatarUrl}
+                onChange={(e) => setAvatarUrl(e.target.value)}
+                placeholder="URL da foto de perfil"
               />
               <div className="flex gap-2">
                 <button onClick={salvar} disabled={saving} className="btn-gold flex-1 py-2.5 text-xs">
