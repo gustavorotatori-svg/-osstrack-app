@@ -438,15 +438,16 @@ body.light {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
-  color: var(--gold);
-  border: 1px solid rgba(201,168,76,0.2);
+  background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+  color: var(--gold-light);
+  border: 1px solid rgba(201,168,76,0.25);
+  box-shadow: 0 0 15px rgba(201,168,76,0.05);
 }
 
 /* Animated enter classes */
@@ -478,31 +479,32 @@ body.light {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
+  padding: 32px 20px;
   text-align: center;
 }
 .empty-premium-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  background: rgba(30,30,30,0.5);
+  width: 72px;
+  height: 72px;
+  border-radius: 24px;
+  background: rgba(30,30,30,0.6);
   border: 1px solid var(--dark-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 16px;
+  filter: drop-shadow(0 0 8px rgba(201,168,76,0.08));
 }
 .empty-premium-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 6px;
 }
 .empty-premium-desc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--white-muted);
-  max-width: 280px;
+  max-width: 300px;
   line-height: 1.5;
 }
 
@@ -550,6 +552,40 @@ body.light {
   background: var(--gold);
   color: #000;
 }
+
+/* ===== VIBRANT EMOJIS ===== */
+.emoji-glow {
+  display: inline-block;
+  filter: drop-shadow(0 0 6px rgba(201,168,76,0.3));
+  animation: emojiFloat 3s ease-in-out infinite;
+}
+.emoji-fire {
+  display: inline-block;
+  filter: drop-shadow(0 0 8px rgba(255,140,0,0.5));
+  animation: emojiFloat 2s ease-in-out infinite;
+}
+.emoji-check {
+  display: inline-block;
+  filter: drop-shadow(0 0 6px rgba(16,185,129,0.4));
+}
+@keyframes emojiFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.05); }
+}
+
+/* ===== BIGGER TEXT VARIANTS ===== */
+.dashboard-content {
+  font-size: 14px;
+}
+.dashboard-content .text-\[10px\] { font-size: 12px !important; }
+.dashboard-content .text-\[11px\] { font-size: 13px !important; }
+.dashboard-content .text-xs { font-size: 13px !important; }
+.dashboard-content .stat-card { padding: 14px 10px !important; }
+.dashboard-content .glass-card { padding: 16px !important; }
+.dashboard-content .glass-card-gold { padding: 16px !important; }
+
+/* Tighter cards */
+.glass-card.compact { padding: 12px 14px !important; }
 
 /* ===== BADGES ===== */
 .badge {

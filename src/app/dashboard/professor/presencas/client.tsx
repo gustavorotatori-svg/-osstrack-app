@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { toast } from "sonner"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
@@ -18,14 +19,26 @@ type Presenca = {
 export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Presenca[] }) {
   const [presencas, setPresencas] = useState(initial)
   const [filtro, setFiltro] = useState<"todas" | "pending" | "confirmed">("todas")
+  const [confirmando, setConfirmando] = useState<string | null>(null)
 
   async function confirmar(presencaId: string, status: string) {
-    await fetch("/api/presenca/confirm", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ presencaId, status }),
-    })
-    setPresencas((prev) => prev.map((p) => p.id === presencaId ? { ...p, status } : p))
+    setConfirmando(presencaId)
+    const prev = presencas
+    setPresencas((p) => p.map((x) => x.id === presencaId ? { ...x, status } : x))
+    try {
+      const res = await fetch("/api/presenca/confirm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ presencaId, status }),
+      })
+      if (!res.ok) throw new Error()
+      toast.success(status === "confirmed" ? "✅ Presença confirmada!" : "Presença recusada")
+    } catch {
+      setPresencas(prev)
+      toast.error("Erro ao confirmar. Tente novamente.")
+    } finally {
+      setConfirmando(null)
+    }
   }
 
   const filtradas = filtro === "todas" ? presencas : presencas.filter((p) => p.status === filtro)
@@ -35,14 +48,12 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
   return (
     <DashboardShell role="professor">
       <PageTransition>
-        <div className="space-y-5">
-          {/* Header */}
+        <div className="space-y-3">
           <div className="glass-card-gold p-5">
             <h2 className="text-lg font-extrabold tracking-tight">📋 Presenças</h2>
             <p className="text-xs text-[var(--white-muted)] mt-1">Gerencie os check-ins do dia</p>
           </div>
 
-          {/* Status row */}
           <div className="grid grid-cols-3 gap-3">
             <div className="stat-card">
               <div className="text-lg mb-1">📋</div>
@@ -61,7 +72,6 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             </div>
           </div>
 
-          {/* Filter */}
           <div className="tab-bar">
             {(["todas", "pending", "confirmed"] as const).map((f) => (
               <button key={f} onClick={() => setFiltro(f)}
@@ -71,13 +81,12 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             ))}
           </div>
 
-          {/* List */}
           <div className="glass-card p-5">
             {filtradas.length === 0 ? (
               <div className="empty-premium">
                 <div className="empty-premium-icon">🥋</div>
                 <div className="empty-premium-title">Nenhuma presença encontrada</div>
-                <div className="empty-premium-desc">Nenhum registro com este filtro. Alunos aparecerão aqui quando fizerem check-in.</div>
+                <div className="empty-premium-desc">Nenhum registro com este filtro.</div>
               </div>
             ) : (
               <div className="space-y-1">
@@ -100,10 +109,14 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
                       </span>
                     ) : (
                       <div className="flex gap-1.5 shrink-0">
-                        <button onClick={() => confirmar(p.id, "confirmed")}
-                          className="w-9 h-9 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-emerald-600/30">✓</button>
-                        <button onClick={() => confirmar(p.id, "rejected")}
-                          className="w-9 h-9 rounded-xl bg-red-700/20 hover:bg-red-700 text-red-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-red-700/30">✗</button>
+                        <button onClick={() => confirmar(p.id, "confirmed")} disabled={confirmando === p.id}
+                          className="w-9 h-9 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-emerald-600/30 active:scale-90 disabled:opacity-50">
+                          {confirmando === p.id ? "⏳" : "✓"}
+                        </button>
+                        <button onClick={() => confirmar(p.id, "rejected")} disabled={confirmando === p.id}
+                          className="w-9 h-9 rounded-xl bg-red-700/20 hover:bg-red-700 text-red-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-red-700/30 active:scale-90 disabled:opacity-50">
+                          ✗
+                        </button>
                       </div>
                     )}
                   </div>
