@@ -106,8 +106,9 @@ export async function POST(request: Request) {
       },
     })
     return NextResponse.json({ redirect: "/dashboard/aluno" })
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 })
+  } catch (error: any) {
+    console.error("Register error:", error?.message || error)
+    const msg = error?.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

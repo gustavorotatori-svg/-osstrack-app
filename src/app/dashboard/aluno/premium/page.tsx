@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 
 export default function PremiumPage() {
   const { data: session } = useSession()
@@ -24,9 +25,11 @@ export default function PremiumPage() {
     setLoading(true)
     const res = await fetch("/api/premium/checkout", { method: "POST" })
     if (res.ok) {
-      setPlano("premium")
-      setDiasRestantes(30)
-      setDone(true)
+      const data = await res.json()
+      if (data.url) window.location.href = data.url
+    } else {
+      const err = await res.json()
+      toast.error(err.error || "Erro ao processar assinatura")
     }
     setLoading(false)
   }

@@ -98,18 +98,28 @@ export default function Cadastro() {
     setLoading(true)
     setError("")
 
-    if (step === 1 && form.role === "dono") { avancarStep(); setLoading(false); return }
-    if (step === 1 && form.role === "professor") { avancarStep(); setLoading(false); return }
-    if (step === 1 && form.role === "aluno") { avancarStep(); setLoading(false); return }
-    if (step === 2 && form.role === "dono") {
-      if (!form.academiaNome) { setError("Informe o nome da academia"); setLoading(false); return }
-      avancarStep(); setLoading(false); return
+    if (step < totalSteps) {
+      // Step 1: todos avançam
+      if (step === 1) { avancarStep(); setLoading(false); return }
+      // Step 2 dono: valida academia
+      if (step === 2 && form.role === "dono") {
+        if (!form.academiaNome) { setError("Informe o nome da academia"); setLoading(false); return }
+        avancarStep(); setLoading(false); return
+      }
+      // Step 2 professor: só avança se tiver mais steps (não tem academy/invite)
+      if (step === 2 && form.role === "professor" && !form.academiaId && !form.codigoConvite) {
+        avancarStep(); setLoading(false); return
+      }
+      // Step 2 aluno: precisa selecionar academia
+      if (step === 2 && form.role === "aluno") {
+        if (!form.academiaId) { setError("Selecione uma academia"); setLoading(false); return }
+        avancarStep(); setLoading(false); return
+      }
+      // Step 3 aluno: avança
+      if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
+      // Qualquer outro step intermediário cai aqui
+      setLoading(false); return
     }
-    if (step === 2 && form.role === "professor") { avancarStep(); setLoading(false); return }
-    if (step === 2 && form.role === "aluno" && !form.academiaId) { setError("Selecione uma academia"); setLoading(false); return }
-    if (step === 2 && form.role === "aluno" && form.academiaId) { avancarStep(); setLoading(false); return }
-    if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
-    if (step === 3 && form.role === "professor" && !form.codigoConvite && !form.academiaId) { avancarStep(); setLoading(false); return }
 
     try {
       const body: Record<string, unknown> = {

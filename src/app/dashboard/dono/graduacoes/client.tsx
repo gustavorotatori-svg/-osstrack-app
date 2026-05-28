@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { toast } from "sonner"
 
 type Graduacao = {
   id: string
@@ -35,6 +36,17 @@ export default function GraduacoesClient({ role }: { role: string }) {
   const [showCriar, setShowCriar] = useState(false)
   const [novo, setNovo] = useState({ faixa: "Branca", graus: 4, aulasPorGrau: 20, aulasProxFx: "", aulasMinimasAno: "", dataProva: "", regraTroca: "graus" })
   const [criando, setCriando] = useState(false)
+  const [showShare, setShowShare] = useState(false)
+  const [shareLink, setShareLink] = useState("")
+  const [copying, setCopying] = useState(false)
+
+  useEffect(() => {
+    const stored = localStorage.getItem("osstrack_academiaId")
+    if (stored) {
+      const base = window.location.origin
+      setShareLink(`${base}/compartilhar/regras/${stored}`)
+    }
+  }, [])
 
   useEffect(() => {
     fetch("/api/graduacoes").then(r => r.json()).then(setGraduacoes).catch(() => {})
@@ -88,10 +100,90 @@ export default function GraduacoesClient({ role }: { role: string }) {
             ))}
           </div>
 
-          <button onClick={() => setShowCriar(!showCriar)}
-            className="w-full mb-4 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">
-            {showCriar ? "− Cancelar" : "+ Criar Regra"}
-          </button>
+          <div className="flex gap-2 mb-4">
+            <button onClick={() => setShowCriar(!showCriar)}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">
+              {showCriar ? "− Cancelar" : "+ Criar Regra"}
+            </button>
+            <button onClick={() => setShowShare(true)}
+              className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.08)] text-[var(--gold)] border border-[rgba(201,168,76,0.15)] hover:bg-[rgba(201,168,76,0.15)] transition-all">
+              📋 Compartilhar
+            </button>
+          </div>
+
+          {/* Share modal */}
+          {showShare && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowShare(false)}>
+              <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+              <div className="relative glass-card max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+                <div className="text-center mb-4">
+                  <div className="text-2xl mb-2">📋</div>
+                  <h4 className="font-bold text-sm">Compartilhar Regras de Graduação</h4>
+                  <p className="text-[10px] text-[var(--white-muted)] mt-1">
+                    Envie este link para seus alunos verem os requisitos de cada faixa
+                  </p>
+                </div>
+
+                <div className="bg-black/40 border border-[var(--dark-border)] rounded-xl p-3 mb-4">
+                  <div className="text-[10px] text-[var(--gray)] mb-1">Link compartilhável</div>
+                  <div className="text-xs text-[var(--white-muted)] break-all font-mono bg-black/40 rounded-lg px-3 py-2 border border-[var(--dark-border)]">
+                    {shareLink || "Carregando..."}
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <button
+                      onClick={async () => {
+                        if (!shareLink) return
+                        setCopying(true)
+                        try {
+                          await navigator.clipboard.writeText(shareLink)
+                          toast.success("Link copiado!")
+                        } catch {
+                          toast.error("Erro ao copiar")
+                        }
+                        setCopying(false)
+                      }}
+                      disabled={copying}
+                      className="flex-1 py-2 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all"
+                    >
+                      {copying ? "Copiando..." : "📋 Copiar Link"}
+                    </button>
+                    {shareLink && (
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(
+                          `🥋 Confira as regras de graduação da academia!\n\n${shareLink}`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2 rounded-lg text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all text-center"
+                      >
+                        📲 WhatsApp
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-black/30 rounded-xl p-3">
+                  <h5 className="text-[10px] font-bold text-[var(--gold)] mb-2">👀 Prévia</h5>
+                  <div className="space-y-1">
+                    {["Branca", "Azul", "Roxa", "Marrom", "Preta"].map((faixa, i) => (
+                      <div key={faixa} className="flex items-center gap-2 text-[10px] text-[var(--white-muted)]">
+                        <span>{["⬜", "🟦", "🟪", "🟫", "⬛"][i]}</span>
+                        <span>{faixa}</span>
+                        {i === 0 && <span className="text-[8px] text-[var(--gold)]">→ Requisitos visíveis no link</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowShare(false)}
+                  className="w-full mt-4 py-2.5 rounded-xl text-xs font-bold border border-[var(--dark-border)] text-[var(--white-muted)] hover:text-white transition-all"
+                >
+                  Fechar
+                </button>
+              </div>
+            </div>
+          )}
 
           {showCriar && (
             <div className="bg-black/40 border border-[var(--dark-border)] rounded-2xl p-4 mb-4 space-y-3">
