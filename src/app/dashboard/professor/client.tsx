@@ -278,14 +278,12 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
             </div>
           )}
 
-          {/* Convite */}
-          <div className="glass-card">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-base tracking-tight">📲 Convidar Alunos</h3>
-            </div>
-            <p className="text-sm text-[var(--white-muted)] mb-3">Gere um link para compartilhar com novos alunos:</p>
-            <div className="flex gap-2 mb-2">
-              <input type="text" value={gerando ? "Gerando..." : inviteLink || "osstrack.app"} readOnly className="flex-1 px-4 py-3 rounded-xl bg-black/60 border border-[var(--dark-border)] text-white text-base" />
+          {/* Convite — centralizado */}
+          <div className="glass-card text-center">
+            <h3 className="font-bold text-base tracking-tight mb-1">📲 Convidar Alunos</h3>
+            <p className="text-sm text-[var(--white-muted)] mb-4 max-w-md mx-auto">Gere um link para compartilhar com novos alunos:</p>
+            <div className="flex gap-2 max-w-md mx-auto mb-3">
+              <input type="text" value={gerando ? "Gerando..." : inviteLink || "osstrack.app"} readOnly className="flex-1 px-4 py-3 rounded-xl bg-black/60 border border-[var(--dark-border)] text-white text-base text-center" />
               <button type="button" disabled={gerando} onClick={async () => {
                 setGerando(true)
                 try {
@@ -297,18 +295,18 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
                   toast.success("Link gerado com sucesso!")
                 } catch { toast.error("Erro ao gerar link") }
                 finally { setGerando(false) }
-              }} className="px-5 py-3 rounded-xl font-semibold text-sm btn-gold disabled:opacity-50 active:scale-[0.97]">
+              }} className="px-6 py-3 rounded-xl font-semibold text-sm btn-gold disabled:opacity-50 active:scale-[0.97] shrink-0">
                 {gerando ? "⏳" : "Gerar"}
               </button>
             </div>
             {inviteLink && (
-              <div className="flex gap-2">
+              <div className="flex gap-3 justify-center max-w-sm mx-auto">
                 <button type="button" onClick={() => { navigator.clipboard.writeText(inviteLink); setCopied(true); toast.success("Link copiado!"); setTimeout(() => setCopied(false), 2000) }}
-                  className="flex-1 py-3 rounded-xl text-sm font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all active:scale-[0.97]">
+                  className="flex-1 py-3 rounded-xl text-sm font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all active:scale-[0.97] max-w-[160px]">
                   {copied ? "✅ Copiado!" : "📋 Copiar"}
                 </button>
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
-                  className="flex-1 py-3 rounded-xl text-sm font-semibold text-center bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 transition-all active:scale-[0.97]">
+                  className="flex-1 py-3 rounded-xl text-sm font-semibold text-center bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 transition-all active:scale-[0.97] max-w-[160px]">
                   📲 WhatsApp
                 </a>
               </div>
