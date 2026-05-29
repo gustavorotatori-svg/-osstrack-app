@@ -98,6 +98,10 @@ model Pagamento {
 model Turma {
   id          String   @id @default(cuid())
   nome        String
+  descricao   String?
+  cor         String   @default("#C9A84C")
+  icone       String   @default("🥋")
+  categoria   String   @default("adulto")
   horario     String
   dias        String
   maxAlunos   Int      @default(30)

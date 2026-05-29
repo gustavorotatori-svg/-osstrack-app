@@ -10,12 +10,13 @@ const diaNomes = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "
 
 export default function ProfessorAgendaPage() {
   const [horarios, setHorarios] = useState<HorarioData[]>([])
+  const [turmas, setTurmas] = useState<{ id: string; nome: string; cor?: string; icone?: string }[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [selectedDay, setSelectedDay] = useState<number | null>(null)
   const [selectedHour, setSelectedHour] = useState<string>("")
 
-  const [turmaNome, setTurmaNome] = useState("")
+  const [turmaId, setTurmaId] = useState("")
   const [horaInicio, setHoraInicio] = useState("")
   const [horaFim, setHoraFim] = useState("")
   const [maxAlunos, setMaxAlunos] = useState(30)
@@ -30,7 +31,14 @@ export default function ProfessorAgendaPage() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetchHorarios() }, [fetchHorarios])
+  const fetchTurmas = useCallback(async () => {
+    try {
+      const res = await fetch("/api/turmas")
+      if (res.ok) setTurmas(await res.json())
+    } catch { /* ignore */ }
+  }, [])
+
+  useEffect(() => { fetchHorarios(); fetchTurmas() }, [fetchHorarios, fetchTurmas])
 
   function openAddForm(day: number, hour: string) {
     setSelectedDay(day)
@@ -38,7 +46,7 @@ export default function ProfessorAgendaPage() {
     setHoraInicio(hour)
     const [h] = hour.split(":").map(Number)
     setHoraFim(`${String(h + 1).padStart(2, "0")}:00`)
-    setTurmaNome("")
+    setTurmaId("")
     setMaxAlunos(30)
     setLocal("")
     setShowForm(true)
@@ -46,13 +54,16 @@ export default function ProfessorAgendaPage() {
 
   async function handleAddSlot(e: React.FormEvent) {
     e.preventDefault()
-    if (!horaInicio || !horaFim) return
+    if (!turmaId || !horaInicio || !horaFim) {
+      toast.error("Selecione a turma e preencha o horário")
+      return
+    }
     setSaving(true)
     const res = await fetch("/api/agenda/horarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        turmaNome: turmaNome || "Treino",
+        turmaId,
         professorId: "me",
         diaSemana: selectedDay ?? new Date().getDay(),
         horaInicio,
@@ -123,12 +134,22 @@ export default function ProfessorAgendaPage() {
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
                   Turma
                 </label>
-                <input
-                  value={turmaNome}
-                  onChange={(e) => setTurmaNome(e.target.value)}
+                <select
+                  value={turmaId}
+                  onChange={(e) => setTurmaId(e.target.value)}
                   className="input-premium w-full text-sm mt-1"
-                  placeholder="Ex: Jiu-Jitsu Adulto"
-                />
+                  required
+                >
+                  <option value="">Selecione...</option>
+                  {turmas.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.icone} {t.nome}
+                    </option>
+                  ))}
+                </select>
+                {turmas.length === 0 && (
+                  <p className="text-[10px] text-[var(--gray)] mt-1">Crie turmas em 📋 Turmas primeiro</p>
+                )}
               </div>
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
