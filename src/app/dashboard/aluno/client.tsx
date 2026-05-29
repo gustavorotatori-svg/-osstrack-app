@@ -70,14 +70,26 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
   }, [])
 
   async function fazerCheckin() {
+    if (!navigator.geolocation) { toast.error("Geolocalização não disponível neste dispositivo"); return }
     toast.loading("Verificando localização...")
-    try {
-      const res = await fetch("/api/presenca", { method: "POST", headers: { "Content-Type": "application/json" } })
-      if (!res.ok) { const err = await res.json(); throw new Error(err.error || "Erro") }
-      toast.success("✅ Check-in realizado com sucesso!")
-    } catch (e: any) {
-      toast.error(e.message || "Erro ao fazer check-in")
-    }
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const res = await fetch("/api/presenca", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
+          })
+          if (!res.ok) { const err = await res.json(); throw new Error(err.error || "Erro") }
+          toast.success("✅ Check-in realizado com sucesso!")
+          router.refresh()
+        } catch (e: any) {
+          toast.error(e.message || "Erro ao fazer check-in")
+        }
+      },
+      () => { toast.error("Permissão de localização negada. Ative o GPS nas configurações.") },
+      { enableHighAccuracy: true, timeout: 10000 }
+    )
   }
 
   const beltMap: Record<string, string> = { Branca: "white", Azul: "blue", Roxa: "purple", Marrom: "brown", Preta: "black" }

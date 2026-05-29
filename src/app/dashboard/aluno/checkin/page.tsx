@@ -79,19 +79,32 @@ export default function CheckinPage() {
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        setLocationStatus(`📍 Verificado: ${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`)
+        setLocationStatus(`📍 Verificando localização...`)
         setStatus("pending")
         setShowConfetti(true)
         setMotivational(frases[Math.floor(Math.random() * frases.length)])
         playCheckinSound()
 
         try {
-          await fetch("/api/presenca", {
+          const checkinRes = await fetch("/api/presenca", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ latitude: pos.coords.latitude, longitude: pos.coords.longitude }),
           })
-        } catch {}
+          if (!checkinRes.ok) {
+            const errData = await checkinRes.json()
+            setLocationStatus(`❌ ${errData.error || "Erro ao registrar presença"}`)
+            setStatus("idle")
+            setShowConfetti(false)
+            return
+          }
+          setLocationStatus("✅ Check-in registrado com segurança!")
+        } catch {
+          setLocationStatus("❌ Erro de conexão. Tente novamente.")
+          setStatus("idle")
+          setShowConfetti(false)
+          return
+        }
 
         try {
           const res = await fetch("/api/metasemanal", { method: "POST" })
@@ -146,7 +159,7 @@ export default function CheckinPage() {
 
         setTimeout(() => setStatus("done"), 2000)
       },
-      () => { setLocationStatus("❌ Não foi possível obter localização. Verifique as permissões.") },
+      () => { setLocationStatus("❌ Permissão de localização negada. Ative o GPS nas configurações do seu celular para fazer check-in.") },
       { enableHighAccuracy: true, timeout: 10000 }
     )
   }
