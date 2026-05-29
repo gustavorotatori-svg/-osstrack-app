@@ -101,9 +101,11 @@ const topNavItems: Record<string, { href: string; tkey: string; icon: (p: IconPr
     { href: "/dashboard/aluno/premium", tkey: "premium", icon: AwardIcon },
   ],
   professor: [
+    { href: "/dashboard/professor/notificacoes", tkey: "notificacoes", icon: BellIcon },
     { href: "/dashboard/professor/perfil", tkey: "perfil", icon: UserIcon },
   ],
   dono: [
+    { href: "/dashboard/dono/notificacoes", tkey: "notificacoes", icon: BellIcon },
     { href: "/dashboard/dono/perfil", tkey: "perfil", icon: UserIcon },
   ],
 }
@@ -182,10 +184,18 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           {topItems.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon
+            const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
                 className={`micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]"}`}>
-                <Icon active={isActive} />
+                <div className="relative">
+                  <Icon active={isActive} />
+                  {isNotif && notifCount > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center shadow-lg">
+                      {notifCount > 9 ? "9+" : notifCount}
+                    </span>
+                  )}
+                </div>
                 <span>{t(item.tkey)}</span>
               </button>
             )
@@ -235,10 +245,16 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           {topItems.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon
+            const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`p-2 rounded-lg transition-all ${isActive ? "text-[var(--gold)] bg-[rgba(201,168,76,0.08)]" : "text-[var(--gray)]"}`}>
+                className={`p-2 rounded-lg transition-all relative ${isActive ? "text-[var(--gold)] bg-[rgba(201,168,76,0.08)]" : "text-[var(--gray)]"}`}>
                 <Icon active={isActive} />
+                {isNotif && notifCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-red-500 text-white text-[7px] font-bold flex items-center justify-center shadow-lg">
+                    {notifCount > 9 ? "9+" : notifCount}
+                  </span>
+                )}
               </button>
             )
           })}
