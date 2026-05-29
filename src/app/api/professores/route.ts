@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 
 export async function GET(request: Request) {
+  const session = await getServerSession(authOptions)
   const { searchParams } = new URL(request.url)
-  const academiaId = searchParams.get("academiaId")
+  const academiaId = searchParams.get("academiaId") || session?.user?.academiaId
   const q = searchParams.get("q")
 
   if (!academiaId) return NextResponse.json([])

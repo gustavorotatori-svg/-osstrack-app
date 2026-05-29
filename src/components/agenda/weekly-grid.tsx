@@ -19,7 +19,7 @@ export type HorarioData = {
   horaFim: string
   maxAlunos: number
   local?: string | null
-  turma?: { id: string; nome: string } | null
+  turma?: { id: string; nome: string; cor?: string; icone?: string } | null
   professor?: { id: string; nome: string; faixa?: string } | null
   _count?: { agendamentos: number }
 }
@@ -96,17 +96,21 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
                 >
                   {classes.map((h) => {
                     const isBooked = bookedIds.includes(h.id)
+                    const cor = h.turma?.cor || "#C9A84C"
                     return (
                       <div
                         key={h.id}
-                        className={`absolute inset-0.5 rounded-lg flex flex-col items-center justify-center text-[10px] font-semibold leading-tight px-1 transition-all hover:scale-[1.02] ${
-                          isBooked
-                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                            : "bg-[rgba(201,168,76,0.08)] text-[var(--gold)] border border-[rgba(201,168,76,0.15)]"
-                        }`}
+                        className="absolute inset-0.5 rounded-lg flex flex-col items-center justify-center text-[10px] font-semibold leading-tight px-1 transition-all hover:scale-[1.02]"
+                        style={{
+                          backgroundColor: isBooked ? "rgba(16,185,129,0.1)" : `${cor}15`,
+                          borderColor: isBooked ? "rgba(16,185,129,0.2)" : `${cor}30`,
+                          borderWidth: 1,
+                          borderStyle: "solid",
+                          color: isBooked ? "#34d399" : cor,
+                        }}
                       >
                         <span className="truncate w-full text-center leading-tight">
-                          {h.turma?.nome || "Treino"}
+                          {h.turma?.icone || "🥋"} {h.turma?.nome || "Treino"}
                         </span>
                         {h.professor && (
                           <span className="text-[8px] opacity-60 truncate w-full text-center">

@@ -35,21 +35,17 @@ export default function DonoAgendaPage() {
 
   const fetchProfessores = useCallback(async () => {
     try {
-      const res = await fetch("/api/dono/alunos")
-      if (res.ok) {
-        const data = await res.json()
-        setProfessores(data.filter((u: any) => u.role === "professor"))
-      }
+      const res = await fetch("/api/professores")
+      if (res.ok) setProfessores(await res.json())
+      else setProfessores([])
     } catch { /* ignore */ }
   }, [])
 
   const fetchTurmas = useCallback(async () => {
     try {
-      const res = await fetch("/api/dono/alunos") // reuse
-      if (res.ok) {
-        const data = await res.json()
-        setTurmas(data.filter((u: any) => u.role === "professor"))
-      }
+      const res = await fetch("/api/turmas")
+      if (res.ok) setTurmas(await res.json())
+      else setTurmas([])
     } catch { /* ignore */ }
   }, [])
 
@@ -57,19 +53,6 @@ export default function DonoAgendaPage() {
     fetchHorarios()
     fetchProfessores()
     fetchTurmas()
-    if (professores.length === 0) {
-      setProfessores([
-        { id: "p1", nome: "Marcos Silva", faixa: "Roxa" },
-        { id: "p2", nome: "Rafael Costa", faixa: "Preta" },
-      ])
-    }
-    if (turmas.length === 0) {
-      setTurmas([
-        { id: "t1", nome: "Adulto" },
-        { id: "t2", nome: "Infantil" },
-        { id: "t3", nome: "Iniciante" },
-      ])
-    }
   }, [])
 
   function openAddForm(day: number, hour: string) {

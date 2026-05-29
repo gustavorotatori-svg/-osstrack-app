@@ -53,6 +53,9 @@ function ShieldIcon({ active }: IconProps) {
 function HelpIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
 }
+function ListIcon({ active }: IconProps) {
+  return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
+}
 function BookIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
 }
@@ -76,10 +79,12 @@ const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps
     { href: "/dashboard/professor/presencas", tkey: "presencas", icon: CheckIcon },
     { href: "/dashboard/professor/alunos", tkey: "alunos", icon: UsersIcon },
     { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
+    { href: "/dashboard/professor/turmas", tkey: "turmas", icon: ListIcon },
     { href: "/dashboard/professor/graduacoes", tkey: "graduacoes", icon: AwardIcon },
   ],
   dono: [
     { href: "/dashboard/dono", tkey: "inicio", icon: HomeIcon },
+    { href: "/dashboard/dono/turmas", tkey: "turmas", icon: ListIcon },
     { href: "/dashboard/dono/alunos", tkey: "alunos", icon: UsersIcon },
     { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/dono/financeiro", tkey: "financeiro", icon: CheckIcon },
