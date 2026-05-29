@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
@@ -8,6 +8,7 @@ import { WhatsAppButton } from "@/components/ui/whatsapp-button"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Celebration } from "@/components/ui/celebration"
+import { ConviteSection } from "@/components/convites/convite-section"
 import { getBeltEmoji } from "@/lib/utils"
 
 type Props = {
@@ -25,10 +26,6 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
   const [showPromote, setShowPromote] = useState<string | null>(null)
   const [confirmando, setConfirmando] = useState<string | null>(null)
   const [promovendoAgora, setPromovendoAgora] = useState(false)
-  const [inviteLink, setInviteLink] = useState("")
-  const [whatsappLink, setWhatsappLink] = useState("")
-  const [copied, setCopied] = useState(false)
-  const [gerando, setGerando] = useState(false)
   const [celebrate, setCelebrate] = useState<{ show: boolean; title: string }>({ show: false, title: "" })
 
   async function confirmarPresenca(presencaId: string, status: string) {
@@ -278,40 +275,7 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
             </div>
           )}
 
-          {/* Convite — centralizado */}
-          <div className="glass-card text-center">
-            <h3 className="font-bold text-base tracking-tight mb-1">📲 Convidar Alunos</h3>
-            <p className="text-sm text-[var(--white-muted)] mb-4 max-w-md mx-auto">Gere um link para compartilhar com novos alunos:</p>
-            <div className="flex gap-2 max-w-md mx-auto mb-3">
-              <input type="text" value={gerando ? "Gerando..." : inviteLink || "osstrack.app"} readOnly className="flex-1 px-4 py-3 rounded-xl bg-black/60 border border-[var(--dark-border)] text-white text-base text-center" />
-              <button type="button" disabled={gerando} onClick={async () => {
-                setGerando(true)
-                try {
-                  const res = await fetch("/api/convites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tipo: "aluno" }) })
-                  if (!res.ok) throw new Error()
-                  const d = await res.json()
-                  setInviteLink(d.link)
-                  setWhatsappLink(d.whatsapp)
-                  toast.success("Link gerado com sucesso!")
-                } catch { toast.error("Erro ao gerar link") }
-                finally { setGerando(false) }
-              }} className="px-6 py-3 rounded-xl font-semibold text-sm btn-gold disabled:opacity-50 active:scale-[0.97] shrink-0">
-                {gerando ? "⏳" : "Gerar"}
-              </button>
-            </div>
-            {inviteLink && (
-              <div className="flex gap-3 justify-center max-w-sm mx-auto">
-                <button type="button" onClick={() => { navigator.clipboard.writeText(inviteLink); setCopied(true); toast.success("Link copiado!"); setTimeout(() => setCopied(false), 2000) }}
-                  className="flex-1 py-3 rounded-xl text-sm font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all active:scale-[0.97] max-w-[160px]">
-                  {copied ? "✅ Copiado!" : "📋 Copiar"}
-                </button>
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
-                  className="flex-1 py-3 rounded-xl text-sm font-semibold text-center bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 transition-all active:scale-[0.97] max-w-[160px]">
-                  📲 WhatsApp
-                </a>
-              </div>
-            )}
-          </div>
+          <ConviteSection tipo="aluno" />
         </div>
       </PageTransition>
     </DashboardShell>

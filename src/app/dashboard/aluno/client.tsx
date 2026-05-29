@@ -6,6 +6,7 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Celebration } from "@/components/ui/celebration"
+import { ConviteSection } from "@/components/convites/convite-section"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { DailyMissions } from "@/components/gamification/daily-missions"
 import { PremiumBanner } from "@/components/ui/premium-lock"
@@ -309,6 +310,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               </div>
             </div>
           )}
+
+          {/* Convidar Amigo */}
+          <ConviteSection tipo="amigo" />
 
           {/* Tab: Conquistas */}
           {tab === "conquistas" && (

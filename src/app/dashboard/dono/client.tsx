@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
+import { ConviteSection } from "@/components/convites/convite-section"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type Props = {
@@ -192,6 +193,10 @@ export function OwnerDashboardClient({ academia, stats, alunos, presencas, gradu
               )}
             </div>
           )}
+
+          {/* Convites */}
+          <ConviteSection tipo="professor" />
+          <ConviteSection tipo="aluno" />
         </div>
       </PageTransition>
     </DashboardShell>
