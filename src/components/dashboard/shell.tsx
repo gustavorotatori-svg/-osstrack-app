@@ -162,12 +162,12 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {showTour && <OnboardingTour role={role} onComplete={completeTour} />}
 
       {/* DESKTOP SIDEBAR */}
-      <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--black)]/95 backdrop-blur-2xl border-r border-[var(--dark-border)] flex-col">
-        <div className="flex items-center gap-3 px-5 h-16 border-b border-[var(--dark-border)]">
-          <div className="w-8 h-8 gradient-gold rounded-lg flex items-center justify-center shrink-0 animate-float"><DumbbellIcon className="w-4 h-4 text-black" /></div>
+      <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--bg)] border-r border-[var(--border)] flex-col">
+        <div className="flex items-center gap-3 px-5 h-16 border-b border-[var(--border)]">
+          <div className="w-8 h-8 bg-[var(--red)] rounded flex items-center justify-center shrink-0"><DumbbellIcon className="w-4 h-4 text-black" /></div>
           <div>
             <span className="font-bold text-sm">OssTrack</span>
-            <span className="badge-gold text-[9px] block mt-0.5 w-fit">{t(role)}</span>
+            <span className="badge badge-red text-[9px] block mt-0.5 w-fit">{t(role)}</span>
           </div>
         </div>
 
@@ -176,24 +176,24 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
             const Icon = item.icon
             return (
-              <button key={item.href} onClick={() => router.push(item.href)}
-                className={`sidebar-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium ${isActive ? "active text-[var(--gold)]" : "text-[var(--white-muted)] hover:text-white"}`}>
+                <button key={item.href} onClick={() => router.push(item.href)}
+                className={`sidebar-nav-item w-full ${isActive ? "active" : ""}`}>
                 <Icon active={isActive} />
-                <span>{t(item.tkey)}</span>
+                <span className="text-sm font-medium">{t(item.tkey)}</span>
               </button>
             )
           })}
         </div>
 
         {/* Sidebar footer: perfil + extras */}
-        <div className="px-3 py-2 border-t border-[var(--dark-border)] space-y-0.5">
+        <div className="px-3 py-2 border-t border-[var(--border)] space-y-0.5">
           {topItems.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon
             const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]"}`}>
+                className={`sidebar-nav-item w-full ${isActive ? "active" : ""}`}>
                 <div className="relative">
                   <Icon active={isActive} />
                   {isNotif && notifCount > 0 && (
@@ -202,50 +202,50 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                     </span>
                   )}
                 </div>
-                <span>{t(item.tkey)}</span>
+                <span className="text-xs font-medium">{t(item.tkey)}</span>
               </button>
             )
           })}
 
-          <div className="h-px bg-[var(--dark-border)] my-1.5" />
+          <div className="h-px bg-[var(--border)] my-1.5" />
 
           {utilityLinks.map((link) => {
             const Icon = link.icon
             return link.external ? (
               <a key={t(link.tkey)} href={link.href} target="_blank" rel="noopener noreferrer"
-                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+                className="min-h-[44px] w-full flex items-center gap-3 px-4 py-3 text-xs text-[var(--text-secondary)] hover:text-[var(--text)]">
                 <Icon active={false} />
                 <span>{t(link.tkey)}</span>
                 <ExternalIcon />
               </a>
             ) : (
               <button key={t(link.tkey)} onClick={() => router.push(link.href)}
-                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+                className="min-h-[44px] w-full flex items-center gap-3 px-4 py-3 text-xs text-[var(--text-secondary)] hover:text-[var(--text)]">
                 <Icon active={false} />
                 <span>{t(link.tkey)}</span>
               </button>
             )
           })}
 
-          <div className="h-px bg-[var(--dark-border)] my-1.5" />
+          <div className="h-px bg-[var(--border)] my-1.5" />
 
           <button onClick={toggleTheme}
-            className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+            className="min-h-[44px] w-full flex items-center gap-3 px-4 py-3 text-xs text-[var(--text-secondary)] hover:text-[var(--text)]">
             {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />} <span>{t(theme === "dark" ? "modoClaro" : "modoEscuro")}</span>
           </button>
           <button onClick={() => signOut({ callbackUrl: "/" })}
-            className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)]">
+            className="min-h-[44px] w-full flex items-center gap-3 px-4 py-3 text-xs text-[var(--text-muted)] hover:text-[var(--red)]">
             <LogOutIcon className="w-4 h-4" /> <span>{t("sair")}</span>
           </button>
         </div>
       </div>
 
       {/* MOBILE HEADER */}
-      <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--black)]/90 backdrop-blur-xl border-b border-[var(--dark-border)] sticky top-0 z-50">
+      <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--bg)]/90 sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 gradient-gold rounded-lg flex items-center justify-center animate-float"><DumbbellIcon className="w-3.5 h-3.5 text-black" /></div>
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-[var(--red)]"><DumbbellIcon className="w-3.5 h-3.5 text-white" /></div>
           <span className="font-bold text-sm">OssTrack</span>
-          <span className="badge-gold text-[9px]">{t(role)}</span>
+          <span className="badge-red text-[9px]">{t(role)}</span>
         </div>
         <div className="flex items-center gap-1">
           {topItems.map((item) => {
@@ -254,7 +254,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`p-2 rounded-lg transition-all relative ${isActive ? "text-[var(--gold)] bg-[rgba(201,168,76,0.08)]" : "text-[var(--gray)]"}`}>
+                className={`p-2 rounded-lg transition-all relative ${isActive ? "text-[var(--red)] bg-[var(--red-dim)]" : "text-[var(--text-muted)]"}`}>
                 <Icon active={isActive} />
                 {isNotif && notifCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-red-500 text-white text-[7px] font-bold flex items-center justify-center shadow-lg">
@@ -264,7 +264,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
               </button>
             )
           })}
-          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="p-2 rounded-lg text-[var(--gray)] text-sm">
+          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="p-2 rounded-lg text-[var(--text-muted)] text-sm">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               {showMobileMenu ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>}
             </svg>
@@ -276,26 +276,26 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {showMobileMenu && (
         <div className="fixed inset-0 z-40 md:hidden" onClick={() => setShowMobileMenu(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-          <div className="absolute right-3 top-16 w-56 glass-card py-2" onClick={e => e.stopPropagation()}>
+          <div className="absolute right-3 top-16 w-56 surface py-2" onClick={e => e.stopPropagation()}>
             {utilityLinks.map((link) => {
               const Icon = link.icon
               return link.external ? (
                 <a key={t(link.tkey)} href={link.href} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text)]">
                   <Icon active={false} /><span>{t(link.tkey)}</span><ExternalIcon />
                 </a>
               ) : (
                 <button key={t(link.tkey)} onClick={() => { router.push(link.href); setShowMobileMenu(false) }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text)]">
                   <Icon active={false} /><span>{t(link.tkey)}</span>
                 </button>
               )
             })}
-            <div className="h-px bg-[var(--dark-border)] my-1" />
-            <button onClick={toggleTheme} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+            <div className="h-px bg-[var(--border)] my-1" />
+            <button onClick={toggleTheme} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-secondary)] hover:text-[var(--text)]">
               {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />} <span>{t(theme === "dark" ? "modoClaro" : "modoEscuro")}</span>
             </button>
-            <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-red-400">
+            <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-muted)] hover:text-[var(--red)]">
               <LogOutIcon className="w-4 h-4" /> <span>{t("sair")}</span>
             </button>
           </div>
@@ -312,15 +312,15 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       </div>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--black)]/95 backdrop-blur-2xl border-t border-[var(--dark-border)] flex items-center justify-around px-1 py-1 pb-[max(4px,env(safe-area-inset-bottom))]">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--bg)]/95 border-t border-[var(--border)] flex items-center justify-around px-1 py-1 pb-[max(4px,env(safe-area-inset-bottom))]">
         {items.slice(0, 5).map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
           const Icon = item.icon
           return (
             <button key={item.href} onClick={() => router.push(item.href)}
-              className={`micro-press flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl min-w-[56px] ${isActive ? "text-[var(--gold)]" : "text-[var(--gray)]"}`}>
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 min-w-[56px] ${isActive ? "text-[var(--red)]" : "text-[var(--text-muted)]"}`}>
               <div className={isActive ? "scale-110 transition-transform" : ""}><Icon active={isActive} /></div>
-              <span className={`text-[9px] font-medium ${isActive ? "text-[var(--gold)]" : ""}`}>{t(item.tkey)}</span>
+              <span className={`text-[9px] font-medium ${isActive ? "text-[var(--red)]" : ""}`}>{t(item.tkey)}</span>
             </button>
           )
         })}

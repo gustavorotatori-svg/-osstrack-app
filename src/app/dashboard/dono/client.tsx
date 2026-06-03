@@ -67,46 +67,37 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
   return (
     <DashboardShell role="dono">
       <PageTransition>
-        <div className="space-y-3">
+        <div className="max-w-5xl mx-auto space-y-4">
+
           {/* Hero */}
-          <div className="glass-card-gold p-6 text-center relative overflow-hidden">
-            <div className="absolute top-[-30px] right-[-30px] w-28 h-28 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-            <DumbbellIcon className="w-9 h-9 mx-auto mb-2 text-[var(--gold)]" />
-            <h2 className="text-xl font-extrabold tracking-tight">{academia.nome}</h2>
-            <p className="text-xs text-[var(--white-muted)] mt-1.5 flex items-center justify-center gap-1">
-              <Crown className="w-3.5 h-3.5 text-[var(--gold)]" /> {academia.responsavel}
-            </p>
+          <div className="text-center py-4">
+            <h1 className="text-2xl font-extrabold tracking-tight">{academia.nome}</h1>
+            <p className="text-xs text-[var(--text-secondary)] mt-1">{academia.responsavel}</p>
           </div>
 
-          {/* Stats reais */}
-          <div className="grid grid-cols-2 gap-2 enter-stagger">
-            <div className="stat-card">
-              <UsersIcon className="w-6 h-6 mb-1 mx-auto text-[var(--gold)]" />
-              <div className="text-3xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={stats.totalAlunos} /></div>
-              <div className="text-xs text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("alunos")}</div>
+          {/* Stats */}
+          <div className="grid grid-cols-2 gap-4 py-2">
+            <div className="stat">
+              <div className="stat-value"><AnimatedCounter value={stats.totalAlunos} /></div>
+              <div className="stat-label">{t("alunos")}</div>
             </div>
-            <div className="stat-card">
-              <GraduationIcon className="w-6 h-6 mb-1 mx-auto text-emerald-500" />
-              <div className="text-3xl font-extrabold text-emerald-500"><AnimatedCounter value={stats.totalProfessores} /></div>
-              <div className="text-xs text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("professores")}</div>
+            <div className="stat">
+              <div className="stat-value"><AnimatedCounter value={stats.totalProfessores} /></div>
+              <div className="stat-label">{t("professores")}</div>
             </div>
-            <div className="stat-card">
-              <CheckIcon className="w-6 h-6 mb-1 mx-auto text-[var(--gold)]" />
-              <div className="text-3xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={stats.totalPresencas} /></div>
-              <div className="text-xs text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("presencas")}</div>
+            <div className="stat">
+              <div className="stat-value"><AnimatedCounter value={stats.totalPresencas} /></div>
+              <div className="stat-label">{t("presencas")}</div>
             </div>
-            <div className="stat-card">
-              <ChartIcon className="w-6 h-6 mb-1 mx-auto text-blue-500" />
-              <div className="text-3xl font-extrabold text-blue-500"><AnimatedCounter value={presencasPorMes} /></div>
-              <div className="text-xs text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("esteMes")}</div>
+            <div className="stat">
+              <div className="stat-value"><AnimatedCounter value={presencasPorMes} /></div>
+              <div className="stat-label">{t("esteMes")}</div>
             </div>
           </div>
 
-          {/* Gráfico de presenças mensais */}
-          <div className="glass-card">
-            <h3 className="font-bold text-base tracking-tight mb-3 flex items-center gap-1.5">
-              <TrendingUp className="w-4 h-4 text-[var(--gold)]" /> {t("presencasPorMes")}
-            </h3>
+          {/* Monthly chart */}
+          <div className="surface p-5">
+            <div className="section-header">{t("presencasPorMes")}</div>
             <div className="flex items-end gap-2 h-20">
               {presencasMensais.map((p) => (
                 <div key={p.mes} className="flex-1 flex flex-col items-center gap-1">
@@ -114,12 +105,12 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                     className="w-full rounded-t-lg transition-all"
                     style={{
                       height: `${Math.max(4, (p.total / maxPresencasMes) * 64)}px`,
-                      background: "linear-gradient(180deg, var(--gold), var(--gold-dark))",
-                      opacity: p.total > 0 ? 0.8 : 0.2,
+                      background: `var(--red)`,
+                      opacity: p.total > 0 ? 0.7 : 0.15,
                     }}
                   />
-                  <span className="text-[8px] text-[var(--gray)]">{p.mes}</span>
-                  <span className="text-[9px] font-bold text-[var(--white-muted)]">{p.total}</span>
+                  <span className="text-[8px] text-[var(--text-muted)]">{p.mes}</span>
+                  <span className="text-[9px] font-bold text-[var(--text)]">{p.total}</span>
                 </div>
               ))}
             </div>
@@ -149,12 +140,10 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
             <div className="space-y-3">
               <MestreDoMesCard />
 
-              <div className="glass-card">
-                <h3 className="font-bold text-base tracking-tight mb-3 flex items-center gap-1.5">
-                  <DumbbellIcon className="w-4 h-4 text-[var(--gold)]" /> {t("alunosPorCategoria")}
-                </h3>
+              <div className="surface p-5">
+                <div className="section-header">{t("alunosPorCategoria")}</div>
                 {alunosPorCategoria.length === 0 ? (
-                  <p className="text-sm text-[var(--white-muted)] text-center py-4">{t("nenhumAluno")}</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">{t("nenhumAluno")}</p>
                 ) : (
                   <div className="space-y-2">
                     {alunosPorCategoria.map((cat) => {
@@ -162,10 +151,10 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                       return (
                         <div key={cat.categoria} className="flex items-center gap-3">
                           <span className="text-xs font-semibold w-20 shrink-0 capitalize">{cat.categoria}</span>
-                          <div className="progress-gold flex-1">
-                            <div className="progress-gold-fill" style={{ width: `${pct}%` }} />
+                          <div className="progress flex-1">
+                            <div className="progress-fill" style={{ width: `${pct}%` }} />
                           </div>
-                          <span className="text-xs font-semibold text-[var(--white-muted)] w-10 text-right">{cat.total}</span>
+                          <span className="text-xs font-semibold text-[var(--text-secondary)] w-10 text-right">{cat.total}</span>
                         </div>
                       )
                     })}
@@ -173,12 +162,10 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                 )}
               </div>
 
-              <div className="glass-card">
-                <h3 className="font-bold text-base tracking-tight mb-3 flex items-center gap-1.5">
-                  <GraduationIcon className="w-4 h-4 text-[var(--gold)]" /> {t("alunosPorFaixa")}
-                </h3>
+              <div className="surface p-5">
+                <div className="section-header">{t("alunosPorFaixa")}</div>
                 {alunos.length === 0 ? (
-                  <p className="text-sm text-[var(--white-muted)] text-center py-6">{t("nenhumAluno")}</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-6">{t("nenhumAluno")}</p>
                 ) : (
                   <div className="space-y-2">
                     {["Branca", "Azul", "Roxa", "Marrom", "Preta"].map((faixa) => {
@@ -188,10 +175,10 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                       return (
                         <div key={faixa} className="flex items-center gap-3">
                           <span className="text-xs font-semibold w-16 shrink-0">{getBeltEmoji(faixa)} {faixa}</span>
-                          <div className="progress-gold flex-1">
-                            <div className="progress-gold-fill" style={{ width: `${pct}%` }} />
+                          <div className="progress flex-1">
+                            <div className="progress-fill-gold" style={{ width: `${pct}%` }} />
                           </div>
-                          <span className="text-xs font-semibold text-[var(--white-muted)] w-10 text-right">{count}</span>
+                          <span className="text-xs font-semibold text-[var(--text-secondary)] w-10 text-right">{count}</span>
                         </div>
                       )
                     })}
@@ -199,25 +186,20 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                 )}
               </div>
 
-              <div className="glass-card">
-                <h3 className="font-bold text-base tracking-tight mb-3 flex items-center gap-1.5">
-                  <ClipboardIcon className="w-4 h-4 text-[var(--gold)]" /> {t("presencasRecentes")}
-                </h3>
+              <div className="surface p-5">
+                <div className="section-header">{t("presencasRecentes")}</div>
                 {presencas.length === 0 ? (
-                  <div className="empty-premium">
-                    <div className="empty-premium-icon">
-                      <ClipboardIcon className="w-6 h-6 text-[var(--gold)]" />
-                    </div>
-                    <div className="empty-premium-title">{t("nenhumaPresenca")}</div>
-                    <div className="empty-premium-desc">{t("descEmptyPresencas")}</div>
+                  <div className="text-center py-8">
+                    <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaPresenca")}</p>
+                    <p className="text-xs text-[var(--text-muted)] mt-1">{t("descEmptyPresencas")}</p>
                   </div>
                 ) : (
                   <div className="space-y-0.5">
                     {presencas.slice(0, 10).map((p) => (
-                      <div key={p.id} className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-[var(--dark-border)]/30 transition-all">
+                      <div key={p.id} className="flex items-center gap-3 py-2.5">
                         <div className="flex-1 min-w-0">
                           <div className="text-base font-semibold truncate">{p.aluno}</div>
-                          <div className="text-sm text-[var(--white-muted)]">{new Date(p.data).toLocaleDateString("pt-BR")} às {p.horario}</div>
+                          <div className="text-sm text-[var(--text-secondary)]">{new Date(p.data).toLocaleDateString("pt-BR")} às {p.horario}</div>
                         </div>
                         <span className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold ${
                           p.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
@@ -234,30 +216,25 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
 
           {/* Tab: Alunos */}
           {tab === "alunos" && (
-            <div className="glass-card">
+            <div className="surface p-5">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-base tracking-tight flex items-center gap-1.5">
-                  <UsersIcon className="w-4 h-4 text-[var(--gold)]" /> {t("todosAlunos")}
-                </h3>
-                <span className="tag-premium">{alunos.length} {t("total")}</span>
+                <div className="section-header mb-0">{t("todosAlunos")}</div>
+                <span className="badge">{alunos.length} {t("total")}</span>
               </div>
               {alunos.length === 0 ? (
-                <div className="empty-premium">
-                  <div className="empty-premium-icon">
-                    <UsersIcon className="w-6 h-6 text-[var(--gold)]" />
-                  </div>
-                  <div className="empty-premium-title">{t("nenhumAlunoAinda")}</div>
-                  <div className="empty-premium-desc">{t("descEmptyAlunos")}</div>
+                <div className="text-center py-8">
+                  <p className="text-sm text-[var(--text-secondary)]">{t("nenhumAlunoAinda")}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{t("descEmptyAlunos")}</p>
                 </div>
               ) : (
                 <div className="grid-modern">
                   {alunos.map((a) => (
-                    <div key={a.id} className="glass-card text-center hover-lift">
+                    <div key={a.id} className="surface p-4 text-center">
                       <Avatar name={a.nome} faixa={a.faixa} size={44} />
                       <div className="text-base font-semibold mt-1.5 truncate">{a.nome}</div>
-                      <div className="text-xs text-[var(--white-muted)]">{a.faixa} · {'★'.repeat(a.grau + 1)}</div>
-                      <span className={`inline-block mt-1 text-[10px] text-[var(--gray)] capitalize`}>{a.categoria}</span>
-                      <span className={`inline-block mt-1 text-xs font-semibold px-3 py-1 rounded-full ${getBeltColor(a.faixa)}`}>
+                      <div className="text-xs text-[var(--text-secondary)]">{a.faixa} · {'★'.repeat(a.grau + 1)}</div>
+                      <span className="inline-block mt-1 text-[10px] text-[var(--text-muted)] capitalize">{a.categoria}</span>
+                      <span className={`inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full ${getBeltColor(a.faixa)}`}>
                         {getBeltEmoji(a.faixa)} {a.faixa}
                       </span>
                     </div>
@@ -269,25 +246,20 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
 
           {/* Tab: Graduações */}
           {tab === "graduacoes" && (
-            <div className="glass-card">
-              <h3 className="font-bold text-base tracking-tight mb-4 flex items-center gap-1.5">
-                <GraduationIcon className="w-4 h-4 text-[var(--gold)]" /> {t("regrasGraduacao")}
-              </h3>
+            <div className="surface p-5">
+              <div className="section-header">{t("regrasGraduacao")}</div>
               {graduacoes.length === 0 ? (
-                <div className="empty-premium">
-                  <div className="empty-premium-icon">
-                    <GraduationIcon className="w-6 h-6 text-[var(--gold)]" />
-                  </div>
-                  <div className="empty-premium-title">{t("nenhumaRegra")}</div>
-                  <div className="empty-premium-desc">{t("descEmptyGraduacoes")}</div>
+                <div className="text-center py-8">
+                  <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaRegra")}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{t("descEmptyGraduacoes")}</p>
                 </div>
               ) : (
                 <div className="grid-modern">
                   {graduacoes.map((g) => (
-                    <div key={g.faixa} className="glass-card">
+                    <div key={g.faixa} className="surface p-4">
                       <div className="font-bold text-base">{getBeltEmoji(g.faixa)} {g.faixa}</div>
                       <div className="space-y-1 mt-2">
-                        <div className="text-sm text-[var(--white-muted)]">{g.graus} graus · {g.aulasPorGrau} aulas/grau</div>
+                        <div className="text-sm text-[var(--text-secondary)]">{g.graus} graus · {g.aulasPorGrau} aulas/grau</div>
                         {g.aulasProxFx && (
                           <div className="text-sm text-[var(--gold)] font-semibold">{g.aulasProxFx} aulas p/ próx. faixa</div>
                         )}
@@ -302,50 +274,48 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
           {/* Tab: Prospectos */}
           {tab === "prospectos" && (
             <div className="space-y-3">
-              <div className="glass-card">
-                <h3 className="font-bold text-base tracking-tight mb-3 flex items-center gap-1.5">
-                  <Target className="w-4 h-4 text-[var(--gold)]" /> Funil de Prospecção
-                </h3>
+              <div className="surface p-5">
+                <div className="section-header">Funil de Prospecção</div>
                 {!prospectStats ? (
-                  <p className="text-sm text-[var(--white-muted)] text-center py-4">Carregando...</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
                 ) : (
                   <>
                     <div className="grid grid-cols-4 gap-2 mb-4">
-                      <div className="stat-card">
-                        <div className="text-2xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={prospectStats.stats.total} /></div>
-                        <div className="text-[10px] text-[var(--white-muted)] uppercase">Total</div>
+                      <div className="stat">
+                        <div className="stat-value text-2xl"><AnimatedCounter value={prospectStats.stats.total} /></div>
+                        <div className="stat-label">Total</div>
                       </div>
-                      <div className="stat-card">
-                        <div className="text-2xl font-extrabold text-emerald-500"><AnimatedCounter value={prospectStats.stats.usados} /></div>
-                        <div className="text-[10px] text-[var(--white-muted)] uppercase">Convertidos</div>
+                      <div className="stat">
+                        <div className="stat-value text-2xl text-emerald-500"><AnimatedCounter value={prospectStats.stats.usados} /></div>
+                        <div className="stat-label">Convertidos</div>
                       </div>
-                      <div className="stat-card">
-                        <div className="text-2xl font-extrabold text-yellow-500"><AnimatedCounter value={prospectStats.stats.pendentes} /></div>
-                        <div className="text-[10px] text-[var(--white-muted)] uppercase">Pendentes</div>
+                      <div className="stat">
+                        <div className="stat-value text-2xl text-yellow-500"><AnimatedCounter value={prospectStats.stats.pendentes} /></div>
+                        <div className="stat-label">Pendentes</div>
                       </div>
-                      <div className="stat-card">
-                        <div className="text-2xl font-extrabold text-blue-500">{prospectStats.stats.conversao}%</div>
-                        <div className="text-[10px] text-[var(--white-muted)] uppercase">Conversão</div>
+                      <div className="stat">
+                        <div className="stat-value text-2xl text-blue-500">{prospectStats.stats.conversao}%</div>
+                        <div className="stat-label">Conversão</div>
                       </div>
                     </div>
 
                     {prospectStats.porTipo.length > 0 && (
                       <div className="space-y-2 mb-4">
-                        <div className="text-xs font-semibold text-[var(--white-muted)] uppercase tracking-wide">Convites por tipo</div>
+                        <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wide">Convites por tipo</div>
                         {prospectStats.porTipo.map((t) => (
                           <div key={t.tipo} className="flex items-center gap-3">
                             <span className="text-xs font-semibold w-20 shrink-0 capitalize">{t.tipo}</span>
-                            <div className="progress-gold flex-1">
-                              <div className="progress-gold-fill" style={{ width: `${(t.total / prospectStats.stats.total) * 100}%` }} />
+                            <div className="progress flex-1">
+                              <div className="progress-fill" style={{ width: `${(t.total / prospectStats.stats.total) * 100}%` }} />
                             </div>
-                            <span className="text-xs font-semibold text-[var(--white-muted)]">{t.total}</span>
+                            <span className="text-xs font-semibold text-[var(--text-secondary)]">{t.total}</span>
                           </div>
                         ))}
                       </div>
                     )}
 
-                    <div className="text-xs text-[var(--white-muted)] p-3 rounded-xl bg-[rgba(201,168,76,0.06)] border border-[rgba(201,168,76,0.1)] flex items-start gap-2">
-                      <Target className="w-3.5 h-3.5 text-[var(--gold)] mt-0.5 shrink-0" />
+                    <div className="text-xs text-[var(--text-secondary)] p-3 rounded-lg bg-[var(--red-dim)] border border-[var(--red)]/20 flex items-start gap-2">
+                      <Target className="w-3.5 h-3.5 text-[var(--red)] mt-0.5 shrink-0" />
                       <span>Compartilhe o link de convite com prospects. Quando eles se cadastrarem, serão contabilizados como convertidos.</span>
                     </div>
                   </>
@@ -353,17 +323,17 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
               </div>
 
               {prospectStats && prospectStats.ultimos.length > 0 && (
-                <div className="glass-card">
-                  <h3 className="font-bold text-base tracking-tight mb-3">Últimos Convites</h3>
+                <div className="surface p-5">
+                  <div className="section-header">Últimos Convites</div>
                   <div className="space-y-1">
                     {prospectStats.ultimos.map((c) => (
-                      <div key={c.id} className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-[var(--dark-border)]/30">
+                      <div key={c.id} className="flex items-center justify-between py-2">
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${c.usado ? "bg-emerald-500" : c.expiresAt && new Date(c.expiresAt) < new Date() ? "bg-red-500" : "bg-yellow-500"}`} />
                           <span className="text-xs font-semibold capitalize">{c.tipo}</span>
-                          <span className="text-[10px] text-[var(--gray)]">{c.codigo}</span>
+                          <span className="text-[10px] text-[var(--text-muted)]">{c.codigo}</span>
                         </div>
-                        <span className="text-[10px] text-[var(--white-muted)]">
+                        <span className="text-[10px] text-[var(--text-secondary)]">
                           {new Date(c.createdAt).toLocaleDateString("pt-BR")}
                         </span>
                       </div>
@@ -380,27 +350,25 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
           {/* Tab: Ranking */}
           {tab === "ranking" && (
             <div className="space-y-3">
-              <div className="glass-card">
+              <div className="surface p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-base tracking-tight flex items-center gap-1.5">
-                    <AwardIcon className="w-4 h-4 text-[var(--gold)]" /> {t("configRanking")}
-                  </h3>
+                  <div className="section-header mb-0">{t("configRanking")}</div>
                 </div>
-                <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-[var(--dark-border)]/30">
+                <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--surface)] border border-[var(--border)]">
                   <div>
                     <div className="text-sm font-semibold">{t("visivelAlunos")}</div>
-                    <div className="text-xs text-[var(--white-muted)]">{t("descRanking")}</div>
+                    <div className="text-xs text-[var(--text-secondary)]">{t("descRanking")}</div>
                   </div>
                   <button
                     onClick={toggleRanking}
                     disabled={toggling}
-                    className={`relative w-12 h-7 rounded-full transition-all ${rankingVisivel ? "bg-emerald-600" : "bg-[var(--dark-border)]"}`}
+                    className={`relative w-12 h-7 rounded-full transition-all ${rankingVisivel ? "bg-emerald-600" : "bg-[var(--border)]"}`}
                   >
                     <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-all ${rankingVisivel ? "left-5.5" : "left-0.5"}`} />
                   </button>
                 </div>
-                <div className="mt-3 text-xs text-[var(--white-muted)] p-3 rounded-xl bg-[rgba(201,168,76,0.06)] border border-[rgba(201,168,76,0.1)] flex items-start gap-2">
-                  <HelpCircle className="w-3.5 h-3.5 text-[var(--gold)] mt-0.5 shrink-0" />
+                <div className="mt-3 text-xs text-[var(--text-secondary)] p-3 rounded-lg bg-[var(--red-dim)] border border-[var(--red)]/20 flex items-start gap-2">
+                  <HelpCircle className="w-3.5 h-3.5 text-[var(--red)] mt-0.5 shrink-0" />
                   <span>{t("infoRanking")}</span>
                 </div>
               </div>

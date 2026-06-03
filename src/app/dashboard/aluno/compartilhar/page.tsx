@@ -158,19 +158,19 @@ export default function CompartilharPage() {
 
   return (
     <DashboardShell role="aluno">
-      <div className="animate-fade-in space-y-4">
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
+      <div className="animate-fade-in max-w-5xl mx-auto space-y-4">
+        <div className="surface p-5 text-center">
           <div className="text-3xl mb-2">📱</div>
           <h3 className="font-bold">{t("title")}</h3>
-          <p className="text-xs text-[var(--white-muted)]">Arte automática com suas estatísticas — pronta pro Instagram</p>
+          <p className="text-xs text-[var(--text-secondary)]">Arte automática com suas estatísticas — pronta pro Instagram</p>
         </div>
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
+        <div className="surface overflow-hidden">
           <div className="bg-gradient-to-br from-black via-[#1a0a0a] to-black p-6 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,168,76,0.15),transparent_60%)]" />
             <div className="relative">
               <div className="text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">OSSTRACK</div>
-              <div className="w-16 h-16 rounded-full border-2 border-[var(--gold)] flex items-center justify-center text-2xl font-bold text-[var(--gold)] mx-auto mb-3 bg-[var(--dark-card)]">
+              <div className="w-16 h-16 rounded-full border-2 border-[var(--gold)] flex items-center justify-center text-2xl font-bold text-[var(--gold)] mx-auto mb-3 bg-[var(--surface)]">
                 {(session?.user?.name || "?").charAt(0).toUpperCase()}
               </div>
               <div className="text-lg font-extrabold">{session?.user?.name || ""}</div>
@@ -185,33 +185,33 @@ export default function CompartilharPage() {
                   { label: t("streakAtual"), value: `🔥 ${stats.streak}`, icon: "🔥" },
                   { label: t("melhorStreak"), value: `🏆 ${stats.bestStreak}`, icon: "🏆" },
                 ].map((s) => (
-                  <div key={s.label} className="bg-black/40 border border-[rgba(201,168,76,0.1)] rounded-xl p-3 text-center">
-                    <div className="text-[9px] text-[var(--white-muted)] uppercase tracking-wide">{s.label}</div>
+                  <div key={s.label} className="bg-black/40 border border-[var(--gold-dim)] rounded-xl p-3 text-center">
+                    <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wide">{s.label}</div>
                     <div className="text-base font-extrabold text-[var(--gold)] mt-1">{s.icon} {s.value}</div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <div className="px-6 py-3 border-t border-[var(--dark-border)] flex justify-between items-center text-[11px]">
+          <div className="px-6 py-3 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
             <span className="font-extrabold">🥋 OssTrack</span>
-            <span className="text-[var(--white-muted)]">ossTrack.app</span>
+            <span className="text-[var(--text-secondary)]">ossTrack.app</span>
           </div>
         </div>
 
         <button
           onClick={generateImage}
           disabled={generating}
-          className="w-full py-3.5 rounded-lg font-bold gradient-gold text-black transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60"
+          className="btn-primary w-full rounded p-4 font-bold text-lg"
         >
           {generating ? `⚡ ${t("gerando")}` : `📸 ${t("baixarArte")}`}
         </button>
 
         <div className="flex gap-3">
-          <button onClick={shareWhatsApp} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-emerald-500 hover:text-emerald-500 transition-all active:scale-95">
+          <button onClick={shareWhatsApp} className="btn-ghost flex-1 rounded p-3">
             💬 Compartilhar
           </button>
-          <button onClick={copyToClipboard} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all active:scale-95">
+          <button onClick={copyToClipboard} className="btn-ghost flex-1 rounded p-3">
             {copied ? "✅ Copiado!" : `📋 ${t("copiar")}`}
           </button>
         </div>

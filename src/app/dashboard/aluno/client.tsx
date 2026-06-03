@@ -91,93 +91,87 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
     <DashboardShell role="aluno">
       <Celebration show={celebrate.show} title={celebrate.title} onDone={() => setCelebrate({ show: false, title: "" })} />
       <PageTransition>
-        <div className="space-y-4">
+        <div className="max-w-5xl mx-auto space-y-4">
 
-          {/* Hero compacto */}
-          <div className="glass-card text-center relative overflow-hidden py-5">
-            <div className="absolute top-[-20px] right-[-20px] w-24 h-24 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-            <div className="mx-auto mb-2"><Avatar name={aluno.nome} faixa={aluno.faixa} size={72} /></div>
-            <h2 className="text-xl font-extrabold">{aluno.nome}</h2>
-            <div className="flex items-center justify-center gap-1 mt-1">
-              <span className={`inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-xs font-semibold ${getBeltColor(aluno.faixa)}`}>
+          {/* Hero */}
+          <div className="text-center py-4">
+            <div className="mx-auto mb-3"><Avatar name={aluno.nome} faixa={aluno.faixa} size={80} /></div>
+            <h1 className="text-2xl font-extrabold tracking-tight">{aluno.nome}</h1>
+            <div className="flex items-center justify-center gap-1 mt-2">
+              <span className={`inline-flex items-center gap-1 px-3 py-0.5 rounded text-xs font-bold ${getBeltColor(aluno.faixa)}`}>
                 {getBeltEmoji(aluno.faixa)} {aluno.faixa} · {aluno.grau + 1}º G
               </span>
             </div>
-            <p className="text-xs text-[var(--white-muted)] mt-1">{aluno.academia}</p>
+            <p className="text-xs text-[var(--text-secondary)] mt-1">{aluno.academia}</p>
           </div>
 
-          {/* Check-in hero */}
+          {/* Check-in */}
           {jaTreinouHoje ? (
-            <div className="glass-card-gold p-5 text-center">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-3">
-                <CheckIcon className="w-8 h-8 text-emerald-400" />
+            <div className="surface p-5 text-center">
+              <div className="w-14 h-14 rounded-full bg-[var(--red-dim)] flex items-center justify-center mx-auto mb-3">
+                <CheckIcon className="w-7 h-7 text-[var(--red)]" />
               </div>
               <p className="font-bold text-lg">{t("treinoHoje")}</p>
-              <p className="text-xs text-[var(--white-muted)] mt-1">{treinandoAgora.length > 0 ? `${treinandoAgora.length} pessoas treinando agora` : t("registrado")}</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-1">{treinandoAgora.length > 0 ? `${treinandoAgora.length} pessoas treinando agora` : t("registrado")}</p>
             </div>
           ) : (
-            <button onClick={fazerCheckin} className="w-full gradient-gold text-black rounded-2xl p-6 active:scale-[0.98] transition-all cursor-pointer text-center">
+            <button onClick={fazerCheckin} className="btn-primary w-full rounded p-6 text-center">
               <DumbbellIcon className="w-10 h-10 mx-auto mb-2" />
               <p className="font-extrabold text-xl">{t("chegouHoje")}</p>
-              <p className="text-sm text-black/60 mt-1">{t("registrePresenca")}</p>
+              <p className="text-xs text-white/60 mt-1">{t("registrePresenca")}</p>
             </button>
           )}
 
-          {/* Stats bola cheia */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="stat-card py-4">
-              <DumbbellIcon className="w-5 h-5 mx-auto mb-1 text-[var(--gold)]" />
-              <div className="text-xl font-extrabold text-[var(--gold)]">{aluno.totalAulas}</div>
-              <div className="text-[9px] text-[var(--white-muted)] uppercase">{t("aulas")}</div>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 py-2">
+            <div className="stat">
+              <div className="stat-value">{aluno.totalAulas}</div>
+              <div className="stat-label">{t("aulas")}</div>
             </div>
-            <div className="stat-card py-4">
-              <div className={`w-5 h-5 mx-auto mb-1 flex items-center justify-center ${streakInicial > 0 ? "text-orange-500" : "text-[var(--gray)]"}`}>
-                <FlameIcon className="w-full h-full" />
-              </div>
-              <div className="text-xl font-extrabold text-[var(--gold)]">{streakInicial}</div>
-              <div className="text-[9px] text-[var(--white-muted)] uppercase">{t("sequencia")}</div>
+            <div className="stat">
+              <div className="stat-value">{streakInicial}</div>
+              <div className="stat-label">{t("sequencia")}</div>
             </div>
-            <div className="stat-card py-4">
-              <AwardIcon className="w-5 h-5 mx-auto mb-1 text-[var(--gold)]" />
-              <div className="text-xl font-extrabold text-[var(--gold)]">{conqueredCount}</div>
-              <div className="text-[9px] text-[var(--white-muted)] uppercase">{t("conquistas")}</div>
+            <div className="stat">
+              <div className="stat-value">{conqueredCount}</div>
+              <div className="stat-label">{t("conquistas")}</div>
             </div>
           </div>
 
           {/* Treinando agora */}
           {treinandoAgora.length > 0 && !jaTreinouHoje && (
-            <div className="glass-card p-3 flex items-center gap-3">
+            <div className="flex items-center gap-3 py-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs text-emerald-400 font-semibold">{treinandoAgora.length} {t("treinandoAgora").toLowerCase()}</span>
             </div>
           )}
 
-          {/* Jornada compacta */}
-          <div className="glass-card divide-y divide-[var(--dark-border)]">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-[var(--white-muted)] uppercase tracking-wide">{t("proximoGrau")}</span>
+          {/* Jornada */}
+          <div className="space-y-4 py-2">
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="section-header">{t("proximoGrau")}</span>
                 <span className="text-[10px] text-[var(--gold)]">{t("aulasRestam").replace("{n}", String(restamGrau))}</span>
               </div>
-              <div className="progress-gold h-2"><div className="progress-gold-fill" style={{ width: `${progressoGrau}%` }} /></div>
+              <div className="progress"><div className="progress-fill-gold" style={{ width: `${progressoGrau}%` }} /></div>
             </div>
             {progressoFaixa !== null && (
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-[var(--white-muted)] uppercase tracking-wide">{t("proximaFaixa")}</span>
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="section-header">{t("proximaFaixa")}</span>
                   <span className="text-[10px] text-[var(--gold)]">{t("aulasRestam").replace("{n}", String(restamFaixa))}</span>
                 </div>
-                <div className="progress-gold h-2"><div className="progress-gold-fill" style={{ width: `${progressoFaixa}%`, background: 'linear-gradient(90deg, var(--red-dark), var(--red), #ef4444)' }} /></div>
+                <div className="progress"><div className="progress-fill-gold" style={{ width: `${progressoFaixa}%` }} /></div>
               </div>
             )}
-            <div className="px-4 py-3 flex items-center gap-2 overflow-x-auto">
+            <div className="flex items-center gap-2 overflow-x-auto py-1">
               {belts.map((belt, idx) => {
                 const isCurrent = idx === currentBeltIdx
                 const isCompleted = idx < currentBeltIdx
                 return (
-                  <div key={belt.name} className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-semibold ${
-                    isCurrent ? "bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/30" :
-                    isCompleted ? "bg-emerald-500/10 text-emerald-400" : "bg-[var(--dark-border)] text-[var(--gray)]"
+                  <div key={belt.name} className={`flex items-center gap-1 px-3 py-1.5 text-[10px] font-bold ${
+                    isCurrent ? "text-[var(--gold)] bg-[var(--gold-dim)]" :
+                    isCompleted ? "text-emerald-400" : "text-[var(--text-muted)]"
                   }`}>
                     {belt.name}
                     {isCompleted && <CheckIcon className="w-2.5 h-2.5" />}
@@ -187,36 +181,34 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
             </div>
           </div>
 
-          {/* Share moment */}
+          {/* Share */}
           {mostraCompartilhar && (
             <button onClick={() => router.push("/dashboard/aluno/compartilhar")}
-              className="w-full glass-card p-4 flex items-center gap-3 active:scale-[0.98] transition-all cursor-pointer">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-                <Share2Icon className="w-6 h-6 text-white" />
-              </div>
+              className="btn-ghost w-full rounded p-4 flex items-center gap-3">
+              <Share2Icon className="w-5 h-5" />
               <div className="text-left flex-1">
                 <p className="font-bold text-sm">{t("compartilharMomento")}</p>
-                <p className="text-[10px] text-[var(--white-muted)]">{t("gerarArte")}</p>
+                <p className="text-xs text-[var(--text-secondary)]">{t("gerarArte")}</p>
               </div>
             </button>
           )}
 
-          {/* Feed de atividade */}
+          {/* Feed */}
           <div className="space-y-3">
             {ultimasPresencas.length > 0 && (
-              <div className="glass-card p-4">
-                <h3 className="text-xs font-semibold text-[var(--white-muted)] uppercase tracking-wide mb-3">{t("ultimosCheckins")}</h3>
-                <div className="space-y-2">
+              <div>
+                <div className="section-header">{t("ultimosCheckins")}</div>
+                <div className="space-y-1">
                   {ultimasPresencas.slice(0, 4).map((p) => (
-                    <div key={p.id} className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${p.status === "confirmed" ? "bg-emerald-500/10" : "bg-yellow-500/10"}`}>
-                        {p.status === "confirmed" ? <CheckIcon className="w-4 h-4 text-emerald-400" /> : <DumbbellIcon className="w-4 h-4 text-yellow-400" />}
+                    <div key={p.id} className="flex items-center gap-3 py-2.5">
+                      <div className={`w-8 h-8 flex items-center justify-center ${p.status === "confirmed" ? "bg-[var(--red-dim)]" : "bg-yellow-500/10"}`}>
+                        {p.status === "confirmed" ? <CheckIcon className="w-4 h-4 text-[var(--red)]" /> : <DumbbellIcon className="w-4 h-4 text-yellow-400" />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{p.turma || t("treino")}</p>
-                        <p className="text-[10px] text-[var(--white-muted)]">{new Date(p.data).toLocaleDateString()} às {p.horario}</p>
+                        <p className="text-xs text-[var(--text-secondary)]">{new Date(p.data).toLocaleDateString()} às {p.horario}</p>
                       </div>
-                      <span className={`text-[9px] px-2 py-0.5 rounded-full ${p.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400" : "bg-yellow-500/10 text-yellow-400"}`}>
+                      <span className={`text-[9px] px-2 py-0.5 rounded ${p.status === "confirmed" ? "text-[var(--red)]" : "text-yellow-400"}`}>
                         {p.status === "confirmed" ? t("presente") : t("pendente")}
                       </span>
                     </div>

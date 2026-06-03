@@ -146,18 +146,17 @@ export default function CheckinPage() {
       {showConfetti && <Confetti />}
       <CelebrationOverlay show={showCelebration} message={celebrationMsg} submessage={`${t("continueAssim")} 🥋`} />
       <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("metaSemanalConcluida")}`} submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />
-      <div className="space-y-4">
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="surface p-6 text-center">
 
           <div className="flex items-center justify-center gap-2 mb-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span className="text-xs text-[var(--white-muted)] font-medium">{session?.user?.academiaNome || "OssTrack"}</span>
+            <span className="text-xs text-[var(--text-secondary)] font-medium">{session?.user?.academiaNome || "OssTrack"}</span>
           </div>
 
           <div className="mb-2">
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${
-              streak >= 10 ? "bg-[rgba(255,140,0,0.12)] border-[rgba(255,140,0,0.3)] animate-fire-glow" : "bg-[rgba(201,168,76,0.1)] border-[rgba(201,168,76,0.15)]"
+              streak >= 10 ? "bg-[rgba(255,140,0,0.12)] border-[rgba(255,140,0,0.3)] animate-fire-glow" : "bg-[var(--gold-dim)] border-[var(--gold-dim)]"
             }`}>
               <FlameIcon className={`w-4 h-4 ${streak >= 10 ? "animate-fire" : ""}`} />
               <span className="text-xs font-semibold text-[var(--gold)]">{t("streak").replace("{dias}", String(streak))}</span>
@@ -165,7 +164,7 @@ export default function CheckinPage() {
           </div>
 
           {motivational && (
-            <div className="text-sm gradient-gold-text font-semibold mb-4 animate-scale-in">{motivational}</div>
+            <div className="text-sm text-[var(--gold)] font-semibold mb-4 animate-scale-in">{motivational}</div>
           )}
 
           <div className="py-6">
@@ -175,7 +174,7 @@ export default function CheckinPage() {
                   ? "bg-emerald-600 text-white shadow-[0_0_80px_rgba(16,185,129,0.3)] scale-110"
                   : status === "pending"
                   ? "bg-yellow-600 text-white shadow-[0_0_80px_rgba(245,158,11,0.3)] animate-pulse"
-                  : "gradient-gold text-black shadow-[0_0_50px_rgba(201,168,76,0.15)] group-hover:shadow-[0_0_80px_rgba(201,168,76,0.3)] group-hover:scale-110"
+                  : "bg-[var(--red)] text-white shadow-[0_0_50px_var(--red-glow)] group-hover:shadow-[0_0_80px_var(--red-glow)] group-hover:scale-110"
               }`}>
                 {status === "idle" && (
                   <>
@@ -200,7 +199,7 @@ export default function CheckinPage() {
           </div>
 
           {locationStatus && (
-            <div className="text-xs text-[var(--white-muted)] mt-1 bg-black/30 rounded-lg px-3 py-2 inline-block">{locationStatus}</div>
+            <div className="text-xs text-[var(--text-secondary)] mt-1 bg-black/30 rounded-lg px-3 py-2 inline-block">{locationStatus}</div>
           )}
 
           <div className="mt-4 px-4 py-2.5 bg-emerald-500/8 border border-emerald-500/15 rounded-xl">
@@ -212,22 +211,22 @@ export default function CheckinPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4 text-center hover-card">
-            <TargetIcon className="w-6 h-6 mb-2 mx-auto" />
-            <div className="text-xs font-bold uppercase tracking-wide">{t("metaSemana")}</div>
+          <div className="surface p-4 text-center">
+            <TargetIcon className="w-6 h-6 mb-2 mx-auto text-[var(--text-secondary)]" />
+            <div className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">{t("metaSemana")}</div>
             <div className="text-2xl font-extrabold text-[var(--gold)] mt-1.5">{metaSemanal.aulasFeitas}/{metaSemanal.aulasAlvo}</div>
-            <div className="h-2 bg-[var(--dark-border)] rounded-full mt-3 overflow-hidden p-[1px]">
-              <div className="h-full bg-gradient-to-r from-[var(--gold-dark)] via-[var(--gold)] to-yellow-300 rounded-full" style={{ width: `${Math.min(100, Math.round((metaSemanal.aulasFeitas / Math.max(1, metaSemanal.aulasAlvo)) * 100))}%` }} />
+            <div className="h-2 bg-[var(--border)] rounded-full mt-3 overflow-hidden">
+              <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold-dim)] to-[var(--gold)]" style={{ width: `${Math.min(100, Math.round((metaSemanal.aulasFeitas / Math.max(1, metaSemanal.aulasAlvo)) * 100))}%` }} />
             </div>
-            <div className="text-[10px] text-[var(--white-muted)] mt-1.5">
+            <div className="text-[10px] text-[var(--text-secondary)] mt-1.5">
               {metaSemanal.concluida ? <><CheckIcon className="w-3 h-3 inline -mt-0.5 mr-0.5 text-emerald-500" />{t("metaConcluida")}</> : t("faltamTreinos").replace("{n}", String(Math.max(0, metaSemanal.aulasAlvo - metaSemanal.aulasFeitas)))}
             </div>
           </div>
-          <div className={`bg-gradient-to-br from-[var(--dark-card)] to-black/40 border rounded-2xl p-4 text-center hover-card ${streak >= 10 ? "animate-fire-glow border-[rgba(255,140,0,0.2)]" : "border-[var(--dark-border)]"}`}>
-            <FlameIcon className={`w-6 h-6 mb-2 mx-auto ${streak >= 10 ? "animate-fire" : ""}`} />
-            <div className="text-xs font-bold uppercase tracking-wide">{t("sequencia")}</div>
+          <div className={`surface p-4 text-center ${streak >= 10 ? "animate-fire-glow" : ""}`} style={{borderColor: streak >= 10 ? 'rgba(255,140,0,0.2)' : undefined}}>
+            <FlameIcon className={`w-6 h-6 mb-2 mx-auto text-[var(--text-secondary)] ${streak >= 10 ? "animate-fire" : ""}`} />
+            <div className="text-xs font-bold uppercase tracking-wide text-[var(--text-secondary)]">{t("sequencia")}</div>
             <div className="text-2xl font-extrabold text-[var(--gold)] mt-1.5">{streak} dias</div>
-            <div className="text-[10px] text-[var(--white-muted)] mt-1.5">
+            <div className="text-[10px] text-[var(--text-secondary)] mt-1.5">
               {streak >= 30 ? `👑 ${t("lenda")}` : streak >= 10 ? `🔥 ${t("medalhaOuro")}` : streak >= 7 ? `🥈 ${t("medalhaPrata")}` : streak >= 5 ? `🥉 ${t("medalhaBronze")}` : t("continueTreinando")}
             </div>
           </div>
