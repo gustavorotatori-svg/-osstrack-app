@@ -10,7 +10,6 @@ async function main() {
     "mestreDoMes", "alunoConquista", "alunoConquista",
     "notificacao", "presenca", "streak", "pagamento",
     "agendamento", "horarioAula", "turmaAluno", "convite",
-    "cobranca", "contrato", "planoMensalidade",
     "turma", "graduacao", "usuario", "academia",
   ]
 

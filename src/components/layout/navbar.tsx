@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
+import { DumbbellIcon } from "@/components/ui/icons"
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -27,8 +28,8 @@ export function Navbar() {
     >
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight group">
-          <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center text-xs text-black transition-transform duration-300 group-hover:scale-105">
-            🥋
+          <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <DumbbellIcon className="w-4 h-4 text-black" />
           </span>
           <span className="hidden sm:inline">OssTrack</span>
         </Link>

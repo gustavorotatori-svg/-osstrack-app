@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { useT } from "@/lib/use-t"
 
 function ConviteCard({ tipo, label, state, setState }: {
   tipo: string
@@ -9,13 +10,14 @@ function ConviteCard({ tipo, label, state, setState }: {
   state: { link: string; whatsapp: string; copied: boolean; gerando: boolean }
   setState: (s: { link: string; whatsapp: string; copied: boolean; gerando: boolean }) => void
 }) {
+  const t = useT("dono.config")
   return (
     <div>
       <p className="text-xs text-[var(--white-muted)] mb-2">{label}</p>
       <div className="flex gap-2">
         <input
           type="text"
-          value={state.gerando ? "Gerando..." : state.link || "osstrack.app"}
+          value={state.gerando ? t("gerando") : state.link || "osstrack.app"}
           readOnly
           className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm"
         />
@@ -38,7 +40,7 @@ function ConviteCard({ tipo, label, state, setState }: {
           }}
           className="px-4 py-2.5 rounded-lg font-semibold text-xs btn-gold disabled:opacity-50"
         >
-          Gerar Link
+          {t("gerarLink")}
         </button>
       </div>
       {state.link && (
@@ -52,7 +54,7 @@ function ConviteCard({ tipo, label, state, setState }: {
             }}
             className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all"
           >
-            {state.copied ? "✅ Copiado!" : "📋 Copiar Link"}
+            {state.copied ? t("copiado") : t("copiarLink")}
           </button>
           <a
             href={state.whatsapp}
@@ -69,6 +71,7 @@ function ConviteCard({ tipo, label, state, setState }: {
 }
 
 export default function ConfigPage() {
+  const t = useT("dono.config")
   const [saved, setSaved] = useState(false)
   const [inviteProf, setInviteProf] = useState({ link: "", whatsapp: "", copied: false, gerando: false })
   const [inviteAluno, setInviteAluno] = useState({ link: "", whatsapp: "", copied: false, gerando: false })
@@ -116,10 +119,10 @@ export default function ConfigPage() {
     <DashboardShell role="dono">
       <div className="animate-fade-in space-y-4">
         <form onSubmit={salvar} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 space-y-4">
-          <h3 className="font-bold">⚙️ Configurações da Academia</h3>
+          <h3 className="font-bold">{t("title")}</h3>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">Nome da Academia</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("nomeAcademia")}</label>
             <input
               type="text"
               className="input-premium"
@@ -130,30 +133,30 @@ export default function ConfigPage() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">WhatsApp da Academia</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("whatsapp")}</label>
             <input
               type="text"
               className="input-premium"
-              placeholder="(81) 99999-8888"
+              placeholder={t("placeholderWhatsapp")}
               value={form.whatsapp}
               onChange={(e) => setForm((p) => ({ ...p, whatsapp: e.target.value }))}
             />
-            <p className="text-[9px] text-[var(--gray)] mt-1">Usado nas notificações de cobrança e promoção via WhatsApp</p>
+            <p className="text-[9px] text-[var(--gray)] mt-1">{t("whatsappDesc")}</p>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">Chave PIX</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("chavePix")}</label>
             <input
               type="text"
               className="input-premium"
-              placeholder="CPF, CNPJ, e-mail ou telefone"
+              placeholder={t("placeholderPix")}
               value={form.pixKey}
               onChange={(e) => setForm((p) => ({ ...p, pixKey: e.target.value }))}
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">Raio de Check-in (metros)</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("raioCheckin")}</label>
             <input
               type="number"
               className="input-premium"
@@ -163,7 +166,7 @@ export default function ConfigPage() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">Horário de Funcionamento</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("horarioFuncionamento")}</label>
             <div className="flex gap-2">
               <input type="time" className="input-premium" value={form.horarioInicio} onChange={(e) => setForm((p) => ({ ...p, horarioInicio: e.target.value }))} />
               <input type="time" className="input-premium" value={form.horarioFim} onChange={(e) => setForm((p) => ({ ...p, horarioFim: e.target.value }))} />
@@ -174,23 +177,23 @@ export default function ConfigPage() {
             type="submit"
             className="w-full py-3.5 rounded-xl font-bold text-sm btn-gold"
           >
-            {saved ? "✅ Salvo!" : "Salvar Configurações"}
+            {saved ? t("salvo") : t("salvar")}
           </button>
         </form>
 
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 space-y-4">
-          <h3 className="font-bold">📱 Compartilhar</h3>
+          <h3 className="font-bold">{t("compartilhar")}</h3>
 
           <ConviteCard
             tipo="professor"
-            label="Convidar professor para sua academia:"
+            label={t("convidarProfessor")}
             state={inviteProf}
             setState={setInviteProf}
           />
 
           <ConviteCard
             tipo="aluno"
-            label="Convidar aluno para sua academia:"
+            label={t("convidarAluno")}
             state={inviteAluno}
             setState={setInviteAluno}
           />

@@ -15,12 +15,23 @@ export async function GET() {
         include: { usuario: { select: { id: true, nome: true, faixa: true } } },
         orderBy: { createdAt: "asc" },
       },
+      curtidasList: {
+        where: { usuarioId: session.user.id },
+        select: { id: true },
+      },
     },
     orderBy: { createdAt: "desc" },
     take: 50,
   })
 
-  return NextResponse.json(postagens)
+  const enriched = postagens.map((p) => ({
+    ...p,
+    curtidas: p.curtidas,
+    curtido: p.curtidasList.length > 0,
+    curtidasList: undefined,
+  }))
+
+  return NextResponse.json(enriched)
 }
 
 export async function POST(req: Request) {

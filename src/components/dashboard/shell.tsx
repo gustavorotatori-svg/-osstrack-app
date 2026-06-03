@@ -6,6 +6,8 @@ import { ReactNode, ReactElement, useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { OnboardingTour } from "@/components/onboarding/tour"
 import { useTheme } from "@/components/layout/providers"
+import { PullToRefresh } from "@/components/ui/pull-to-refresh"
+import { DumbbellIcon, SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
 
 type IconProps = { active: boolean }
 
@@ -19,6 +21,9 @@ function CheckinIcon({ active }: IconProps) {
 }
 function ChartIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+}
+function DollarIcon({ active }: IconProps) {
+  return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
 }
 function AwardIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></svg>
@@ -56,6 +61,9 @@ function HelpIcon({ active }: IconProps) {
 function ListIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
 }
+function ShareIcon({ active }: IconProps) {
+  return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></svg>
+}
 function BookIcon({ active }: IconProps) {
   return <svg width={S.w} height={S.h} viewBox="0 0 24 24" fill="none" stroke={active ? "#c9a84c" : "#555"} strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj}><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
 }
@@ -66,29 +74,27 @@ function ExternalIcon() {
 const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps) => ReactElement }[]> = {
   aluno: [
     { href: "/dashboard/aluno", tkey: "inicio", icon: HomeIcon },
-    { href: "/dashboard/aluno/checkin", tkey: "checkin", icon: CheckinIcon },
-    { href: "/dashboard/aluno/treino", tkey: "treino", icon: StopwatchIcon },
-    { href: "/dashboard/aluno/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/aluno/evolucao", tkey: "evolucao", icon: ChartIcon },
-    { href: "/dashboard/aluno/ranking", tkey: "ranking", icon: AwardIcon },
     { href: "/dashboard/aluno/mural", tkey: "mural", icon: BellIcon },
-    { href: "/dashboard/aluno/financeiro", tkey: "financeiro", icon: CheckIcon },
+    { href: "/dashboard/aluno/compartilhar", tkey: "compartilhar", icon: ShareIcon },
   ],
   professor: [
     { href: "/dashboard/professor", tkey: "inicio", icon: HomeIcon },
     { href: "/dashboard/professor/presencas", tkey: "presencas", icon: CheckIcon },
     { href: "/dashboard/professor/alunos", tkey: "alunos", icon: UsersIcon },
+    { href: "/dashboard/professor/mural", tkey: "mural", icon: BellIcon },
     { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/professor/turmas", tkey: "turmas", icon: ListIcon },
     { href: "/dashboard/professor/graduacoes", tkey: "graduacoes", icon: AwardIcon },
   ],
   dono: [
     { href: "/dashboard/dono", tkey: "inicio", icon: HomeIcon },
+    { href: "/dashboard/dono/mural", tkey: "mural", icon: BellIcon },
     { href: "/dashboard/dono/turmas", tkey: "turmas", icon: ListIcon },
     { href: "/dashboard/dono/alunos", tkey: "alunos", icon: UsersIcon },
-    { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
-    { href: "/dashboard/dono/financeiro", tkey: "financeiro", icon: CheckIcon },
+    { href: "/dashboard/dono/financeiro", tkey: "financeiro", icon: DollarIcon },
     { href: "/dashboard/dono/relatorios", tkey: "relatorios", icon: ReportIcon },
+    { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/dono/graduacoes", tkey: "graduacoes", icon: AwardIcon },
     { href: "/dashboard/dono/config", tkey: "config", icon: SettingsIcon },
   ],
@@ -111,9 +117,9 @@ const topNavItems: Record<string, { href: string; tkey: string; icon: (p: IconPr
 }
 
 const utilityLinks = [
-  { href: "https://ibjjf.com/rules", label: "Regras IBJJF", icon: BookIcon, external: true },
-  { href: "#lgpd", label: "LGPD", icon: ShieldIcon, external: false },
-  { href: "#ajuda", label: "Ajuda", icon: HelpIcon, external: false },
+  { href: "https://ibjjf.com/rules", tkey: "regrasIbjjf", icon: BookIcon, external: true },
+  { href: "/lgpd", tkey: "lgpd", icon: ShieldIcon, external: false },
+  { href: "/ajuda", tkey: "ajuda", icon: HelpIcon, external: false },
 ]
 
 export function DashboardShell({ children, role }: { children: ReactNode; role: string }) {
@@ -158,7 +164,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {/* DESKTOP SIDEBAR */}
       <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--black)]/95 backdrop-blur-2xl border-r border-[var(--dark-border)] flex-col">
         <div className="flex items-center gap-3 px-5 h-16 border-b border-[var(--dark-border)]">
-          <div className="w-8 h-8 gradient-gold rounded-lg flex items-center justify-center text-sm text-black font-bold shrink-0 animate-float">🥋</div>
+          <div className="w-8 h-8 gradient-gold rounded-lg flex items-center justify-center shrink-0 animate-float"><DumbbellIcon className="w-4 h-4 text-black" /></div>
           <div>
             <span className="font-bold text-sm">OssTrack</span>
             <span className="badge-gold text-[9px] block mt-0.5 w-fit">{t(role)}</span>
@@ -187,7 +193,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => router.push(item.href)}
-                className={`micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]"}`}>
+                className={`micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-medium ${isActive ? "bg-[rgba(201,168,76,0.08)] text-[var(--gold)]" : "text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]"}`}>
                 <div className="relative">
                   <Icon active={isActive} />
                   {isNotif && notifCount > 0 && (
@@ -206,17 +212,17 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           {utilityLinks.map((link) => {
             const Icon = link.icon
             return link.external ? (
-              <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
-                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]">
+              <a key={t(link.tkey)} href={link.href} target="_blank" rel="noopener noreferrer"
+                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
                 <Icon active={false} />
-                <span>{link.label}</span>
+                <span>{t(link.tkey)}</span>
                 <ExternalIcon />
               </a>
             ) : (
-              <button key={link.label} onClick={() => {}}
-                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]">
+              <button key={t(link.tkey)} onClick={() => router.push(link.href)}
+                className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
                 <Icon active={false} />
-                <span>{link.label}</span>
+                <span>{t(link.tkey)}</span>
               </button>
             )
           })}
@@ -224,12 +230,12 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           <div className="h-px bg-[var(--dark-border)] my-1.5" />
 
           <button onClick={toggleTheme}
-            className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--gray)] hover:text-[var(--white-muted)] hover:bg-[var(--dark-card)]">
-            {theme === "dark" ? "☀️" : "🌙"} <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
+            className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+            {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />} <span>{t(theme === "dark" ? "modoClaro" : "modoEscuro")}</span>
           </button>
           <button onClick={() => signOut({ callbackUrl: "/" })}
             className="micro-press w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs text-[var(--gray)] hover:text-red-400 hover:bg-[var(--dark-card)]">
-            🚪 <span>{t("sair")}</span>
+            <LogOutIcon className="w-4 h-4" /> <span>{t("sair")}</span>
           </button>
         </div>
       </div>
@@ -237,7 +243,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {/* MOBILE HEADER */}
       <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--black)]/90 backdrop-blur-xl border-b border-[var(--dark-border)] sticky top-0 z-50">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 gradient-gold rounded-lg flex items-center justify-center text-[10px] text-black font-bold animate-float">🥋</div>
+          <div className="w-7 h-7 gradient-gold rounded-lg flex items-center justify-center animate-float"><DumbbellIcon className="w-3.5 h-3.5 text-black" /></div>
           <span className="font-bold text-sm">OssTrack</span>
           <span className="badge-gold text-[9px]">{t(role)}</span>
         </div>
@@ -274,22 +280,23 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             {utilityLinks.map((link) => {
               const Icon = link.icon
               return link.external ? (
-                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+                <a key={t(link.tkey)} href={link.href} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
-                  <Icon active={false} /><span>{link.label}</span><ExternalIcon />
+                  <Icon active={false} /><span>{t(link.tkey)}</span><ExternalIcon />
                 </a>
               ) : (
-                <button key={link.label} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
-                  <Icon active={false} /><span>{link.label}</span>
+                <button key={t(link.tkey)} onClick={() => { router.push(link.href); setShowMobileMenu(false) }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
+                  <Icon active={false} /><span>{t(link.tkey)}</span>
                 </button>
               )
             })}
             <div className="h-px bg-[var(--dark-border)] my-1" />
             <button onClick={toggleTheme} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-white hover:bg-[var(--dark-card)]">
-              {theme === "dark" ? "☀️" : "🌙"} <span>{theme === "dark" ? "Modo Claro" : "Modo Escuro"}</span>
+              {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />} <span>{t(theme === "dark" ? "modoClaro" : "modoEscuro")}</span>
             </button>
             <button onClick={() => signOut({ callbackUrl: "/" })} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--white-muted)] hover:text-red-400">
-              🚪 <span>{"Sair"}</span>
+              <LogOutIcon className="w-4 h-4" /> <span>{t("sair")}</span>
             </button>
           </div>
         </div>
@@ -298,7 +305,9 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {/* MAIN CONTENT */}
       <div className="flex-1 w-full md:ml-60 relative z-10">
         <div className="px-4 py-4 pb-28 md:pb-6 md:px-6 lg:px-8 dashboard-content">
-          {children}
+          <PullToRefresh>
+            {children}
+          </PullToRefresh>
         </div>
       </div>
 

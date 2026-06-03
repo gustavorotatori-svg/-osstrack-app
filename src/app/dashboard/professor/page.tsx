@@ -41,7 +41,7 @@ export default async function ProfessorDashboard() {
 
   return (
     <ProfessorDashboardClient
-      professor={{ nome: professor.nome, faixa: professor.faixa, grau: professor.grau }}
+      professor={{ nome: professor.nome, faixa: professor.faixa, grau: professor.grau, academiaId: professor.academiaId }}
       alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
       turmas={turmas.map((t) => ({ id: t.id, nome: t.nome, horario: t.horario, dias: t.dias, maxAlunos: t.maxAlunos, totalAlunos: t.alunos.length }))}
       presencasHoje={presencasHoje.map((p) => ({

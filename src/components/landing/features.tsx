@@ -1,17 +1,18 @@
 "use client"
 
 import { useT } from "@/lib/use-t"
+import { MapPinIcon, TrendingIcon, AwardIcon, TargetIcon, SmartphoneIcon, GraduationIcon } from "@/components/ui/icons"
 
 export function Features() {
   const t = useT("features")
 
   const features = [
-    { icon: "📍", titleKey: "checkin", descKey: "checkinDesc" },
-    { icon: "📈", titleKey: "evolucao", descKey: "evolucaoDesc" },
-    { icon: "🏆", titleKey: "gamificacao", descKey: "gamificacaoDesc" },
-    { icon: "📊", titleKey: "financas", descKey: "financasDesc" },
-    { icon: "📱", titleKey: "whatsapp", descKey: "whatsappDesc" },
-    { icon: "👨‍🏫", titleKey: "graduacao", descKey: "graduacaoDesc" },
+    { icon: MapPinIcon, titleKey: "checkin", descKey: "checkinDesc" },
+    { icon: TrendingIcon, titleKey: "evolucao", descKey: "evolucaoDesc" },
+    { icon: AwardIcon, titleKey: "gamificacao", descKey: "gamificacaoDesc" },
+    { icon: TargetIcon, titleKey: "metas", descKey: "metasDesc" },
+    { icon: SmartphoneIcon, titleKey: "whatsapp", descKey: "whatsappDesc" },
+    { icon: GraduationIcon, titleKey: "graduacao", descKey: "graduacaoDesc" },
   ]
 
   return (
@@ -20,7 +21,7 @@ export function Features() {
       <div className="max-w-6xl mx-auto relative">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
-            Por trás do código
+            {t("badge")}
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
             {t("titulo")}
@@ -31,19 +32,22 @@ export function Features() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
-          {features.map((f, i) => (
-            <div
-              key={f.titleKey}
-              className="group bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-7 transition-all duration-300 hover:border-[rgba(201,168,76,0.25)] hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)] animate-fade-in-up"
-              style={{ animationDelay: `${i * 0.08}s` }}
-            >
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[rgba(201,168,76,0.12)] to-[rgba(201,168,76,0.04)] border border-[rgba(201,168,76,0.15)] flex items-center justify-center text-lg mb-4 group-hover:border-[rgba(201,168,76,0.3)] transition-all">
-                {f.icon}
+          {features.map((f, i) => {
+            const Icon = f.icon
+            return (
+              <div
+                key={f.titleKey}
+                className="group bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-7 transition-all duration-300 hover:border-[rgba(201,168,76,0.25)] hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)] animate-fade-in-up"
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[rgba(201,168,76,0.12)] to-[rgba(201,168,76,0.04)] border border-[rgba(201,168,76,0.15)] flex items-center justify-center mb-4 group-hover:border-[rgba(201,168,76,0.3)] transition-all">
+                  <Icon className="w-5 h-5 text-[var(--gold)]" />
+                </div>
+                <h3 className="text-base font-bold mb-2.5">{t(f.titleKey)}</h3>
+                <p className="text-sm text-[var(--white-muted)] leading-relaxed">{t(f.descKey)}</p>
               </div>
-              <h3 className="text-base font-bold mb-2.5">{t(f.titleKey)}</h3>
-              <p className="text-sm text-[var(--white-muted)] leading-relaxed">{t(f.descKey)}</p>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

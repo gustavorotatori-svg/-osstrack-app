@@ -32,6 +32,10 @@ export async function POST() {
       line_items: [{ price: priceId, quantity: 1 }],
       customer_email: usuario.email,
       metadata: { usuarioId: usuario.id },
+      subscription_data: {
+        trial_period_days: 7,
+      },
+      payment_method_collection: "always",
       success_url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=success`,
       cancel_url: `${process.env.NEXTAUTH_URL}/dashboard/aluno?premium=cancel`,
     })

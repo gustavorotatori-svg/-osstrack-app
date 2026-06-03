@@ -38,8 +38,8 @@
   --dark-card-hover: #e8e8e8;
   --dark-border: #d0d0d0;
   --dark-border-light: #c0c0c0;
-  --white-muted: #666666;
-  --gray: #999999;
+  --white-muted: #555555;
+  --gray: #888888;
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(200, 200, 200, 0.5);
   --gold-gradient: linear-gradient(135deg, #b8942e 0%, #d4b44e 40%, #b8942e 70%, #8a6e1e 100%);
@@ -315,6 +315,10 @@ body.light {
   border-radius: 16px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+.light .glass-card {
+  background: linear-gradient(135deg, rgba(245,245,245,0.95), rgba(240,240,240,0.85));
+  border-color: rgba(200,200,200,0.6);
+}
 .glass-card:hover {
   border-color: rgba(201,168,76,0.2);
   transform: translateY(-4px);
@@ -329,6 +333,10 @@ body.light {
   border: 1px solid rgba(201,168,76,0.15);
   border-radius: 16px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.light .glass-card-gold {
+  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(245,245,245,0.85));
+  border-color: rgba(184,148,46,0.25);
 }
 .glass-card-gold:hover {
   border-color: rgba(201,168,76,0.35);
@@ -381,14 +389,18 @@ body.light {
 .tab-btn {
   flex: 1;
   white-space: nowrap;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: 10px;
   font-size: 12px;
   font-weight: 600;
   transition: all 0.2s ease;
   color: var(--white-muted);
   min-width: fit-content;
+  min-height: 44px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tab-btn:hover {
   color: #fff;
@@ -408,6 +420,9 @@ body.light {
   padding: 16px;
   text-align: center;
   transition: all 0.3s ease;
+}
+.light .stat-card {
+  background: linear-gradient(135deg, rgba(245,245,245,0.9), rgba(240,240,240,0.7));
 }
 .stat-card:hover {
   border-color: rgba(201,168,76,0.2);

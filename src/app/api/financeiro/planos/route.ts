@@ -5,11 +5,13 @@ import prisma from "@/lib/prisma"
 
 export async function GET() {
   const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
   const planos = await prisma.planoMensalidade.findMany({
     where: { academiaId: session.user.academiaId },
-    orderBy: { valor: "asc" },
+    orderBy: { createdAt: "desc" },
   })
 
   return NextResponse.json(planos)
@@ -17,14 +19,26 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
-  const { nome, valor, descricao, recorrencia } = await req.json()
-  if (!nome || !valor) return NextResponse.json({ error: "nome e valor são obrigatórios" }, { status: 400 })
+  const body = await req.json()
+  const { nome, valor, descricao, periodo } = body
+
+  if (!nome || valor == null) {
+    return NextResponse.json({ error: "Nome e valor são obrigatórios" }, { status: 400 })
+  }
 
   const plano = await prisma.planoMensalidade.create({
-    data: { academiaId: session.user.academiaId, nome, valor: Number(valor), descricao, recorrencia: recorrencia || "mensal" },
+    data: {
+      academiaId: session.user.academiaId,
+      nome,
+      valor: Math.round(valor * 100),
+      descricao,
+      periodo: periodo || "mensal",
+    },
   })
 
-  return NextResponse.json(plano, { status: 201 })
+  return NextResponse.json(plano)
 }

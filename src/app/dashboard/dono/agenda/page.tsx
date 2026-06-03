@@ -4,11 +4,14 @@ import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
+import { CalendarIcon, XIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 const diaNomes = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 
 export default function DonoAgendaPage() {
+  const t = useT("dono.agenda")
   const [horarios, setHorarios] = useState<HorarioData[]>([])
   const [professores, setProfessores] = useState<{ id: string; nome: string; faixa?: string }[]>([])
   const [turmas, setTurmas] = useState<{ id: string; nome: string }[]>([])
@@ -71,7 +74,7 @@ export default function DonoAgendaPage() {
   async function handleAddSlot(e: React.FormEvent) {
     e.preventDefault()
     if (!turmaId || !professorId || !horaInicio || !horaFim) {
-      toast.error("Preencha turma, professor e horário")
+      toast.error(t("preenchaCampos"))
       return
     }
     setSaving(true)
@@ -91,11 +94,11 @@ export default function DonoAgendaPage() {
     if (res.ok) {
       const novo = await res.json()
       setHorarios((prev) => [...prev, novo])
-      toast.success("Horário criado!")
+      toast.success(t("horarioCriado"))
       setShowForm(false)
     } else {
       const err = await res.json()
-      toast.error(err.error || "Erro ao criar horário")
+      toast.error(err.error || t("erroCriar"))
     }
     setSaving(false)
   }
@@ -104,9 +107,9 @@ export default function DonoAgendaPage() {
     const res = await fetch(`/api/agenda/horarios?id=${horario.id}`, { method: "DELETE" })
     if (res.ok) {
       setHorarios((prev) => prev.filter((h) => h.id !== horario.id))
-      toast.success("Horário removido")
+      toast.success(t("horarioRemovido"))
     } else {
-      toast.error("Erro ao remover horário")
+      toast.error(t("erroRemover"))
     }
   }
 
@@ -115,10 +118,8 @@ export default function DonoAgendaPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-lg">📅 Agenda da Academia</h3>
-            <p className="text-xs text-[var(--white-muted)]">
-              Grade semanal — clique num horário vazio para adicionar
-            </p>
+            <h3 className="font-bold text-lg"><CalendarIcon className="w-5 h-5 inline -mt-0.5 mr-1.5" />{t("title")}</h3>
+            <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
           </div>
           <button
             onClick={() => {
@@ -131,7 +132,7 @@ export default function DonoAgendaPage() {
             }}
             className="btn-gold px-4 py-2 text-sm"
           >
-            {showForm ? "✕ Fechar" : "+ Horário"}
+            {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novoHorario")}
           </button>
         </div>
 
@@ -141,14 +142,14 @@ export default function DonoAgendaPage() {
             className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5 space-y-4"
           >
             <h4 className="font-bold text-sm">
-              Novo Horário —{" "}
+              {t("novoHorario")} —{" "}
               {selectedDay !== null ? diaNomes[selectedDay] : ""}
               {selectedHour ? ` às ${selectedHour}` : ""}
             </h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Turma
+                  {t("turma")}
                 </label>
                 <select
                   value={turmaId}
@@ -156,7 +157,7 @@ export default function DonoAgendaPage() {
                   className="input-premium w-full text-sm mt-1"
                   required
                 >
-                  <option value="">Selecione...</option>
+                  <option value="">{t("selecione")}</option>
                   {turmas.map((t) => (
                     <option key={t.id} value={t.id}>
                       {t.nome}
@@ -166,7 +167,7 @@ export default function DonoAgendaPage() {
               </div>
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Professor
+                  {t("professor")}
                 </label>
                 <select
                   value={professorId}
@@ -174,7 +175,7 @@ export default function DonoAgendaPage() {
                   className="input-premium w-full text-sm mt-1"
                   required
                 >
-                  <option value="">Selecione...</option>
+                  <option value="">{t("selecione")}</option>
                   {professores.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.nome} {p.faixa ? `(${p.faixa})` : ""}
@@ -186,7 +187,7 @@ export default function DonoAgendaPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Dia
+                  {t("dia")}
                 </label>
                 <select
                   value={selectedDay ?? 1}
@@ -202,20 +203,20 @@ export default function DonoAgendaPage() {
               </div>
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Local
+                  {t("local")}
                 </label>
                 <input
                   value={local}
                   onChange={(e) => setLocal(e.target.value)}
                   className="input-premium w-full text-sm mt-1"
-                  placeholder="Sala 1 / Tatame"
+                  placeholder={t("placeholderLocal")}
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Início
+                  {t("inicio")}
                 </label>
                 <input
                   type="time"
@@ -227,7 +228,7 @@ export default function DonoAgendaPage() {
               </div>
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  Fim
+                  {t("fim")}
                 </label>
                 <input
                   type="time"
@@ -240,7 +241,7 @@ export default function DonoAgendaPage() {
             </div>
             <div>
               <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                Máx. Alunos
+                {t("maxAlunos")}
               </label>
               <input
                 type="number"
@@ -250,13 +251,13 @@ export default function DonoAgendaPage() {
               />
             </div>
             <button type="submit" disabled={saving} className="btn-gold px-6 py-2.5 text-sm font-bold">
-              {saving ? "Salvando..." : "Salvar Horário"}
+              {saving ? t("salvando") : t("salvarHorario")}
             </button>
           </form>
         )}
 
         {loading ? (
-          <div className="text-center py-20 text-[var(--white-muted)] text-sm">Carregando...</div>
+          <div className="text-center py-20 text-[var(--white-muted)] text-sm">{t("carregando")}</div>
         ) : (
           <WeeklyGrid
             horarios={horarios}
@@ -264,7 +265,7 @@ export default function DonoAgendaPage() {
             onClassCell={(h) => {
               if (
                 confirm(
-                  `Excluir "${h.turma?.nome || "Treino"}" (${h.horaInicio}-${h.horaFim})?`
+                  `${t("confirmarExcluir")} "${h.turma?.nome || t("treino")}" (${h.horaInicio}-${h.horaFim})?`
                 )
               )
                 handleDeleteSlot(h)

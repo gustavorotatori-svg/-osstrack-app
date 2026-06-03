@@ -1,10 +1,12 @@
 "use client"
 
+import { useT } from "@/lib/use-t"
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { TreinoTimer } from "@/components/treino/treino-timer"
 
 export default function TreinoPage() {
+  const t = useT("aluno.treino")
   const [treinandoAgora, setTreinandoAgora] = useState<{ nome: string; faixa: string }[]>([])
 
   useEffect(() => {
@@ -20,8 +22,8 @@ export default function TreinoPage() {
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 text-center relative overflow-hidden">
           <div className="absolute top-[-30px] right-[-30px] w-36 h-36 bg-[var(--red)]/5 rounded-full blur-3xl" />
           <div className="text-3xl mb-1">🥊</div>
-          <h2 className="font-extrabold text-lg">Modo Treino</h2>
-          <p className="text-xs text-[var(--white-muted)] mt-0.5">Timer de rounds com alertas sonoros</p>
+          <h2 className="font-extrabold text-lg">{t("title")}</h2>
+          <p className="text-xs text-[var(--white-muted)] mt-0.5">{t("subtitle")}</p>
         </div>
 
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 hover-card">
@@ -32,7 +34,7 @@ export default function TreinoPage() {
           <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5">
             <h3 className="font-bold text-sm tracking-tight mb-3 flex items-center gap-2">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              Treinando agora
+              {t("treinandoAgora")}
             </h3>
             <div className="flex flex-wrap gap-2">
               {treinandoAgora.map((p, i) => (

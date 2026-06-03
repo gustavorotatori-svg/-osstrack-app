@@ -1,16 +1,21 @@
 "use client"
 
+import { DumbbellIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
+
 const HOURS = Array.from({ length: 17 }, (_, i) => `${String(i + 6).padStart(2, "0")}:00`)
 
-const DAYS = [
-  { key: 0, label: "Dom", full: "Domingo" },
-  { key: 1, label: "Seg", full: "Segunda" },
-  { key: 2, label: "Ter", full: "Terça" },
-  { key: 3, label: "Qua", full: "Quarta" },
-  { key: 4, label: "Qui", full: "Quinta" },
-  { key: 5, label: "Sex", full: "Sexta" },
-  { key: 6, label: "Sáb", full: "Sábado" },
-]
+function buildDays(t: (key: string) => string) {
+  return [
+    { key: 0, label: t("dom"), full: t("domingo") },
+    { key: 1, label: t("seg"), full: t("segunda") },
+    { key: 2, label: t("ter"), full: t("terca") },
+    { key: 3, label: t("qua"), full: t("quarta") },
+    { key: 4, label: t("qui"), full: t("quinta") },
+    { key: 5, label: t("sex"), full: t("sexta") },
+    { key: 6, label: t("sab"), full: t("sabado") },
+  ]
+}
 
 export type HorarioData = {
   id: string
@@ -35,6 +40,8 @@ interface WeeklyGridProps {
 }
 
 export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell }: WeeklyGridProps) {
+  const t = useT("agendaDias")
+  const DAYS = buildDays(t)
   const grid = new Map<string, HorarioData[]>()
   for (const h of horarios) {
     const hour = h.horaInicio.slice(0, 5)
@@ -58,8 +65,8 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
         }}
       >
         {/* Header */}
-        <div className="h-10 flex items-center justify-center text-[10px] text-[var(--white-muted)] font-semibold uppercase bg-[var(--dark-card)] border-b border-r border-[var(--dark-border)] sticky left-0 z-10">
-          🥋
+        <div className="h-10 flex items-center justify-center bg-[var(--dark-card)] border-b border-r border-[var(--dark-border)] sticky left-0 z-10">
+          <DumbbellIcon className="w-4 h-4 text-[var(--white-muted)]" />
         </div>
         {DAYS.map((d) => (
           <div
@@ -110,7 +117,7 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
                         }}
                       >
                         <span className="truncate w-full text-center leading-tight">
-                          {h.turma?.icone || "🥋"} {h.turma?.nome || "Treino"}
+                          {h.turma?.icone || <DumbbellIcon className="w-3 h-3 inline -mt-0.5" />} {h.turma?.nome || "Treino"}
                         </span>
                         {h.professor && (
                           <span className="text-[8px] opacity-60 truncate w-full text-center">

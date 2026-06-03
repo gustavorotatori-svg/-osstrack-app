@@ -15,10 +15,14 @@ export default async function ConvitePage({ params }: { params: Promise<{ codigo
 
   const qs = new URLSearchParams({
     convite: codigo,
-    tipo: convite.tipo,
+    tipo: convite.tipo === "academia" ? "dono" : convite.tipo,
     academiaId: convite.academiaId || "",
     academia: convite.academia?.nome || "",
   })
+
+  if (convite.tipo === "academia" && convite.email) {
+    qs.set("professorId", convite.email)
+  }
 
   redirect(`/cadastro?${qs.toString()}`)
 }

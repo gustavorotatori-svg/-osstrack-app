@@ -1,3 +1,5 @@
+import { SparklesIcon, FlameIcon } from "@/components/ui/icons"
+
 export function Avatar({ name, faixa, size = 40, mood = "normal", src }: { name: string; faixa: string; size?: number; mood?: "normal" | "fire" | "party"; src?: string | null }) {
   const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()
 
@@ -9,7 +11,7 @@ export function Avatar({ name, faixa, size = 40, mood = "normal", src }: { name:
   const textColor = faixa === "Branca" ? "#333" : faixa === "Preta" ? "#c9a84c" : "#fff"
   const half = size / 2
 
-  const deco = mood === "party" ? "🎉" : mood === "fire" ? "🔥" : ""
+  const deco = mood === "party" ? <SparklesIcon className="w-3 h-3" /> : mood === "fire" ? <FlameIcon className="w-3 h-3" /> : null
 
   if (src) {
     return (

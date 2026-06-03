@@ -1,11 +1,13 @@
 "use client"
 
+import { useT } from "@/lib/use-t"
 import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 
 export default function AlunoAgendaPage() {
+  const t = useT("aluno.agenda")
   const [horarios, setHorarios] = useState<HorarioData[]>([])
   const [meusAgendamentos, setMeusAgendamentos] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -29,11 +31,11 @@ export default function AlunoAgendaPage() {
 
   async function handleBook(horario: HorarioData) {
     if (bookedHorarioIds.includes(horario.id)) {
-      toast.info("Você já está agendado nesta aula")
+      toast.info(t("jaAgendado"))
       return
     }
     if ((horario._count?.agendamentos ?? 0) >= horario.maxAlunos) {
-      toast.error("Turma lotada")
+      toast.error(t("turmaLotada"))
       return
     }
 
@@ -54,10 +56,10 @@ export default function AlunoAgendaPage() {
     if (res.ok) {
       const novo = await res.json()
       setMeusAgendamentos((prev) => [novo, ...prev])
-      toast.success("Aula agendada! 🥋")
+      toast.success(`${t("aulaAgendada")} 🥋`)
     } else {
       const err = await res.json()
-      toast.error(err.error || "Erro ao agendar")
+      toast.error(err.error || t("erroAgendar"))
     }
     setBookingId(null)
   }
@@ -67,15 +69,15 @@ export default function AlunoAgendaPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-bold text-lg">📅 Agenda de Aulas</h3>
+            <h3 className="font-bold text-lg">📅 {t("title")}</h3>
             <p className="text-xs text-[var(--white-muted)]">
-              Passe o mouse sobre as aulas para ver detalhes
+              {t("subtitle")}
             </p>
           </div>
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-[var(--white-muted)] text-sm">Carregando...</div>
+          <div className="text-center py-20 text-[var(--white-muted)] text-sm">{t("carregando")}</div>
         ) : (
           <WeeklyGrid
             horarios={horarios}
@@ -84,7 +86,7 @@ export default function AlunoAgendaPage() {
               if (
                 (h._count?.agendamentos ?? 0) >= h.maxAlunos
               ) {
-                toast.error("Turma lotada")
+                toast.error(t("turmaLotada"))
                 return
               }
               handleBook(h)
@@ -94,7 +96,7 @@ export default function AlunoAgendaPage() {
 
         {meusAgendamentos.length > 0 && (
           <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5">
-            <h4 className="font-bold text-sm mb-3">📋 Meus Agendamentos</h4>
+            <h4 className="font-bold text-sm mb-3">📋 {t("meusAgendamentos")}</h4>
             <div className="space-y-2">
               {meusAgendamentos.slice(0, 5).map((a: any) => (
                 <div
