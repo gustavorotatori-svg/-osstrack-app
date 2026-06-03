@@ -12,12 +12,18 @@ export default async function ConquistasPage() {
   const desbloqueadas = await prisma.alunoConquista.findMany({
     where: { alunoId: session.user.id },
   })
+  const desbloqueadasMap = new Map(desbloqueadas.map((ac) => [ac.conquistaId, ac]))
 
   return (
     <AchievementsClient
-      conquistas={todas.map((c) => ({
-        ...c, desbloqueada: desbloqueadas.some((ac) => ac.conquistaId === c.id),
-      }))}
+      conquistas={todas.map((c) => {
+        const ac = desbloqueadasMap.get(c.id)
+        return {
+          ...c,
+          desbloqueada: !!ac,
+          progresso: ac?.progresso || 0,
+        }
+      })}
     />
   )
 }

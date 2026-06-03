@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import { useT } from "@/lib/use-t"
+import { MessageIcon } from "@/components/ui/icons"
 
 type Props = {
-  acao: "cobranca" | "checkin" | "lembrete" | "promocao" | "personalizado"
+  acao: "checkin" | "lembrete" | "promocao" | "personalizado"
   alunoId: string
   alunoNome: string
-  valor?: number
-  dataVencimento?: string
   linkPersonalizado?: string
   label?: string
   variant?: "gold" | "ghost" | "emerald"
@@ -18,13 +18,14 @@ export function WhatsAppButton({
   acao,
   alunoId,
   alunoNome,
-  valor,
-  dataVencimento,
+
   linkPersonalizado,
-  label = "WhatsApp",
+  label,
   variant = "emerald",
   size = "sm",
 }: Props) {
+  const t = useT("whatsappFab")
+  const resolvedLabel = label || t("mensagem")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -33,8 +34,6 @@ export function WhatsAppButton({
     setError("")
     try {
       const body: Record<string, unknown> = { acao, alunoId }
-      if (valor !== undefined) body.valor = valor
-      if (dataVencimento) body.dataVencimento = dataVencimento
       if (linkPersonalizado) body.linkPersonalizado = linkPersonalizado
 
       const res = await fetch("/api/whatsapp", {
@@ -46,10 +45,10 @@ export function WhatsAppButton({
       if (res.ok && data.link) {
         window.open(data.link, "_blank")
       } else {
-        setError(data.error || "Erro ao gerar link")
+        setError(data.error || t("erroGerar"))
       }
     } catch {
-      setError("Erro de conexão")
+      setError(t("erroConexao"))
     }
     setLoading(false)
   }
@@ -72,8 +71,8 @@ export function WhatsAppButton({
         disabled={loading}
         className={`font-semibold transition-all active:scale-95 ${variants[variant]} ${sizes[size]} inline-flex items-center gap-1.5`}
       >
-        {loading ? "..." : "💬"}
-        {label}
+        {loading ? "..." : <MessageIcon className="w-3.5 h-3.5" />}
+        {resolvedLabel}
       </button>
       {error && <div className="text-[9px] text-red-400 mt-1">{error}</div>}
     </div>

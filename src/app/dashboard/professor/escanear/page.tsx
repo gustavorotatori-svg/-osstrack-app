@@ -3,8 +3,10 @@
 import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { CameraScanner } from "@/components/scanner/camera-scanner"
+import { useT } from "@/lib/use-t"
 
 export default function EscanearPage() {
+  const t = useT("professor.escanear")
   const [input, setInput] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle")
   const [msg, setMsg] = useState("")
@@ -25,15 +27,15 @@ export default function EscanearPage() {
         setStatus("ok")
         setAlunoNome(data.alunoNome)
         setHorario(data.horario)
-        setMsg(`✅ ${data.alunoNome} — ${data.horario}`)
+        setMsg(`${t("presencaConfirmada")} ${data.alunoNome} — ${data.horario}`)
       } else {
         const err = await res.json()
         setStatus("error")
-        setMsg(err.error || "❌ Erro ao confirmar")
+        setMsg(err.error || t("erroConfirmar"))
       }
     } catch {
       setStatus("error")
-      setMsg("❌ Erro ao confirmar presença")
+      setMsg(t("erroConfirmar"))
     }
     setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
   }
@@ -52,8 +54,8 @@ export default function EscanearPage() {
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 text-center">
           <div className="text-3xl mb-2">📷</div>
-          <h3 className="font-bold text-lg">Escanear QR Code</h3>
-          <p className="text-xs text-[var(--white-muted)]">Aponte a câmera para o QR Code do aluno ou cole abaixo</p>
+          <h3 className="font-bold text-lg">{t("title")}</h3>
+          <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
         </div>
 
         <CameraScanner onScan={handleScan} onError={(e) => { setStatus("error"); setMsg(e) }} />
@@ -63,7 +65,7 @@ export default function EscanearPage() {
             <div className="w-full border-t border-[var(--dark-border)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[var(--dark-bg)] px-3 text-[var(--white-muted)]">ou cole manualmente</span>
+            <span className="bg-[var(--dark-bg)] px-3 text-[var(--white-muted)]">{t("ouCole")}</span>
           </div>
         </div>
 
@@ -72,7 +74,7 @@ export default function EscanearPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="input-premium w-full h-24 text-xs font-mono"
-            placeholder="Cole aqui o QR Code copiado pelo aluno..."
+            placeholder={t("placeholder")}
           />
 
           <button
@@ -84,25 +86,25 @@ export default function EscanearPage() {
               : "btn-gold"
             }`}
           >
-            {status === "loading" ? "⏳ Confirmando..." : status === "ok" ? msg : status === "error" ? msg : "✅ Confirmar Presença"}
+            {status === "loading" ? t("confirmando") : status === "ok" ? msg : status === "error" ? msg : t("confirmar")}
           </button>
         </div>
 
         {status === "ok" && (
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-center animate-scale-in">
             <div className="text-2xl mb-1">✅</div>
-            <p className="font-bold text-emerald-500">Presença confirmada!</p>
+            <p className="font-bold text-emerald-500">{t("presencaConfirmada")}</p>
             {alunoNome && <p className="text-xs text-[var(--white-muted)] mt-1">{alunoNome} · {horario}</p>}
           </div>
         )}
 
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5">
-          <h4 className="font-bold text-sm mb-2">Como funciona</h4>
+          <h4 className="font-bold text-sm mb-2">{t("comoFunciona")}</h4>
           <ol className="text-xs text-[var(--white-muted)] space-y-2 list-decimal list-inside">
-            <li>O aluno acessa "Meu QR Code" no app</li>
-            <li>Você aponta a câmera para o QR Code na tela do aluno</li>
-            <li>A presença é confirmada automaticamente</li>
-            <li>Ou cole o código manualmente no campo acima</li>
+            <li>{t("passo1")}</li>
+            <li>{t("passo2")}</li>
+            <li>{t("passo3")}</li>
+            <li>{t("passo4")}</li>
           </ol>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { motion, AnimatePresence } from "framer-motion"
+import { useT } from "@/lib/use-t"
 
 type Presenca = {
   id: string
@@ -26,6 +27,7 @@ const playfulPhrases = [
 ]
 
 export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Presenca[] }) {
+  const t = useT("professor.presencas")
   const [presencas, setPresencas] = useState(initial)
   const [filtro, setFiltro] = useState<"todas" | "pending" | "confirmed">("todas")
   const [confirmando, setConfirmando] = useState<string | null>(null)
@@ -45,18 +47,18 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
         body: JSON.stringify({ presencaId, status }),
       })
       if (!res.ok) throw new Error()
-      toast.success(status === "confirmed" ? "✅ Presença confirmada!" : "Presença recusada")
+      toast.success(status === "confirmed" ? t("presencaConfirmada") : t("presencaRecusada"))
     } catch {
       setPresencas(prev)
-      toast.error("Erro ao confirmar. Tente novamente.")
+      toast.error(t("erroConfirmar"))
     } finally {
       setConfirmando(null)
     }
   }
 
   async function adicionarManual() {
-    if (!manualNome.trim()) { toast.error("Digite o nome do aluno"); return }
-    toast.success(`${manualNome} registrado! 🥋`)
+    if (!manualNome.trim()) { toast.error(t("digiteNome")); return }
+    toast.success(`${manualNome} ${t("alunoRegistrado")}`)
     setShowManual(false)
     setManualNome("")
   }
@@ -71,12 +73,12 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
         <div className="space-y-3">
           <div className="glass-card-gold flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-extrabold tracking-tight">📋 Presenças</h2>
-              <p className="text-xs text-[var(--white-muted)] mt-0.5">Gerencie os check-ins do dia</p>
+              <h2 className="text-lg font-extrabold tracking-tight">{t("title")}</h2>
+              <p className="text-xs text-[var(--white-muted)] mt-0.5">{t("subtitle")}</p>
             </div>
             <button onClick={() => setShowManual(true)}
               className="btn-gold px-4 py-2.5 text-xs font-bold active:scale-95 shrink-0">
-              + Manual
+              {t("manual")}
             </button>
           </div>
 
@@ -84,17 +86,17 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             <div className="stat-card">
               <div className="text-xl mb-1">📋</div>
               <div className="text-xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={presencas.length} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">Total</div>
+              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("total")}</div>
             </div>
             <div className="stat-card">
               <div className="text-xl mb-1 emoji-check">✅</div>
               <div className="text-xl font-extrabold text-emerald-500"><AnimatedCounter value={confirmed} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">Presentes</div>
+              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("presentes")}</div>
             </div>
             <div className="stat-card">
               <div className="text-xl mb-1">⏳</div>
               <div className="text-xl font-extrabold text-yellow-500"><AnimatedCounter value={pending} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">Pendentes</div>
+              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("pendentes")}</div>
             </div>
           </div>
 
@@ -102,7 +104,7 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             {(["todas", "pending", "confirmed"] as const).map((f) => (
               <button key={f} onClick={() => setFiltro(f)}
                 className={`tab-btn ${filtro === f ? "active" : ""}`}>
-                {f === "todas" ? "Todas" : f === "pending" ? "⏳ Pendentes" : "✅ Confirmadas"}
+                {f === "todas" ? t("todas") : f === "pending" ? <>⏳ {t("pendentes")}</> : <>✅ {t("confirmadas")}</>}
               </button>
             ))}
           </div>
@@ -111,8 +113,8 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             {filtradas.length === 0 ? (
               <div className="empty-premium">
                 <div className="empty-premium-icon">🥋</div>
-                <div className="empty-premium-title">Nenhuma presença encontrada</div>
-                <div className="empty-premium-desc">Nenhum registro com este filtro.</div>
+                <div className="empty-premium-title">{t("nenhumaEncontrada")}</div>
+                <div className="empty-premium-desc">{t("descEmpty")}</div>
               </div>
             ) : (
               <div className="space-y-0.5">
@@ -124,14 +126,14 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
                       <div className="flex items-center gap-2 text-[11px] text-[var(--white-muted)]">
                         <span>{p.aluno.faixa}</span>
                         <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
-                        <span>{p.turma || "Treino"}</span>
+                        <span>{p.turma || t("treino")}</span>
                         <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
                         <span>{p.horario}</span>
                       </div>
                     </div>
                     {p.status === "confirmed" ? (
                       <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        <span className="glow-dot green" /> Presente
+                        <span className="glow-dot green" /> {t("presente")}
                       </span>
                     ) : (
                       <div className="flex gap-1.5 shrink-0">
@@ -172,19 +174,19 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             >
               <div className="text-center mb-4">
                 <div className="text-3xl mb-2 emoji-glow">📸</div>
-                <h3 className="font-bold text-base">Adicionar Presença</h3>
+                <h3 className="font-bold text-base">{t("adicionarPresenca")}</h3>
                 <p className="text-sm text-[var(--white-muted)] mt-1 italic">{playMsg}</p>
               </div>
 
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">Nome do Aluno</label>
-                  <input className="input-premium text-sm" placeholder="Digite o nome..."
+                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">{t("nomeAluno")}</label>
+                  <input className="input-premium text-sm" placeholder={t("placeholderNome")}
                     value={manualNome} onChange={e => setManualNome(e.target.value)}
                     autoFocus />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">Faixa</label>
+                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">{t("faixa")}</label>
                   <select className="input-premium text-sm" value={manualFaixa} onChange={e => setManualFaixa(e.target.value)}>
                     {["Branca", "Azul", "Roxa", "Marrom", "Preta"].map(f => <option key={f} value={f}>{f}</option>)}
                   </select>
@@ -194,11 +196,11 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
               <div className="flex gap-2 mt-5">
                 <button onClick={adicionarManual}
                   className="flex-1 py-3 rounded-xl btn-gold text-sm font-bold active:scale-[0.97]">
-                  Confirmar Presença
+                  {t("confirmar")}
                 </button>
                 <button onClick={() => setShowManual(false)}
                   className="flex-1 py-3 rounded-xl bg-[var(--dark-border)] text-[var(--white-muted)] text-sm font-bold active:scale-[0.97]">
-                  Cancelar
+                  {t("cancelar")}
                 </button>
               </div>
             </motion.div>

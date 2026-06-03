@@ -5,16 +5,17 @@ import prisma from "@/lib/prisma"
 
 export async function GET() {
   const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-
-  const where: any = { academiaId: session.user.academiaId }
-  if (session.user.role === "aluno") where.alunoId = session.user.id
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
   const cobrancas = await prisma.cobranca.findMany({
-    where,
-    include: { aluno: { select: { id: true, nome: true, faixa: true } }, contrato: { include: { plano: { select: { nome: true } } } } },
+    where: { academiaId: session.user.academiaId },
+    include: {
+      aluno: { select: { id: true, nome: true, faixa: true, grau: true } },
+      contrato: { select: { id: true, plano: { select: { nome: true } } } },
+    },
     orderBy: { dataVencimento: "desc" },
-    take: 100,
   })
 
   return NextResponse.json(cobrancas)
@@ -22,31 +23,77 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
-  const { contratoId } = await req.json()
-  if (!contratoId) return NextResponse.json({ error: "contratoId obrigatório" }, { status: 400 })
+  const body = await req.json()
+  const { acao } = body
 
-  const contrato = await prisma.contrato.findUnique({ where: { id: contratoId }, include: { plano: true } })
-  if (!contrato) return NextResponse.json({ error: "Contrato não encontrado" }, { status: 404 })
+  if (acao === "gerar-todas") {
+    const contratos = await prisma.contrato.findMany({
+      where: { academiaId: session.user.academiaId, status: { in: ["ativo", "inadimplente"] } },
+      include: { cobrancas: { orderBy: { dataVencimento: "desc" }, take: 1 } },
+    })
 
-  const now = new Date()
-  const mes = now.getMonth() + 1
-  const ano = now.getFullYear()
-  const vencimento = new Date(ano, mes, contrato.diaVencimento)
+    const now = new Date()
+    const mes = now.getMonth()
+    const ano = now.getFullYear()
+    const vencimento = new Date(ano, mes + 1, 10)
+    const criadas: any[] = []
 
-  const jaExiste = await prisma.cobranca.findFirst({
-    where: { contratoId, dataVencimento: { gte: new Date(ano, mes - 1, 1), lt: new Date(ano, mes, 1) } },
+    for (const contrato of contratos) {
+      const ultima = contrato.cobrancas[0]
+      if (ultima) {
+        const ultimaData = new Date(ultima.dataVencimento)
+        if (ultimaData.getMonth() === mes && ultimaData.getFullYear() === ano) continue
+      }
+
+      const cobranca = await prisma.cobranca.create({
+        data: {
+          contratoId: contrato.id,
+          alunoId: contrato.alunoId,
+          academiaId: contrato.academiaId,
+          valor: contrato.valor,
+          dataVencimento: vencimento,
+          status: "pendente",
+        },
+        include: {
+          aluno: { select: { id: true, nome: true } },
+        },
+      })
+      criadas.push(cobranca)
+    }
+
+    return NextResponse.json({ criadas: criadas.length })
+  }
+
+  const { contratoId, valor, vencimento, observacao } = body
+  if (!contratoId) {
+    return NextResponse.json({ error: "contratoId é obrigatório" }, { status: 400 })
+  }
+
+  const contrato = await prisma.contrato.findFirst({
+    where: { id: contratoId, academiaId: session.user.academiaId },
   })
-  if (jaExiste) return NextResponse.json({ error: "Cobrança já gerada para este mês" }, { status: 409 })
+  if (!contrato) {
+    return NextResponse.json({ error: "Contrato não encontrado" }, { status: 404 })
+  }
 
   const cobranca = await prisma.cobranca.create({
     data: {
-      academiaId: session.user.academiaId, contratoId,
-      alunoId: contrato.alunoId, valor: contrato.valor,
-      dataVencimento: vencimento,
+      contratoId,
+      alunoId: contrato.alunoId,
+      academiaId: contrato.academiaId,
+      valor: Math.round((valor || contrato.valor / 100) * 100),
+      dataVencimento: vencimento ? new Date(vencimento) : new Date(),
+      observacao,
+    },
+    include: {
+      aluno: { select: { id: true, nome: true } },
+      contrato: { select: { id: true, plano: { select: { nome: true } } } },
     },
   })
 
-  return NextResponse.json(cobranca, { status: 201 })
+  return NextResponse.json(cobranca)
 }

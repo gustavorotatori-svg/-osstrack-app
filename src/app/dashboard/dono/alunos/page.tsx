@@ -18,9 +18,15 @@ export default async function DonoAlunosPage() {
 
   return (
     <OwnerDashboardClient
-      academia={{ nome: academia.nome, responsavel: academia.responsavel }}
-      stats={{ totalAlunos: alunos.length, totalProfessores: professores, totalPresencas: presencas }}
-      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
+      academia={{ nome: academia.nome, responsavel: academia.responsavel, rankingVisivel: academia.rankingVisivel }}
+      stats={{
+        totalAlunos: alunos.length,
+        totalProfessores: professores,
+        totalPresencas: presencas,
+      }}
+      presencasMensais={[]}
+      alunosPorCategoria={[]}
+      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau, categoria: a.categoria }))}
       presencas={[]}
       graduacoes={graduacoes.map((g) => ({ faixa: g.faixa, graus: g.graus, aulasPorGrau: g.aulasPorGrau, aulasProxFx: g.aulasProxFx }))}
     />

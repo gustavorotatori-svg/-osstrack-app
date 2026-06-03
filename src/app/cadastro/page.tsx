@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
+import { useT } from "@/lib/use-t"
 
 export default function Cadastro() {
   const searchParams = useSearchParams()
@@ -42,8 +43,13 @@ export default function Cadastro() {
     const tipo = searchParams.get("tipo")
     const academiaId = searchParams.get("academiaId")
     const academiaNome = searchParams.get("academia")
+    const professorId = searchParams.get("professorId")
     if (convite) setForm((f) => ({ ...f, codigoConvite: convite, role: tipo || f.role, academiaId: academiaId || f.academiaId }))
+    if (academiaNome) setForm((f) => ({ ...f, academiaNome }))
+    if (professorId) setForm((f) => ({ ...f, professorId }))
   }, [searchParams])
+
+  const t = useT("cadastro")
 
   function update(key: string, value: string | number | string[]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -99,25 +105,20 @@ export default function Cadastro() {
     setError("")
 
     if (step < totalSteps) {
-      // Step 1: todos avançam
       if (step === 1) { avancarStep(); setLoading(false); return }
-      // Step 2 dono: valida academia
       if (step === 2 && form.role === "dono") {
         if (!form.academiaNome) { setError("Informe o nome da academia"); setLoading(false); return }
         avancarStep(); setLoading(false); return
       }
-      // Step 2 professor: só avança se tiver mais steps (não tem academy/invite)
       if (step === 2 && form.role === "professor" && !form.academiaId && !form.codigoConvite) {
         avancarStep(); setLoading(false); return
       }
-      // Step 2 aluno: precisa selecionar academia
       if (step === 2 && form.role === "aluno") {
-        if (!form.academiaId) { setError("Selecione uma academia"); setLoading(false); return }
+        if (!form.academiaId) { setError(t("errors.selecioneAcademia")); setLoading(false); return }
         avancarStep(); setLoading(false); return
       }
-      // Step 3 aluno: avança
       if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
-      // Qualquer outro step intermediário cai aqui
+      if (step === 4 && form.role === "aluno") { avancarStep(); setLoading(false); return }
       setLoading(false); return
     }
 
@@ -131,6 +132,10 @@ export default function Cadastro() {
         codigoConvite: form.codigoConvite || undefined,
       }
 
+      if (form.professorId) {
+        body.professorId = form.professorId
+      }
+
       if (form.role === "dono") {
         body.academia = {
           nome: form.academiaNome,
@@ -141,7 +146,7 @@ export default function Cadastro() {
         }
       } else {
         body.academiaId = form.academiaId || undefined
-        body.professorId = form.professorId || undefined
+        body.professorId = body.professorId || form.professorId || undefined
         body.faixa = form.faixa
         body.grau = form.grau
       }
@@ -154,7 +159,7 @@ export default function Cadastro() {
 
       const data = await res.json()
 
-      if (!res.ok) { setError(data.error || "Erro ao criar conta"); setLoading(false); return }
+      if (!res.ok) { setError(data.error || t("errors.criacao")); setLoading(false); return }
 
       const result = await signIn("credentials", {
         email: form.email,
@@ -165,51 +170,46 @@ export default function Cadastro() {
       if (result?.error) { router.push("/login"); return }
 
       if (form.role === "aluno") {
-        const checkoutRes = await fetch("/api/premium/checkout", { method: "POST" })
-        if (checkoutRes.ok) {
-          const checkoutData = await checkoutRes.json()
-          if (checkoutData.url) {
-            window.location.href = checkoutData.url
-            return
-          }
-        }
+        router.push("/dashboard/aluno")
+        return
       }
 
       router.push(data.redirect || "/dashboard/aluno")
     } catch {
-      setError("Erro de conexão. Tente novamente.")
+      setError(t("errors.conexao"))
       setLoading(false)
     }
   }
 
   const modalidades = ["Jiu-Jitsu", "Karatê", "Judô", "Muay Thai", "Boxe", "Capoeira", "Taekwondo", "Kung Fu", "MMA", "Outra"]
+  const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 
   function renderStep() {
     if (step === 1) {
       return (
         <>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Nome completo</label>
-            <input type="text" className="input-premium" placeholder="Seu nome" required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
+            <input type="text" className="input-premium" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">E-mail</label>
-            <input type="email" className="input-premium" placeholder="seu@email.com" required value={form.email} onChange={(e) => update("email", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
+            <input type="email" className="input-premium" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Telefone</label>
-            <input type="tel" className="input-premium" placeholder="(81) 99999-8888" required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
+            <input type="tel" className="input-premium" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Senha</label>
-            <input type="password" className="input-premium" placeholder="Mínimo 6 caracteres" required minLength={6} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
+            <input type="password" className="input-premium" placeholder={t("step1.senhaPlaceholder")} required minLength={6} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Tipo de conta</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step1.tipoContaLabel")}</label>
             <select className="input-premium appearance-none" value={form.role} onChange={(e) => { update("role", e.target.value); setStep(1) }}>
-              <option value="dono">Dono de Academia</option>
-              <option value="professor">Professor</option>
-              <option value="aluno">Aluno</option>
+              <option value="dono">{t("step1.donoOption")}</option>
+              <option value="professor">{t("step1.professorOption")}</option>
+              <option value="aluno">{t("step1.alunoOption")}</option>
             </select>
           </div>
         </>
@@ -220,19 +220,19 @@ export default function Cadastro() {
       return (
         <>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Nome da Academia</label>
-            <input type="text" className="input-premium" placeholder="Ex: Nova União" required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
+            <input type="text" className="input-premium" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Endereço</label>
-            <input type="text" className="input-premium" placeholder="Rua, número, bairro" value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
+            <input type="text" className="input-premium" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Cidade / Estado</label>
-            <input type="text" className="input-premium" placeholder="Recife/PE" value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
+            <input type="text" className="input-premium" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Modalidades</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Dono.modalidadesLabel")}</label>
             <div className="grid grid-cols-2 gap-2 mt-1">
               {modalidades.map((mod) => (
                 <label key={mod} className="flex items-center gap-2 bg-black/30 rounded-lg px-3 py-2 text-xs cursor-pointer hover:bg-[var(--dark-border)] transition-all">
@@ -243,28 +243,33 @@ export default function Cadastro() {
             </div>
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Raio para check-in (metros)</label>
-            <input type="number" className="input-premium" placeholder="200" value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Dono.raioLabel")}</label>
+            <input type="number" className="input-premium" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
           </div>
+          {form.professorId && (
+            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
+              <p className="text-sm text-emerald-400 font-semibold">{t("step2Dono.convidadoProfessor")}</p>
+              <p className="text-xs text-[var(--white-muted)] mt-1">{t("step2Dono.convidadoProfessorDesc")}</p>
+            </div>
+          )}
         </>
       )
     }
 
     if (step === 2 && form.role === "professor") {
-      const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
       return (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--white-muted)]">Informe sua graduação atual:</p>
+          <p className="text-sm text-[var(--white-muted)]">{t("step2Professor.info")}</p>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Faixa</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
             <select className="input-premium" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
               {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
             </select>
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Grau</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step2Professor.grauLabel")}</label>
             <select className="input-premium" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
-              {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{g}º Grau</option>)}
+              {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("grauOption").replace("{g}", String(g))}</option>)}
             </select>
           </div>
         </div>
@@ -275,17 +280,17 @@ export default function Cadastro() {
       return (
         <div className="space-y-4">
           <p className="text-sm text-[var(--white-muted)]">
-            {form.role === "professor" ? "Busque a academia onde você dá aulas:" : "Busque sua academia:"}
+            {form.role === "professor" ? t("step2Professor.buscaInfo") : t("step2Aluno.buscaInfo")}
           </p>
           <div className="relative">
             <input
               type="text"
               className="input-premium"
-              placeholder="Digite o nome da academia..."
+              placeholder={t("step2Aluno.placeholder")}
               value={busca}
               onChange={(e) => buscarAcademias(e.target.value)}
             />
-            {buscando && <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">Buscando...</span>}
+            {buscando && <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">{t("step2Aluno.buscando")}</span>}
           </div>
           {resultados.length > 0 && (
             <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
@@ -304,13 +309,13 @@ export default function Cadastro() {
           )}
           {form.academiaId && (
             <div className="bg-[var(--gold)]/10 border border-[var(--gold)]/30 rounded-xl px-4 py-3">
-              <p className="text-xs text-[var(--gold)] font-semibold">Academia selecionada</p>
+              <p className="text-xs text-[var(--gold)] font-semibold">{t("step2Aluno.academiaSelecionada")}</p>
               <p className="text-sm font-medium">{form.academiaNome}</p>
             </div>
           )}
           {form.role === "professor" && (
             <p className="text-xs text-[var(--white-muted)] text-center pt-2">
-              Não encontrou? Pode continuar sem academia e conectar depois.
+              {t("step2Professor.naoEncontrou")}
             </p>
           )}
         </div>
@@ -320,12 +325,32 @@ export default function Cadastro() {
     if (form.role === "aluno" && step === 3) {
       return (
         <div className="space-y-4">
-          <p className="text-sm text-[var(--white-muted)]">Selecione seu professor (opcional):</p>
+          <p className="text-sm text-[var(--white-muted)]">{t("step3Aluno.info")}</p>
+          <div>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
+            <select className="input-premium" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
+              {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("step3Aluno.grauLabel")}</label>
+            <select className="input-premium" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+              {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("step3Aluno.grauOption").replace("{g}", String(g))}</option>)}
+            </select>
+          </div>
+        </div>
+      )
+    }
+
+    if (form.role === "aluno" && step === 4) {
+      return (
+        <div className="space-y-4">
+          <p className="text-sm text-[var(--white-muted)]">{t("step4Aluno.info")}</p>
           <div className="relative">
             <input
               type="text"
               className="input-premium"
-              placeholder="Digite o nome do professor..."
+              placeholder={t("step4Aluno.placeholder")}
               value={buscaProf}
               onChange={(e) => {
                 setBuscaProf(e.target.value)
@@ -336,7 +361,7 @@ export default function Cadastro() {
                   .catch(() => setProfessores([]))
               }}
             />
-            <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">Buscar</span>
+            <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">{t("step4Aluno.buscar")}</span>
           </div>
           {professores.length > 0 && (
             <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
@@ -354,29 +379,32 @@ export default function Cadastro() {
           )}
           {form.professorId && (
             <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3">
-              <p className="text-xs text-emerald-400 font-semibold">Professor selecionado</p>
+              <p className="text-xs text-emerald-400 font-semibold">{t("step4Aluno.professorSelecionado")}</p>
               <p className="text-sm font-medium">{buscaProf}</p>
             </div>
           )}
-          <p className="text-xs text-[var(--white-muted)] text-center pt-2">Pode pular essa etapa.</p>
+          <p className="text-xs text-[var(--white-muted)] text-center pt-2">{t("step4Aluno.pular")}</p>
         </div>
       )
     }
 
-    if (form.role === "aluno" && step === 4) {
+    if (form.role === "aluno" && step === 5) {
       return (
         <div className="space-y-4 text-center">
           <div className="text-5xl mb-4">💳</div>
-          <h3 className="text-xl font-extrabold">Assinar Premium</h3>
-          <p className="text-4xl font-black text-[var(--gold)]">R$ 4,90<span className="text-base text-[var(--white-muted)] font-normal">/mês</span></p>
+          <h3 className="text-xl font-extrabold">{t("step5Aluno.title")}</h3>
+          <p className="text-sm text-[var(--white-muted)]">{t("step5Aluno.price")}</p>
           <ul className="text-left space-y-2 text-sm text-[var(--white-muted)] bg-black/30 rounded-xl p-4">
-            <li className="flex items-center gap-2">✅ Check-in com geolocalização</li>
-            <li className="flex items-center gap-2">✅ Acompanhamento de evolução</li>
-            <li className="flex items-center gap-2">✅ Ranking e gamificação</li>
-            <li className="flex items-center gap-2">✅ Mural da academia</li>
-            <li className="flex items-center gap-2">✅ Cancele quando quiser</li>
+            <li className="flex items-center gap-2">✅ {t("step5Aluno.feature1")}</li>
+            <li className="flex items-center gap-2">✅ {t("step5Aluno.feature2")}</li>
+            <li className="flex items-center gap-2">✅ {t("step5Aluno.feature3")}</li>
+            <li className="flex items-center gap-2">✅ {t("step5Aluno.feature4")}</li>
+            <li className="flex items-center gap-2">✅ {t("step5Aluno.feature5")}</li>
           </ul>
-          <p className="text-xs text-[var(--white-muted)]">Pagamento 100% seguro via <span className="text-[#635bff] font-semibold">Stripe</span>. Seu cartão não fica salvo no OssTrack.</p>
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-400">
+            {t("step5Aluno.warning")}
+          </div>
+          <p className="text-xs text-[var(--white-muted)]">{t("step5Aluno.seguranca")}</p>
         </div>
       )
     }
@@ -389,7 +417,7 @@ export default function Cadastro() {
     setProfessores([])
   }
 
-  const totalSteps = form.role === "dono" ? 2 : form.role === "professor" ? (form.academiaId || form.codigoConvite ? 2 : 3) : 4
+  const totalSteps = form.role === "dono" ? 2 : form.role === "professor" ? (form.academiaId || form.codigoConvite ? 2 : 3) : 5
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
@@ -401,12 +429,12 @@ export default function Cadastro() {
           <motion.div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg animate-pulse-glow-gold" animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 3, repeat: Infinity }}>
             🥋
           </motion.div>
-          <h1 className="text-2xl font-extrabold tracking-tight">Criar Conta</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
           <p className="text-sm text-[var(--white-muted)] mt-1.5">
             {form.role === "aluno" ? (
-              <>Grátis por <span className="text-[var(--gold)] font-bold">7 dias</span>. Depois <span className="text-[var(--gold)] font-bold">R$4,90/mês</span>.</>
+              <>{t("subtitleAluno")}</>
             ) : (
-              <>Comece gratuitamente por <span className="text-[var(--gold)] font-bold">7 dias</span>. Sem cartão de crédito.</>
+              <>{t("subtitleOther")}</>
             )}
           </p>
         </div>
@@ -425,7 +453,7 @@ export default function Cadastro() {
           <div className="flex gap-3 pt-1">
             {step > 1 && (
               <button type="button" onClick={voltarStep} className="flex-1 py-3.5 rounded-xl font-bold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] transition-all">
-                Voltar
+                {t("buttons.voltar")}
               </button>
             )}
             <button
@@ -433,13 +461,13 @@ export default function Cadastro() {
               disabled={loading}
               className={`flex-1 py-3.5 rounded-xl font-bold text-sm ${loading ? "bg-[var(--dark-border)] text-[var(--gray)] cursor-not-allowed" : "btn-gold"}`}
             >
-              {loading ? "Criando conta..." : step === 1 && form.role === "dono" ? "Próximo" : step < totalSteps ? "Próximo" : form.role === "aluno" ? "Continuar para Pagamento" : "Criar Conta Grátis"}
+              {loading ? t("buttons.criandoConta") : step === 1 && form.role === "dono" ? t("buttons.proximo") : step < totalSteps ? t("buttons.proximo") : form.role === "aluno" ? t("buttons.cadastrarPagamento") : t("buttons.criarGratis")}
             </button>
           </div>
 
           <p className="text-center text-xs text-[var(--white-muted)]">
-            Já tem conta?{" "}
-            <Link href="/login" className="text-[var(--gold)] font-semibold hover:text-[var(--gold-light)] transition-colors">Entrar</Link>
+            {t("jaTemConta")}{" "}
+            <Link href="/login" className="text-[var(--gold)] font-semibold hover:text-[var(--gold-light)] transition-colors">{t("entrar")}</Link>
           </p>
         </form>
       </div>

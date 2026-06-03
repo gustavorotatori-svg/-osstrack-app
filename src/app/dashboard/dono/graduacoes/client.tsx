@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { toast } from "sonner"
+import { useT } from "@/lib/use-t"
 
 type Graduacao = {
   id: string
@@ -28,6 +29,7 @@ const regrasTroca = [
 ]
 
 export default function GraduacoesClient({ role }: { role: string }) {
+  const t = useT("dono.graduacoes")
   const [graduacoes, setGraduacoes] = useState<Graduacao[]>([])
   const [categoria, setCategoria] = useState("adulto")
   const [editing, setEditing] = useState<string | null>(null)
@@ -275,7 +277,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                       <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Regra de troca</label>
                       <select className="input-premium text-sm mt-1" value={editForm.regraTroca}
                         onChange={e => updateField("regraTroca", e.target.value)}>
-                        {regrasTroca.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+{regrasTroca.map((r, i) => <option key={r.value} value={r.value}>{t(`regrasTroca.${i}.label`)}</option>)}
                       </select>
                     </div>
                     <div>
@@ -323,7 +325,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                     </div>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-[9px] px-2 py-0.5 rounded-full bg-[rgba(201,168,76,0.1)] text-[var(--gold)]">
-                        {regrasTroca.find(r => r.value === g.regraTroca)?.label || g.regraTroca}
+                        {(() => { const idx = regrasTroca.findIndex(r => r.value === g.regraTroca); return idx >= 0 ? t(`regrasTroca.${idx}.label`) : g.regraTroca })()}
                       </span>
                       {g.dataProva && (
                         <span className="text-[9px] px-2 py-0.5 rounded-full bg-[rgba(139,26,26,0.1)] text-[var(--red)]">

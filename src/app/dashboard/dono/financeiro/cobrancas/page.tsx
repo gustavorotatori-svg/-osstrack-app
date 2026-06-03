@@ -2,117 +2,114 @@
 
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { useT } from "@/lib/use-t"
+import { toast } from "sonner"
 
 export default function CobrancasPage() {
+  const t = useT("dono.financeiro")
   const [cobrancas, setCobrancas] = useState<any[]>([])
-  const [contratos, setContratos] = useState<any[]>([])
-  const [contratoId, setContratoId] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState("todas")
 
-  useEffect(() => {
-    fetch("/api/financeiro/cobrancas").then(r => r.json()).then(setCobrancas).catch(() => {})
-    fetch("/api/financeiro/contratos").then(r => r.json()).then(setContratos).catch(() => {})
-  }, [])
+  useEffect(() => { load() }, [])
 
-  async function gerarCobranca() {
-    if (!contratoId) return
-    const res = await fetch("/api/financeiro/cobrancas", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contratoId }),
-    })
-    if (res.ok) {
-      const nova = await res.json()
-      setCobrancas((prev) => [nova, ...prev])
-      setContratoId("")
-    } else {
-      const err = await res.json()
-      alert(err.error || "Erro ao gerar cobrança")
-    }
+  async function load() {
+    const r = await fetch("/api/financeiro/cobrancas")
+    if (r.ok) setCobrancas(await r.json())
+    setLoading(false)
   }
 
-  async function registrarPagamento(cobrancaId: string, valor: number) {
-    const metodo = prompt("Método de pagamento (pix/cartao/dinheiro):") || "pix"
-    const res = await fetch("/api/financeiro/pagamentos", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cobrancaId, valor, metodo }),
+  async function pagarCobranca(id: string, metodo: string) {
+    const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "pago", metodo }),
     })
-    if (res.ok) {
-      setCobrancas((prev) => prev.map(c => c.id === cobrancaId ? { ...c, status: "pago", metodo } : c))
-    }
+    if (r.ok) { load(); toast.success(t("cobrancaPaga")) }
+    else { toast.error(t("erro")) }
   }
 
-  const pendentes = cobrancas.filter(c => c.status === "pendente")
-  const pagas = cobrancas.filter(c => c.status === "pago")
+  async function cancelarCobranca(id: string) {
+    const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "cancelado" }),
+    })
+    if (r.ok) { load(); toast.success(t("cobrancaCancelada")) }
+  }
+
+  const filtradas = filter === "todas" ? cobrancas : cobrancas.filter(c => c.status === filter)
+
+  const statusColors: Record<string, string> = {
+    pendente: "bg-yellow-900/40 text-yellow-400",
+    pago: "bg-green-900/40 text-green-400",
+    atrasado: "bg-red-900/40 text-red-400",
+    cancelado: "bg-gray-900/40 text-gray-400",
+  }
+
+  const metodos = ["pix", "dinheiro", "cartao", "boleto", "transferencia"]
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4">
-        <div>
-          <h3 className="font-bold text-lg">Cobranças</h3>
-          <p className="text-xs text-[var(--white-muted)]">Gerencie cobranças e pagamentos</p>
+      <div className="space-y-4 animate-fade-in">
+        <h3 className="font-bold text-lg">{t("cobrancasTitle")}</h3>
+
+        <div className="flex gap-1 bg-[var(--dark-border)] rounded-lg p-1 overflow-x-auto">
+          {["todas", "pendente", "pago", "atrasado", "cancelado"].map(s => (
+            <button key={s} onClick={() => setFilter(s)}
+              className={`px-3 py-1.5 rounded-md text-[10px] font-semibold whitespace-nowrap ${filter === s ? "bg-[var(--gold)] text-black" : "text-[var(--white-muted)]"}`}>
+              {t(s)}
+            </button>
+          ))}
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-4 text-center">
-            <div className="text-2xl font-extrabold text-yellow-500">{pendentes.length}</div>
-            <div className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide mt-1">Pendentes</div>
+        {loading ? (
+          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--dark-border)] rounded-xl" />)}</div>
+        ) : filtradas.length === 0 ? (
+          <div className="glass-card p-6 text-center">
+            <p className="text-sm text-[var(--white-muted)]">{t("nenhumaCobranca")}</p>
           </div>
-          <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-4 text-center">
-            <div className="text-2xl font-extrabold text-emerald-500">{pagas.length}</div>
-            <div className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide mt-1">Pagas</div>
-          </div>
-        </div>
-
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5">
-          <h4 className="font-bold text-sm mb-3">Gerar Nova Cobrança</h4>
-          <div className="flex gap-3">
-            <select value={contratoId} onChange={(e) => setContratoId(e.target.value)} className="input-premium flex-1 text-sm">
-              <option value="">Selecione um contrato...</option>
-              {contratos.filter(c => c.status === "ativo").map((c) => (
-                <option key={c.id} value={c.id}>{c.aluno.nome} - {c.plano.nome} (R$ {c.valor.toFixed(2)})</option>
-              ))}
-            </select>
-            <button onClick={gerarCobranca} className="btn-gold px-4 py-2 text-sm shrink-0">Gerar</button>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          {cobrancas.map((c) => (
-            <div key={c.id} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-xl p-4 hover-card">
-              <div className="flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold">{c.aluno?.nome}</span>
-                    <span className="text-[9px] text-[var(--white-muted)]">{c.contrato?.plano?.nome}</span>
-                  </div>
-                  <div className="text-[11px] text-[var(--white-muted)] mt-0.5">
-                    Vencimento: {new Date(c.dataVencimento).toLocaleDateString("pt-BR")}
-                    {c.dataPagamento && ` · Pago em ${new Date(c.dataPagamento).toLocaleDateString("pt-BR")}`}
-                  </div>
-                </div>
-                <div className="text-right flex items-center gap-3">
+        ) : (
+          <div className="space-y-2">
+            {filtradas.map(c => (
+              <div key={c.id} className="glass-card p-4">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-base font-bold text-[var(--gold)]">R$ {c.valor.toFixed(2)}</div>
-                    <span className={`badge text-[9px] ${
-                      c.status === "pago" ? "badge-emerald"
-                      : new Date(c.dataVencimento) < new Date() ? "bg-red-500/15 text-red-500"
-                      : "bg-yellow-500/15 text-yellow-500"
-                    }`}>
-                      {c.status === "pago" ? "Pago" : new Date(c.dataVencimento) < new Date() ? "Atrasado" : "Pendente"}
-                    </span>
+                    <p className="font-bold text-sm">{c.aluno.nome}</p>
+                    <p className="text-[10px] text-[var(--white-muted)]">{c.contrato?.plano?.nome}</p>
+                    <p className="text-[10px] text-[var(--gray)]">
+                      {t("vencimento")}: {new Date(c.dataVencimento).toLocaleDateString()}
+                      {c.dataPagamento && ` | ${t("pagoEm")}: ${new Date(c.dataPagamento).toLocaleDateString()}`}
+                    </p>
+                    {c.observacao && <p className="text-[9px] text-[var(--gray)] mt-0.5">{c.observacao}</p>}
                   </div>
-                  {c.status === "pendente" && (
-                    <button onClick={() => registrarPagamento(c.id, c.valor)} className="text-[10px] px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-500 font-semibold hover:bg-emerald-500/20 transition-all">
-                      Pagar
-                    </button>
-                  )}
+                  <div className="text-right">
+                    <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(c.valor / 100).toFixed(2)}</p>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${statusColors[c.status] || ""}`}>
+                      {t(c.status)}
+                    </span>
+                    {c.status === "pendente" && (
+                      <div className="flex gap-1 mt-1 justify-end">
+                        <select onChange={e => { if (e.target.value) pagarCobranca(c.id, e.target.value); e.target.value = "" }}
+                          className="text-[9px] px-1 py-0.5 rounded bg-black border border-[var(--dark-border)] text-white">
+                          <option value="">{t("registrarPagamento")}</option>
+                          {metodos.map(m => <option key={m} value={m}>{t(m)}</option>)}
+                        </select>
+                        <button onClick={() => cancelarCobranca(c.id)}
+                          className="text-[9px] px-2 py-0.5 rounded bg-gray-900/30 text-gray-400">
+                          {t("cancelar")}
+                        </button>
+                      </div>
+                    )}
+                    {c.status === "pago" && c.metodo && (
+                      <p className="text-[9px] text-green-400 mt-1">{t("pagoVia")} {t(c.metodo)}</p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          {cobrancas.length === 0 && (
-            <div className="text-center py-10 text-[var(--white-muted)] text-sm">Nenhuma cobrança encontrada</div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </DashboardShell>
   )

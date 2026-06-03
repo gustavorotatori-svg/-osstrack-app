@@ -73,6 +73,14 @@ export async function POST(request: Request) {
         })
       }
 
+      // If dono was invited by a professor, link the professor to the academy
+      if (body.professorId) {
+        await prisma.usuario.update({
+          where: { id: body.professorId },
+          data: { academiaId: novaAcademia.id },
+        })
+      }
+
       return NextResponse.json({ redirect: "/dashboard/dono" })
     }
 

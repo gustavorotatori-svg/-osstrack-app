@@ -4,13 +4,15 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { useT } from "@/lib/use-t"
 
 export default function Login() {
-  const [email, setEmail] = useState("rafael@email.com")
-  const [password, setPassword] = useState("123456")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const t = useT("login")
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -25,14 +27,14 @@ export default function Login() {
       })
 
       if (result?.error) {
-        setError("E-mail ou senha inválidos")
+        setError(t("erroCredenciais"))
         setLoading(false)
         return
       }
 
       router.push("/dashboard")
     } catch {
-      setError("Erro de conexão. Tente novamente.")
+      setError(t("erroConexao"))
       setLoading(false)
     }
   }
@@ -48,12 +50,12 @@ export default function Login() {
             🥋
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight">OssTrack</h1>
-          <p className="text-sm text-[var(--white-muted)] mt-1.5">Faça login para continuar</p>
+          <p className="text-sm text-[var(--white-muted)] mt-1.5">{t("subtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4">
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">E-mail</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("email")}</label>
             <input
               type="email"
               value={email}
@@ -63,7 +65,7 @@ export default function Login() {
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">Senha</label>
+            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("senha")}</label>
             <input
               type="password"
               value={password}
@@ -84,19 +86,21 @@ export default function Login() {
             disabled={loading}
             className="btn-gold w-full py-3.5 text-sm"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? t("entrando") : t("entrar")}
           </button>
 
           <p className="text-center text-xs text-[var(--white-muted)]">
-            Ainda não tem conta?{" "}
+            {t("semConta")}{" "}
             <Link href="/cadastro" className="text-[var(--gold)] font-semibold hover:text-[var(--gold-light)] transition-colors">
-              Cadastre-se
+              {t("cadastrarSe")}
             </Link>
           </p>
 
-          <div className="text-center text-[10px] text-[var(--gray)] leading-relaxed pt-1 border-t border-[var(--dark-border)]">
-            Contas demo: rafael@email.com / carlos@email.com / leandro@email.com
-          </div>
+          {email && password && (
+            <div className="text-center text-[10px] text-[var(--gray)] leading-relaxed pt-1 border-t border-[var(--dark-border)]">
+              {t("contasDemo")}
+            </div>
+          )}
         </form>
       </div>
     </div>

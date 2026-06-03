@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { playAmbience } from "@/lib/sound"
+import { Volume2Icon, VolumeXIcon } from "@/components/ui/icons"
 
 export function AmbientSoundToggle() {
   const [on, setOn] = useState(false)
@@ -29,7 +30,7 @@ export function AmbientSoundToggle() {
       className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full border border-[var(--dark-border)] bg-[var(--dark-card)]/80 backdrop-blur-sm flex items-center justify-center text-sm hover:border-[var(--gold)] transition-all active:scale-90"
       title={on ? "Desligar som ambiente" : "Som ambiente de tatame"}
     >
-      {on ? "🔊" : "🔇"}
+      {on ? <Volume2Icon className="w-4 h-4" /> : <VolumeXIcon className="w-4 h-4" />}
     </button>
   )
 }

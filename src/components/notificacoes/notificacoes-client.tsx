@@ -4,6 +4,9 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { EmptyState } from "@/components/ui/empty-state"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
+import { useT } from "@/lib/use-t"
+import { AwardIcon, CheckIcon, TrendingIcon, MessageIcon, BellIcon, GraduationIcon, XIcon } from "@/components/ui/icons"
 
 type Notificacao = {
   id: string; tipo: string; titulo: string; descricao: string
@@ -11,6 +14,7 @@ type Notificacao = {
 }
 
 export function NotificacoesClient({ role }: { role: string }) {
+  const t = useT("notificacoes")
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([])
   const router = useRouter()
 
@@ -28,19 +32,54 @@ export function NotificacoesClient({ role }: { role: string }) {
     if (link) router.push(link)
   }
 
+  async function aceitarProfessor(notificacaoId: string) {
+    const res = await fetch("/api/professores/aceitar-vinculo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ notificacaoId, aceitar: true }),
+    })
+    if (res.ok) {
+      toast.success(t("professorVinculado"))
+      setNotificacoes((prev) => prev.map((n) => n.id === notificacaoId ? { ...n, lida: true } : n))
+    } else {
+      const data = await res.json()
+      toast.error(data.error || t("erroAceitar"))
+    }
+  }
+
+  async function recusarProfessor(notificacaoId: string) {
+    const res = await fetch("/api/professores/aceitar-vinculo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ notificacaoId, aceitar: false }),
+    })
+    if (res.ok) {
+      toast.success(t("solicitacaoRecusada"))
+      setNotificacoes((prev) => prev.map((n) => n.id === notificacaoId ? { ...n, lida: true } : n))
+    } else {
+      toast.error(t("erroRecusar"))
+    }
+  }
+
   const naoLidas = notificacoes.filter((n) => !n.lida)
 
-  const tipoIcon: Record<string, string> = {
-    conquista: "🏆", presenca: "✅", promocao: "⬆️",
-    comentario: "💬", sistema: "🔔",
+  const tipoIcon: Record<string, React.ReactNode> = {
+    conquista: <AwardIcon className="w-5 h-5 text-[var(--gold)]" />,
+    presenca: <CheckIcon className="w-5 h-5 text-emerald-400" />,
+    promocao: <TrendingIcon className="w-5 h-5 text-blue-400" />,
+    comentario: <MessageIcon className="w-5 h-5 text-[var(--gold)]" />,
+    sistema: <BellIcon className="w-5 h-5 text-[var(--gold)]" />,
+    solicitacao_professor: <GraduationIcon className="w-5 h-5 text-[var(--gold)]" />,
+    vinculo_aceito: <CheckIcon className="w-5 h-5 text-emerald-400" />,
+    vinculo_recusado: <XIcon className="w-5 h-5 text-red-400" />,
   }
 
   return (
     <DashboardShell role={role}>
       <div className="space-y-4">
         <div className="glass-card text-center">
-          <div className="text-3xl mb-2">🔔</div>
-          <h3 className="font-bold">Notificações</h3>
+          <BellIcon className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />
+          <h3 className="font-bold">{t("title")}</h3>
           {naoLidas.length > 0 && (
             <p className="text-xs text-[var(--gold)] mt-1">{naoLidas.length} não lidas</p>
           )}
@@ -54,15 +93,14 @@ export function NotificacoesClient({ role }: { role: string }) {
         ) : (
           <div className="space-y-2">
             {notificacoes.map((n) => (
-              <button
+              <div
                 key={n.id}
-                onClick={() => marcarLida(n.id, n.link)}
                 className={`w-full text-left glass-card transition-all hover:border-[rgba(201,168,76,0.15)] ${
                   n.lida ? "opacity-60" : ""
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <div className="text-lg shrink-0 mt-0.5">{tipoIcon[n.tipo] || "🔔"}</div>
+                  <div className="shrink-0 mt-0.5">{tipoIcon[n.tipo] || <BellIcon className="w-5 h-5 text-[var(--gold)]" />}</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-semibold">{n.titulo}</span>
@@ -72,9 +110,27 @@ export function NotificacoesClient({ role }: { role: string }) {
                     <span className="text-[10px] text-[var(--gray)] mt-1 block">
                       {new Date(n.createdAt).toLocaleDateString("pt-BR")} · {new Date(n.createdAt).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                     </span>
+                    {n.tipo === "solicitacao_professor" && !n.lida && (
+                      <div className="flex gap-2 mt-3">
+                        <button onClick={() => aceitarProfessor(n.id)}
+                          className="px-4 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 transition-all active:scale-95">
+                          <CheckIcon className="w-3.5 h-3.5" /> {t("aceitar")}
+                        </button>
+                        <button onClick={() => recusarProfessor(n.id)}
+                          className="px-4 py-1.5 rounded-lg bg-red-700/20 text-red-400 text-xs font-bold hover:bg-red-700/30 transition-all active:scale-95 border border-red-700/30 flex items-center gap-1">
+                          <XIcon className="w-3.5 h-3.5" /> {t("recusar")}
+                        </button>
+                      </div>
+                    )}
+                    {!n.lida && n.tipo !== "solicitacao_professor" && (
+                      <button onClick={() => marcarLida(n.id, n.link)}
+                        className="mt-2 text-[10px] text-[var(--gold)] hover:text-[var(--gold-light)] transition-colors">
+                        {n.link ? "Visualizar →" : t("marcarLida")}
+                      </button>
+                    )}
                   </div>
                 </div>
-              </button>
+              </div>
             ))}
           </div>
         )}

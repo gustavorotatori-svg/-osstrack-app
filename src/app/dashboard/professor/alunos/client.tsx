@@ -9,6 +9,7 @@ import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Celebration } from "@/components/ui/celebration"
 import { getBeltEmoji } from "@/lib/utils"
+import { useT } from "@/lib/use-t"
 
 type Aluno = { id: string; nome: string; faixa: string; grau: number }
 
@@ -18,6 +19,7 @@ const beltOrder: Record<string, number> = { Branca: 0, Azul: 1, Roxa: 2, Marrom:
 type SortMode = "nome" | "faixa" | "grau"
 
 export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
+  const t = useT("professor.alunos")
   const [alunos, setAlunos] = useState(initial)
   const [showPromote, setShowPromote] = useState<string | null>(null)
   const [promovendo, setPromovendo] = useState<string | null>(null)
@@ -39,11 +41,11 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
       })
       if (!res.ok) throw new Error()
       const nome = prev.find(a => a.id === alunoId)?.nome || "Aluno"
-      setCelebrate({ show: true, title: `${nome} agora é ${novaFaixa}!` })
-      toast.success(`🎉 ${nome} promovido a ${novaFaixa} ${novoGrau + 1}º Grau!`)
+      setCelebrate({ show: true, title: `${nome} ${t("promovido")} ${novaFaixa}!` })
+      toast.success(`${nome} ${t("promovidoGrau")} ${novaFaixa} ${novoGrau + 1}º Grau!`)
     } catch {
       setAlunos(prev)
-      toast.error("Erro ao promover. Tente novamente.")
+      toast.error(t("erroPromover"))
     } finally {
       setPromovendoAgora(false)
       setPromovendo(null)
@@ -61,9 +63,9 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
       if (!res.ok) throw new Error()
       const data = await res.json()
       window.open(data.whatsapp, "_blank")
-      toast.success(`Convite enviado para ${alunoNome}!`)
+      toast.success(`${t("conviteEnviado")} ${alunoNome}!`)
     } catch {
-      toast.error("Erro ao gerar convite")
+      toast.error(t("erroConvite"))
     }
   }
 
@@ -90,19 +92,19 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
       <PageTransition>
         <div className="space-y-3">
           <div className="glass-card-gold">
-            <h2 className="text-lg font-extrabold tracking-tight">👥 Meus Alunos</h2>
-            <p className="text-xs text-[var(--white-muted)] mt-0.5"><AnimatedCounter value={alunos.length} /> alunos vinculados</p>
+            <h2 className="text-lg font-extrabold tracking-tight">{t("title")}</h2>
+            <p className="text-xs text-[var(--white-muted)] mt-0.5"><AnimatedCounter value={alunos.length} /> {t("alunosVinculados")}</p>
           </div>
 
           <div className="glass-card">
             {/* Busca */}
-            <input className="input-premium text-sm mb-3" placeholder="Buscar aluno por nome..." value={busca} onChange={(e) => setBusca(e.target.value)} />
+            <input className="input-premium text-sm mb-3" placeholder={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
 
             {/* Filtro por faixa */}
             <div className="flex gap-1.5 overflow-x-auto scrollbar-none mb-3">
               <button onClick={() => setFiltroFaixa("todas")}
                 className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === "todas" ? "bg-[var(--gold)] text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)]"}`}>
-                Todas
+                {t("todas")}
               </button>
               {beltList.map(f => (
                 <button key={f} onClick={() => setFiltroFaixa(f)}
@@ -114,11 +116,11 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
             {/* Ordenação */}
             <div className="flex gap-2 items-center">
-              <span className="text-[10px] text-[var(--gray)] font-semibold uppercase tracking-wider">Ordenar:</span>
+              <span className="text-[10px] text-[var(--gray)] font-semibold uppercase tracking-wider">{t("ordenar")}</span>
               {(["nome", "faixa", "grau"] as const).map((s) => (
                 <button key={s} onClick={() => setSort(s)}
                   className={`px-3 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${sort === s ? "gradient-gold text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)]"}`}>
-                  {s === "nome" ? "A-Z" : s === "faixa" ? "🥋 Faixa" : "🎓 Grau"}
+                  {s === "nome" ? "A-Z" : s === "faixa" ? <>🥋 {t("faixa")}</> : <>🎓 {t("grau")}</>}
                 </button>
               ))}
             </div>
@@ -128,8 +130,8 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
             {filtrados.length === 0 ? (
               <div className="empty-premium">
                 <div className="empty-premium-icon emoji-glow">👥</div>
-                <div className="empty-premium-title">Nenhum aluno encontrado</div>
-                <div className="empty-premium-desc">Tente alterar o filtro ou a busca.</div>
+                <div className="empty-premium-title">{t("nenhumEncontrado")}</div>
+                <div className="empty-premium-desc">{t("descEmpty")}</div>
               </div>
             ) : (
               <div className="grid-modern">
@@ -140,9 +142,9 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                     <div className="text-[11px] text-[var(--white-muted)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
                     <div className="flex flex-wrap gap-1.5 mt-3 justify-center">
                       <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }}
-                        className="btn-gold px-2.5 py-1.5 text-[10px] active:scale-90">Promover</button>
+                        className="btn-gold px-2.5 py-1.5 text-[10px] active:scale-90">{t("promover")}</button>
                       <button onClick={() => convidarWhatsApp(a.id, a.nome)}
-                        className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 active:scale-90">📲 Convidar</button>
+                        className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 active:scale-90">📲 {t("convidar")}</button>
                       <WhatsAppButton acao="promocao" alunoId={a.id} alunoNome={a.nome} size="sm" variant="emerald" />
                     </div>
                   </div>
@@ -154,8 +156,8 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
           {showPromote && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowPromote(null)}>
               <div className="glass-card p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
-                <h3 className="font-bold text-base mb-4">🎉 Promover Aluno</h3>
-                <p className="text-sm text-[var(--white-muted)] mb-4">Selecione a nova faixa:</p>
+                <h3 className="font-bold text-base mb-4">{t("promoverAluno")}</h3>
+                <p className="text-sm text-[var(--white-muted)] mb-4">{t("selecioneFaixa")}</p>
                 <div className="grid grid-cols-2 gap-2 mb-4">
                   {faixasDisponiveis(alunos.find(a => a.id === showPromote)?.faixa || "").map((f) => {
                     const selected = promovendo?.split("|")[1] === f
@@ -176,7 +178,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                   promover(showPromote, novaFaixa, novoGrau)
                 }} disabled={promovendoAgora}
                   className="w-full py-3 rounded-xl btn-gold text-sm font-bold disabled:opacity-50 active:scale-[0.98]">
-                  {promovendoAgora ? "⏳ Promovendo..." : "✓ Confirmar Promoção"}
+                  {promovendoAgora ? <>{t("promovendo")}</> : <>{t("confirmarPromocao")}</>}
                 </button>
               </div>
             </div>

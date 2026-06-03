@@ -1,43 +1,40 @@
 "use client"
 
+import { useT } from "@/lib/use-t"
 import { useRef, useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
 import { playBeep } from "@/lib/sound"
 
 export default function CompartilharPage() {
+  const t = useT("aluno.compartilhar")
   const { data: session } = useSession()
-  const router = useRouter()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [isPremium, setIsPremium] = useState(false)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({ totalAulas: 0, presencasMes: 0, streak: 0, bestStreak: 0 })
   const [generating, setGenerating] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/premium").then((r) => r.json()),
-      fetch("/api/perfil").then((r) => r.json()),
-    ]).then(([premium, perfil]) => {
-      setIsPremium(premium.isPremium)
-      setStats({
-        totalAulas: perfil.stats?.totalAulas || 0,
-        presencasMes: perfil.stats?.thisMonth || 0,
-        streak: perfil.stats?.currentStreak || 0,
-        bestStreak: perfil.stats?.bestStreak || 0,
+    fetch("/api/perfil")
+      .then((r) => r.json())
+      .then((perfil) => {
+        setStats({
+          totalAulas: perfil.stats?.totalAulas || 0,
+          presencasMes: perfil.stats?.thisMonth || 0,
+          streak: perfil.stats?.currentStreak || 0,
+          bestStreak: perfil.stats?.bestStreak || 0,
+        })
+        setLoading(false)
       })
-      setLoading(false)
-    })
+      .catch(() => setLoading(false))
   }, [])
 
   function drawCanvas(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
-    // Background
     const grad = ctx.createLinearGradient(0, 0, 600, 600)
     grad.addColorStop(0, "#0a0a0a"); grad.addColorStop(0.4, "#1a0a0a"); grad.addColorStop(1, "#0a0a0a")
     ctx.fillStyle = grad; ctx.fillRect(0, 0, 600, 600)
 
-    // Glow orbs
     const g1 = ctx.createRadialGradient(500, 100, 50, 500, 100, 300)
     g1.addColorStop(0, "rgba(201,168,76,0.08)"); g1.addColorStop(1, "transparent")
     ctx.fillStyle = g1; ctx.beginPath(); ctx.arc(500, 100, 300, 0, Math.PI * 2); ctx.fill()
@@ -46,13 +43,11 @@ export default function CompartilharPage() {
     g2.addColorStop(0, "rgba(139,26,26,0.1)"); g2.addColorStop(1, "transparent")
     ctx.fillStyle = g2; ctx.beginPath(); ctx.arc(100, 500, 250, 0, Math.PI * 2); ctx.fill()
 
-    // Logo
     ctx.fillStyle = "#c9a84c"
     ctx.font = "bold 16px Inter, sans-serif"
     ctx.textAlign = "center"
     ctx.fillText("OSSTRACK", 300, 50)
 
-    // Avatar circle
     ctx.beginPath(); ctx.arc(300, 160, 55, 0, Math.PI * 2)
     ctx.strokeStyle = "#c9a84c"; ctx.lineWidth = 3; ctx.stroke()
     ctx.fillStyle = "#1e1e1e"; ctx.fill()
@@ -60,26 +55,22 @@ export default function CompartilharPage() {
     ctx.font = "44px Inter, sans-serif"
     ctx.fillText((session?.user?.name || "?").charAt(0).toUpperCase(), 300, 178)
 
-    // Name
     ctx.fillStyle = "#ffffff"
     ctx.font = "bold 28px Inter, sans-serif"
     ctx.fillText(session?.user?.name || "", 300, 250)
 
-    // Belt
     ctx.fillStyle = "#c9a84c"
     ctx.font = "16px Inter, sans-serif"
     ctx.fillText(`${session?.user?.faixa || ""} ${"★".repeat((session?.user?.grau || 0) + 1)}`, 300, 278)
 
-    // Stats grid
     const statItems = [
-      { label: "Total de Aulas", value: stats.totalAulas, icon: "🥋" },
-      { label: "Este Mês", value: stats.presencasMes, icon: "📅" },
-      { label: "Streak Atual", value: `${stats.streak}🔥`, icon: "🔥" },
-      { label: "Melhor Streak", value: `${stats.bestStreak}🔥`, icon: "🏆" },
+      { label: t("totalAulas"), value: stats.totalAulas, icon: "🥋" },
+      { label: t("esteMes"), value: stats.presencasMes, icon: "📅" },
+      { label: t("streakAtual"), value: `${stats.streak}🔥`, icon: "🔥" },
+      { label: t("melhorStreak"), value: `${stats.bestStreak}🔥`, icon: "🏆" },
     ]
 
-    const startY = 320
-    const cols = 2; const cellW = 280; const cellH = 70
+    const startY = 320; const cols = 2; const cellW = 280; const cellH = 70
 
     statItems.forEach((item, i) => {
       const col = i % cols; const row = Math.floor(i / cols)
@@ -100,7 +91,6 @@ export default function CompartilharPage() {
       ctx.fillText(`${item.icon} ${item.value}`, x + 12, y + 52)
     })
 
-    // Bottom text
     ctx.textAlign = "center"
     ctx.fillStyle = "rgba(255,255,255,0.3)"
     ctx.font = "12px Inter, sans-serif"
@@ -108,8 +98,6 @@ export default function CompartilharPage() {
   }
 
   function generateImage() {
-    if (!isPremium) { router.push("/dashboard/aluno/premium"); return }
-
     const canvas = canvasRef.current
     if (!canvas || !session?.user) return
     setGenerating(true)
@@ -128,19 +116,42 @@ export default function CompartilharPage() {
     playBeep(1100, 0.2, 0.4)
   }
 
-  function shareWhatsApp() {
-    if (!isPremium) { router.push("/dashboard/aluno/premium"); return }
+  async function shareWhatsApp() {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext("2d")
     if (!ctx) return
     canvas.width = 600; canvas.height = 600
     drawCanvas(ctx, canvas)
-    const url = canvas.toDataURL("image/png")
-    const link = document.createElement("a")
-    link.download = `osstrack-evolucao-${Date.now()}.png`
-    link.href = url
-    link.click()
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/png"))
+    if (!blob) return
+    if (navigator.share && navigator.canShare({ files: [new File([blob], "osstrack.png", { type: "image/png" })] })) {
+      await navigator.share({ files: [new File([blob], "osstrack.png", { type: "image/png" })], title: "OssTrack" })
+    }
+  }
+
+  async function copyToClipboard() {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+    canvas.width = 600; canvas.height = 600
+    drawCanvas(ctx, canvas)
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/png"))
+    if (!blob) return
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob }),
+      ])
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+      playBeep(1100, 0.2, 0.4)
+    } catch {
+      const link = document.createElement("a")
+      link.download = `osstrack-evolucao-${Date.now()}.png`
+      link.href = canvas.toDataURL("image/png")
+      link.click()
+    }
   }
 
   if (loading) return null
@@ -149,14 +160,11 @@ export default function CompartilharPage() {
     <DashboardShell role="aluno">
       <div className="animate-fade-in space-y-4">
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl p-5 text-center">
-          <div className="text-3xl mb-2">{isPremium ? "📱" : "🔒"}</div>
-          <h3 className="font-bold">Compartilhar Evolução</h3>
-          <p className="text-xs text-[var(--white-muted)]">
-            {isPremium ? "Arte automática com suas estatísticas reais — pronta pro Instagram" : "Disponível apenas para assinantes Premium"}
-          </p>
+          <div className="text-3xl mb-2">📱</div>
+          <h3 className="font-bold">{t("title")}</h3>
+          <p className="text-xs text-[var(--white-muted)]">Arte automática com suas estatísticas — pronta pro Instagram</p>
         </div>
 
-        {/* Preview card */}
         <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl overflow-hidden">
           <div className="bg-gradient-to-br from-black via-[#1a0a0a] to-black p-6 text-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,168,76,0.15),transparent_60%)]" />
@@ -170,13 +178,12 @@ export default function CompartilharPage() {
                 {session?.user?.faixa || ""} {"★".repeat((session?.user?.grau || 0) + 1)}
               </div>
 
-              {/* Stats preview */}
               <div className="grid grid-cols-2 gap-2 mt-5 max-w-xs mx-auto">
                 {[
-                  { label: "Total de Aulas", value: stats.totalAulas, icon: "🥋" },
-                  { label: "Este Mês", value: stats.presencasMes, icon: "📅" },
-                  { label: "Streak Atual", value: `🔥 ${stats.streak}`, icon: "🔥" },
-                  { label: "Melhor Streak", value: `🏆 ${stats.bestStreak}`, icon: "🏆" },
+                  { label: t("totalAulas"), value: stats.totalAulas, icon: "🥋" },
+                  { label: t("esteMes"), value: stats.presencasMes, icon: "📅" },
+                  { label: t("streakAtual"), value: `🔥 ${stats.streak}`, icon: "🔥" },
+                  { label: t("melhorStreak"), value: `🏆 ${stats.bestStreak}`, icon: "🏆" },
                 ].map((s) => (
                   <div key={s.label} className="bg-black/40 border border-[rgba(201,168,76,0.1)] rounded-xl p-3 text-center">
                     <div className="text-[9px] text-[var(--white-muted)] uppercase tracking-wide">{s.label}</div>
@@ -197,19 +204,17 @@ export default function CompartilharPage() {
           disabled={generating}
           className="w-full py-3.5 rounded-lg font-bold gradient-gold text-black transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-60"
         >
-          {generating ? "⚡ Gerando..." : isPremium ? "📸 Baixar Arte" : "🔓 Desbloquear com Premium"}
+          {generating ? `⚡ ${t("gerando")}` : `📸 ${t("baixarArte")}`}
         </button>
 
-        {isPremium && (
-          <div className="flex gap-3">
-            <button onClick={shareWhatsApp} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-emerald-500 hover:text-emerald-500 transition-all active:scale-95">
-              💬 WhatsApp
-            </button>
-            <button onClick={generateImage} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all active:scale-95">
-              📸 Instagram
-            </button>
-          </div>
-        )}
+        <div className="flex gap-3">
+          <button onClick={shareWhatsApp} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-emerald-500 hover:text-emerald-500 transition-all active:scale-95">
+            💬 Compartilhar
+          </button>
+          <button onClick={copyToClipboard} className="flex-1 py-3 rounded-lg font-semibold text-sm border border-[var(--dark-border)] text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all active:scale-95">
+            {copied ? "✅ Copiado!" : `📋 ${t("copiar")}`}
+          </button>
+        </div>
 
         <canvas ref={canvasRef} className="hidden" />
       </div>

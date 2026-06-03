@@ -29,12 +29,13 @@ model Academia {
   graduacoes      Graduacao[]
   mestresDoMes    MestreDoMes[]
   postagensMural  PostagemMural[]
-  planos          PlanoMensalidade[]
-  contratos       Contrato[]
-  cobrancas       Cobranca[]
   horariosAula    HorarioAula[]
   agendamentos    Agendamento[]
   convites        Convite[]
+  rankingVisivel  Boolean  @default(true)
+  planosMensalidade PlanoMensalidade[]
+  contratos         Contrato[]
+  cobrancas         Cobranca[]
 }
 
 model Usuario {
@@ -71,6 +72,7 @@ model Usuario {
   mestreDoMes     MestreDoMes[]
   notificacoes    Notificacao[]
   comentariosMural ComentarioMural[]
+  curtidasMural CurtidaMural[]
   horariosAula    HorarioAula[]
   streak          Streak?
   pagamentos      Pagamento[]
@@ -78,6 +80,59 @@ model Usuario {
   cobrancas       Cobranca[]
   agendamentos    Agendamento[]
   convites        Convite[]
+  pontos          Int      @default(0)
+}
+
+model PlanoMensalidade {
+  id         String   @id @default(cuid())
+  academiaId String
+  academia   Academia @relation(fields: [academiaId], references: [id])
+  nome       String
+  valor      Int
+  descricao  String?
+  periodo    String   @default("mensal")
+  ativo      Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  contratos  Contrato[]
+}
+
+model Contrato {
+  id         String   @id @default(cuid())
+  alunoId    String
+  aluno      Usuario  @relation(fields: [alunoId], references: [id])
+  academiaId String
+  academia   Academia @relation(fields: [academiaId], references: [id])
+  planoId    String
+  plano      PlanoMensalidade @relation(fields: [planoId], references: [id])
+  valor      Int
+  dataInicio DateTime
+  dataFim    DateTime?
+  status     String   @default("ativo")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  cobrancas  Cobranca[]
+}
+
+model Cobranca {
+  id             String    @id @default(cuid())
+  contratoId     String
+  contrato       Contrato  @relation(fields: [contratoId], references: [id])
+  alunoId        String
+  aluno          Usuario   @relation(fields: [alunoId], references: [id])
+  academiaId     String
+  academia       Academia  @relation(fields: [academiaId], references: [id])
+  valor          Int
+  dataVencimento DateTime
+  dataPagamento  DateTime?
+  status         String    @default("pendente")
+  metodo         String?
+  observacao     String?
+  pagoEm         String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model Pagamento {
@@ -121,6 +176,8 @@ model TurmaAluno {
   turma    Turma  @relation(fields: [turmaId], references: [id])
   alunoId  String
   aluno    Usuario @relation(fields: [alunoId], references: [id])
+
+  @@unique([turmaId, alunoId])
 }
 
 model Presenca {
@@ -153,14 +210,20 @@ model Graduacao {
 }
 
 model Conquista {
-  id          String @id @default(cuid())
-  nome        String
-  icone       String
-  descricao   String
-  tipo        String
-  condicao    Int
+  id                String @id @default(cuid())
+  nome              String
+  icone             String
+  iconeBloqueado    String @default("🔒")
+  descricao         String
+  tipo              String
+  categoria         String @default("presenca")
+  condicao          Int
+  nivel             Int    @default(1)
+  nivelLabel        String @default("bronze")
+  raridade          String @default("comum")
+  progressoMax      Int    @default(1)
 
-  alunosConquista AlunoConquista[]
+  alunosConquista   AlunoConquista[]
 }
 
 model AlunoConquista {
@@ -168,7 +231,10 @@ model AlunoConquista {
   alunoId     String
   conquistaId String
   conquista   Conquista @relation(fields: [conquistaId], references: [id])
+  progresso   Int      @default(0)
   createdAt   DateTime @default(now())
+
+  @@unique([alunoId, conquistaId])
 }
 
 model MestreDoMes {
@@ -205,7 +271,10 @@ model MissaoDiaria {
   titulo      String
   descricao   String
   icone       String
+  tipo        String   @default("onboarding")
   concluida   Boolean  @default(false)
+  pontos      Int      @default(10)
+  resetToken  String?
   createdAt   DateTime @default(now())
 }
 
@@ -217,9 +286,23 @@ model PostagemMural {
   aluno     Usuario  @relation(fields: [alunoId], references: [id])
   tipo      String
   conteudo  String
+  imagem    String?
+  curtidas  Int      @default(0)
   createdAt DateTime @default(now())
 
   comentarios ComentarioMural[]
+  curtidasList CurtidaMural[]
+}
+
+model CurtidaMural {
+  id         String   @id @default(cuid())
+  postagemId String
+  postagem   PostagemMural @relation(fields: [postagemId], references: [id], onDelete: Cascade)
+  usuarioId  String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([postagemId, usuarioId])
 }
 
 model ComentarioMural {
@@ -252,58 +335,6 @@ model Streak {
   bestStreak      Int      @default(0)
   lastCheckinDate DateTime?
   updatedAt       DateTime @updatedAt
-}
-
-model PlanoMensalidade {
-  id          String   @id @default(cuid())
-  academiaId  String
-  academia    Academia @relation(fields: [academiaId], references: [id])
-  nome        String
-  valor       Float
-  descricao   String?
-  recorrencia String   @default("mensal")
-  ativo       Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  contratos Contrato[]
-}
-
-model Contrato {
-  id          String   @id @default(cuid())
-  academiaId  String
-  academia    Academia @relation(fields: [academiaId], references: [id])
-  alunoId     String
-  aluno       Usuario  @relation(fields: [alunoId], references: [id])
-  planoId     String
-  plano       PlanoMensalidade @relation(fields: [planoId], references: [id])
-  valor       Float
-  diaVencimento Int    @default(5)
-  dataInicio  DateTime
-  dataFim     DateTime?
-  status      String   @default("ativo")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  cobrancas Cobranca[]
-}
-
-model Cobranca {
-  id             String   @id @default(cuid())
-  academiaId     String
-  academia       Academia @relation(fields: [academiaId], references: [id])
-  contratoId     String
-  contrato       Contrato @relation(fields: [contratoId], references: [id])
-  alunoId        String
-  aluno          Usuario  @relation(fields: [alunoId], references: [id])
-  valor          Float
-  dataVencimento DateTime
-  dataPagamento  DateTime?
-  status         String   @default("pendente")
-  metodo         String?
-  referencia     String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
 }
 
 model HorarioAula {
@@ -354,4 +385,13 @@ model Agendamento {
   createdAt    DateTime @default(now())
 
   @@unique([horarioId, alunoId, data])
+}
+
+model Contato {
+  id        String   @id @default(cuid())
+  nome      String
+  email     String
+  mensagem  String
+  lido      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }

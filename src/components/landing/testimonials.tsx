@@ -26,13 +26,13 @@ export function Testimonials() {
       <div className="max-w-6xl mx-auto relative">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
-            Depoimentos
+            {t("badge")}
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
             {t("titulo")}
           </h2>
           <p className="text-[var(--white-muted)] leading-relaxed">
-            Mestres e professores que transformaram a gestão das suas academias — e a relação dos alunos com o treino.
+            {t("subtitulo")}
           </p>
         </div>
 

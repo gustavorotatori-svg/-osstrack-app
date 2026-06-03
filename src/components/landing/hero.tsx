@@ -5,14 +5,6 @@ import Link from "next/link"
 import { useEffect, useState, useRef } from "react"
 import { useT } from "@/lib/use-t"
 
-const phrases = [
-  "Toda faixa preta foi uma faixa branca que nunca desistiu.",
-  "Academia e professor: R$0. Aluno premium: R$4,90.",
-  "Cada check-in é um capítulo da sua história no tatame.",
-  "A evolução não é linear — no OssTrack ela é visível.",
-  "O melhor de você aparece quando ninguém está olhando.",
-]
-
 const rankBelts = [
   { color: "#e8e8e8", shadow: "rgba(200,200,200,0.3)", label: "Branca" },
   { color: "#2563eb", shadow: "rgba(37,99,235,0.3)", label: "Azul" },
@@ -46,11 +38,15 @@ export function Hero() {
   const [titleDone, setTitleDone] = useState(false)
   const particlesRef = useRef<HTMLDivElement>(null)
   const t = useT("hero")
+  const tFrases = useT("frases")
+  const phrases = Array.from({ length: 5 }, (_, i) => tFrases(`${i}`))
+  const titleWords = t("titulo1").split(" ")
+  const subtitleLine = t("titulo2")
 
   useEffect(() => {
     const id = setInterval(() => setPhraseIdx((p) => (p + 1) % phrases.length), 5000)
     return () => clearInterval(id)
-  }, [])
+  }, [phrases.length])
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -59,9 +55,6 @@ export function Hero() {
     window.addEventListener("mousemove", onMove)
     return () => window.removeEventListener("mousemove", onMove)
   }, [])
-
-  const titleWords = ["Sua", "jornada", "no"]
-  const subtitleLine = "começa aqui."
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-5 pt-24 md:pt-36 pb-20 overflow-hidden">

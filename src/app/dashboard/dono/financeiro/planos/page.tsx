@@ -2,96 +2,128 @@
 
 import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { useT } from "@/lib/use-t"
+import { toast } from "sonner"
 
 export default function PlanosPage() {
+  const t = useT("dono.financeiro")
   const [planos, setPlanos] = useState<any[]>([])
-  const [nome, setNome] = useState("")
-  const [valor, setValor] = useState("")
-  const [descricao, setDescricao] = useState("")
-  const [recorrencia, setRecorrencia] = useState("mensal")
+  const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({ nome: "", valor: "", descricao: "", periodo: "mensal" })
+  const [saving, setSaving] = useState(false)
+  const [editId, setEditId] = useState<string | null>(null)
 
-  useEffect(() => { fetch("/api/financeiro/planos").then(r => r.json()).then(setPlanos).catch(() => {}) }, [])
+  useEffect(() => { load() }, [])
 
-  async function criar(e: React.FormEvent) {
-    e.preventDefault()
-    if (!nome || !valor) return
-    const res = await fetch("/api/financeiro/planos", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, valor: Number(valor), descricao, recorrencia }),
-    })
-    if (res.ok) {
-      const novo = await res.json()
-      setPlanos((prev) => [...prev, novo])
-      setNome(""); setValor(""); setDescricao(""); setShowForm(false)
-    }
+  async function load() {
+    const r = await fetch("/api/financeiro/planos")
+    if (r.ok) { setPlanos(await r.json()) }
+    setLoading(false)
   }
+
+  async function salvar(e: React.FormEvent) {
+    e.preventDefault()
+    setSaving(true)
+    const body = { ...form, valor: parseFloat(form.valor) }
+    const r = await fetch("/api/financeiro/planos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+    if (r.ok) {
+      toast.success(t("planoCriado"))
+      setShowForm(false)
+      setForm({ nome: "", valor: "", descricao: "", periodo: "mensal" })
+      load()
+    } else {
+      const err = await r.json()
+      toast.error(err.error || t("erro"))
+    }
+    setSaving(false)
+  }
+
+  async function toggleAtivo(id: string, ativo: boolean) {
+    const r = await fetch(`/api/financeiro/planos/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ativo: !ativo }),
+    })
+    if (r.ok) { load(); toast.success(t("planoAtualizado")) }
+  }
+
+  const periodos = ["mensal", "trimestral", "semestral", "anual"]
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4">
+      <div className="space-y-4 animate-fade-in">
         <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-bold text-lg">Planos de Mensalidade</h3>
-            <p className="text-xs text-[var(--white-muted)]">Gerencie os planos da sua academia</p>
-          </div>
-          <button onClick={() => setShowForm(!showForm)} className="btn-gold px-4 py-2 text-sm font-bold">
-            {showForm ? "✕ Cancelar" : "+ Novo Plano"}
+          <h3 className="font-bold text-lg">{t("planosTitle")}</h3>
+          <button onClick={() => setShowForm(!showForm)}
+            className="px-4 py-2 rounded-lg text-xs font-semibold btn-gold">
+            {showForm ? t("cancelar") : t("novoPlano")}
           </button>
         </div>
 
         {showForm && (
-          <form onSubmit={criar} className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Nome do Plano</label>
-                <input value={nome} onChange={(e) => setNome(e.target.value)} className="input-premium w-full text-sm mt-1" placeholder="Ex: Básico, Premium..." required />
-              </div>
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Valor (R$)</label>
-                <input type="number" step="0.01" value={valor} onChange={(e) => setValor(e.target.value)} className="input-premium w-full text-sm mt-1" placeholder="89,90" required />
-              </div>
+          <form onSubmit={salvar} className="glass-card p-4 space-y-3">
+            <div>
+              <label className="text-[11px] text-[var(--white-muted)]">{t("nome")}</label>
+              <input value={form.nome} onChange={e => setForm({...form, nome: e.target.value})} required
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
             </div>
             <div>
-              <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Descrição</label>
-              <input value={descricao} onChange={(e) => setDescricao(e.target.value)} className="input-premium w-full text-sm mt-1" placeholder="Descrição do plano..." />
+              <label className="text-[11px] text-[var(--white-muted)]">{t("valor")}</label>
+              <input type="number" step="0.01" min="0" value={form.valor} onChange={e => setForm({...form, valor: e.target.value})} required
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Recorrência</label>
-                <select value={recorrencia} onChange={(e) => setRecorrencia(e.target.value)} className="input-premium w-full text-sm mt-1">
-                  <option value="mensal">Mensal</option>
-                  <option value="trimestral">Trimestral</option>
-                  <option value="semestral">Semestral</option>
-                  <option value="anual">Anual</option>
-                </select>
-              </div>
+            <div>
+              <label className="text-[11px] text-[var(--white-muted)]">{t("periodo")}</label>
+              <select value={form.periodo} onChange={e => setForm({...form, periodo: e.target.value})}
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1">
+                {periodos.map(p => <option key={p} value={p}>{t(p)}</option>)}
+              </select>
             </div>
-            <button type="submit" className="btn-gold px-6 py-2.5 text-sm font-bold">Salvar Plano</button>
+            <div>
+              <label className="text-[11px] text-[var(--white-muted)]">{t("descricao")}</label>
+              <textarea value={form.descricao} onChange={e => setForm({...form, descricao: e.target.value})} rows={2}
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+            </div>
+            <button type="submit" disabled={saving}
+              className="w-full py-3 rounded-xl font-bold text-sm btn-gold disabled:opacity-50">
+              {saving ? t("salvando") : t("criarPlano")}
+            </button>
           </form>
         )}
 
-        <div className="space-y-3">
-          {planos.map((p) => (
-            <div key={p.id} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h4 className="font-bold">{p.nome}</h4>
-                  <p className="text-xs text-[var(--white-muted)] mt-0.5">{p.descricao || "Sem descrição"}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-xl font-black text-[var(--gold)]">R$ {p.valor.toFixed(2)}</div>
-                  <div className="text-[10px] text-[var(--white-muted)] uppercase">{p.recorrencia}</div>
+        {loading ? (
+          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--dark-border)] rounded-xl" />)}</div>
+        ) : planos.length === 0 ? (
+          <div className="glass-card p-6 text-center">
+            <p className="text-sm text-[var(--white-muted)]">{t("nenhumPlano")}</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {planos.map(p => (
+              <div key={p.id} className={`glass-card p-4 ${!p.ativo ? "opacity-50" : ""}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold text-sm">{p.nome}</p>
+                    <p className="text-xs text-[var(--white-muted)]">{t(p.periodo)}</p>
+                    {p.descricao && <p className="text-[10px] text-[var(--gray)] mt-1">{p.descricao}</p>}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(p.valor / 100).toFixed(2)}</p>
+                    <button onClick={() => toggleAtivo(p.id, p.ativo)}
+                      className={`text-[10px] mt-1 px-2 py-0.5 rounded-full ${p.ativo ? "bg-green-900/40 text-green-400" : "bg-gray-900/40 text-gray-400"}`}>
+                      {p.ativo ? t("ativo") : t("inativo")}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          {planos.length === 0 && (
-            <div className="text-center py-10 text-[var(--white-muted)] text-sm">
-              Nenhum plano criado ainda. Crie seu primeiro plano!
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </DashboardShell>
   )

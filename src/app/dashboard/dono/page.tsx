@@ -43,11 +43,54 @@ export default async function DonoDashboard() {
     orderBy: { aulasProxFx: "asc" },
   })
 
+  // Presenças por mês (últimos 6 meses)
+  const seisMesesAtras = new Date()
+  seisMesesAtras.setMonth(seisMesesAtras.getMonth() - 6)
+  const presencasPorMes = await prisma.presenca.groupBy({
+    by: ["data"],
+    where: { aluno: { academiaId: academia.id }, status: "confirmed", data: { gte: seisMesesAtras } },
+    _count: true,
+  })
+
+  const presencasMesMap = new Map<string, number>()
+  presencasPorMes.forEach((p) => {
+    const key = `${p.data.getFullYear()}-${String(p.data.getMonth() + 1).padStart(2, "0")}`
+    presencasMesMap.set(key, (presencasMesMap.get(key) || 0) + p._count)
+  })
+
+  const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+  const presencasMensais = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date()
+    d.setMonth(d.getMonth() - (5 - i))
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
+    return {
+      mes: `${meses[d.getMonth()]}/${String(d.getFullYear()).slice(2)}`,
+      total: presencasMesMap.get(key) || 0,
+    }
+  })
+
+  // Alunos por categoria
+  const alunosPorCategoria = await prisma.usuario.groupBy({
+    by: ["categoria"],
+    where: { academiaId: academia.id, role: "aluno" },
+    _count: true,
+  })
+
   return (
     <OwnerDashboardClient
-      academia={{ nome: academia.nome, responsavel: academia.responsavel }}
-      stats={{ totalAlunos, totalProfessores, totalPresencas }}
-      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
+      academia={{
+        nome: academia.nome,
+        responsavel: academia.responsavel,
+        rankingVisivel: academia.rankingVisivel,
+      }}
+      stats={{
+        totalAlunos,
+        totalProfessores,
+        totalPresencas,
+      }}
+      presencasMensais={presencasMensais}
+      alunosPorCategoria={alunosPorCategoria.map((a) => ({ categoria: a.categoria, total: a._count }))}
+      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau, categoria: a.categoria }))}
       presencas={presencas.map((p) => ({
         id: p.id,
         aluno: p.aluno.nome,

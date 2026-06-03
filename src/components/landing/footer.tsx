@@ -1,43 +1,90 @@
 "use client"
 
+import Link from "next/link"
 import { useT } from "@/lib/use-t"
+import { DumbbellIcon } from "@/components/ui/icons"
+import { Camera, Play, MessageCircle } from "lucide-react"
 
 export function Footer() {
   const t = useT("footer")
-
   const tNav = useT("nav")
-
   const tFrases = useT("frases")
 
+  const socialLinks = [
+    { href: "https://instagram.com/osstrack", label: "Instagram", icon: Camera },
+    { href: "https://youtube.com/@osstrack", label: "YouTube", icon: Play },
+    { href: "https://wa.me/5548996310359", label: "WhatsApp", icon: MessageCircle },
+  ]
+
   return (
-    <footer className="py-16 px-5 border-t border-[var(--dark-border)] text-center relative">
-      <div className="max-w-4xl mx-auto">
-        <div className="w-12 h-12 gradient-gold rounded-2xl flex items-center justify-center text-lg text-black mx-auto mb-4">🥋</div>
-        <div className="text-xl font-extrabold mb-6">OssTrack</div>
-        <div className="flex justify-center gap-8 flex-wrap mb-8">
-          <a href="#recursos" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            {tNav("recursos")}
-          </a>
-          <a href="#funciona" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            {tNav("comoFunciona")}
-          </a>
-          <a href="#planos" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            {tNav("planos")}
-          </a>
-          <a href="#" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            Suporte
-          </a>
-          <a href="#" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            {t("termos")}
-          </a>
-          <a href="#" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors duration-200">
-            {t("privacidade")}
-          </a>
+    <footer className="pt-16 pb-8 px-5 border-t border-[var(--dark-border)] relative">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-10 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight mb-4">
+              <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center animate-float">
+                <DumbbellIcon className="w-4 h-4 text-black" />
+              </span>
+              <span>OssTrack</span>
+            </Link>
+            <p className="text-sm text-[var(--white-muted)] leading-relaxed max-w-xs">
+              {t("descricao")}
+            </p>
+          </div>
+
+          {/* Navegação */}
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--gold)] mb-4">{t("plataforma")}</h4>
+            <ul className="space-y-3">
+              <li><Link href="/#recursos" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{tNav("recursos")}</Link></li>
+              <li><Link href="/#funciona" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{tNav("comoFunciona")}</Link></li>
+              <li><Link href="/#planos" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{tNav("planos")}</Link></li>
+            </ul>
+          </div>
+
+          {/* Suporte */}
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--gold)] mb-4">{t("suporte")}</h4>
+            <ul className="space-y-3">
+              <li><Link href="/ajuda" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("ajuda")}</Link></li>
+              <li><Link href="/ajuda#contato-form" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("faleConosco")}</Link></li>
+              <li><a href="https://wa.me/5548996310359" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("whatsapp")}</a></li>
+            </ul>
+          </div>
+
+          {/* Legal + Social */}
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--gold)] mb-4">{t("legal")}</h4>
+            <ul className="space-y-3 mb-6">
+              <li><Link href="/lgpd" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("privacidade")}</Link></li>
+              <li><Link href="/termos" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("termos")}</Link></li>
+            </ul>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--gold)] mb-3">{t("redesSociais")}</h4>
+            <div className="flex gap-3">
+              {socialLinks.map((s) => {
+                const Icon = s.icon
+                return (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-xl bg-[var(--dark-card)] border border-[var(--dark-border)] flex items-center justify-center text-sm hover:border-[var(--gold)] hover:bg-[rgba(201,168,76,0.08)] transition-all active:scale-90"
+                    title={s.label}>
+                    <Icon className="w-4 h-4 text-[var(--white-muted)]" />
+                  </a>
+                )
+              })}
+            </div>
+          </div>
         </div>
-        <div className="h-[1px] w-24 mx-auto bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.3)] to-transparent mb-6" />
-        <div className="text-xs text-[var(--gray)] leading-relaxed">
-          <p className="font-semibold text-[var(--white-muted)] mb-1">&ldquo;{tFrases("0")}&rdquo;</p>
-          <p>© 2026 OssTrack. {t("direitos")}</p>
+
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-[rgba(201,168,76,0.15)] to-transparent mb-6" />
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div className="text-xs text-[var(--gray)]">
+            <p>&ldquo;{tFrases("0")}&rdquo;</p>
+          </div>
+          <div className="text-xs text-[var(--gray)]">
+            © {new Date().getFullYear()} OssTrack. {t("direitos")}
+          </div>
         </div>
       </div>
     </footer>

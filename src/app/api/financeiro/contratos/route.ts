@@ -5,14 +5,16 @@ import prisma from "@/lib/prisma"
 
 export async function GET() {
   const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-
-  const where: any = { academiaId: session.user.academiaId }
-  if (session.user.role === "aluno") where.alunoId = session.user.id
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
   const contratos = await prisma.contrato.findMany({
-    where,
-    include: { aluno: { select: { id: true, nome: true, faixa: true } }, plano: { select: { id: true, nome: true, valor: true } } },
+    where: { academiaId: session.user.academiaId },
+    include: {
+      aluno: { select: { id: true, nome: true, faixa: true, grau: true, avatar: true } },
+      plano: { select: { id: true, nome: true, valor: true, periodo: true } },
+    },
     orderBy: { createdAt: "desc" },
   })
 
@@ -21,18 +23,45 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
 
-  const { alunoId, planoId, valor, diaVencimento, dataInicio } = await req.json()
-  if (!alunoId || !planoId) return NextResponse.json({ error: "alunoId e planoId obrigatórios" }, { status: 400 })
+  const body = await req.json()
+  const { alunoId, planoId, valor, dataInicio, dataFim } = body
+
+  if (!alunoId || !planoId) {
+    return NextResponse.json({ error: "alunoId e planoId são obrigatórios" }, { status: 400 })
+  }
+
+  const aluno = await prisma.usuario.findFirst({
+    where: { id: alunoId, academiaId: session.user.academiaId, role: "aluno" },
+  })
+  if (!aluno) {
+    return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
+  }
+
+  const exists = await prisma.contrato.findFirst({
+    where: { alunoId, academiaId: session.user.academiaId, status: { in: ["ativo", "inadimplente"] } },
+  })
+  if (exists) {
+    return NextResponse.json({ error: "Aluno já possui um contrato ativo" }, { status: 400 })
+  }
 
   const contrato = await prisma.contrato.create({
     data: {
-      academiaId: session.user.academiaId, alunoId, planoId,
-      valor: Number(valor), diaVencimento: diaVencimento || 5,
+      alunoId,
+      academiaId: session.user.academiaId,
+      planoId,
+      valor: Math.round((valor || 0) * 100),
       dataInicio: dataInicio ? new Date(dataInicio) : new Date(),
+      dataFim: dataFim ? new Date(dataFim) : null,
+    },
+    include: {
+      aluno: { select: { id: true, nome: true, faixa: true, grau: true } },
+      plano: { select: { id: true, nome: true, valor: true, periodo: true } },
     },
   })
 
-  return NextResponse.json(contrato, { status: 201 })
+  return NextResponse.json(contrato)
 }

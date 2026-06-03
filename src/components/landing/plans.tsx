@@ -14,7 +14,7 @@ export function Plans() {
       featured: false,
       descKey: "gratisDesc",
       featuresCount: 4,
-      cta: "Começar Grátis",
+      ctaKey: "gratisCta",
       href: "/cadastro",
       tag: null,
     },
@@ -25,7 +25,7 @@ export function Plans() {
       featured: true,
       descKey: "premiumDesc",
       featuresCount: 6,
-      cta: "Sou aluno",
+      ctaKey: "premiumCta",
       href: "/login",
       tagKey: "maisPopulares",
     },
@@ -36,7 +36,7 @@ export function Plans() {
       featured: false,
       descKey: "academiaDesc",
       featuresCount: 7,
-      cta: "Sou dono de academia",
+      ctaKey: "academiaCta",
       href: "/cadastro",
       tag: null,
     },
@@ -47,7 +47,7 @@ export function Plans() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-xl mx-auto mb-14">
           <span className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5">
-            Preço justo
+            {t("badge")}
           </span>
           <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
             {t("titulo")}
@@ -96,7 +96,7 @@ export function Plans() {
                     : "border border-[var(--dark-border)] text-white hover:border-[var(--gold)]"
                 }`}
               >
-                {p.cta}
+                {t(p.ctaKey)}
               </Link>
             </div>
           ))}

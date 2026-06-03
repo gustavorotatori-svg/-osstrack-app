@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
+import { useT } from "@/lib/use-t"
+import { DumbbellIcon, RefreshIcon } from "@/components/ui/icons"
 
 type Fase = "preparacao" | "round" | "descanso" | "concluido"
 
@@ -28,6 +30,7 @@ function beep(ctx: AudioContext | null, freq: number, duration: number, volume =
 function toSeg(m: number, s: number) { return m * 60 + s }
 
 export function TreinoTimer() {
+  const t = useT("aluno.treino")
   const [config, setConfig] = useState<RoundConfig>({
     roundMin: 5, roundSeg: 0, descansoMin: 1, descansoSeg: 0, totalRounds: 5, som: true,
   })
@@ -121,8 +124,8 @@ export function TreinoTimer() {
   const progresso = tempoTotal > 0 ? (tempoRestante / tempoTotal) * 100 : 0
 
   const labelFase = {
-    preparacao: "Pronto", round: `Round ${roundAtual}/${config.totalRounds}`,
-    descanso: "Descanso", concluido: "Treino Concluído! 🎉",
+    preparacao: t("title"), round: `Round ${roundAtual}/${config.totalRounds}`,
+    descanso: t("descanso"), concluido: t("concluido"),
   }
 
   return (
@@ -164,8 +167,8 @@ export function TreinoTimer() {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {fase === "preparacao" ? (
             <div className="text-center">
-              <div className="text-4xl mb-2">🥋</div>
-              <p className="text-xs text-[var(--white-muted)]">Pronto para treinar?</p>
+              <DumbbellIcon className="w-10 h-10 mb-2 mx-auto" />
+              <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
             </div>
           ) : (
             <>
@@ -195,7 +198,7 @@ export function TreinoTimer() {
         )}
         {fase === "concluido" && (
           <button onClick={iniciar} className="btn-gold px-8 py-3 text-sm font-bold">
-            🔁 Novo Treino
+            <RefreshIcon className="w-4 h-4 inline -mt-0.5 mr-1" /> Novo Treino
           </button>
         )}
         <button onClick={resetar} className="w-10 h-10 rounded-full bg-[var(--dark-border)] text-[var(--white-muted)] flex items-center justify-center text-xs hover:text-white transition-all">

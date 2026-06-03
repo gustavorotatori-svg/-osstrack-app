@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-  const { acao, alunoId, valor, dataVencimento, linkPersonalizado } = await req.json()
+  const { acao, alunoId, linkPersonalizado } = await req.json()
 
   if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
 
@@ -25,9 +25,6 @@ export async function POST(req: Request) {
   let mensagem = ""
 
   switch (acao) {
-    case "cobranca":
-      mensagem = `*${academia?.nome || "Academia"}* 🥋\n\nOlá *${aluno.nome}*! Sua mensalidade está disponível para pagamento.\n\n📋 *Valor:* R$ ${Number(valor || 0).toFixed(2)}\n📅 *Vencimento:* ${dataVencimento ? new Date(dataVencimento).toLocaleDateString("pt-BR") : "Não informado"}\n\n💳 *PIX:* ${academia?.pixKey || "Consulte a academia"}\n\nOss! 🥋`
-      break
     case "checkin":
       mensagem = `*${academia?.nome || "Academia"}* 🥋\n\n🎯 *Check-in confirmado!*\n\n${aluno.nome}, sua presença foi registrada com sucesso.\nContinue assim! 🔥\n\nOss! 🥋`
       break
