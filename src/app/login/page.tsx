@@ -40,43 +40,41 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute inset-0 gradient-hero" />
-      <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-[var(--gold)]/4 rounded-full blur-3xl" />
-
-      <div className="w-full max-w-sm relative">
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg"
+            style={{ background: "var(--gold)", color: "#000" }}>
             🥋
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight">OssTrack</h1>
-          <p className="text-sm text-[var(--white-muted)] mt-1.5">{t("subtitle")}</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-1.5">{t("subtitle")}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[var(--dark-card)] to-black/60 border border-[var(--dark-border)] rounded-2xl p-7 space-y-4">
+        <form onSubmit={handleSubmit} className="surface p-7 space-y-4">
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("email")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("email")}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input-premium"
+              className="input"
               required
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5 tracking-wide">{t("senha")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("senha")}</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="input-premium"
+              className="input"
               required
             />
           </div>
 
           {error && (
-            <div className="text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2.5">
+            <div className="text-sm text-red-500 bg-[var(--red-dim)] border border-red-500/20 rounded-xl px-4 py-2.5">
               {error}
             </div>
           )}
@@ -84,20 +82,21 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="btn-gold w-full py-3.5 text-sm"
+            className="btn w-full py-3.5 text-sm"
+            style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
           >
             {loading ? t("entrando") : t("entrar")}
           </button>
 
-          <p className="text-center text-xs text-[var(--white-muted)]">
+          <p className="text-center text-xs text-[var(--text-secondary)]">
             {t("semConta")}{" "}
-            <Link href="/cadastro" className="text-[var(--gold)] font-semibold hover:text-[var(--gold-light)] transition-colors">
+            <Link href="/cadastro" style={{ color: "var(--gold)" }} className="font-semibold">
               {t("cadastrarSe")}
             </Link>
           </p>
 
           {email && password && (
-            <div className="text-center text-[10px] text-[var(--gray)] leading-relaxed pt-1 border-t border-[var(--dark-border)]">
+            <div className="text-center text-[10px] text-[var(--text-muted)] leading-relaxed pt-1 divider">
               {t("contasDemo")}
             </div>
           )}
