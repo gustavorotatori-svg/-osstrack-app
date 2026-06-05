@@ -51,7 +51,7 @@ export default function CobrancasPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4 animate-fade-in">
+      <div className="max-w-5xl mx-auto space-y-4">
         <h3 className="font-bold text-lg">{t("cobrancasTitle")}</h3>
 
         <div className="flex gap-1 bg-[var(--dark-border)] rounded-lg p-1 overflow-x-auto">

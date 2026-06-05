@@ -22,15 +22,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Notificação não encontrada" }, { status: 404 })
   }
 
-  // Extract professor name from notification description
-  const match = notificacao.descricao.match(/^O professor (.+?) \(/)
+  // Extract professor ID from notification description
+  const match = notificacao.descricao.match(/\(id:([a-z0-9]+)\)/)
   if (!match) {
     return NextResponse.json({ error: "Não foi possível identificar o professor" }, { status: 400 })
   }
 
-  const professorNome = match[1]
-  const professor = await prisma.usuario.findFirst({
-    where: { nome: professorNome, role: "professor" },
+  const professorId = match[1]
+  const professor = await prisma.usuario.findUnique({
+    where: { id: professorId },
   })
 
   if (!professor) {

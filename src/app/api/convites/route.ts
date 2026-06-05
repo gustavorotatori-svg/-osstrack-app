@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   if (tipo === "academia") {
     conviteData.tipo = "academia"
-    conviteData.email = session.user.id // stores professorId for lookup
+    conviteData.professorId = session.user.id
   } else {
     conviteData.tipo = tipo === "amigo" ? "aluno" : tipo
   }

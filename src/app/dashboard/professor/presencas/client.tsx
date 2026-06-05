@@ -70,33 +70,33 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
   return (
     <DashboardShell role="professor">
       <PageTransition>
-        <div className="space-y-3">
-          <div className="glass-card-gold flex items-center justify-between">
+        <div className="max-w-5xl mx-auto space-y-3">
+          <div className="surface border border-[var(--gold-dim)] p-5 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-extrabold tracking-tight">{t("title")}</h2>
-              <p className="text-xs text-[var(--white-muted)] mt-0.5">{t("subtitle")}</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{t("subtitle")}</p>
             </div>
             <button onClick={() => setShowManual(true)}
-              className="btn-gold px-4 py-2.5 text-xs font-bold active:scale-95 shrink-0">
+              className="btn btn-primary px-4 py-2.5 text-xs font-bold active:scale-95 shrink-0">
               {t("manual")}
             </button>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
-            <div className="stat-card">
+            <div className="text-center">
               <div className="text-xl mb-1">📋</div>
               <div className="text-xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={presencas.length} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("total")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase">{t("total")}</div>
             </div>
-            <div className="stat-card">
-              <div className="text-xl mb-1 emoji-check">✅</div>
+            <div className="text-center">
+              <div className="text-xl mb-1">✅</div>
               <div className="text-xl font-extrabold text-emerald-500"><AnimatedCounter value={confirmed} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("presentes")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase">{t("presentes")}</div>
             </div>
-            <div className="stat-card">
+            <div className="text-center">
               <div className="text-xl mb-1">⏳</div>
               <div className="text-xl font-extrabold text-yellow-500"><AnimatedCounter value={pending} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase">{t("pendentes")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase">{t("pendentes")}</div>
             </div>
           </div>
 
@@ -109,25 +109,25 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
             ))}
           </div>
 
-          <div className="glass-card">
+          <div className="surface p-4">
             {filtradas.length === 0 ? (
-              <div className="empty-premium">
-                <div className="empty-premium-icon">🥋</div>
-                <div className="empty-premium-title">{t("nenhumaEncontrada")}</div>
-                <div className="empty-premium-desc">{t("descEmpty")}</div>
+              <div className="text-center py-10">
+                <div className="text-2xl mb-2">🥋</div>
+                <div className="text-sm font-semibold">{t("nenhumaEncontrada")}</div>
+                <div className="text-xs text-[var(--text-secondary)] mt-1">{t("descEmpty")}</div>
               </div>
             ) : (
               <div className="space-y-0.5">
                 {filtradas.map((p) => (
-                  <div key={p.id} className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-[var(--dark-border)]/30 transition-all">
+                  <div key={p.id} className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-[var(--border)]/30 transition-all">
                     <Avatar name={p.aluno.nome} faixa={p.aluno.faixa} size={36} />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-semibold truncate">{p.aluno.nome}</div>
-                      <div className="flex items-center gap-2 text-[11px] text-[var(--white-muted)]">
+                      <div className="flex items-center gap-2 text-[11px] text-[var(--text-secondary)]">
                         <span>{p.aluno.faixa}</span>
-                        <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
+                        <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
                         <span>{p.turma || t("treino")}</span>
-                        <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
+                        <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
                         <span>{p.horario}</span>
                       </div>
                     </div>
@@ -169,25 +169,25 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="glass-card p-6 w-full max-w-sm mx-auto"
+              className="surface p-6 w-full max-w-sm mx-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="text-center mb-4">
-                <div className="text-3xl mb-2 emoji-glow">📸</div>
+                <div className="text-3xl mb-2">📸</div>
                 <h3 className="font-bold text-base">{t("adicionarPresenca")}</h3>
-                <p className="text-sm text-[var(--white-muted)] mt-1 italic">{playMsg}</p>
+                <p className="text-sm text-[var(--text-secondary)] mt-1 italic">{playMsg}</p>
               </div>
 
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">{t("nomeAluno")}</label>
-                  <input className="input-premium text-sm" placeholder={t("placeholderNome")}
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">{t("nomeAluno")}</label>
+                  <input className="input text-sm" placeholder={t("placeholderNome")}
                     value={manualNome} onChange={e => setManualNome(e.target.value)}
                     autoFocus />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1">{t("faixa")}</label>
-                  <select className="input-premium text-sm" value={manualFaixa} onChange={e => setManualFaixa(e.target.value)}>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1">{t("faixa")}</label>
+                  <select className="input text-sm" value={manualFaixa} onChange={e => setManualFaixa(e.target.value)}>
                     {["Branca", "Azul", "Roxa", "Marrom", "Preta"].map(f => <option key={f} value={f}>{f}</option>)}
                   </select>
                 </div>
@@ -195,11 +195,11 @@ export function PresencasClient({ presencasHoje: initial }: { presencasHoje: Pre
 
               <div className="flex gap-2 mt-5">
                 <button onClick={adicionarManual}
-                  className="flex-1 py-3 rounded-xl btn-gold text-sm font-bold active:scale-[0.97]">
+                  className="flex-1 py-3 rounded-xl btn btn-primary text-sm font-bold active:scale-[0.97]">
                   {t("confirmar")}
                 </button>
                 <button onClick={() => setShowManual(false)}
-                  className="flex-1 py-3 rounded-xl bg-[var(--dark-border)] text-[var(--white-muted)] text-sm font-bold active:scale-[0.97]">
+                  className="flex-1 py-3 rounded-xl bg-[var(--border)] text-[var(--text-secondary)] text-sm font-bold active:scale-[0.97]">
                   {t("cancelar")}
                 </button>
               </div>

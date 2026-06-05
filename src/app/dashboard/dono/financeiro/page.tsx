@@ -32,8 +32,8 @@ export default function FinanceiroPage() {
   if (loading) {
     return (
       <DashboardShell role="dono">
-        <div className="animate-pulse space-y-4">
-          {[1,2,3,4].map(i => <div key={i} className="h-20 bg-[var(--dark-border)] rounded-xl" />)}
+        <div className="max-w-5xl mx-auto animate-pulse space-y-4">
+          {[1,2,3,4].map(i => <div key={i} className="h-20 bg-[var(--border)] rounded-xl" />)}
         </div>
       </DashboardShell>
     )
@@ -50,7 +50,7 @@ export default function FinanceiroPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4 animate-fade-in">
+      <div className="max-w-5xl mx-auto space-y-4">
         <div className="glass-card-gold p-5 text-center">
           <CreditCardIcon className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />
           <h2 className="text-lg font-extrabold">{t("title")}</h2>

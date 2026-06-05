@@ -20,8 +20,8 @@ export default async function ConvitePage({ params }: { params: Promise<{ codigo
     academia: convite.academia?.nome || "",
   })
 
-  if (convite.tipo === "academia" && convite.email) {
-    qs.set("professorId", convite.email)
+  if (convite.tipo === "academia" && convite.remetenteId) {
+    qs.set("professorId", convite.remetenteId)
   }
 
   redirect(`/cadastro?${qs.toString()}`)

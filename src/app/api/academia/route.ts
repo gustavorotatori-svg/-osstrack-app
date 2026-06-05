@@ -32,6 +32,8 @@ export async function PUT(request: Request) {
       ...(whatsapp !== undefined && { whatsapp }),
       ...(pixKey !== undefined && { pixKey }),
       ...(raio !== undefined && { raio }),
+      ...(horarioInicio !== undefined && { horarioInicio }),
+      ...(horarioFim !== undefined && { horarioFim }),
     },
   })
 

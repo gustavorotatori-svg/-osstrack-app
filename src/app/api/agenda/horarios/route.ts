@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "diaSemana, horaInicio, horaFim obrigatórios" }, { status: 400 })
   }
 
+  let finalProfessorId = professorId === "me" ? session.user.id : professorId
   let finalTurmaId = turmaId
   if (!finalTurmaId && turmaNome) {
     const turma = await prisma.turma.create({
@@ -44,7 +45,7 @@ export async function POST(req: Request) {
         dias: String(diaSemana),
         maxAlunos: maxAlunos || 30,
         academiaId: session.user.academiaId || "",
-        professorId: professorId || session.user.id,
+        professorId: finalProfessorId || session.user.id,
       },
     })
     finalTurmaId = turma.id
@@ -54,7 +55,7 @@ export async function POST(req: Request) {
     data: {
       academiaId: session.user.academiaId || "",
       turmaId: finalTurmaId || "default",
-      professorId: professorId || session.user.id,
+        professorId: finalProfessorId || session.user.id,
       diaSemana: Number(diaSemana),
       horaInicio, horaFim,
       maxAlunos: maxAlunos || 30, local,
@@ -71,6 +72,10 @@ export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url)
   const id = searchParams.get("id")
   if (!id) return NextResponse.json({ error: "id obrigatório" }, { status: 400 })
+
+  const horario = await prisma.horarioAula.findUnique({ where: { id } })
+  if (!horario) return NextResponse.json({ error: "Horário não encontrado" }, { status: 404 })
+  if (horario.academiaId !== session.user.academiaId) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
   await prisma.horarioAula.delete({ where: { id } })
   return NextResponse.json({ success: true })

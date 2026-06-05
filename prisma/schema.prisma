@@ -21,6 +21,8 @@ model Academia {
   whatsapp  String?
   pixKey    String?
   logo      String?
+  horarioInicio String?
+  horarioFim    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
