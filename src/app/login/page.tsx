@@ -48,7 +48,7 @@ export default function Login() {
             🥋
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight">OssTrack</h1>
-          <p className="text-sm text-[var(--text-secondary)] mt-1.5">{t("subtitle")}</p>
+          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>{t("subtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="surface p-7 space-y-4">

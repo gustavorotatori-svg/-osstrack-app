@@ -423,7 +423,7 @@ export default function Cadastro() {
             🥋
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
-          <p className="text-sm text-[var(--text-secondary)] mt-1.5">
+          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
             {form.role === "aluno" ? (
               <>{t("subtitleAluno")}</>
             ) : (
