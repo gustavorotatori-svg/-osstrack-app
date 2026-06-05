@@ -64,7 +64,7 @@ export function DailyMissions() {
   return (
     <>
       <Celebration show={celebrate} title={t("dailyMissions.todasCompletas")} onDone={() => setCelebrate(false)} />
-      <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 hover-card">
+      <div className="glass-card p-5">
         <div className="flex items-center justify-between mb-3.5">
           <h3 className="font-bold text-sm tracking-tight flex items-center gap-1.5">
             {todasCompletas ? <AwardIcon className="w-4 h-4 text-[var(--gold)]" /> : <TargetIcon className="w-4 h-4 text-[var(--gold)]" />}

@@ -55,7 +55,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
 
   const fetchTurmas = useCallback(async () => {
     try {
-      const res = await globalThis.fetch("/api/turmas")
+      const res = await fetch("/api/turmas")
       if (res.ok) setTurmas(await res.json())
     } catch { /* ignore */ }
     setLoading(false)
@@ -198,21 +198,19 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
   return (
     <DashboardShell role={role}>
       <PageTransition>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-bold text-lg"><ClipboardIcon className="w-5 h-5 inline -mt-0.5 mr-1.5" />{tr("title")}</h3>
-              <p className="text-xs text-[var(--white-muted)]">{tr("subtitle")}</p>
-            </div>
+        <div className="max-w-5xl mx-auto space-y-4">
+          <div className="text-center">
+            <h3 className="font-bold text-lg">{tr("title")}</h3>
+            <p className="text-xs text-[var(--text-secondary)]">{tr("subtitle")}</p>
             <button onClick={() => { resetForm(); setShowForm(!showForm) }}
-              className="btn-gold px-4 py-2 text-sm">
+              className="btn-primary px-4 py-2 text-sm mt-3">
               {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {tr("fechar")}</> : tr("novaTurma")}
             </button>
           </div>
 
           {showForm && (
             <form onSubmit={handleSave}
-              className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5 space-y-4">
+              className="glass-card p-5 space-y-4">
               <h4 className="font-bold text-sm">{editingId ? tr("editarTurma") : tr("novaTurma")}</h4>
 
               <div>

@@ -99,12 +99,10 @@ export default function ProfessorAgendaPage() {
 
   return (
     <DashboardShell role="professor">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-bold text-lg"><CalendarIcon className="w-5 h-5 inline -mt-0.5 mr-1.5" />{t("title")}</h3>
-            <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
-          </div>
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="text-center">
+          <h3 className="font-bold text-lg">{t("title")}</h3>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
           <button
             onClick={() => {
               setShowForm(!showForm)
@@ -114,7 +112,7 @@ export default function ProfessorAgendaPage() {
                 setSelectedHour("")
               }
             }}
-            className="btn-gold px-4 py-2 text-sm"
+            className="btn-primary px-4 py-2 text-sm mt-3"
           >
             {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novoHorario")}
           </button>
@@ -123,7 +121,7 @@ export default function ProfessorAgendaPage() {
         {showForm && (
           <form
             onSubmit={handleAddSlot}
-            className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5 space-y-4"
+            className="surface p-5 space-y-4"
           >
             <h4 className="font-bold text-sm">
               {t("novoHorario")} —{" "}
@@ -132,13 +130,13 @@ export default function ProfessorAgendaPage() {
             </h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("turma")}
                 </label>
                 <select
                   value={turmaId}
                   onChange={(e) => setTurmaId(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                   required
                 >
                   <option value="">{t("selecione")}</option>
@@ -149,17 +147,17 @@ export default function ProfessorAgendaPage() {
                   ))}
                 </select>
                 {turmas.length === 0 && (
-                  <p className="text-[10px] text-[var(--gray)] mt-1"><ClipboardIcon className="w-3 h-3 inline -mt-0.5 mr-0.5" />{t("crieTurmasPrimeiro")}</p>
+                  <p className="text-[10px] text-[var(--text-muted)] mt-1"><ClipboardIcon className="w-3 h-3 inline -mt-0.5 mr-0.5" />{t("crieTurmasPrimeiro")}</p>
                 )}
               </div>
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("dia")}
                 </label>
                 <select
                   value={selectedDay ?? 1}
                   onChange={(e) => setSelectedDay(Number(e.target.value))}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                 >
                   {diasSemana.map((d, i) => (
                     <option key={d} value={i}>
@@ -171,62 +169,62 @@ export default function ProfessorAgendaPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("inicio")}
                 </label>
                 <input
                   type="time"
                   value={horaInicio}
                   onChange={(e) => setHoraInicio(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                   required
                 />
               </div>
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("fim")}
                 </label>
                 <input
                   type="time"
                   value={horaFim}
                   onChange={(e) => setHoraFim(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                   required
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("maxAlunos")}
                 </label>
                 <input
                   type="number"
                   value={maxAlunos}
                   onChange={(e) => setMaxAlunos(Number(e.target.value))}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                 />
               </div>
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("local")}
                 </label>
                 <input
                   value={local}
                   onChange={(e) => setLocal(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
+                  className="input w-full text-sm mt-1"
                   placeholder={t("placeholderLocal")}
                 />
               </div>
             </div>
-            <button type="submit" disabled={saving} className="btn-gold px-6 py-2.5 text-sm font-bold">
+            <button type="submit" disabled={saving} className="btn btn-primary px-6 py-2.5 text-sm font-bold">
               {saving ? t("salvando") : t("salvarHorario")}
             </button>
           </form>
         )}
 
         {loading ? (
-          <div className="text-center py-20 text-[var(--white-muted)] text-sm">{t("carregando")}</div>
+          <div className="text-center py-20 text-[var(--text-secondary)] text-sm">{t("carregando")}</div>
         ) : (
           <WeeklyGrid
             horarios={horarios}

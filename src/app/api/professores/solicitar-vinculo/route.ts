@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       usuarioId: dono.id,
       tipo: "solicitacao_professor",
       titulo: "Solicitação de Professor",
-      descricao: `O professor ${professor?.nome} (${professor?.faixa} ${professor?.grau}º grau) solicita vincular-se à sua academia.`,
+      descricao: `O professor ${professor?.nome} (id:${professor?.id}) solicita vincular-se à sua academia.`,
       link: "/dashboard/dono",
     },
   })

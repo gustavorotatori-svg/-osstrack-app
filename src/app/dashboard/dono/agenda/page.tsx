@@ -115,12 +115,10 @@ export default function DonoAgendaPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-bold text-lg"><CalendarIcon className="w-5 h-5 inline -mt-0.5 mr-1.5" />{t("title")}</h3>
-            <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
-          </div>
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="text-center">
+          <h3 className="font-bold text-lg">{t("title")}</h3>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
           <button
             onClick={() => {
               setShowForm(!showForm)
@@ -130,7 +128,7 @@ export default function DonoAgendaPage() {
                 setSelectedHour("")
               }
             }}
-            className="btn-gold px-4 py-2 text-sm"
+            className="btn-primary px-4 py-2 text-sm mt-3"
           >
             {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novoHorario")}
           </button>
@@ -139,7 +137,7 @@ export default function DonoAgendaPage() {
         {showForm && (
           <form
             onSubmit={handleAddSlot}
-            className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5 space-y-4"
+            className="glass-card p-5 space-y-4"
           >
             <h4 className="font-bold text-sm">
               {t("novoHorario")} —{" "}

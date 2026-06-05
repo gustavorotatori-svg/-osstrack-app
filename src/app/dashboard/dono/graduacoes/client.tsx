@@ -41,17 +41,26 @@ export default function GraduacoesClient({ role }: { role: string }) {
   const [showShare, setShowShare] = useState(false)
   const [shareLink, setShareLink] = useState("")
   const [copying, setCopying] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem("osstrack_academiaId")
-    if (stored) {
-      const base = window.location.origin
-      setShareLink(`${base}/compartilhar/regras/${stored}`)
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("osstrack_academiaId")
+      if (stored) {
+        const base = window.location.origin
+        setShareLink(`${base}/compartilhar/regras/${stored}`)
+      }
     }
   }, [])
 
   useEffect(() => {
-    fetch("/api/graduacoes").then(r => r.json()).then(setGraduacoes).catch(() => {})
+    setLoading(true)
+    setError(null)
+    fetch("/api/graduacoes")
+      .then(r => { if (!r.ok) throw new Error("Erro ao carregar"); return r.json() })
+      .then((d) => { setGraduacoes(d); setLoading(false) })
+      .catch(() => { setError("Erro ao carregar regras de graduação"); setLoading(false) })
   }, [])
 
   const filtered = graduacoes.filter(g => g.categoria === categoria)
@@ -89,8 +98,21 @@ export default function GraduacoesClient({ role }: { role: string }) {
 
   return (
     <DashboardShell role={role}>
-      <div className="space-y-4">
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6">
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="text-center py-4">
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : error ? (
+            <div className="surface text-center py-12">
+              <p className="text-sm text-[var(--white-muted)]">{error}</p>
+              <button onClick={() => window.location.reload()} className="mt-4 px-6 py-2 rounded-xl text-xs font-bold btn-gold">
+                Tentar novamente
+              </button>
+            </div>
+          ) : (
+          <>
           <h3 className="font-bold text-lg mb-1">🥋 Regras de Graduação</h3>
           <p className="text-xs text-[var(--white-muted)] mb-4">Defina os critérios de evolução para cada faixa</p>
 
@@ -244,7 +266,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
 
           <div className="space-y-3">
             {filtered.map(g => (
-              <div key={g.id} className="bg-black/40 border border-[var(--dark-border)] rounded-2xl p-4 hover-card">
+              <div key={g.id} className="glass-card p-4">
                 {editing === g.id && editForm ? (
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 mb-2">
@@ -341,18 +363,22 @@ export default function GraduacoesClient({ role }: { role: string }) {
               <p className="text-sm text-[var(--white-muted)] text-center py-6">Nenhuma regra cadastrada para esta categoria</p>
             )}
           </div>
+        </>
+        )}
         </div>
 
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6">
-          <h3 className="font-bold text-sm mb-3">📖 Legenda</h3>
-          <div className="space-y-2 text-xs text-[var(--white-muted)]">
-            <p><span className="text-[var(--gold)] font-semibold">Graus:</span> Quantidade de graus (stripes) na faixa atual</p>
-            <p><span className="text-[var(--gold)] font-semibold">Aulas por Grau:</span> Check-ins necessários para cada grau</p>
-            <p><span className="text-[var(--gold)] font-semibold">Próx. Faixa:</span> Total de aulas para mudar de faixa (em branco = automático = graus × aulasPorGrau)</p>
-            <p><span className="text-[var(--gold)] font-semibold">Mín/Ano:</span> Mínimo de aulas no ano para ser elegível à próxima faixa</p>
-            <p><span className="text-[var(--gold)] font-semibold">Regra:</span> "Por graus" = sobe ao completar graus | "Por aulas" = sobe ao atingir total de aulas | "Por exame" = sobe apenas na data do exame</p>
+        {!loading && !error && (
+          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6">
+            <h3 className="font-bold text-sm mb-3">📖 Legenda</h3>
+            <div className="space-y-2 text-xs text-[var(--white-muted)]">
+              <p><span className="text-[var(--gold)] font-semibold">Graus:</span> Quantidade de graus (stripes) na faixa atual</p>
+              <p><span className="text-[var(--gold)] font-semibold">Aulas por Grau:</span> Check-ins necessários para cada grau</p>
+              <p><span className="text-[var(--gold)] font-semibold">Próx. Faixa:</span> Total de aulas para mudar de faixa (em branco = automático = graus × aulasPorGrau)</p>
+              <p><span className="text-[var(--gold)] font-semibold">Mín/Ano:</span> Mínimo de aulas no ano para ser elegível à próxima faixa</p>
+              <p><span className="text-[var(--gold)] font-semibold">Regra:</span> "Por graus" = sobe ao completar graus | "Por aulas" = sobe ao atingir total de aulas | "Por exame" = sobe apenas na data do exame</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </DashboardShell>
   )

@@ -45,28 +45,28 @@ export default function PremiumPage() {
 
   return (
     <DashboardShell role="aluno">
-      <div className="space-y-4">
+      <div className="max-w-5xl mx-auto space-y-4">
         {done ? (
-          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--gold)]/20 rounded-2xl p-8 text-center animate-scale-in">
+          <div className="surface border border-[var(--gold-dim)] p-8 text-center animate-scale-in">
             <CrownIcon className="w-12 h-12 mb-4 animate-float mx-auto text-[var(--gold)]" />
-            <h2 className="text-xl font-extrabold gradient-gold-text">{t("bemVindo")}</h2>
-            <p className="text-sm text-[var(--white-muted)] mt-2">
+            <h2 className="text-xl font-extrabold text-[var(--gold)]">{t("bemVindo")}</h2>
+            <p className="text-sm text-[var(--text-secondary)] mt-2">
               {t("contaAtualizada")}
             </p>
             <button
               onClick={() => router.push("/dashboard/aluno")}
-              className="btn-gold px-8 py-3 mt-6 text-sm"
+              className="btn btn-primary px-8 py-3 mt-6 text-sm"
             >
               {t("irDashboard")}
             </button>
           </div>
         ) : (
           <>
-            <div className="bg-gradient-to-br from-[rgba(201,168,76,0.1)] to-[rgba(201,168,76,0.02)] border border-[var(--gold)]/20 rounded-2xl p-6 text-center relative overflow-hidden">
+            <div className="surface border border-[var(--gold-dim)] p-6 text-center relative overflow-hidden">
               <div className="absolute top-[-40px] right-[-40px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
               <CrownIcon className="w-8 h-8 mb-2 mx-auto text-[var(--gold)]" />
-              <h2 className="text-xl font-extrabold gradient-gold-text">{t("title")}</h2>
-              <p className="text-sm text-[var(--white-muted)] mt-1">{t("preco")}</p>
+              <h2 className="text-xl font-extrabold text-[var(--gold)]">{t("title")}</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-1">{t("preco")}</p>
 
               <div className="mt-6 space-y-3 text-left max-w-sm mx-auto">
                 {features.map((f) => (
@@ -74,7 +74,7 @@ export default function PremiumPage() {
                     <span className="shrink-0 text-[var(--gold)]">{f.icon}</span>
                     <div>
                       <div className="text-sm font-semibold">{f.name}</div>
-                      <div className="text-[11px] text-[var(--white-muted)]">{f.desc}</div>
+                      <div className="text-[11px] text-[var(--text-secondary)]">{f.desc}</div>
                     </div>
                   </div>
                 ))}
@@ -83,17 +83,17 @@ export default function PremiumPage() {
               <button
                 onClick={assinar}
                 disabled={loading || plano === "premium"}
-                className="btn-gold w-full max-w-sm py-3.5 mt-6 text-sm font-bold disabled:opacity-50"
+                className="btn btn-primary w-full max-w-sm py-3.5 mt-6 text-sm font-bold disabled:opacity-50"
               >
                 {loading ? t("processando") : plano === "premium" ? t("jaPremium") : t("assinar")}
               </button>
 
-              <p className="text-[10px] text-[var(--gray)] mt-3">
+              <p className="text-[10px] text-[var(--text-muted)] mt-3">
                 {t("simulacao")}
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5">
+            <div className="surface p-5">
               <h3 className="font-bold text-sm tracking-tight mb-3"><CreditCardIcon className="w-4 h-4 inline -mt-0.5 mr-1.5" />{t("comparacao")}</h3>
               <div className="space-y-1">
                 {Array.from({ length: 9 }, (_, i) => ({
@@ -101,8 +101,8 @@ export default function PremiumPage() {
                   free: i === 3 ? <><span>{t("trintaDias")}</span> <CalendarIcon className="w-3 h-3 inline" /></> : i <= 2 ? <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> : <XIcon className="w-3.5 h-3.5 inline text-red-400" />,
                   premium: i === 3 ? <><InfinityIcon className="w-3.5 h-3.5 inline text-[var(--gold)]" /> {t("ilimitado")}</> : <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />,
                 })).map((row) => (
-                  <div key={row.label} className="flex items-center justify-between py-2.5 px-3 rounded-xl text-xs border-b border-[var(--dark-border)] last:border-0">
-                    <span className="text-[var(--white-muted)]">{row.label}</span>
+                  <div key={row.label} className="flex items-center justify-between py-2.5 px-3 rounded-xl text-xs border-b border-[var(--border)] last:border-0">
+                    <span className="text-[var(--text-secondary)]">{row.label}</span>
                     <div className="flex items-center gap-4">
                       <span className="text-center w-16">{row.free}</span>
                       <span className="text-center w-20 font-semibold">{row.premium}</span>

@@ -13,13 +13,13 @@ function ConviteCard({ tipo, label, state, setState }: {
   const t = useT("dono.config")
   return (
     <div>
-      <p className="text-xs text-[var(--white-muted)] mb-2">{label}</p>
+      <p className="text-xs text-[var(--text-secondary)] mb-2">{label}</p>
       <div className="flex gap-2">
         <input
           type="text"
           value={state.gerando ? t("gerando") : state.link || "osstrack.app"}
           readOnly
-          className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm"
+          className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm"
         />
         <button
           type="button"
@@ -38,7 +38,7 @@ function ConviteCard({ tipo, label, state, setState }: {
               setState({ ...state, gerando: false })
             }
           }}
-          className="px-4 py-2.5 rounded-lg font-semibold text-xs btn-gold disabled:opacity-50"
+          className="btn btn-primary px-4 py-2.5 rounded-lg font-semibold text-xs disabled:opacity-50"
         >
           {t("gerarLink")}
         </button>
@@ -52,7 +52,7 @@ function ConviteCard({ tipo, label, state, setState }: {
               setState({ ...state, copied: true })
               setTimeout(() => setState({ ...state, copied: false }), 2000)
             }}
-            className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--dark-border)] hover:border-[var(--gold)] transition-all"
+            className="flex-1 py-2 rounded-lg text-xs font-semibold border border-[var(--border)] hover:border-[var(--gold)] transition-all"
           >
             {state.copied ? t("copiado") : t("copiarLink")}
           </button>
@@ -117,12 +117,12 @@ export default function ConfigPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="animate-fade-in space-y-4">
-        <form onSubmit={salvar} className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 space-y-4">
+      <div className="max-w-5xl mx-auto animate-fade-in space-y-4">
+        <form onSubmit={salvar} className="surface p-6 space-y-4">
           <h3 className="font-bold">{t("title")}</h3>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("nomeAcademia")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">{t("nomeAcademia")}</label>
             <input
               type="text"
               className="input-premium"
@@ -133,7 +133,7 @@ export default function ConfigPage() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("whatsapp")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">{t("whatsapp")}</label>
             <input
               type="text"
               className="input-premium"
@@ -141,11 +141,11 @@ export default function ConfigPage() {
               value={form.whatsapp}
               onChange={(e) => setForm((p) => ({ ...p, whatsapp: e.target.value }))}
             />
-            <p className="text-[9px] text-[var(--gray)] mt-1">{t("whatsappDesc")}</p>
+            <p className="text-[9px] text-[var(--text-muted)] mt-1">{t("whatsappDesc")}</p>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("chavePix")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">{t("chavePix")}</label>
             <input
               type="text"
               className="input-premium"
@@ -156,7 +156,7 @@ export default function ConfigPage() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("raioCheckin")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">{t("raioCheckin")}</label>
             <input
               type="number"
               className="input-premium"
@@ -166,7 +166,7 @@ export default function ConfigPage() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--white-muted)] block mb-1.5">{t("horarioFuncionamento")}</label>
+            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5">{t("horarioFuncionamento")}</label>
             <div className="flex gap-2">
               <input type="time" className="input-premium" value={form.horarioInicio} onChange={(e) => setForm((p) => ({ ...p, horarioInicio: e.target.value }))} />
               <input type="time" className="input-premium" value={form.horarioFim} onChange={(e) => setForm((p) => ({ ...p, horarioFim: e.target.value }))} />
@@ -175,13 +175,13 @@ export default function ConfigPage() {
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-xl font-bold text-sm btn-gold"
+            className="btn btn-primary w-full py-3.5 rounded-xl font-bold text-sm"
           >
             {saved ? t("salvo") : t("salvar")}
           </button>
         </form>
 
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-6 space-y-4">
+        <div className="surface p-6 space-y-4">
           <h3 className="font-bold">{t("compartilhar")}</h3>
 
           <ConviteCard

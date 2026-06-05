@@ -56,11 +56,11 @@ export default function PlanosPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="space-y-4 animate-fade-in">
-        <div className="flex items-center justify-between">
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="text-center">
           <h3 className="font-bold text-lg">{t("planosTitle")}</h3>
           <button onClick={() => setShowForm(!showForm)}
-            className="px-4 py-2 rounded-lg text-xs font-semibold btn-gold">
+            className="btn-primary px-4 py-2 text-sm mt-3">
             {showForm ? t("cancelar") : t("novoPlano")}
           </button>
         </div>

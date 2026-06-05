@@ -90,25 +90,25 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
     <DashboardShell role="professor">
       <Celebration show={celebrate.show} title={celebrate.title} onDone={() => setCelebrate({ show: false, title: "" })} />
       <PageTransition>
-        <div className="space-y-3">
-          <div className="glass-card-gold">
+        <div className="max-w-5xl mx-auto space-y-3">
+          <div className="surface border border-[var(--gold-dim)] text-center p-5">
             <h2 className="text-lg font-extrabold tracking-tight">{t("title")}</h2>
-            <p className="text-xs text-[var(--white-muted)] mt-0.5"><AnimatedCounter value={alunos.length} /> {t("alunosVinculados")}</p>
+            <p className="text-xs text-[var(--text-secondary)] mt-0.5"><AnimatedCounter value={alunos.length} /> {t("alunosVinculados")}</p>
           </div>
 
-          <div className="glass-card">
+          <div className="surface p-4">
             {/* Busca */}
-            <input className="input-premium text-sm mb-3" placeholder={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
+            <input className="input text-sm mb-3" placeholder={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
 
             {/* Filtro por faixa */}
             <div className="flex gap-1.5 overflow-x-auto scrollbar-none mb-3">
               <button onClick={() => setFiltroFaixa("todas")}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === "todas" ? "bg-[var(--gold)] text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)]"}`}>
+                className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === "todas" ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                 {t("todas")}
               </button>
               {beltList.map(f => (
                 <button key={f} onClick={() => setFiltroFaixa(f)}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === f ? "bg-[var(--gold)] text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)]"}`}>
+                  className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === f ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                   {getBeltEmoji(f)} {f}
                 </button>
               ))}
@@ -116,33 +116,33 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
             {/* Ordenação */}
             <div className="flex gap-2 items-center">
-              <span className="text-[10px] text-[var(--gray)] font-semibold uppercase tracking-wider">{t("ordenar")}</span>
+              <span className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">{t("ordenar")}</span>
               {(["nome", "faixa", "grau"] as const).map((s) => (
                 <button key={s} onClick={() => setSort(s)}
-                  className={`px-3 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${sort === s ? "gradient-gold text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)]"}`}>
+                  className={`px-3 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${sort === s ? "bg-[var(--red)] text-white" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                   {s === "nome" ? "A-Z" : s === "faixa" ? <>🥋 {t("faixa")}</> : <>🎓 {t("grau")}</>}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="glass-card">
+          <div className="surface p-4">
             {filtrados.length === 0 ? (
-              <div className="empty-premium">
-                <div className="empty-premium-icon emoji-glow">👥</div>
-                <div className="empty-premium-title">{t("nenhumEncontrado")}</div>
-                <div className="empty-premium-desc">{t("descEmpty")}</div>
+              <div className="text-center py-10">
+                <div className="text-2xl mb-2">👥</div>
+                <div className="text-sm font-semibold">{t("nenhumEncontrado")}</div>
+                <div className="text-xs text-[var(--text-secondary)] mt-1">{t("descEmpty")}</div>
               </div>
             ) : (
               <div className="grid-modern">
                 {filtrados.map((a) => (
-                  <div key={a.id} className="glass-card text-center hover-lift">
+                  <div key={a.id} className="surface text-center p-4">
                     <Avatar name={a.nome} faixa={a.faixa} size={44} />
                     <div className="text-sm font-semibold mt-1.5 truncate">{a.nome}</div>
-                    <div className="text-[11px] text-[var(--white-muted)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
+                    <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
                     <div className="flex flex-wrap gap-1.5 mt-3 justify-center">
                       <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }}
-                        className="btn-gold px-2.5 py-1.5 text-[10px] active:scale-90">{t("promover")}</button>
+                        className="btn btn-primary px-2.5 py-1.5 text-[10px] active:scale-90">{t("promover")}</button>
                       <button onClick={() => convidarWhatsApp(a.id, a.nome)}
                         className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 active:scale-90">📲 {t("convidar")}</button>
                       <WhatsAppButton acao="promocao" alunoId={a.id} alunoNome={a.nome} size="sm" variant="emerald" />
@@ -155,15 +155,15 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
           {showPromote && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowPromote(null)}>
-              <div className="glass-card p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
+              <div className="surface p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
                 <h3 className="font-bold text-base mb-4">{t("promoverAluno")}</h3>
-                <p className="text-sm text-[var(--white-muted)] mb-4">{t("selecioneFaixa")}</p>
+                <p className="text-sm text-[var(--text-secondary)] mb-4">{t("selecioneFaixa")}</p>
                 <div className="grid grid-cols-2 gap-2 mb-4">
                   {faixasDisponiveis(alunos.find(a => a.id === showPromote)?.faixa || "").map((f) => {
                     const selected = promovendo?.split("|")[1] === f
                     return (
                       <button key={f} onClick={() => setPromovendo(`${showPromote}|${f}|${0}`)}
-                        className={`px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${selected ? "gradient-gold text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)] hover:text-white"}`}>
+                        className={`px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${selected ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)] hover:text-white"}`}>
                         {getBeltEmoji(f)} {f}
                       </button>
                     )
@@ -177,7 +177,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                   const novoGrau = aluno.faixa !== novaFaixa ? 0 : Math.min(aluno.grau + 1, 4)
                   promover(showPromote, novaFaixa, novoGrau)
                 }} disabled={promovendoAgora}
-                  className="w-full py-3 rounded-xl btn-gold text-sm font-bold disabled:opacity-50 active:scale-[0.98]">
+                  className="w-full py-3 rounded-xl btn btn-primary text-sm font-bold disabled:opacity-50 active:scale-[0.98]">
                   {promovendoAgora ? <>{t("promovendo")}</> : <>{t("confirmarPromocao")}</>}
                 </button>
               </div>

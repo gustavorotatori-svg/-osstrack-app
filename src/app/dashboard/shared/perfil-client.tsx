@@ -47,21 +47,35 @@ export default function PerfilClient({ role }: { role: string }) {
     setSaving(true)
     const body: Record<string, string> = { nome, telefone }
     if (avatarUrl) body.avatar = avatarUrl
-    await fetch("/api/perfil", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    })
-    setSaving(false)
-    setEditando(false)
-    setData((prev) => prev ? { ...prev, nome, telefone, avatar: avatarUrl } : prev)
+    try {
+      const res = await fetch("/api/perfil", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) throw new Error("Erro ao salvar")
+      setData((prev) => prev ? { ...prev, nome, telefone, avatar: avatarUrl } : prev)
+      setEditando(false)
+    } catch {
+      alert("Erro ao salvar perfil")
+    } finally {
+      setSaving(false)
+    }
   }
 
   function selecionarAvatar(url: string) {
     setAvatarUrl(avatarUrl === url ? "" : url)
   }
 
-  if (!data) return null
+  if (!data) {
+    return (
+      <DashboardShell role={role}>
+        <div className="flex items-center justify-center py-20">
+          <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </DashboardShell>
+    )
+  }
 
   const isAluno = role === "aluno"
 

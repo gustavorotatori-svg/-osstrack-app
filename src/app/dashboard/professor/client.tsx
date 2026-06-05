@@ -56,38 +56,38 @@ function ProfessorAcademiaSection() {
   }
 
   return (
-    <div className="glass-card">
+    <div className="surface p-5">
       <div className="text-center mb-4">
         <Building2 className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />
         <h3 className="font-bold text-base">{t("vincularAcademia")}</h3>
-        <p className="text-xs text-[var(--white-muted)] mt-1">{t("semVinculo")}</p>
+        <p className="text-xs text-[var(--text-secondary)] mt-1">{t("semVinculo")}</p>
       </div>
-      <div className="flex gap-1 bg-[var(--dark-border)] rounded-lg p-1 mb-4">
+      <div className="flex gap-1 bg-[var(--border)] rounded-lg p-1 mb-4">
         <button onClick={() => setTab("convidar")}
-          className={`flex-1 py-2 rounded-md text-xs font-semibold transition-all flex items-center justify-center gap-1 ${tab === "convidar" ? "bg-[var(--gold)] text-black" : "text-[var(--white-muted)]"}`}>
+          className={`flex-1 py-2 rounded-md text-xs font-semibold transition-all flex items-center justify-center gap-1 ${tab === "convidar" ? "bg-[var(--gold)] text-black" : "text-[var(--text-secondary)]"}`}>
           <UserPlusIcon className="w-3.5 h-3.5" /> {t("convidar")}
         </button>
         <button onClick={() => setTab("buscar")}
-          className={`flex-1 py-2 rounded-md text-xs font-semibold transition-all flex items-center justify-center gap-1 ${tab === "buscar" ? "bg-[var(--gold)] text-black" : "text-[var(--white-muted)]"}`}>
+          className={`flex-1 py-2 rounded-md text-xs font-semibold transition-all flex items-center justify-center gap-1 ${tab === "buscar" ? "bg-[var(--gold)] text-black" : "text-[var(--text-secondary)]"}`}>
           <Search className="w-3.5 h-3.5" /> {t("buscar")}
         </button>
       </div>
       {tab === "convidar" ? (
         <div className="text-center">
-          <p className="text-xs text-[var(--white-muted)] mb-3">{t("convidarDesc")}</p>
+          <p className="text-xs text-[var(--text-secondary)] mb-3">{t("convidarDesc")}</p>
           <ConviteSection tipo="academia" />
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-xs text-[var(--white-muted)]">{t("buscarDesc")}</p>
-          <input type="text" className="input-premium w-full text-sm" placeholder={t("placeholderBusca")}
+          <p className="text-xs text-[var(--text-secondary)]">{t("buscarDesc")}</p>
+          <input type="text" className="w-full px-4 py-2.5 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-white text-sm outline-none focus:border-[var(--red)] transition-colors" placeholder={t("placeholderBusca")}
             value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
           {buscando && <p className="text-xs text-[var(--gold)] text-center">{t("buscando")}</p>}
           {resultados.map((acad) => (
-            <div key={acad.id} className="flex items-center justify-between bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-xl px-4 py-3">
+            <div key={acad.id} className="flex items-center justify-between bg-[var(--surface)] border border-[var(--border)] rounded-xl px-4 py-3">
               <div>
                 <p className="text-sm font-semibold">{acad.nome}</p>
-                {acad.cidade && <p className="text-xs text-[var(--white-muted)]">{acad.cidade}/{acad.estado}</p>}
+                {acad.cidade && <p className="text-xs text-[var(--text-secondary)]">{acad.cidade}/{acad.estado}</p>}
               </div>
               <button onClick={() => solicitarVinculo(acad.id)} disabled={solicitando === acad.id}
                 className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 transition-all active:scale-95 disabled:opacity-50">
@@ -169,11 +169,11 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
     <DashboardShell role="professor">
       <Celebration show={celebrate.show} title={celebrate.title} onDone={() => setCelebrate({ show: false, title: "" })} />
       <PageTransition>
-        <div className="space-y-3">
+        <div className="max-w-5xl mx-auto space-y-3">
           {/* Hero */}
-            <div className="glass-card-gold text-center relative overflow-hidden">
+            <div className="surface border border-[var(--gold-dim)] text-center p-5 relative overflow-hidden">
             <div className="absolute top-[-40px] right-[-40px] w-32 h-32 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-            <div className="w-16 h-16 rounded-2xl gradient-gold flex items-center justify-center text-2xl font-extrabold text-black mx-auto mb-3 shadow-lg">
+            <div className="w-16 h-16 rounded-2xl bg-[var(--gold)] flex items-center justify-center text-2xl font-extrabold text-black mx-auto mb-3 shadow-lg">
               {professor.nome.charAt(0).toUpperCase()}
             </div>
             <h2 className="text-xl font-extrabold tracking-tight">Prof. {professor.nome}</h2>
@@ -187,20 +187,20 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 enter-stagger">
-            <div className="stat-card">
+            <div className="text-center">
               <UsersIcon className="w-6 h-6 mb-1 mx-auto text-[var(--gold)]" />
               <div className="text-3xl font-extrabold text-[var(--gold)]"><AnimatedCounter value={alunos.length} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("alunos")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase tracking-wide">{t("alunos")}</div>
             </div>
-            <div className="stat-card">
+            <div className="text-center">
               <CheckIcon className="w-6 h-6 mb-1 mx-auto text-emerald-500" />
               <div className="text-3xl font-extrabold text-emerald-500"><AnimatedCounter value={confirmed} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("presentes")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase tracking-wide">{t("presentes")}</div>
             </div>
-            <div className="stat-card">
+            <div className="text-center">
               <TimerIcon className="w-6 h-6 mb-1 mx-auto text-yellow-500" />
               <div className="text-3xl font-extrabold text-yellow-500"><AnimatedCounter value={pending} /></div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1 uppercase tracking-wide">{t("pendentes")}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1 uppercase tracking-wide">{t("pendentes")}</div>
             </div>
           </div>
 
@@ -219,33 +219,31 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
 
           {/* Tab: Presenças */}
           {tab === "presencas" && (
-            <div className="glass-card">
+            <div className="surface p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold text-base tracking-tight flex items-center gap-1.5">
                   <ClipboardIcon className="w-4 h-4 text-[var(--gold)]" /> {t("presencasHoje")}
                 </h3>
-                <span className="tag-premium">{presencasHoje.length} {t("registros")}</span>
+                <span className="text-[10px] font-semibold text-[var(--text-secondary)] bg-[var(--surface)] border border-[var(--border)] px-2.5 py-1 rounded-lg">{presencasHoje.length} {t("registros")}</span>
               </div>
               {presencasHoje.length === 0 ? (
-                <div className="empty-premium">
-                  <div className="empty-premium-icon">
-                    <DumbbellIcon className="w-6 h-6 text-[var(--gold)]" />
-                  </div>
-                  <div className="empty-premium-title">{t("nenhumCheckin")}</div>
-                  <div className="empty-premium-desc">{t("descEmptyCheckin")}</div>
+                <div className="text-center py-10">
+                  <DumbbellIcon className="w-6 h-6 mb-2 mx-auto text-[var(--gold)]" />
+                  <div className="text-sm font-semibold">{t("nenhumCheckin")}</div>
+                  <div className="text-xs text-[var(--text-secondary)] mt-1">{t("descEmptyCheckin")}</div>
                 </div>
               ) : (
                 <div className="space-y-0.5">
                   {presencasHoje.map((p) => (
-                    <div key={p.id} className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-[var(--dark-border)]/30 transition-all">
+                    <div key={p.id} className="flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-[var(--border)]/30 transition-all">
                       <Avatar name={p.aluno.nome} faixa={p.aluno.faixa} size={40} />
                       <div className="flex-1 min-w-0">
                         <div className="text-base font-semibold truncate">{p.aluno.nome}</div>
-                        <div className="flex items-center gap-2 text-xs text-[var(--white-muted)]">
+                        <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                           <span>{p.aluno.faixa}</span>
-                          <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
+                          <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
                           <span>{p.turma || "Treino"}</span>
-                          <span className="w-1 h-1 rounded-full bg-[var(--dark-border)]" />
+                          <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
                           <span>{p.horario}</span>
                         </div>
                       </div>
@@ -274,30 +272,28 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
 
           {/* Tab: Alunos */}
           {tab === "alunos" && (
-            <div className="glass-card">
+            <div className="surface p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold text-base tracking-tight flex items-center gap-1.5">
                   <UsersIcon className="w-4 h-4 text-[var(--gold)]" /> {t("meusAlunos")}
                 </h3>
-                <span className="tag-premium">{alunos.length} {t("vinculados")}</span>
+                <span className="text-[10px] font-semibold text-[var(--text-secondary)] bg-[var(--surface)] border border-[var(--border)] px-2.5 py-1 rounded-lg">{alunos.length} {t("vinculados")}</span>
               </div>
               {alunos.length === 0 ? (
-                <div className="empty-premium">
-                  <div className="empty-premium-icon">
-                    <UsersIcon className="w-6 h-6 text-[var(--gold)]" />
-                  </div>
-                  <div className="empty-premium-title">{t("nenhumAluno")}</div>
-                  <div className="empty-premium-desc">{t("descEmptyAlunos")}</div>
+                <div className="text-center py-10">
+                  <UsersIcon className="w-6 h-6 mb-2 mx-auto text-[var(--gold)]" />
+                  <div className="text-sm font-semibold">{t("nenhumAluno")}</div>
+                  <div className="text-xs text-[var(--text-secondary)] mt-1">{t("descEmptyAlunos")}</div>
                 </div>
               ) : (
                 <div className="grid-modern">
                   {alunos.map((a) => (
-                    <div key={a.id} className="glass-card text-center hover-lift">
+                    <div key={a.id} className="surface text-center p-4">
                       <Avatar name={a.nome} faixa={a.faixa} size={48} />
                       <div className="text-base font-semibold mt-2 truncate">{a.nome}</div>
-                      <div className="text-xs text-[var(--white-muted)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
+                      <div className="text-xs text-[var(--text-secondary)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
                       <div className="flex gap-2 mt-3 justify-center">
-                        <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }} className="btn-gold px-3 py-1.5 text-xs active:scale-90 gap-1">
+                        <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }} className="btn btn-primary px-3 py-1.5 text-xs active:scale-90 gap-1">
                           <AwardIcon className="w-3.5 h-3.5" /> {t("promover")}
                         </button>
                         <WhatsAppButton acao="promocao" alunoId={a.id} alunoNome={a.nome} size="sm" variant="emerald" />
@@ -309,17 +305,17 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
 
               {showPromote && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowPromote(null)}>
-                  <div className="glass-card p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
+                  <div className="surface p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
                     <h3 className="font-bold text-base mb-4 flex items-center gap-1.5">
                       <AwardIcon className="w-4 h-4 text-[var(--gold)]" /> {t("promoverAluno")}
                     </h3>
-                    <p className="text-sm text-[var(--white-muted)] mb-4">{t("selecioneFaixa")}</p>
+                    <p className="text-sm text-[var(--text-secondary)] mb-4">{t("selecioneFaixa")}</p>
                     <div className="grid grid-cols-2 gap-2 mb-4">
                       {faixasDisponiveis(alunos.find(a => a.id === showPromote)?.faixa || "").map((f) => {
                         const selected = promovendo?.split("|")[1] === f
                         return (
                           <button key={f} onClick={() => setPromovendo(`${showPromote}|${f}|${0}`)}
-                            className={`px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${selected ? "gradient-gold text-black" : "bg-[var(--dark-border)] text-[var(--white-muted)] hover:text-white"}`}>
+                            className={`px-4 py-3 rounded-xl text-sm font-bold transition-all active:scale-95 ${selected ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)] hover:text-white"}`}>
                             {getBeltEmoji(f)} {f}
                           </button>
                         )
@@ -333,7 +329,7 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
                       const novoGrau = aluno.faixa !== novaFaixa ? 0 : Math.min(aluno.grau + 1, 4)
                       promover(showPromote, novaFaixa, novoGrau)
                     }} disabled={promovendoAgora}
-                      className="w-full py-3 rounded-xl btn-gold text-sm font-bold disabled:opacity-50 active:scale-[0.98] gap-1.5">
+                      className="w-full py-3 rounded-xl btn btn-primary text-sm font-bold disabled:opacity-50 active:scale-[0.98] gap-1.5">
                       {promovendoAgora ? <TimerIcon className="w-4 h-4" /> : <CheckIcon className="w-4 h-4" />}
                       {promovendoAgora ? t("promovendo") : t("confirmarPromocao")}
                     </button>
@@ -345,28 +341,26 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
 
           {/* Tab: Turmas */}
           {tab === "turmas" && (
-            <div className="glass-card">
+            <div className="surface p-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-bold text-base tracking-tight flex items-center gap-1.5">
                   <CalendarIcon className="w-4 h-4 text-[var(--gold)]" /> {t("minhasTurmas")}
                 </h3>
-                <span className="tag-premium">{turmas.length} {t("turmasCount")}</span>
+                <span className="text-[10px] font-semibold text-[var(--text-secondary)] bg-[var(--surface)] border border-[var(--border)] px-2.5 py-1 rounded-lg">{turmas.length} {t("turmasCount")}</span>
               </div>
               {turmas.length === 0 ? (
-                <div className="empty-premium">
-                  <div className="empty-premium-icon">
-                    <CalendarIcon className="w-6 h-6 text-[var(--gold)]" />
-                  </div>
-                  <div className="empty-premium-title">{t("nenhumaTurma")}</div>
-                  <div className="empty-premium-desc">{t("descEmptyTurmas")}</div>
+                <div className="text-center py-10">
+                  <CalendarIcon className="w-6 h-6 mb-2 mx-auto text-[var(--gold)]" />
+                  <div className="text-sm font-semibold">{t("nenhumaTurma")}</div>
+                  <div className="text-xs text-[var(--text-secondary)] mt-1">{t("descEmptyTurmas")}</div>
                 </div>
               ) : (
                 <div className="space-y-2">
                   {turmas.map((t) => (
-                    <div key={t.id} className="glass-card compact flex items-center justify-between">
+                    <div key={t.id} className="surface p-4 flex items-center justify-between">
                       <div>
                         <h4 className="font-bold text-base">{t.nome}</h4>
-                        <div className="flex items-center gap-3 text-sm text-[var(--white-muted)] mt-0.5">
+                        <div className="flex items-center gap-3 text-sm text-[var(--text-secondary)] mt-0.5">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3.5 h-3.5" /> {t.horario}
                           </span>
@@ -376,10 +370,10 @@ export function ProfessorDashboardClient({ professor, alunos, turmas, presencasH
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="progress-gold w-20">
-                          <div className="progress-gold-fill" style={{ width: `${(t.totalAlunos / t.maxAlunos) * 100}%` }} />
+                        <div className="progress w-20">
+                          <div className="progress-fill-gold" style={{ width: `${(t.totalAlunos / t.maxAlunos) * 100}%` }} />
                         </div>
-                        <span className="text-xs font-semibold text-[var(--white-muted)]">{t.totalAlunos}/{t.maxAlunos}</span>
+                        <span className="text-xs font-semibold text-[var(--text-secondary)]">{t.totalAlunos}/{t.maxAlunos}</span>
                       </div>
                     </div>
                   ))}

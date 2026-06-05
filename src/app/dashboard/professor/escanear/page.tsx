@@ -51,29 +51,29 @@ export default function EscanearPage() {
 
   return (
     <DashboardShell role="professor">
-      <div className="space-y-4">
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 text-center">
+      <div className="max-w-5xl mx-auto space-y-4">
+        <div className="text-center py-4">
           <div className="text-3xl mb-2">📷</div>
           <h3 className="font-bold text-lg">{t("title")}</h3>
-          <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
         <CameraScanner onScan={handleScan} onError={(e) => { setStatus("error"); setMsg(e) }} />
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[var(--dark-border)]" />
+            <div className="w-full border-t border-[var(--border)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[var(--dark-bg)] px-3 text-[var(--white-muted)]">{t("ouCole")}</span>
+            <span className="bg-[var(--bg)] px-3 text-[var(--text-secondary)]">{t("ouCole")}</span>
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4">
+        <div className="surface p-4">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="input-premium w-full h-24 text-xs font-mono"
+            className="input w-full h-24 text-xs font-mono"
             placeholder={t("placeholder")}
           />
 
@@ -83,7 +83,7 @@ export default function EscanearPage() {
             className={`w-full mt-3 py-3 rounded-xl font-bold text-sm transition-all ${
               status === "ok" ? "bg-emerald-600 text-white"
               : status === "error" ? "bg-red-600 text-white"
-              : "btn-gold"
+              : "btn btn-primary"
             }`}
           >
             {status === "loading" ? t("confirmando") : status === "ok" ? msg : status === "error" ? msg : t("confirmar")}
@@ -94,13 +94,13 @@ export default function EscanearPage() {
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-center animate-scale-in">
             <div className="text-2xl mb-1">✅</div>
             <p className="font-bold text-emerald-500">{t("presencaConfirmada")}</p>
-            {alunoNome && <p className="text-xs text-[var(--white-muted)] mt-1">{alunoNome} · {horario}</p>}
+            {alunoNome && <p className="text-xs text-[var(--text-secondary)] mt-1">{alunoNome} · {horario}</p>}
           </div>
         )}
 
-        <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-5">
+        <div className="surface p-5">
           <h4 className="font-bold text-sm mb-2">{t("comoFunciona")}</h4>
-          <ol className="text-xs text-[var(--white-muted)] space-y-2 list-decimal list-inside">
+          <ol className="text-xs text-[var(--text-secondary)] space-y-2 list-decimal list-inside">
             <li>{t("passo1")}</li>
             <li>{t("passo2")}</li>
             <li>{t("passo3")}</li>

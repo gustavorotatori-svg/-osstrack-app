@@ -83,9 +83,8 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
 
         {/* Rows */}
         {HOURS.map((hour) => (
-          <>
+          <div key={hour} className="contents">
             <div
-              key={`t-${hour}`}
               className="h-14 flex items-center justify-center text-[10px] text-[var(--white-muted)] font-mono bg-[var(--dark-card)] border-b border-r border-[var(--dark-border)] sticky left-0 z-10"
             >
               {hour}
@@ -138,7 +137,7 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
                 </div>
               )
             })}
-          </>
+          </div>
         ))}
       </div>
     </div>
