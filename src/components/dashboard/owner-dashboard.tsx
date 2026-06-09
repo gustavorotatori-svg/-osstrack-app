@@ -91,18 +91,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
       <PageTransition>
         <div className="max-w-6xl mx-auto space-y-6">
 
-          {/* Tech Hero */}
-          <div className="relative overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[rgba(201,168,76,0.08)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-6">
-            <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
+          {/* Hero */}
+          <div className="hero">
             <div className="relative z-10 flex items-start justify-between">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Crown className="w-5 h-5 text-[var(--gold)]" />
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">{role === "dono" ? "Dono" : "Professor"}</span>
-                </div>
-                <h1 className="text-2xl font-black tracking-tight">{academia.nome}</h1>
-                <p className="text-xs text-[var(--text-secondary)] mt-1">{academia.responsavel}</p>
+                <div className="label text-[var(--gold)] mb-1">{role === "dono" ? "DONO" : "PROFESSOR"}</div>
+                <h1 className="hero-title">{academia.nome}</h1>
+                <p className="hero-sub">{academia.responsavel}</p>
               </div>
               <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
                 <TrendingUp className="w-3.5 h-3.5" />
@@ -128,39 +123,39 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
             })}
           </div>
 
-          {/* Tech Stat Cards */}
+          {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="tech-stat">
+            <div className="stat-block">
               <div className="flex items-center justify-between mb-2">
-                <Users className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <Users className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
                 <span className="live-dot" />
               </div>
-              <div className="tech-stat-value"><AnimatedCounter value={stats.totalAlunos} /></div>
-              <div className="tech-stat-label">{t("alunos")}</div>
+              <div className="stat-block-value"><AnimatedCounter value={stats.totalAlunos} /></div>
+              <div className="stat-block-label">{t("alunos")}</div>
             </div>
-            <div className="tech-stat">
+            <div className="stat-block">
               <div className="flex items-center justify-between mb-2">
-                <GraduationCap className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <GraduationCap className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
                 <span className="live-dot" />
               </div>
-              <div className="tech-stat-value"><AnimatedCounter value={stats.totalProfessores} /></div>
-              <div className="tech-stat-label">{t("professores")}</div>
+              <div className="stat-block-value"><AnimatedCounter value={stats.totalProfessores} /></div>
+              <div className="stat-block-label">{t("professores")}</div>
             </div>
-            <div className="tech-stat">
+            <div className="stat-block">
               <div className="flex items-center justify-between mb-2">
-                <BarChart3 className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <BarChart3 className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
                 <span className="live-dot" />
               </div>
-              <div className="tech-stat-value"><AnimatedCounter value={stats.totalPresencas} /></div>
-              <div className="tech-stat-label">{t("presencas")}</div>
+              <div className="stat-block-value"><AnimatedCounter value={stats.totalPresencas} /></div>
+              <div className="stat-block-label">{t("presencas")}</div>
             </div>
-            <div className="tech-stat">
+            <div className="stat-block">
               <div className="flex items-center justify-between mb-2">
-                <Calendar className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <Calendar className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
                 <span className={`w-1.5 h-1.5 rounded-full ${presencasPorMes > 0 ? "bg-emerald-500" : "bg-gray-500"} inline-block`} />
               </div>
-              <div className="tech-stat-value"><AnimatedCounter value={presencasPorMes} /></div>
-              <div className="tech-stat-label">{t("esteMes")}</div>
+              <div className="stat-block-value"><AnimatedCounter value={presencasPorMes} /></div>
+              <div className="stat-block-label">{t("esteMes")}</div>
             </div>
           </div>
 
@@ -172,10 +167,10 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* Monthly chart */}
-          <div className="tech-card p-5">
+          <div className="card p-5">
             <div className="flex items-center justify-between mb-4">
               <div className="section-header mb-0">{t("presencasPorMes")}</div>
-              <span className="text-[10px] text-[var(--text-muted)]">Últimos 6 meses</span>
+              <span className="label">Últimos 6 meses</span>
             </div>
             <div className="flex items-end gap-2 h-24">
               {presencasMensais.map((p, i) => {
@@ -219,7 +214,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
             <div className="space-y-3">
               <MestreDoMesCard />
 
-              <div className="tech-card p-5">
+              <div className="card p-5">
                 <div className="section-header">{t("alunosPorCategoria")}</div>
                 {alunosPorCategoria.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">{t("nenhumAluno")}</p>
@@ -241,7 +236,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 )}
               </div>
 
-              <div className="tech-card p-5">
+              <div className="card p-5">
                 <div className="section-header">{t("alunosPorFaixa")}</div>
                 {alunos.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-6">{t("nenhumAluno")}</p>
@@ -265,7 +260,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 )}
               </div>
 
-              <div className="tech-card p-5">
+              <div className="card p-5">
                 <div className="section-header">{t("presencasRecentes")}</div>
                 {presencas.length === 0 ? (
                   <div className="text-center py-8">
@@ -295,7 +290,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Alunos */}
           {tab === "alunos" && (
-            <div className="tech-card p-5">
+            <div className="card p-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="section-header mb-0">{t("todosAlunos")}</div>
                 <span className="badge">{alunos.length} {t("total")}</span>
@@ -325,7 +320,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Graduações */}
           {tab === "graduacoes" && (
-            <div className="tech-card p-5">
+            <div className="card p-5">
               <div className="section-header">{t("regrasGraduacao")}</div>
               {graduacoes.length === 0 ? (
                 <div className="text-center py-8">
@@ -353,7 +348,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           {/* Tab: Prospectos */}
           {tab === "prospectos" && (
             <div className="space-y-3">
-              <div className="tech-card p-5">
+              <div className="card p-5">
                 <div className="section-header">Funil de Prospecção</div>
                 {!prospectStats ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
@@ -402,7 +397,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               </div>
 
               {prospectStats && prospectStats.ultimos.length > 0 && (
-                <div className="tech-card p-5">
+                <div className="card p-5">
                   <div className="section-header">Últimos Convites</div>
                   <div className="space-y-1">
                     {prospectStats.ultimos.map((c) => (
@@ -429,7 +424,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           {/* Tab: Ranking */}
           {tab === "ranking" && (
             <div className="space-y-3">
-              <div className="tech-card p-5">
+              <div className="card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="section-header mb-0">{t("configRanking")}</div>
                 </div>
