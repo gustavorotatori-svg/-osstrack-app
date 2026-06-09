@@ -24,7 +24,6 @@ export default function Cadastro() {
     academiaEndereco: "",
     academiaCidade: "",
     academiaRaio: 200,
-    academiaModalidades: [] as string[],
     academiaId: "",
     professorId: "",
     codigoConvite: "",
@@ -54,15 +53,6 @@ export default function Cadastro() {
 
   function update(key: string, value: string | number | string[]) {
     setForm((prev) => ({ ...prev, [key]: value }))
-  }
-
-  function toggleModalidade(mod: string) {
-    setForm((prev) => ({
-      ...prev,
-      academiaModalidades: prev.academiaModalidades.includes(mod)
-        ? prev.academiaModalidades.filter((m) => m !== mod)
-        : [...prev.academiaModalidades, mod],
-    }))
   }
 
   async function buscarAcademias(q: string) {
@@ -144,7 +134,7 @@ export default function Cadastro() {
           endereco: form.academiaEndereco,
           cidade: form.academiaCidade,
           raio: form.academiaRaio,
-          modalidades: form.academiaModalidades,
+          modalidades: ["Jiu-Jitsu"],
         }
       } else {
         body.academiaId = form.academiaId || undefined
@@ -183,7 +173,7 @@ export default function Cadastro() {
     }
   }
 
-  const modalidades = ["Jiu-Jitsu", "Karatê", "Judô", "Muay Thai", "Boxe", "Capoeira", "Taekwondo", "Kung Fu", "MMA", "Outra"]
+  const modalidades = ["Jiu-Jitsu"]
   const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 
   function renderStep() {
@@ -233,17 +223,7 @@ export default function Cadastro() {
             <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
             <input type="text" className="input" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
           </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.modalidadesLabel")}</label>
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              {modalidades.map((mod) => (
-                <label key={mod} className="flex items-center gap-2 surface px-3 py-2 text-xs cursor-pointer hover:opacity-80 transition-all">
-                  <input type="checkbox" className="accent-[var(--gold)]" checked={form.academiaModalidades.includes(mod)} onChange={() => toggleModalidade(mod)} />
-                  {mod}
-                </label>
-              ))}
-            </div>
-          </div>
+
           <div>
             <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.raioLabel")}</label>
             <input type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
