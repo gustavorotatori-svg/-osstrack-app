@@ -9,3 +9,12 @@ node_modules/
 Thumbs.db
 
 .vercel
+temp/
+test-results/
+*.tsbuildinfo
+*.ps1
+*.txt
+screenshot-*
+vercel-*
+*.png
+cookie*

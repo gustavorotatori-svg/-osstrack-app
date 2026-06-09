@@ -1,6 +1,12 @@
+import type { Metadata } from "next"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/landing/footer"
 import { LockIcon } from "@/components/ui/icons"
+
+export const metadata: Metadata = {
+  title: "Política de Privacidade — OssTrack",
+  description: "Saiba como o OssTrack protege seus dados em conformidade com a LGPD. Política de privacidade, cookies, segurança e direitos do usuário.",
+}
 
 const sections = [
   {

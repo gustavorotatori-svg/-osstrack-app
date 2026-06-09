@@ -1,17 +1,18 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Crown, TrendingUp, HelpCircle, Target, UserPlus } from "lucide-react"
+import { Crown, TrendingUp, HelpCircle, Target, ArrowUpRight, BarChart3, Users, GraduationCap, Calendar, Settings, Wallet, FileText } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { ConviteSection } from "@/components/convites/convite-section"
 import { MestreDoMesCard } from "@/components/gamification/mestre-do-mes-card"
-import { UsersIcon, GraduationIcon, CheckIcon, ChartIcon, AwardIcon, ClipboardIcon, DumbbellIcon } from "@/components/ui/icons"
+import { UsersIcon, GraduationIcon, AwardIcon, ClipboardIcon, CalendarIcon } from "@/components/ui/icons"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
+import { useRouter } from "next/navigation"
 
 type Props = {
   academia: { nome: string; responsavel: string; rankingVisivel: boolean }
@@ -23,13 +24,18 @@ type Props = {
   graduacoes: { faixa: string; graus: number; aulasPorGrau: number; aulasProxFx: number | null }[]
 }
 
-const beltColors: Record<string, string> = {
-  Branca: "bg-[#e5e5e5] text-black", Azul: "bg-blue-700 text-white", Roxa: "bg-purple-700 text-white",
-  Marrom: "bg-amber-800 text-white", Preta: "bg-gray-900 text-[var(--gold)]",
-}
+const quickActions = [
+  { label: "Turmas", icon: CalendarIcon, href: "/dashboard/dono/turmas", color: "from-blue-600/20 to-blue-600/5", border: "border-blue-500/20" },
+  { label: "Alunos", icon: UsersIcon, href: "/dashboard/dono/alunos", color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20" },
+  { label: "Financeiro", icon: Wallet, href: "/dashboard/dono/financeiro", color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
+  { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios", color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
+  { label: "Agenda", icon: Calendar, href: "/dashboard/dono/agenda", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
+  { label: "Config", icon: Settings, href: "/dashboard/dono/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
+]
 
 export function OwnerDashboardClient({ academia, stats, presencasMensais, alunosPorCategoria, alunos, presencas, graduacoes }: Props) {
   const t = useT("dono.dashboard")
+  const router = useRouter()
   const [tab, setTab] = useState<"geral" | "alunos" | "graduacoes" | "ranking" | "prospectos">("geral")
   const [prospectStats, setProspectStats] = useState<{ stats: { total: number; usados: number; pendentes: number; expirados: number; conversao: number }; porTipo: { tipo: string; total: number }[]; ultimos: { id: string; tipo: string; codigo: string; usado: boolean; createdAt: string; expiresAt: string | null }[] } | null>(null)
 
@@ -64,55 +70,117 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
 
   const maxPresencasMes = Math.max(...presencasMensais.map((p) => p.total), 1)
 
+  // Month-over-month growth
+  const mesAtual = presencasMensais[presencasMensais.length - 1]?.total || 0
+  const mesAnterior = presencasMensais[presencasMensais.length - 2]?.total || 0
+  const growth = mesAnterior > 0 ? Math.round(((mesAtual - mesAnterior) / mesAnterior) * 100) : 0
+
   return (
     <DashboardShell role="dono">
       <PageTransition>
-        <div className="max-w-5xl mx-auto space-y-4">
+        <div className="max-w-6xl mx-auto space-y-6">
 
-          {/* Hero */}
-          <div className="text-center py-4">
-            <h1 className="text-2xl font-extrabold tracking-tight">{academia.nome}</h1>
-            <p className="text-xs text-[var(--text-secondary)] mt-1">{academia.responsavel}</p>
+          {/* Tech Hero */}
+          <div className="relative overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[rgba(201,168,76,0.08)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-6">
+            <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
+            <div className="relative z-10 flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Crown className="w-5 h-5 text-[var(--gold)]" />
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Dono</span>
+                </div>
+                <h1 className="text-2xl font-black tracking-tight">{academia.nome}</h1>
+                <p className="text-xs text-[var(--text-secondary)] mt-1">{academia.responsavel}</p>
+              </div>
+              <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
+                <span className="text-emerald-400/60">vs mês anterior</span>
+              </div>
+            </div>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-4 py-2">
-            <div className="stat">
-              <div className="stat-value"><AnimatedCounter value={stats.totalAlunos} /></div>
-              <div className="stat-label">{t("alunos")}</div>
+          {/* Quick Actions */}
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {quickActions.map((action) => {
+              const Icon = action.icon
+              return (
+                <button key={action.label} onClick={() => router.push(action.href)}
+                  className={`relative overflow-hidden rounded-xl border ${action.border} p-3 text-center transition-all hover:scale-[1.02] active:scale-95 group`}
+                  style={{ background: `linear-gradient(135deg, ${action.color.split(" ")[0].replace("from-", "")}, ${action.color.split(" ")[1].replace("to-", "")})` }}>
+                  <Icon className="w-5 h-5 mx-auto mb-1.5 text-[var(--text-secondary)] group-hover:text-white transition-colors" />
+                  <span className="text-[10px] font-semibold text-[var(--text-secondary)] group-hover:text-white transition-colors">{action.label}</span>
+                  <ArrowUpRight className="w-3 h-3 absolute top-1.5 right-1.5 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-all" />
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Tech Stat Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="tech-stat">
+              <div className="flex items-center justify-between mb-2">
+                <Users className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <span className="live-dot" />
+              </div>
+              <div className="tech-stat-value"><AnimatedCounter value={stats.totalAlunos} /></div>
+              <div className="tech-stat-label">{t("alunos")}</div>
             </div>
-            <div className="stat">
-              <div className="stat-value"><AnimatedCounter value={stats.totalProfessores} /></div>
-              <div className="stat-label">{t("professores")}</div>
+            <div className="tech-stat">
+              <div className="flex items-center justify-between mb-2">
+                <GraduationCap className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <span className="live-dot" />
+              </div>
+              <div className="tech-stat-value"><AnimatedCounter value={stats.totalProfessores} /></div>
+              <div className="tech-stat-label">{t("professores")}</div>
             </div>
-            <div className="stat">
-              <div className="stat-value"><AnimatedCounter value={stats.totalPresencas} /></div>
-              <div className="stat-label">{t("presencas")}</div>
+            <div className="tech-stat">
+              <div className="flex items-center justify-between mb-2">
+                <BarChart3 className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <span className="live-dot" />
+              </div>
+              <div className="tech-stat-value"><AnimatedCounter value={stats.totalPresencas} /></div>
+              <div className="tech-stat-label">{t("presencas")}</div>
             </div>
-            <div className="stat">
-              <div className="stat-value"><AnimatedCounter value={presencasPorMes} /></div>
-              <div className="stat-label">{t("esteMes")}</div>
+            <div className="tech-stat">
+              <div className="flex items-center justify-between mb-2">
+                <Calendar className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
+                <span className={`w-1.5 h-1.5 rounded-full ${presencasPorMes > 0 ? "bg-emerald-500" : "bg-gray-500"} inline-block`} />
+              </div>
+              <div className="tech-stat-value"><AnimatedCounter value={presencasPorMes} /></div>
+              <div className="tech-stat-label">{t("esteMes")}</div>
             </div>
+          </div>
+
+          {/* Growth metric mobile */}
+          <div className="flex sm:hidden items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-2 justify-center">
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
+            <span className="text-emerald-400/60">crescimento vs mês anterior</span>
           </div>
 
           {/* Monthly chart */}
-          <div className="surface p-5">
-            <div className="section-header">{t("presencasPorMes")}</div>
-            <div className="flex items-end gap-2 h-20">
-              {presencasMensais.map((p) => (
-                <div key={p.mes} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full rounded-t-lg transition-all"
-                    style={{
-                      height: `${Math.max(4, (p.total / maxPresencasMes) * 64)}px`,
-                      background: `var(--red)`,
-                      opacity: p.total > 0 ? 0.7 : 0.15,
-                    }}
-                  />
-                  <span className="text-[8px] text-[var(--text-muted)]">{p.mes}</span>
-                  <span className="text-[9px] font-bold text-[var(--text)]">{p.total}</span>
-                </div>
-              ))}
+          <div className="tech-card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="section-header mb-0">{t("presencasPorMes")}</div>
+              <span className="text-[10px] text-[var(--text-muted)]">Últimos 6 meses</span>
+            </div>
+            <div className="flex items-end gap-2 h-24">
+              {presencasMensais.map((p, i) => {
+                const height = Math.max(4, (p.total / maxPresencasMes) * 80)
+                const isCurrent = i === presencasMensais.length - 1
+                return (
+                  <div key={p.mes} className="flex-1 flex flex-col items-center gap-1">
+                    <span className="text-[9px] font-bold text-[var(--text)]">{p.total}</span>
+                    <div
+                      className={`w-full rounded-t-lg transition-all duration-500 relative overflow-hidden ${isCurrent ? "tech-glow" : ""}`}
+                      style={{ height: `${height}px`, background: isCurrent ? "linear-gradient(180deg, var(--gold) 0%, rgba(201,168,76,0.4) 100%)" : "rgba(255,255,255,0.08)" }}
+                    />
+                    <span className="text-[8px] text-[var(--text-muted)]">{p.mes}</span>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
@@ -140,7 +208,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
             <div className="space-y-3">
               <MestreDoMesCard />
 
-              <div className="surface p-5">
+              <div className="tech-card p-5">
                 <div className="section-header">{t("alunosPorCategoria")}</div>
                 {alunosPorCategoria.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">{t("nenhumAluno")}</p>
@@ -162,7 +230,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                 )}
               </div>
 
-              <div className="surface p-5">
+              <div className="tech-card p-5">
                 <div className="section-header">{t("alunosPorFaixa")}</div>
                 {alunos.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-6">{t("nenhumAluno")}</p>
@@ -186,7 +254,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                 )}
               </div>
 
-              <div className="surface p-5">
+              <div className="tech-card p-5">
                 <div className="section-header">{t("presencasRecentes")}</div>
                 {presencas.length === 0 ? (
                   <div className="text-center py-8">
@@ -196,7 +264,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
                 ) : (
                   <div className="space-y-0.5">
                     {presencas.slice(0, 10).map((p) => (
-                      <div key={p.id} className="flex items-center gap-3 py-2.5">
+                      <div key={p.id} className="flex items-center gap-3 py-2.5 border-b border-[rgba(255,255,255,0.03)] last:border-0">
                         <div className="flex-1 min-w-0">
                           <div className="text-base font-semibold truncate">{p.aluno}</div>
                           <div className="text-sm text-[var(--text-secondary)]">{new Date(p.data).toLocaleDateString("pt-BR")} às {p.horario}</div>
@@ -216,7 +284,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
 
           {/* Tab: Alunos */}
           {tab === "alunos" && (
-            <div className="surface p-5">
+            <div className="tech-card p-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="section-header mb-0">{t("todosAlunos")}</div>
                 <span className="badge">{alunos.length} {t("total")}</span>
@@ -246,7 +314,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
 
           {/* Tab: Graduações */}
           {tab === "graduacoes" && (
-            <div className="surface p-5">
+            <div className="tech-card p-5">
               <div className="section-header">{t("regrasGraduacao")}</div>
               {graduacoes.length === 0 ? (
                 <div className="text-center py-8">
@@ -274,7 +342,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
           {/* Tab: Prospectos */}
           {tab === "prospectos" && (
             <div className="space-y-3">
-              <div className="surface p-5">
+              <div className="tech-card p-5">
                 <div className="section-header">Funil de Prospecção</div>
                 {!prospectStats ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
@@ -323,7 +391,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
               </div>
 
               {prospectStats && prospectStats.ultimos.length > 0 && (
-                <div className="surface p-5">
+                <div className="tech-card p-5">
                   <div className="section-header">Últimos Convites</div>
                   <div className="space-y-1">
                     {prospectStats.ultimos.map((c) => (
@@ -350,7 +418,7 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
           {/* Tab: Ranking */}
           {tab === "ranking" && (
             <div className="space-y-3">
-              <div className="surface p-5">
+              <div className="tech-card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="section-header mb-0">{t("configRanking")}</div>
                 </div>
@@ -376,8 +444,12 @@ export function OwnerDashboardClient({ academia, stats, presencasMensais, alunos
           )}
 
           {/* Convites */}
-          <ConviteSection tipo="professor" />
-          <ConviteSection tipo="aluno" />
+          {tab !== "prospectos" && (
+            <>
+              <ConviteSection tipo="professor" />
+              <ConviteSection tipo="aluno" />
+            </>
+          )}
         </div>
       </PageTransition>
     </DashboardShell>

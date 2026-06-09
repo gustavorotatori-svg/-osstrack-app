@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
   const { id } = await params
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "dono" || !session.user.academiaId) {
@@ -32,9 +34,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   })
 
   return NextResponse.json(updated)
+  } catch (error) {
+    return handleApiError(error)
+  }
 }
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
   const { id } = await params
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "dono" || !session.user.academiaId) {
@@ -50,4 +56,8 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
   await prisma.planoMensalidade.delete({ where: { id } })
   return NextResponse.json({ ok: true })
+  } catch (error) {
+    return handleApiError(error)
+  }
+
 }

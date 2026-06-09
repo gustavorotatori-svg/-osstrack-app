@@ -26,15 +26,15 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight group">
-          <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+      <div className="max-w-6xl mx-auto flex items-center">
+        <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight group w-32">
+          <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shrink-0">
             <DumbbellIcon className="w-4 h-4 text-black" />
           </span>
-          <span className="hidden sm:inline">OssTrack</span>
+          <span className="hidden sm:inline truncate">OssTrack</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
           {[
             { href: "/#recursos", label: t("recursos") },
             { href: "/#funciona", label: t("comoFunciona") },
@@ -48,14 +48,39 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
+          {session ? (
+            <Link
+              href={`/dashboard/${session.user.role}`}
+              className="btn-gold px-4 py-1.5 text-sm ml-2"
+            >
+              {t("dashboard")}
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2 ml-2">
+              <Link
+                href="/login"
+                className="px-3.5 py-1.5 rounded-xl font-semibold text-sm text-[var(--white-muted)] hover:text-white transition-colors"
+              >
+                {t("entrar")}
+              </Link>
+              <Link href="/cadastro" className="btn-gold px-4 py-1.5 text-sm">
+                {t("cadastro")}
+              </Link>
+            </div>
+          )}
+          <div className="ml-3">
+            <LocaleSwitcher />
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="hidden md:block w-32" />
+
+        <div className="flex items-center md:hidden gap-2">
           <LocaleSwitcher />
           {session ? (
             <Link
               href={`/dashboard/${session.user.role}`}
-              className="btn-gold px-5 py-2 text-sm"
+              className="btn-gold px-4 py-1.5 text-sm"
             >
               {t("dashboard")}
             </Link>
@@ -63,11 +88,11 @@ export function Navbar() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 rounded-xl font-semibold text-sm text-[var(--white-muted)] hover:text-white transition-colors"
+                className="px-3.5 py-1.5 rounded-xl font-semibold text-sm text-[var(--white-muted)] hover:text-white transition-colors"
               >
                 {t("entrar")}
               </Link>
-              <Link href="/cadastro" className="btn-gold px-5 py-2 text-sm">
+              <Link href="/cadastro" className="btn-gold px-4 py-1.5 text-sm">
                 {t("cadastro")}
               </Link>
             </>

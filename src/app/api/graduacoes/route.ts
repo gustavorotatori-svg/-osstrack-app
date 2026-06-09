@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function GET() {
+  try {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
@@ -13,9 +15,13 @@ export async function GET() {
   })
 
   return NextResponse.json(graduacoes)
+  } catch (error) {
+    return handleApiError(error)
+  }
 }
 
 export async function POST(request: Request) {
+  try {
   const session = await getServerSession(authOptions)
   if (!session || !["dono", "professor"].includes(session.user.role)) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -43,9 +49,13 @@ export async function POST(request: Request) {
   })
 
   return NextResponse.json(graduacao, { status: 201 })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }
 
 export async function PUT(request: Request) {
+  try {
   const session = await getServerSession(authOptions)
   if (!session || !["dono", "professor"].includes(session.user.role)) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -70,4 +80,7 @@ export async function PUT(request: Request) {
   })
 
   return NextResponse.json(graduacao)
+  } catch (error) {
+    return handleApiError(error)
+  }
 }

@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "entrar": "Entrar",
+    "cadastro": "Começar Grátis",
+    "dashboard": "Dashboard",
+    "recursos": "Recursos",
+    "comoFunciona": "Como Funciona",
+    "planos": "Planos"
+  },
+  "hero": {
+    "titulo1": "Sua jornada no",
+    "titulo2": "começa aqui.",
+    "cta": "Começar Grátis",
+    "login": "Fazer Login",
+    "badge": "O diário de bordo do Jiu-Jitsu",
+    "statsAcademias": "Academias",
+    "statsAlunos": "Alunos ativos",
+    "statsRetencao": "Retenção"
+  },
+  "frases": [
+    "Toda faixa preta foi uma faixa branca que nunca desistiu.",
+    "Academia e professor: R$0. Aluno premium: R$4,90.",
+    "Cada check-in é um capítulo da sua história no tatame.",
+    "A evolução não é linear — no OssTrack ela é visível.",
+    "O melhor de você aparece quando ninguém está olhando."
+  ],
+  "features": {
+    "titulo": "Tudo que sua academia precisa",
+    "subtitulo": "Uma plataforma completa pra transformar frequência em evolução.",
+    "checkin": "Check-in Inteligente",
+    "checkinDesc": "QR code com geolocalização. Seu aluno registra presença em segundos.",
+    "evolucao": "Evolução Visual",
+    "evolucaoDesc": "Cada aula conta. Cada grau importa. A progressão fica clara pra todos.",
+    "gamificacao": "Gamificação",
+    "gamificacaoDesc": "Streaks, conquistas e ranking. Transforme disciplina em jogo.",
+    "metas": "Metas e Missões",
+    "metasDesc": "Metas semanais e missões diárias para manter a disciplina e o foco nos treinos.",
+    "whatsapp": "WhatsApp Integrado",
+    "whatsappDesc": "Notificações e cobranças pelo WhatsApp. Sem app adicional.",
+    "graduacao": "Regras de Graduação",
+    "graduacaoDesc": "Configure critérios objetivos de faixa. Promova com justiça."
+  },
+  "comoFunciona": {
+    "titulo": "Como Funciona",
+    "subtitulo": "Em 3 passos sua academia está no ar.",
+    "passo1": "Crie sua academia",
+    "passo1Desc": "Cadastre sua academia, defina as regras de graduação e pronto.",
+    "passo2": "Adicione alunos e professores",
+    "passo2Desc": "Cada um tem seu perfil, faixa e histórico. Tudo sincronizado.",
+    "passo3": "Acompanhe a evolução",
+    "passo3Desc": "Check-ins, streaks, conquistas. Dados que motivam."
+  },
+  "planos": {
+    "titulo": "Planos",
+    "subtitulo": "Academia e professor: R$0. Sempre. Só o aluno premium paga.",
+    "gratis": "Free",
+    "gratisPreco": "R$ 0",
+    "gratisDesc": "Para alunos que querem começar",
+    "gratisFeatures": ["Check-in por QR code", "Histórico de presenças", "Streaks básico", "Ranking da academia"],
+    "premium": "Premium",
+    "premiumPreco": "R$ 4,90",
+    "premiumPeriodo": "/mês",
+    "premiumDesc": "Para alunos que querem evoluir de verdade",
+    "premiumFeatures": ["Tudo do Free", "Gráficos de evolução", "Conquistas exclusivas", "Mestre do Mês", "Comparação com colegas", "Suporte prioritário"],
+    "academia": "Academia",
+    "academiaPreco": "R$ 0",
+    "academiaDesc": "Gestão completa da sua academia",
+    "academiaFeatures": ["Dashboard completo", "Cadastro de alunos ilimitado", "Múltiplos professores", "Regras de graduação", "Relatórios de presença", "Integração WhatsApp", "QR code para check-in"],
+    "maisPopulares": "Mais popular"
+  },
+  "testimonials": {
+    "titulo": "O que dizem os mestres"
+  },
+  "footer": {
+    "direitos": "Todos os direitos reservados.",
+    "termos": "Termos de Uso",
+    "privacidade": "Política de Privacidade",
+    "suporte": "Suporte",
+    "ajuda": "Ajuda / FAQ",
+    "faleConosco": "Fale Conosco",
+    "redesSociais": "Redes Sociais",
+    "plataforma": "Plataforma",
+    "legal": "Legal"
+  },
+  "dashboard": {
+    "inicio": "Início",
+    "checkin": "Check-in",
+    "treino": "Treino",
+    "evolucao": "Evolução",
+    "mural": "Mural",
+    "ranking": "Ranking",
+    "agenda": "Agenda",
+
+    "presencas": "Presenças",
+    "alunos": "Alunos",
+    "turmas": "Turmas",
+    "graduacoes": "Graduações",
+    "relatorios": "Relatórios",
+    "config": "Config",
+    "sair": "Sair",
+    "notificacoes": "Notificações",
+    "conquistas": "Conquistas",
+    "premium": "Premium",
+    "perfil": "Perfil",
+    "dono": "Dono",
+    "professor": "Professor",
+    "aluno": "Aluno"
+  }
+}
+

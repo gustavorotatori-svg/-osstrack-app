@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 const onboardingTemplate = [
   { dia: 1, titulo: "Primeiro Check-in", descricao: "Faça seu primeiro check-in na academia", icone: "📍" },
@@ -220,75 +221,84 @@ async function autoCompleteMissoes(alunoId: string) {
 }
 
 export async function GET() {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-  let missoes = await prisma.missaoDiaria.findMany({
-    where: { alunoId: session.user.id },
-    orderBy: [{ tipo: "asc" }, { dia: "asc" }],
-  })
-
-  if (missoes.length === 0) {
-    await prisma.missaoDiaria.createMany({
-      data: onboardingTemplate.map((m) => ({
-        alunoId: session.user.id,
-        dia: m.dia,
-        titulo: m.titulo,
-        descricao: m.descricao,
-        icone: m.icone,
-        tipo: "onboarding",
-      })),
+    let missoes = await prisma.missaoDiaria.findMany({
+      where: { alunoId: session.user.id },
+      orderBy: [{ tipo: "asc" }, { dia: "asc" }],
     })
+
+    if (missoes.length === 0) {
+      await prisma.missaoDiaria.createMany({
+        data: onboardingTemplate.map((m) => ({
+          alunoId: session.user.id,
+          dia: m.dia,
+          titulo: m.titulo,
+          descricao: m.descricao,
+          icone: m.icone,
+          tipo: "onboarding",
+        })),
+      })
+    }
+
+    await ensureCyclicMissions(session.user.id)
+
+    missoes = await autoCompleteMissoes(session.user.id)
+
+    const pontos = await prisma.usuario.findUnique({
+      where: { id: session.user.id },
+      select: { pontos: true },
+    })
+
+    return NextResponse.json({
+      missoes,
+      pontos: pontos?.pontos || 0,
+    })
+  } catch (error) {
+    return handleApiError(error)
   }
-
-  await ensureCyclicMissions(session.user.id)
-
-  missoes = await autoCompleteMissoes(session.user.id)
-
-  const pontos = await prisma.usuario.findUnique({
-    where: { id: session.user.id },
-    select: { pontos: true },
-  })
-
-  return NextResponse.json({
-    missoes,
-    pontos: pontos?.pontos || 0,
-  })
 }
 
 export async function PATCH(request: Request) {
-  const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-  const { id } = await request.json()
+    const { id } = await request.json()
 
-  const missao = await prisma.missaoDiaria.findFirst({
-    where: { id, alunoId: session.user.id },
-  })
-
-  if (!missao) return NextResponse.json({ error: "Missão não encontrada" }, { status: 404 })
-
-  await prisma.missaoDiaria.update({
-    where: { id },
-    data: { concluida: true },
-  })
-
-  if (missao.pontos > 0) {
-    await prisma.usuario.update({
-      where: { id: session.user.id },
-      data: { pontos: { increment: missao.pontos } },
+    const missao = await prisma.missaoDiaria.findFirst({
+      where: { id, alunoId: session.user.id },
     })
+
+    if (!missao) return NextResponse.json({ error: "Missão não encontrada" }, { status: 404 })
+
+    await prisma.missaoDiaria.update({
+      where: { id },
+      data: { concluida: true },
+    })
+
+    if (missao.pontos > 0) {
+      await prisma.usuario.update({
+        where: { id: session.user.id },
+        data: { pontos: { increment: missao.pontos } },
+      })
+    }
+
+    const missoes = await autoCompleteMissoes(session.user.id)
+
+    const pontos = await prisma.usuario.findUnique({
+      where: { id: session.user.id },
+      select: { pontos: true },
+    })
+
+    return NextResponse.json({
+      missoes,
+      pontos: pontos?.pontos || 0,
+    })
+  } catch (error) {
+    return handleApiError(error)
   }
 
-  const missoes = await autoCompleteMissoes(session.user.id)
-
-  const pontos = await prisma.usuario.findUnique({
-    where: { id: session.user.id },
-    select: { pontos: true },
-  })
-
-  return NextResponse.json({
-    missoes,
-    pontos: pontos?.pontos || 0,
-  })
 }

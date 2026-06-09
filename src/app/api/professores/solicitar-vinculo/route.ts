@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function POST(req: Request) {
+  try {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "professor") {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -41,4 +43,7 @@ export async function POST(req: Request) {
   })
 
   return NextResponse.json({ success: true, message: "Solicitação enviada ao dono da academia!" })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }

@@ -1,8 +1,14 @@
+import type { Metadata } from "next"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/landing/footer"
 import { AjudaClient } from "./client"
 import { enviarContato } from "./actions"
 import { HelpIcon, MailIcon } from "@/components/ui/icons"
+
+export const metadata: Metadata = {
+  title: "Ajuda — OssTrack",
+  description: "Tire suas dúvidas sobre o OssTrack: como funciona o check-in, progressão de faixas, planos e mais. Entre em contato com o suporte.",
+}
 
 const faqItems = [
   {

@@ -2,12 +2,14 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 function limparTelefone(tel: string) {
   return tel.replace(/\D/g, "")
 }
 
 export async function POST(req: Request) {
+  try {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
@@ -41,4 +43,7 @@ export async function POST(req: Request) {
   const link = `https://wa.me/55${telefone}?text=${encodeURIComponent(mensagem)}`
 
   return NextResponse.json({ link, mensagem, telefone })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }

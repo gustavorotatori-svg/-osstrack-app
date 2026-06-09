@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import prisma from "./prisma"
+import type { UserRole } from "./auth-types"
 
 function getSecret(): string {
   if (process.env.NEXTAUTH_SECRET) return process.env.NEXTAUTH_SECRET
@@ -36,7 +37,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           nome: user.nome,
-          role: user.role,
+          role: user.role as UserRole,
           faixa: user.faixa,
           grau: user.grau,
           academiaId: user.academiaId,
@@ -48,7 +49,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        token.role = user.role as UserRole
         token.faixa = user.faixa
         token.grau = user.grau
         token.academiaId = user.academiaId
