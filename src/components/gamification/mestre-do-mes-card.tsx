@@ -1,9 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { usePremium } from "@/lib/use-premium"
 import { useT } from "@/lib/use-t"
-import { CrownIcon, LockIcon } from "@/components/ui/icons"
+import { CrownIcon } from "@/components/ui/icons"
 import { useRouter } from "next/navigation"
 
 type MestreData = {
@@ -17,7 +16,6 @@ type MestreData = {
 
 export function MestreDoMesCard() {
   const t = useT("gamification")
-  const { isPremium, loading: premiumLoading } = usePremium()
   const router = useRouter()
   const [mestre, setMestre] = useState<MestreData>(null)
   const [loading, setLoading] = useState(true)
@@ -29,7 +27,7 @@ export function MestreDoMesCard() {
       .catch(() => setLoading(false))
   }, [])
 
-  if (loading || premiumLoading) return null
+  if (loading) return null
 
   const nomeMes = Array.from({ length: 12 }, (_, i) => t(`mestreDoMes.meses.${i}`))
 
@@ -50,21 +48,12 @@ export function MestreDoMesCard() {
         )}
 
         <div className="mt-4 pt-4 border-t border-[rgba(255,255,255,0.05)]">
-          {isPremium ? (
-            <button
-              onClick={() => router.push("/dashboard/aluno/ranking")}
-              className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline"
-            >
-              Ver ranking completo →
-            </button>
-          ) : (
-            <button
-              onClick={() => router.push("/dashboard/aluno/premium")}
-              className="inline-flex items-center gap-1.5 text-[10px] text-[var(--text-muted)] font-semibold hover:text-[var(--gold)] transition-colors"
-            >
-              <LockIcon className="w-3 h-3" /> Desbloqueie o ranking completo
-            </button>
-          )}
+          <button
+            onClick={() => router.push("/dashboard/aluno/ranking")}
+            className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline"
+          >
+            Ver ranking completo →
+          </button>
         </div>
       </div>
     </div>

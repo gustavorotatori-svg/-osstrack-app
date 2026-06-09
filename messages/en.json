@@ -59,9 +59,11 @@
     "gratisDesc": "For students who want to start",
     "gratisFeatures": [
       "QR code check-in",
-      "Attendance history",
-      "Basic streaks",
-      "Academy ranking"
+      "Daily missions & weekly goal",
+      "Unlimited attendance history",
+      "Academy ranking",
+      "Master of the Month",
+      "Achievements & belt progress"
     ],
     "premium": "Premium",
     "premiumPreco": "$4.90",
@@ -69,10 +71,9 @@
     "premiumDesc": "For students who want to truly evolve",
     "premiumFeatures": [
       "Everything in Free",
-      "Evolution charts",
-      "Exclusive achievements",
-      "Master of the Month",
-      "Compare with peers",
+      "Advanced analytics (charts & heatmap)",
+      "Shareable art cards",
+      "Export journey (PDF)",
       "Priority support"
     ],
     "academia": "Academy",

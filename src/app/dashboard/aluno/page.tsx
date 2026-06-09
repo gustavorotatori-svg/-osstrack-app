@@ -16,7 +16,7 @@ export default async function AlunoDashboard() {
     },
   })
 
-  if (!aluno || !aluno.academiaId) redirect("/login")
+  if (!aluno) redirect("/login")
 
   const totalAulas = await prisma.presenca.count({
     where: { alunoId: aluno.id, status: "confirmed" },
@@ -35,9 +35,11 @@ export default async function AlunoDashboard() {
 
   const todasConquistas = await prisma.conquista.findMany()
 
-  const graduacao = await prisma.graduacao.findFirst({
-    where: { academiaId: aluno.academiaId, categoria: aluno.categoria, faixa: aluno.faixa },
-  })
+  const graduacao = aluno.academiaId
+    ? await prisma.graduacao.findFirst({
+        where: { academiaId: aluno.academiaId, categoria: aluno.categoria, faixa: aluno.faixa },
+      })
+    : null
 
   const streakData = await prisma.streak.findUnique({
     where: { usuarioId: aluno.id },

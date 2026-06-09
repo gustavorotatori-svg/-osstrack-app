@@ -35,6 +35,7 @@ export default function Cadastro() {
   const [busca, setBusca] = useState("")
   const [resultados, setResultados] = useState<{ id: string; nome: string; cidade: string; estado: string }[]>([])
   const [buscando, setBuscando] = useState(false)
+  const [skipAcademia, setSkipAcademia] = useState(false)
   const [professores, setProfessores] = useState<{ id: string; nome: string }[]>([])
   const [buscaProf, setBuscaProf] = useState("")
 
@@ -114,11 +115,12 @@ export default function Cadastro() {
         avancarStep(); setLoading(false); return
       }
       if (step === 2 && form.role === "aluno") {
-        if (!form.academiaId) { setError(t("errors.selecioneAcademia")); setLoading(false); return }
+        if (!form.academiaId) {
+          setSkipAcademia(true)
+          setStep(5); setLoading(false); return
+        }
         avancarStep(); setLoading(false); return
       }
-      if (step === 3 && form.role === "aluno") { avancarStep(); setLoading(false); return }
-      if (step === 4 && form.role === "aluno") { avancarStep(); setLoading(false); return }
       setLoading(false); return
     }
 
@@ -316,6 +318,13 @@ export default function Cadastro() {
           {form.role === "professor" && (
             <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
               {t("step2Professor.naoEncontrou")}
+            </p>
+          )}
+          {form.role === "aluno" && !form.academiaId && (
+            <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
+              <button type="button" onClick={() => { setSkipAcademia(true); setStep(5) }} className="text-[var(--gold)] font-semibold hover:underline">
+                {t("step2Aluno.naoEncontrou")}
+              </button>
             </p>
           )}
         </div>

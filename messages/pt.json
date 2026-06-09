@@ -61,9 +61,11 @@
     "gratisDesc": "Para alunos que querem começar",
     "gratisFeatures": [
       "Check-in por QR code",
-      "Histórico de presenças",
-      "Streaks básico",
-      "Ranking da academia"
+      "Missões diárias e meta semanal",
+      "Histórico ilimitado de presenças",
+      "Ranking da academia",
+      "Mestre do Mês",
+      "Conquistas e progresso de faixa"
     ],
     "premium": "Premium",
     "premiumPreco": "R$ 4,90",
@@ -71,10 +73,9 @@
     "premiumDesc": "Para alunos que querem evoluir de verdade",
     "premiumFeatures": [
       "Tudo do Free",
-      "Gráficos de evolução",
-      "Conquistas exclusivas",
-      "Mestre do Mês",
-      "Comparação com colegas",
+      "Analytics avançados (gráficos e heatmap)",
+      "Arte para compartilhar",
+      "Exportar jornada (PDF)",
       "Suporte prioritário"
     ],
     "academia": "Academia",
