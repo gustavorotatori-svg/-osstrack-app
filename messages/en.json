@@ -836,7 +836,7 @@
   "cadastro": {
     "title": "Create Account",
     "subtitleAluno": "Free for 7 days. Then $4.90/mo.",
-    "subtitleOther": "Create your account for free. No commitment.",
+    "subtitleOther": "Create your account for free.",
     "step1": {
       "nomeLabel": "Full Name",
       "nomePlaceholder": "Your name",

@@ -836,7 +836,7 @@
   "cadastro": {
     "title": "Crear Cuenta",
     "subtitleAluno": "Gratis por 7 días. Luego $4,90/mes.",
-    "subtitleOther": "Crea tu cuenta gratis. Sin compromiso.",
+    "subtitleOther": "Crea tu cuenta gratis.",
     "step1": {
       "nomeLabel": "Nombre completo",
       "nomePlaceholder": "Tu nombre",
