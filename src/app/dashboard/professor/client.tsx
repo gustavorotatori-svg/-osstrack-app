@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Crown, Users, CheckCircle, XCircle, Calendar, Settings, FileText, ClipboardList, ArrowUpRight, BarChart3, GraduationCap } from "lucide-react"
+import { Crown, Users, CheckCircle, XCircle, Calendar, Settings, FileText, ClipboardList, ArrowUpRight, BarChart3, GraduationCap, Link2, Copy, Check } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
@@ -26,6 +26,9 @@ export function ProfessorDashboardClient({
   const t = useT("professor.dashboard")
   const router = useRouter()
   const [tab, setTab] = useState<"geral" | "presencas">("geral")
+  const [inviteLink, setInviteLink] = useState("")
+  const [copiado, setCopiado] = useState(false)
+  const [gerando, setGerando] = useState(false)
 
   const confirmar = async (id: string) => {
     try {
@@ -49,13 +52,34 @@ export function ProfessorDashboardClient({
     ? Math.round((presencasHoje.filter(p => p.status === "confirmed").length / presencasHoje.length) * 100)
     : 0
 
+  async function gerarConvite() {
+    setGerando(true)
+    try {
+      const res = await fetch("/api/convites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tipo: "aluno" }),
+      })
+      const data = await res.json()
+      setInviteLink(data.link)
+    } catch {}
+    setGerando(false)
+  }
+
+  async function copiarLink() {
+    try {
+      await navigator.clipboard.writeText(inviteLink)
+      setCopiado(true)
+      setTimeout(() => setCopiado(false), 2000)
+    } catch {}
+  }
+
   const quickActions = [
     { label: "Turmas", icon: Calendar, href: "/dashboard/professor/turmas", color: "from-blue-600/20 to-blue-600/5", border: "border-blue-500/20" },
     { label: "Alunos", icon: Users, href: "/dashboard/professor/alunos", color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20" },
     { label: "Presenças", icon: ClipboardList, href: "/dashboard/professor/presencas", color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
     { label: "Graduações", icon: GraduationCap, href: "/dashboard/professor/graduacoes", color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
-    { label: "Relatórios", icon: FileText, href: "/dashboard/professor/relatorios", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
-    { label: "Config", icon: Settings, href: "/dashboard/professor/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
+    { label: "Convidar", icon: Link2, href: "#", color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20", action: gerarConvite },
   ]
 
   return (
@@ -86,14 +110,14 @@ export function ProfessorDashboardClient({
 
           {/* Quick Actions */}
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-            {quickActions.map((action) => {
-              const Icon = action.icon
+            {quickActions.map((a) => {
+              const Icon = a.icon
               return (
-                <button key={action.label} onClick={() => router.push(action.href)}
-                  className={`relative overflow-hidden rounded-xl border ${action.border} p-3 text-center transition-all hover:scale-[1.02] active:scale-95 group`}
-                  style={{ background: `linear-gradient(135deg, ${action.color.split(" ")[0].replace("from-", "")}, ${action.color.split(" ")[1].replace("to-", "")})` }}>
+                <button key={a.label} onClick={() => a.action ? a.action() : router.push(a.href)}
+                  className={`relative overflow-hidden rounded-xl border ${a.border} p-3 text-center transition-all hover:scale-[1.02] active:scale-95 group`}
+                  style={{ background: `linear-gradient(135deg, ${a.color.split(" ")[0].replace("from-", "")}, ${a.color.split(" ")[1].replace("to-", "")})` }}>
                   <Icon className="w-5 h-5 mx-auto mb-1.5 text-[var(--text-secondary)] group-hover:text-white transition-colors" />
-                  <span className="text-[10px] font-semibold text-[var(--text-secondary)] group-hover:text-white transition-colors">{action.label}</span>
+                  <span className="text-[10px] font-semibold text-[var(--text-secondary)] group-hover:text-white transition-colors">{a.label}</span>
                   <ArrowUpRight className="w-3 h-3 absolute top-1.5 right-1.5 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-all" />
                 </button>
               )
@@ -127,6 +151,63 @@ export function ProfessorDashboardClient({
               <div className="tech-stat-label">{t("pendentes")}</div>
             </div>
           </div>
+
+          {/* Convidar alunos */}
+          {!inviteLink && (
+            <div className="tech-card p-5">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-[var(--gold-dim)] border border-[var(--gold)]/20 flex items-center justify-center shrink-0">
+                  <Link2 className="w-5 h-5 text-[var(--gold)]" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-sm">Convide seus alunos</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                    Gere um link para seus alunos se cadastrarem automaticamente na sua academia.
+                  </p>
+                  <button
+                    onClick={gerarConvite}
+                    disabled={gerando}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 mt-3 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95 disabled:opacity-50"
+                  >
+                    {gerando ? "Gerando..." : "Gerar link de convite"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {inviteLink && (
+            <div className="tech-card p-5 border-emerald-500/20">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                  <Check className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm text-emerald-400">Link gerado!</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                    Compartilhe com seus alunos. Ao clicar, eles serão direcionados ao cadastro com sua academia já preenchida.
+                  </p>
+                  <div className="flex gap-2 mt-3">
+                    <input
+                      type="text"
+                      readOnly
+                      value={inviteLink}
+                      className="flex-1 text-xs bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.06)] rounded-lg px-3 py-2 text-[var(--text-secondary)] truncate"
+                    />
+                    <button
+                      onClick={copiarLink}
+                      className="shrink-0 px-3 py-2 rounded-lg text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg transition-all active:scale-95"
+                    >
+                      {copiado ? "Copiado!" : "Copiar"}
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-[var(--text-muted)] mt-2">
+                    O link expira em 7 dias. Cada aluno que usar ganha acesso automático à sua academia.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Tabs */}
           <div className="tab-bar">
