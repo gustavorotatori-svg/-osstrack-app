@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
   const { id } = await params
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "dono" || !session.user.academiaId) {
@@ -46,4 +48,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   })
 
   return NextResponse.json(updated)
+  } catch (error) {
+    return handleApiError(error)
+  }
+
 }

@@ -2,9 +2,11 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getServerSession(authOptions)
+  try {
+    const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
   const { id } = await params
@@ -28,6 +30,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   })
 
   return NextResponse.json({ alunosNaTurma, todosAlunos })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {

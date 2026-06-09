@@ -2,8 +2,10 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { handleApiError } from "@/lib/api-error"
 
 export async function POST(request: Request) {
+  try {
   const session = await getServerSession(authOptions)
   if (!session || !["professor", "dono"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
@@ -44,4 +46,7 @@ export async function POST(request: Request) {
   })
 
   return NextResponse.json({ success: true, aluno: { nome: updated.nome, faixa: updated.faixa, grau: updated.grau } })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }
