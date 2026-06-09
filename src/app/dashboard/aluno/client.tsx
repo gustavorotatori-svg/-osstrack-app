@@ -9,8 +9,7 @@ import { ProgressRing } from "./progress-ring"
 import { MestreDoMesCard } from "@/components/gamification/mestre-do-mes-card"
 import { DailyMissions } from "@/components/gamification/daily-missions"
 import { MetaSemanalCard } from "@/components/gamification/meta-semanal-card"
-import { PremiumLock, PremiumBanner } from "@/components/ui/premium-lock"
-import { usePremium } from "@/lib/use-premium"
+import { Search } from "lucide-react"
 import { useT } from "@/lib/use-t"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { useRouter } from "next/navigation"
@@ -58,7 +57,6 @@ type Props = {
 export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas, streak }: Props) {
   const t = useT("aluno.dashboard")
   const router = useRouter()
-  const { isPremium } = usePremium()
   const [tab, setTab] = useState<"geral" | "jornada" | "presencas">("geral")
 
   const { nome, faixa, grau, totalAulas } = aluno
@@ -200,9 +198,25 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
             <MetaSemanalCard />
           </div>
 
-          {!isPremium && <PremiumBanner />}
+          {!aluno.academia && (
+            <div className="tech-card p-5 text-center">
+              <div className="w-12 h-12 rounded-xl bg-[var(--gold-dim)] border border-[var(--gold)]/20 flex items-center justify-center mx-auto mb-3">
+                <Search className="w-6 h-6 text-[var(--gold)]" />
+              </div>
+              <h3 className="font-bold text-base">Encontre sua academia</h3>
+              <p className="text-sm text-[var(--text-secondary)] mt-1 max-w-md mx-auto">
+                Você ainda não está vinculado a nenhuma academia. Busque e entre para uma para acompanhar suas aulas e evolução.
+              </p>
+              <button
+                onClick={() => router.push("/dashboard/aluno/perfil")}
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 mt-4 rounded-xl text-sm font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95"
+              >
+                Buscar academia
+              </button>
+            </div>
+          )}
 
-          <PremiumLock isLocked={!isPremium} featureName={t("compartilhar")}>
+          {aluno.academia && (
             <div className="tech-card p-5">
               <div className="section-header">{t("compartilhar")}</div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -216,7 +230,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                 </button>
               </div>
             </div>
-          </PremiumLock>
+          )}
 
           {/* Presenças Recentes */}
           <div className="tech-card p-5">

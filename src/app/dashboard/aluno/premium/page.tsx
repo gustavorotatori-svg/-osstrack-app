@@ -10,24 +10,22 @@ import { useT } from "@/lib/use-t"
 import { PaletteIcon, ChartIcon, TargetIcon, CrownIcon, MedalIcon, Share2Icon, CreditCardIcon, CheckIcon, XIcon, CalendarIcon, InfinityIcon, SparklesIcon, StarIcon } from "@/components/ui/icons"
 
 const featuresList = [
-  { icon: <PaletteIcon className="w-5 h-5" />, name: "Arte para Instagram", desc: "Compartilhe sua evolução com cards bonitos" },
   { icon: <ChartIcon className="w-5 h-5" />, name: "Analytics Avançados", desc: "Gráficos, heatmap mensal e previsão de faixa" },
-  { icon: <TargetIcon className="w-5 h-5" />, name: "Metas & Missões", desc: "Desafios diários e meta semanal personalizada" },
-  { icon: <CrownIcon className="w-5 h-5" />, name: "Ranking Detalhado", desc: "Veja sua posição e o ranking completo da academia" },
-  { icon: <MedalIcon className="w-5 h-5" />, name: "Histórico Ilimitado", desc: "Acesse todas as suas presenças antigas" },
   { icon: <Share2Icon className="w-5 h-5" />, name: "Exportar Jornada", desc: "Baixe PDF com toda sua evolução no Jiu-Jitsu" },
+  { icon: <PaletteIcon className="w-5 h-5" />, name: "Arte para Compartilhar", desc: "Cards bonitos com sua evolução para postar" },
+  { icon: <MedalIcon className="w-5 h-5" />, name: "Suporte Prioritário", desc: "Atendimento via WhatsApp com prioridade" },
 ]
 
 const comparisonRows = [
   { label: "Check-in diário", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
   { label: "Progresso de faixa", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
   { label: "Conquistas", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
-  { label: "Histórico de presenças", free: <>30 dias <CalendarIcon className="w-3 h-3 inline" /></>, premium: <><InfinityIcon className="w-3.5 h-3.5 inline text-[var(--gold)]" /> Ilimitado</> },
-  { label: "Missões diárias", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
-  { label: "Meta semanal", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
-  { label: "Arte para compartilhar", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
+  { label: "Missões diárias", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
+  { label: "Meta semanal", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
+  { label: "Ranking completo", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
+  { label: "Histórico de presenças", free: <><InfinityIcon className="w-3.5 h-3.5 inline text-emerald-500" /> Ilimitado</>, premium: <><InfinityIcon className="w-3.5 h-3.5 inline text-[var(--gold)]" /> Ilimitado</> },
+  { label: "Arte para compartilhar", free: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
   { label: "Analytics avançados", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
-  { label: "Ranking completo", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
   { label: "Exportar jornada (PDF)", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
   { label: "Suporte prioritário", free: <XIcon className="w-3.5 h-3.5 inline text-red-400" />, premium: <CheckIcon className="w-3.5 h-3.5 inline text-emerald-500" /> },
 ]

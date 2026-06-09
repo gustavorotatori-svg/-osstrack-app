@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { CheckCircle, Zap, Target } from "lucide-react"
-import { PremiumLock } from "@/components/ui/premium-lock"
-import { PremiumBanner } from "@/components/ui/premium-lock"
-import { usePremium } from "@/lib/use-premium"
 import { useT } from "@/lib/use-t"
 
 type Mission = {
@@ -20,18 +17,14 @@ type Mission = {
 
 export function DailyMissions() {
   const t = useT("gamification.missoes")
-  const { isPremium, loading } = usePremium()
   const [missions, setMissions] = useState<Mission[]>([])
 
   useEffect(() => {
     fetch("/api/missoes").then(r => r.json()).then(data => setMissions(data.missoes ?? [])).catch(() => {})
   }, [])
 
-  if (loading) return null
-
   return (
-    <PremiumLock isLocked={!isPremium} featureName="Missões Diárias">
-      <div className="tech-card p-5">
+    <div className="tech-card p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Target className="w-4 h-4 text-[var(--gold)]" />
@@ -71,6 +64,5 @@ export function DailyMissions() {
           ))}
         </div>
       </div>
-    </PremiumLock>
   )
 }

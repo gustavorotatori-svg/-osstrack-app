@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { CheckCircle, Target, TrendingUp } from "lucide-react"
-import { PremiumLock } from "@/components/ui/premium-lock"
-import { usePremium } from "@/lib/use-premium"
 import { useT } from "@/lib/use-t"
 
 type WeeklyGoal = {
@@ -18,18 +16,14 @@ type WeeklyGoal = {
 
 export function MetaSemanalCard() {
   const t = useT("gamification.metaSemanal")
-  const { isPremium, loading } = usePremium()
   const [goals, setGoals] = useState<WeeklyGoal[]>([])
 
   useEffect(() => {
     fetch("/api/meta-semanal").then(r => r.json()).then(setGoals).catch(() => {})
   }, [])
 
-  if (loading) return null
-
   return (
-    <PremiumLock isLocked={!isPremium} featureName="Meta Semanal">
-      <div className="tech-card p-5">
+    <div className="tech-card p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-[var(--gold)]" />
@@ -66,6 +60,5 @@ export function MetaSemanalCard() {
           ))}
         </div>
       </div>
-    </PremiumLock>
   )
 }
