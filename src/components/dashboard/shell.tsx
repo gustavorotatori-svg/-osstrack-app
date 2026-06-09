@@ -82,10 +82,10 @@ const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps
     { href: "/dashboard/professor", tkey: "inicio", icon: HomeIcon },
     { href: "/dashboard/professor/presencas", tkey: "presencas", icon: CheckIcon },
     { href: "/dashboard/professor/alunos", tkey: "alunos", icon: UsersIcon },
-    { href: "/dashboard/professor/mural", tkey: "mural", icon: BellIcon },
-    { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/professor/turmas", tkey: "turmas", icon: ListIcon },
     { href: "/dashboard/professor/graduacoes", tkey: "graduacoes", icon: AwardIcon },
+    { href: "/dashboard/professor/mural", tkey: "mural", icon: BellIcon },
+    { href: "/dashboard/professor/agenda", tkey: "agenda", icon: CalendarIcon },
   ],
   dono: [
     { href: "/dashboard/dono", tkey: "inicio", icon: HomeIcon },

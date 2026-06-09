@@ -78,6 +78,7 @@ export default async function DonoDashboard() {
 
   return (
     <OwnerDashboardClient
+      role="dono"
       academia={{
         nome: academia.nome,
         responsavel: academia.responsavel,

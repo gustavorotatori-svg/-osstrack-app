@@ -59,19 +59,16 @@ export async function POST(request: Request) {
         },
       })
 
-      const modalidades = academia.modalidades
-      if (modalidades?.length > 0) {
-        await prisma.graduacao.createMany({
-          data: modalidades.map((m: string) => ({
-            academiaId: novaAcademia.id,
-            categoria: "adulto",
-            faixa: "Branca",
-            graus: 4,
-            aulasPorGrau: 20,
-            aulasProxFx: 100,
-          })),
-        })
-      }
+      await prisma.graduacao.create({
+        data: {
+          academiaId: novaAcademia.id,
+          categoria: "adulto",
+          faixa: "Branca",
+          graus: 4,
+          aulasPorGrau: 20,
+          aulasProxFx: 100,
+        },
+      })
 
       // If dono was invited by a professor, link the professor to the academy
       if (body.professorId) {
