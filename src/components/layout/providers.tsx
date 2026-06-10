@@ -25,16 +25,21 @@ export function useLocale() {
   return useContext(LocaleContext)
 }
 
+function getInitialTheme(): Theme {
+  if (typeof document !== "undefined") {
+    if (document.documentElement.classList.contains("light")) return "light"
+    if (document.documentElement.classList.contains("dark")) return "dark"
+  }
+  return "dark"
+}
+
 export function Providers({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark")
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
   const [locale, setLocaleState] = useState<Locale>("pt")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    const storedTheme = localStorage.getItem("osstrack_theme") as Theme | null
-    if (storedTheme) setTheme(storedTheme)
-
     const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
     if (storedLocale && ["pt", "en", "es"].includes(storedLocale)) {
       setLocaleState(storedLocale)
@@ -59,14 +64,14 @@ export function Providers({ children }: { children: ReactNode }) {
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
-          {mounted ? children : <div className="min-h-screen bg-[#0a0a0a]" />}
+          {mounted ? children : <div className="min-h-screen" style={{ background: theme === "light" ? "#f5f5f0" : "#0a0a0a" }} />}
           <Toaster
             position="top-center"
             toastOptions={{
               style: {
-                background: '#111',
-                border: '1px solid #1e1e1e',
-                color: '#fff',
+                background: theme === "light" ? '#fff' : '#111',
+                border: theme === "light" ? '1px solid #e0e0e0' : '1px solid #1e1e1e',
+                color: theme === "light" ? '#1a1a1a' : '#fff',
                 borderRadius: '12px',
               },
             }}
