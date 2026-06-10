@@ -36,6 +36,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){try{var t=localStorage.getItem("osstrack_theme");if(!t)t="dark";document.documentElement.className=t}catch(e){document.documentElement.className="dark"}})()`
+        }} />
+      </head>
       <body className="antialiased">
         <Providers>{children}</Providers>
       </body>
