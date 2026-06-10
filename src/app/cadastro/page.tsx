@@ -295,14 +295,9 @@ export default function Cadastro() {
               <p className="text-sm font-medium">{form.academiaNome}</p>
             </div>
           )}
-          {form.role === "professor" && (
+          {!form.academiaId && (
             <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
-              {t("step2Professor.naoEncontrou")}
-            </p>
-          )}
-          {form.role === "aluno" && !form.academiaId && (
-            <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
-              <button type="button" onClick={() => { setSkipAcademia(true); setStep(5) }} className="text-[var(--gold)] font-semibold hover:underline">
+              <button type="button" onClick={() => { setSkipAcademia(true); if (form.role === "aluno") setStep(5); }} className="text-[var(--gold)] font-semibold hover:underline">
                 {t("step2Aluno.naoEncontrou")}
               </button>
             </p>
