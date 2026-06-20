@@ -27,7 +27,7 @@ const testimonialsData = [
   },
 ]
 
-const beltColors = ["#d4a847", "#2563eb", "#9333ea", "#059669", "#dc2626"]
+const avatarColors = ["#d4a847", "#2563eb", "#9333ea", "#059669", "#dc2626"]
 
 function AutoScrollCarousel() {
   const [width, setWidth] = useState(0)
@@ -100,7 +100,7 @@ function AutoScrollCarousel() {
             <div
               className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-black shrink-0"
               style={{
-                background: `linear-gradient(135deg, ${beltColors[i % beltColors.length]}, ${beltColors[(i + 1) % beltColors.length]})`,
+                background: `linear-gradient(135deg, ${avatarColors[i % avatarColors.length]}, ${avatarColors[(i + 1) % avatarColors.length]})`,
               }}
             >
               {t.initials}
@@ -135,11 +135,12 @@ export function Testimonials() {
           className="text-center max-w-xl mx-auto mb-14"
         >
           <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9, x: -10 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3 }}
-            className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            transition={{ duration: 0.3, type: "spring" }}
+            className="inline-block px-5 py-2 bg-[rgba(201,168,76,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            style={{ clipPath: "polygon(0% 0%, 100% 0%, calc(100% - 10px) 100%, 10px 100%)" }}
           >
             {t("badge")}
           </motion.span>

@@ -21,11 +21,12 @@ export function HowItWorks() {
         {/* Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
           <motion.span
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -10, rotate: -3 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            transition={{ duration: 0.5, type: "spring" }}
+            className="inline-block px-5 py-2 bg-[rgba(201,168,76,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            style={{ clipPath: "polygon(10px 0%, calc(100% - 10px) 0%, 100% 100%, 0% 100%)" }}
           >
             {t("badge")}
           </motion.span>
