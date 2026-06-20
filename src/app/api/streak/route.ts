@@ -3,6 +3,16 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { NIVEL_DISCIPLINA_CONFIG, recalcularNivelDisciplina } from "@/lib/disciplina"
+import { notificarUsuario } from "@/lib/notificar"
+
+function getSemanaKey(date: Date): string {
+  const d = new Date(date)
+  const day = d.getDay()
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1)
+  const monday = new Date(d.setDate(diff))
+  return `${monday.getFullYear()}-${monday.getMonth()}-${monday.getDate()}`
+}
 
 export async function GET() {
   try {
@@ -23,6 +33,8 @@ export async function GET() {
     currentStreak: streak.currentStreak,
     bestStreak: streak.bestStreak,
     lastCheckinDate: streak.lastCheckinDate,
+    streakFreeze: streak.streakFreeze,
+    freezeUsado: streak.freezeUsado,
   })
   } catch (error) {
     return handleApiError(error)
@@ -40,10 +52,11 @@ export async function POST() {
 
   const hoje = new Date()
   hoje.setHours(0, 0, 0, 0)
+  const semanaKey = getSemanaKey(hoje)
 
   if (!streak) {
     streak = await prisma.streak.create({
-      data: { usuarioId: session.user.id, currentStreak: 1, bestStreak: 1, lastCheckinDate: hoje },
+      data: { usuarioId: session.user.id, currentStreak: 1, bestStreak: 1, lastCheckinDate: hoje, semanaFreeze: semanaKey },
     })
   } else {
     const ultimo = streak.lastCheckinDate ? new Date(streak.lastCheckinDate) : null
@@ -52,20 +65,58 @@ export async function POST() {
     const diff = ultimo ? Math.floor((hoje.getTime() - ultimo.getTime()) / (1000 * 60 * 60 * 24)) : 999
 
     let novoStreak = streak.currentStreak
-    if (diff === 1) {
+    let usouFreeze = false
+    if (diff === 0) {
+      return NextResponse.json({
+        currentStreak: streak.currentStreak,
+        bestStreak: streak.bestStreak,
+        lastCheckinDate: streak.lastCheckinDate,
+        streakFreeze: streak.streakFreeze,
+        freezeUsado: streak.freezeUsado,
+      })
+    } else if (diff === 1) {
       novoStreak += 1
     } else if (diff > 1) {
-      novoStreak = 1
+      if (streak.streakFreeze > 0 && !streak.freezeUsado) {
+        novoStreak = streak.currentStreak + 1
+        usouFreeze = true
+      } else {
+        novoStreak = 1
+      }
     }
 
     const bestStreak = Math.max(streak.bestStreak, novoStreak)
 
+    const semanaDiferente = streak.semanaFreeze !== semanaKey
+    const nextFreeze = semanaDiferente ? 1 : streak.streakFreeze
+    const nextFreezeUsado = semanaDiferente ? false : (usouFreeze ? true : streak.freezeUsado)
+
     streak = await prisma.streak.update({
       where: { id: streak.id },
-      data: { currentStreak: novoStreak, bestStreak, lastCheckinDate: hoje },
+      data: {
+        currentStreak: novoStreak,
+        bestStreak,
+        lastCheckinDate: hoje,
+        streakFreeze: nextFreeze,
+        freezeUsado: nextFreezeUsado,
+        semanaFreeze: semanaKey,
+      },
     })
 
-    if (novoStreak >= 5 && novoStreak !== streak.currentStreak) {
+    const nivelAntigo = await prisma.usuario.findUnique({ where: { id: session.user.id }, select: { nivelDisciplina: true } })
+    const nivelNovo = await recalcularNivelDisciplina(session.user.id)
+    if (nivelNovo && nivelNovo !== nivelAntigo?.nivelDisciplina) {
+      const cfg = NIVEL_DISCIPLINA_CONFIG[nivelNovo]
+      await notificarUsuario({
+        usuarioId: session.user.id,
+        tipo: "conquista",
+        titulo: `${cfg.icone} Novo Nível de Disciplina!`,
+        descricao: `Você alcançou o nível ${cfg.label}! Continue assim para evoluir ainda mais.`,
+        link: "/dashboard/aluno/perfil",
+      }).catch(() => {})
+    }
+
+    if (novoStreak >= 5 && diff > 0) {
       const milestones = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 100]
       if (milestones.includes(novoStreak)) {
         const msgs: Record<number, string> = {
@@ -81,14 +132,12 @@ export async function POST() {
           75: "💀 75 DIAS! Besta-fera do tatame!",
           100: "🎯🎯🎯 100 DIAS! VOCÊ É O MESTRE DOS MESTRES!",
         }
-        await prisma.notificacao.create({
-          data: {
-            usuarioId: session.user.id,
-            tipo: "conquista",
-            titulo: `🔥 Streak de ${novoStreak} dias!`,
-            descricao: msgs[novoStreak] || `🔥 Incrível! Você já tem ${novoStreak} dias de streak!`,
-            link: "/dashboard/aluno/evolucao",
-          },
+        await notificarUsuario({
+          usuarioId: session.user.id,
+          tipo: "conquista",
+          titulo: `🔥 Streak de ${novoStreak} dias!`,
+          descricao: msgs[novoStreak] || `🔥 Incrível! Você já tem ${novoStreak} dias de streak!`,
+          link: "/dashboard/aluno/evolucao",
         }).catch(() => {})
       }
     }
@@ -98,6 +147,8 @@ export async function POST() {
     currentStreak: streak.currentStreak,
     bestStreak: streak.bestStreak,
     lastCheckinDate: streak.lastCheckinDate,
+    streakFreeze: streak.streakFreeze,
+    freezeUsado: streak.freezeUsado,
   })
   } catch (error) {
     return handleApiError(error)

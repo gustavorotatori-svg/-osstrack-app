@@ -4,6 +4,11 @@ import prisma from "@/lib/prisma"
 
 export async function GET(request: Request) {
   try {
+    // Protected: only allowed in development or with explicit flag
+    if (process.env.NODE_ENV === "production" && !process.env.ALLOW_SETUP) {
+      return NextResponse.json({ error: "Não disponível em produção" }, { status: 403 })
+    }
+
     const url = new URL(request.url)
     const force = url.searchParams.get("force") === "true"
 

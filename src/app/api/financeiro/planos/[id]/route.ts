@@ -8,12 +8,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   try {
   const { id } = await params
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
   const body = await req.json()
-  const { nome, valor, descricao, periodo, ativo } = body
+  const { nome, valor, taxaMatricula, descricao, periodo, ativo } = body
 
   const plano = await prisma.planoMensalidade.findFirst({
     where: { id, academiaId: session.user.academiaId },
@@ -27,6 +27,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     data: {
       ...(nome !== undefined && { nome }),
       ...(valor !== undefined && { valor: Math.round(valor * 100) }),
+      ...(taxaMatricula !== undefined && { taxaMatricula: Math.round(taxaMatricula * 100) }),
       ...(descricao !== undefined && { descricao }),
       ...(periodo !== undefined && { periodo }),
       ...(ativo !== undefined && { ativo }),
@@ -43,7 +44,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   try {
   const { id } = await params
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

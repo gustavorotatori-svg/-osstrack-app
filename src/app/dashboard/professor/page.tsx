@@ -9,18 +9,50 @@ export default async function ProfessorDashboard() {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "professor") redirect("/login")
 
-  const professor = await prisma.usuario.findUnique({
+  let professor = await prisma.usuario.findUnique({
     where: { id: session.user.id },
     include: { academia: true },
   })
 
   if (!professor) redirect("/login")
 
+  // Professor sem academia → cria automaticamente
   if (!professor.academia) {
-    return <ProfessorSemAcademia nome={professor.nome} faixa={professor.faixa} />
+    const novaAcademia = await prisma.academia.create({
+      data: {
+        nome: `Academia do ${professor.nome.split(" ")[0]}`,
+        endereco: "",
+        cidade: "",
+        estado: "",
+        lat: 0,
+        lng: 0,
+        raio: 200,
+        responsavel: professor.nome,
+        telefone: professor.telefone || "",
+      },
+    })
+    await prisma.usuario.update({
+      where: { id: professor.id },
+      data: { academiaId: novaAcademia.id },
+    })
+    await prisma.graduacao.create({
+      data: {
+        academiaId: novaAcademia.id,
+        categoria: "adulto",
+        faixa: "Branca",
+        graus: 4,
+        aulasPorGrau: 20,
+        aulasProxFx: 100,
+      },
+    })
+    const updated = await prisma.usuario.findUnique({
+      where: { id: session.user.id },
+      include: { academia: true },
+    })
+    if (updated) professor = updated
   }
 
-  const academia = professor.academia
+  const academia = professor.academia!
 
   const totalAlunos = await prisma.usuario.count({
     where: { academiaId: academia.id, role: "aluno" },

@@ -13,16 +13,18 @@ export default async function EvolucaoPage() {
     include: { academia: true },
   })
 
-  if (!aluno || !aluno.academiaId) redirect("/login")
+  if (!aluno) redirect("/dashboard/aluno")
 
   const totalAulas = await prisma.presenca.count({
     where: { alunoId: aluno.id, status: "confirmed" },
   })
 
-  const graduacoes = await prisma.graduacao.findMany({
-    where: { academiaId: aluno.academiaId, categoria: aluno.categoria },
-    orderBy: { aulasProxFx: "asc" },
-  })
+  const graduacoes = aluno.academiaId
+    ? await prisma.graduacao.findMany({
+        where: { academiaId: aluno.academiaId, categoria: aluno.categoria },
+        orderBy: { aulasProxFx: "asc" },
+      })
+    : []
 
   // Aulas por mês (últimos 6 meses)
   const seisMesesAtras = new Date()

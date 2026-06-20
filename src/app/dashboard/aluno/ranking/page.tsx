@@ -32,13 +32,15 @@ export default async function RankingPage() {
       grau: a.grau,
       avatar: a.avatar,
       categoria: a.categoria,
+      nivelDisciplina: a.nivelDisciplina,
       totalAulas: presencasCount.find((p) => p.alunoId === a.id)?._count || 0,
       posicao: 0,
     }))
     .sort((a, b) => b.totalAulas - a.totalAulas)
     .map((a, i) => ({ ...a, posicao: i + 1 }))
 
-  const belts = [...new Set(ranking.map((a) => a.faixa))].sort()
+  const beltOrder = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
+  const belts = [...new Set(ranking.map((a) => a.faixa))].sort((a, b) => beltOrder.indexOf(a) - beltOrder.indexOf(b))
 
   const now = new Date()
   const mestre = await prisma.mestreDoMes.findFirst({

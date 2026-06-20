@@ -1,7 +1,7 @@
 "use client"
 
 export function WhatsAppFab() {
-  const numero = "5548996310359"
+  const numero = "5511942221028"
   const mensagem = encodeURIComponent("Olá! Quero saber mais sobre o OssTrack 🥋")
   const link = `https://wa.me/${numero}?text=${mensagem}`
 

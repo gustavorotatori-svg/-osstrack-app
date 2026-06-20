@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { awardXp } from "@/lib/gamification"
 
 export async function POST() {
   try {
@@ -130,6 +131,7 @@ export async function POST() {
             link: "/dashboard/aluno/conquistas",
           },
         })
+        await awardXp(session.user.id, 50)
         novas.push(c.nome)
       } else if (jaTem && progresso > (desbloqueadasMap.get(c.id)?.progresso || 0)) {
         await prisma.alunoConquista.update({

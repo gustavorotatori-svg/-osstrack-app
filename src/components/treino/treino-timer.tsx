@@ -136,22 +136,22 @@ export function TreinoTimer() {
           <div>
             <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Round</label>
             <div className="flex gap-1 mt-1">
-              <input type="number" min={1} max={59} value={config.roundMin} onChange={(e) => setConfig((c) => ({ ...c, roundMin: +e.target.value }))} className="input-premium text-center w-full text-sm" />
+              <input type="number" min={1} max={59} value={config.roundMin} onChange={(e) => setConfig((c) => ({ ...c, roundMin: +e.target.value }))} className="input-field text-center w-full text-sm" />
               <span className="text-xs text-[var(--gray)] self-center">:</span>
-              <input type="number" min={0} max={59} value={config.roundSeg} onChange={(e) => setConfig((c) => ({ ...c, roundSeg: +e.target.value }))} className="input-premium text-center w-full text-sm" />
+              <input type="number" min={0} max={59} value={config.roundSeg} onChange={(e) => setConfig((c) => ({ ...c, roundSeg: +e.target.value }))} className="input-field text-center w-full text-sm" />
             </div>
           </div>
           <div>
             <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Descanso</label>
             <div className="flex gap-1 mt-1">
-              <input type="number" min={0} max={5} value={config.descansoMin} onChange={(e) => setConfig((c) => ({ ...c, descansoMin: +e.target.value }))} className="input-premium text-center w-full text-sm" />
+              <input type="number" min={0} max={5} value={config.descansoMin} onChange={(e) => setConfig((c) => ({ ...c, descansoMin: +e.target.value }))} className="input-field text-center w-full text-sm" />
               <span className="text-xs text-[var(--gray)] self-center">:</span>
-              <input type="number" min={0} max={59} value={config.descansoSeg} onChange={(e) => setConfig((c) => ({ ...c, descansoSeg: +e.target.value }))} className="input-premium text-center w-full text-sm" />
+              <input type="number" min={0} max={59} value={config.descansoSeg} onChange={(e) => setConfig((c) => ({ ...c, descansoSeg: +e.target.value }))} className="input-field text-center w-full text-sm" />
             </div>
           </div>
           <div>
             <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">Rounds</label>
-            <input type="number" min={1} max={20} value={config.totalRounds} onChange={(e) => setConfig((c) => ({ ...c, totalRounds: +e.target.value }))} className="input-premium text-center w-full text-sm mt-1" />
+            <input type="number" min={1} max={20} value={config.totalRounds} onChange={(e) => setConfig((c) => ({ ...c, totalRounds: +e.target.value }))} className="input-field text-center w-full text-sm mt-1" />
           </div>
         </div>
       )}

@@ -79,10 +79,7 @@ export default function MuralFeed({ role }: { role: string }) {
     }
   }
 
-  const feed = postagens.length > 0 ? postagens : [
-    { id: "1", aluno: { id: "m1", nome: "Lucas Costa", faixa: "Roxa", grau: 1 }, tipo: "milestone", conteudo: "completou 150 aulas! 🎉", createdAt: new Date(Date.now() - 7200000).toISOString(), curtidas: 12, curtido: false, comentarios: [] },
-    { id: "2", aluno: { id: "m2", nome: "Maria Fernandes", faixa: "Azul", grau: 1 }, tipo: "achievement", conteudo: "ganhou a medalha Dedicação 🔥", createdAt: new Date(Date.now() - 18000000).toISOString(), curtidas: 8, curtido: true, comentarios: [] },
-  ]
+  const feed = postagens
 
   const tipoEmoji: Record<string, string> = {
     milestone: "🎉", achievement: "🏆", streak: "🔥",

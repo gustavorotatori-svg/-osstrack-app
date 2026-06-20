@@ -211,12 +211,6 @@ test.describe("2. Aluno — Jornada Completa", () => {
     await checkNoConsoleErrors(page)
   })
 
-  test("Premium page carrega", async () => {
-    await page.goto(`${URL}/dashboard/aluno/premium`)
-    await page.waitForLoadState("networkidle")
-    await expect(page.locator("body")).toBeVisible()
-  })
-
   test("Perfil carrega", async () => {
     await page.goto(`${URL}/dashboard/aluno/perfil`)
     await page.waitForLoadState("networkidle")
@@ -534,8 +528,6 @@ test.describe("5. Gamificação — Aluno Premium Flow", () => {
     await page.goto(`${URL}/dashboard/aluno`)
     await page.waitForLoadState("networkidle")
     await dismissTour(page)
-    await page.waitForTimeout(2000) // wait for premium check to resolve
-
     // Mestre do Mês should render (free feature)
     const mestreCard = page.locator("text=Mestre do Mês").or(page.locator("text=Mestre")).first()
     await expect(mestreCard).toBeVisible({ timeout: 5000 })

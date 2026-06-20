@@ -53,6 +53,7 @@ export default async function AlunoDashboard() {
         faixa: aluno.faixa,
         grau: aluno.grau,
         totalAulas,
+        pontos: aluno.pontos,
         dataInicio: aluno.dataInicio?.toISOString() || "",
         academia: aluno.academia?.nome || "",
       }}
@@ -73,6 +74,7 @@ export default async function AlunoDashboard() {
         desbloqueada: conquistas.some((ac) => ac.conquistaId === c.id),
       }))}
       streak={streakData?.currentStreak || 0}
+      nivelDisciplina={aluno.nivelDisciplina}
     />
   )
 }

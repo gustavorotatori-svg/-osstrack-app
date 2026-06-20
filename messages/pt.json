@@ -5,7 +5,7 @@
     "dashboard": "Dashboard",
     "recursos": "Recursos",
     "comoFunciona": "Como Funciona",
-    "planos": "Planos"
+    "gratis": "Grátis"
   },
   "hero": {
     "titulo1": "Sua jornada no",
@@ -19,27 +19,27 @@
   },
   "frases": [
     "Toda faixa preta foi uma faixa branca que nunca desistiu.",
-    "Academia e professor: R$0. Aluno premium: R$4,90.",
+    "Academia, professor e aluno: R$0. Tudo grátis.",
     "Cada check-in é um capítulo da sua história no tatame.",
     "A evolução não é linear — no OssTrack ela é visível.",
     "O melhor de você aparece quando ninguém está olhando."
   ],
   "features": {
-    "badge": "Por trás do código",
-    "titulo": "Tudo que sua academia precisa",
-    "subtitulo": "Uma plataforma completa pra transformar frequência em evolução.",
+    "badge": "Tudo que sua academia merece",
+    "titulo": "Sua academia no próximo nível",
+    "subtitulo": "Menos planilha, mais Jiu-Jitsu. A gente cuida da gestão enquanto você cuida dos alunos.",
     "checkin": "Check-in Inteligente",
-    "checkinDesc": "QR code com geolocalização. Seu aluno registra presença em segundos.",
+    "checkinDesc": "QR code com geolocalização. Seu aluno chega, escaneia, pronto. Presença confirmada em segundos.",
     "evolucao": "Evolução Visual",
-    "evolucaoDesc": "Cada aula conta. Cada grau importa. A progressão fica clara pra todos.",
+    "evolucaoDesc": "Cada aula vira progresso. Cada grau vira conquista. A evolução do seu aluno fica clara como água.",
     "gamificacao": "Gamificação",
-    "gamificacaoDesc": "Streaks, conquistas e ranking. Transforme disciplina em jogo.",
+    "gamificacaoDesc": "Streaks de fogo, conquistas épicas e ranking ao vivo. Transformar disciplina em jogo nunca foi tão divertido.",
     "metas": "Metas e Missões",
-    "metasDesc": "Metas semanais e missões diárias para manter a disciplina e o foco nos treinos.",
-    "whatsapp": "WhatsApp Integrado",
-    "whatsappDesc": "Notificações e cobranças pelo WhatsApp. Sem app adicional.",
+    "metasDesc": "Meta semanal, missão diária e aquele empurrãozinho que todo aluno precisa pra não faltar.",
+    "whatsapp": "WhatsApp",
+    "whatsappDesc": "Links diretos para WhatsApp. Compartilhe check-ins, convites e resultados com um clique.",
     "graduacao": "Regras de Graduação",
-    "graduacaoDesc": "Configure critérios objetivos de faixa. Promova com justiça."
+    "graduacaoDesc": "Regras claras, critérios justos e promoção automática. Adeus, planilha do Excel."
   },
   "comoFunciona": {
     "badge": "Como funciona",
@@ -55,7 +55,7 @@
   "planos": {
     "badge": "Preço justo",
     "titulo": "Planos",
-    "subtitulo": "Academia e professor: R$0. Sempre. Só o aluno premium paga.",
+    "subtitulo": "Academia, professor e aluno: R$0. Tudo grátis. Sempre.",
     "gratis": "Free",
     "gratisPreco": "R$ 0",
     "gratisDesc": "Para alunos que querem começar",
@@ -67,11 +67,10 @@
       "Mestre do Mês",
       "Conquistas e progresso de faixa"
     ],
-    "premium": "Premium",
-    "premiumPreco": "R$ 4,90",
-    "premiumPeriodo": "/mês",
-    "premiumDesc": "Para alunos que querem evoluir de verdade",
-    "premiumFeatures": [
+    "tudoGratis": "Tudo Grátis",
+    "tudoGratisPreco": "R$ 0",
+    "tudoGratisDesc": "Para alunos que querem evoluir de verdade",
+    "tudoGratisFeatures": [
       "Tudo do Free",
       "Analytics avançados (gráficos e heatmap)",
       "Arte para compartilhar",
@@ -91,9 +90,7 @@
       "QR code para check-in"
     ],
     "gratisCta": "Começar Grátis",
-    "premiumCta": "Sou aluno",
-    "academiaCta": "Sou dono de academia",
-    "maisPopulares": "Mais popular"
+    "academiaCta": "Sou dono de academia"
   },
   "testimonials": {
     "titulo": "O que dizem os mestres",
@@ -101,7 +98,7 @@
     "subtitulo": "Mestres e professores que transformaram a gestão das suas academias — e a relação dos alunos com o treino."
   },
   "footer": {
-    "descricao": "A plataforma completa para sua academia.",
+    "descricao": "Sua academia mais organizada, seus alunos mais motivados. Tudo em um lugar só, 100% gratuito.",
     "whatsapp": "WhatsApp",
     "direitos": "Todos os direitos reservados.",
     "termos": "Termos de Uso",
@@ -132,7 +129,7 @@
     "sair": "Sair",
     "notificacoes": "Notificações",
     "conquistas": "Conquistas",
-    "premium": "Premium",
+    "premium": "Grátis",
     "perfil": "Perfil",
     "dono": "Academia",
     "professor": "Professor",
@@ -265,77 +262,7 @@
       "posicaoFaixa": "Você está na {pos}ª posição na faixa {faixa}",
       "faltamAulas": "Faltam {n} aulas para alcançar o 1º lugar!"
     },
-    "premium": {
-      "title": "OssTrack Premium",
-      "preco": "R$4,90/mês · Cancele quando quiser",
-      "bemVindo": "Bem-vindo ao Premium!",
-      "contaAtualizada": "Sua conta foi atualizada. Aproveite todos os benefícios!",
-      "irDashboard": "Ir para o Dashboard",
-      "processando": "Processando...",
-      "jaPremium": "✓ Você já é Premium",
-      "assinar": "Assinar por R$4,90/mês",
-      "simulacao": "* Simulação de pagamento. Em produção, integração com Stripe/Asaas será ativada.",
-      "comparacao": "Comparação",
-      "features": [
-        {
-          "name": "Sua jornada em arte",
-          "desc": "Transforme suas estatísticas em artes prontas para Instagram. Sua história merece ser vista."
-        },
-        {
-          "name": "Histórico sem fim",
-          "desc": "Acesse cada aula, cada grau, cada check-in desde o primeiro dia. Sua linha do tempo no tatame."
-        },
-        {
-          "name": "Metas que te movem",
-          "desc": "Metas semanais de treino que se adaptam a você. O único objetivo é continuar aparecendo."
-        },
-        {
-          "name": "Mestre do Mês",
-          "desc": "O título que todo mundo quer. Quem mais treinou no mês leva o badge de honra no perfil."
-        },
-        {
-          "name": "7 dias de missões",
-          "desc": "Onboarding gamificado que transforma seus primeiros 7 dias em uma jornada de descoberta."
-        },
-        {
-          "name": "Inspire quem vem atrás",
-          "desc": "Compartilhe sua evolução nas redes sociais. Cada post seu pode ser o empurrão que alguém precisa pra começar."
-        }
-      ],
-      "comparacaoRows": [
-        {
-          "label": "Check-in com geolocalização"
-        },
-        {
-          "label": "Ver ranking da academia"
-        },
-        {
-          "label": "Ver evolução"
-        },
-        {
-          "label": "Histórico completo de presenças"
-        },
-        {
-          "label": "Arte para Instagram"
-        },
-        {
-          "label": "Metas semanais personalizadas"
-        },
-        {
-          "label": "Badge Mestre do Mês"
-        },
-        {
-          "label": "Onboarding com 7 missões"
-        },
-        {
-          "label": "Compartilhar conquistas"
-        }
-      ],
-      "free": "Free",
-      "premiumLabel": "Premium",
-      "trintaDias": "30 dias",
-      "ilimitado": "Ilimitado"
-    },
+
     "agenda": {
       "title": "Agenda de Aulas",
       "subtitle": "Passe o mouse sobre as aulas para ver detalhes",
@@ -350,13 +277,13 @@
     "compartilhar": {
       "title": "Compartilhar Evolução",
       "descPremium": "Arte automática com suas estatísticas reais — pronta pro Instagram",
-      "descBloqueado": "Disponível apenas para assinantes Premium",
+      "descBloqueado": "Arte automática com suas estatísticas reais — disponível para todos",
       "totalAulas": "Total de Aulas",
       "esteMes": "Este Mês",
       "streakAtual": "Streak Atual",
       "melhorStreak": "Melhor Streak",
       "baixarArte": "Baixar Arte",
-      "desbloquearPremium": "Desbloquear com Premium",
+      "desbloquearPremium": "Baixar Arte",
       "gerando": "Gerando...",
       "whatsapp": "WhatsApp",
       "instagram": "Instagram",
@@ -586,7 +513,11 @@
       "rankingOculto": "Ranking oculto dos alunos",
       "rankingVisivel": "Ranking visível para alunos",
       "erroVisibilidade": "Erro ao alterar visibilidade",
-      "infoRanking": "O ranking mostra os alunos com mais presenças confirmadas. O aluno pode filtrar por faixa no app."
+      "infoRanking": "O ranking mostra os alunos com mais presenças confirmadas. O aluno pode filtrar por faixa no app.",
+      "aniversariantes": "Aniversariantes do Mês",
+      "semAniversariantes": "Nenhum aniversariante este mês",
+      "alunosInativos": "Alunos sem treinar há 7 dias",
+      "alunosInativosTitle": "Alunos Inativos"
     },
     "turmas": {
       "title": "Turmas",
@@ -717,7 +648,7 @@
       "nomeAcademia": "Nome da Academia",
       "whatsapp": "WhatsApp",
       "placeholderWhatsapp": "(81) 99999-8888",
-      "whatsappDesc": "Usado nas notificações de cobrança e promoção via WhatsApp",
+      "whatsappDesc": "Número usado nos links diretos do WhatsApp para contato com a academia",
       "chavePix": "Chave PIX",
       "placeholderPix": "CPF, CNPJ, e-mail ou telefone",
       "raioCheckin": "Raio de Check-in (metros)",
@@ -747,15 +678,20 @@
     },
     "financeiro": {
       "title": "Financeiro",
-      "subtitle": "Controle mensalidades e fluxo de caixa da sua academia",
+      "subtitle": "Controle mensalidades, despesas e fluxo de caixa da sua academia",
       "receitaMes": "Receita do Mês",
       "potencialMes": "Potencial do Mês",
+      "despesaMes": "Despesas Pagas",
+      "fluxoCaixa": "Fluxo de Caixa",
       "adimplencia": "Adimplência",
       "inadimplentes": "Inadimplentes",
       "contratosAtivos": "Contratos Ativos",
       "planosAtivos": "Planos Ativos",
       "gerarCobrancas": "Gerar Cobranças do Mês",
       "ultimasCobrancas": "Últimas Cobranças",
+      "ultimasDespesas": "Últimas Despesas",
+      "verTodas": "Ver todas",
+      "verDespesas": "Ver Despesas",
       "nenhumaCobranca": "Nenhuma cobrança registrada",
       "gerando": "Gerando...",
       "planosTitle": "Planos de Mensalidade",
@@ -764,6 +700,8 @@
       "planoCriado": "Plano criado!",
       "planoAtualizado": "Plano atualizado!",
       "nenhumPlano": "Nenhum plano cadastrado",
+      "taxaMatricula": "Taxa de Matrícula (R$)",
+      "matricula": "matrícula",
       "contratosTitle": "Contratos",
       "novoContrato": "Novo Contrato",
       "criarContrato": "Criar Contrato",
@@ -774,10 +712,29 @@
       "registrarPagamento": "Pagar",
       "cobrancaPaga": "Pagamento registrado!",
       "cobrancaCancelada": "Cobrança cancelada",
+      "despesasTitle": "Despesas",
+      "novaDespesa": "Nova Despesa",
+      "criarDespesa": "Criar Despesa",
+      "despesaCriada": "Despesa criada!",
+      "despesaPaga": "Despesa paga!",
+      "despesaCancelada": "Despesa cancelada",
+      "despesaExcluida": "Despesa excluída",
+      "nenhumaDespesa": "Nenhuma despesa registrada",
+      "totalFiltrado": "Total filtrado",
+      "pagar": "Pagar",
+      "excluir": "Excluir",
+      "fechar": "Fechar",
+      "preenchaCampos": "Preencha todos os campos",
+      "confirmarExcluir": "Excluir esta despesa?",
+      "dataVencimento": "Data de Vencimento",
+      "observacao": "Observação",
+      "obsPlaceholder": "Ex: Conta de luz julho",
+      "descricaoPlaceholder": "Ex: Aluguel do mês",
       "nome": "Nome",
       "valor": "Valor (R$)",
       "periodo": "Período",
       "descricao": "Descrição",
+      "categoria": "Categoria",
       "aluno": "Aluno",
       "plano": "Plano",
       "valorContrato": "Valor do Contrato (R$)",
@@ -807,7 +764,18 @@
       "desde": "Desde",
       "pagoVia": "via",
       "marcarInadimplente": "Inadimplente",
-      "reativar": "Reativar"
+      "reativar": "Reativar",
+      "catAluguel": "Aluguel",
+      "catSalarios": "Salários",
+      "catAgua": "Água",
+      "catLuz": "Luz",
+      "catInternet": "Internet",
+      "catMaterial": "Material",
+      "catEquipamentos": "Equipamentos",
+      "catMarketing": "Marketing",
+      "catAlimentacao": "Alimentação",
+      "catImpostos": "Impostos",
+      "catOutras": "Outras"
     },
     "relatorios": {
       "title": "Relatórios",
@@ -837,7 +805,7 @@
   },
   "cadastro": {
     "title": "Criar Conta",
-    "subtitleAluno": "Grátis por 7 dias. Depois R$4,90/mês.",
+    "subtitleAluno": "Crie sua conta gratuitamente.",
     "subtitleOther": "Crie sua conta gratuitamente.",
     "step1": {
       "nomeLabel": "Nome completo",
@@ -846,6 +814,7 @@
       "emailPlaceholder": "seu@email.com",
       "telefoneLabel": "Telefone",
       "telefonePlaceholder": "(81) 99999-8888",
+      "dataNascimentoLabel": "Data de Nascimento",
       "senhaLabel": "Senha",
       "senhaPlaceholder": "Mínimo 6 caracteres",
       "tipoContaLabel": "Tipo de conta",
@@ -893,23 +862,13 @@
       "professorSelecionado": "Professor selecionado",
       "pular": "Pode pular essa etapa."
     },
-    "step5Aluno": {
-      "title": "7 Dias Grátis",
-      "price": "Depois R$ 4,90/mês",
-      "feature1": "Check-in com geolocalização",
-      "feature2": "Acompanhamento de evolução",
-      "feature3": "Ranking e gamificação",
-      "feature4": "Mural da academia",
-      "feature5": "Cancele quando quiser",
-      "warning": "Seu cartão será cadastrado agora, mas você só paga depois dos 7 dias.",
-      "seguranca": "Pagamento 100% seguro via Stripe."
-    },
+
     "grauOption": "{g}º Grau",
     "buttons": {
       "voltar": "Voltar",
       "proximo": "Próximo",
       "criandoConta": "Criando conta...",
-      "cadastrarPagamento": "Cadastrar e Ir para Pagamento",
+      "cadastrarPagamento": "Criar Conta",
       "criarGratis": "Criar Grátis"
     },
     "errors": {
@@ -1097,14 +1056,101 @@
     "sexta": "Sexta",
     "sabado": "Sábado"
   },
-  "premiumLock": {
-    "funcionalidade": "Funcionalidade Premium",
-    "assinar": "Assinar por R$4,90/mês",
-    "titulo": "OssTrack Premium",
-    "descricao": "Desbloqueie arte para Instagram, metas personalizadas, histórico ilimitado e muito mais!"
-  },
   "whatsappFab": {
     "mensagem": "Olá! Quero saber mais sobre o OssTrack",
     "title": "Fale conosco no WhatsApp"
+  },
+  "gratuito": {
+    "badge": "100% gratuito",
+    "titulo": "Sem mensalidade.",
+    "tituloDestaque": "Sem pegadinha.",
+    "descricao": "Academia, professor e aluno: R$ 0. Sempre. O OssTrack é e sempre será completamente gratuito.",
+    "card1Icon": "🥋",
+    "card1Title": "Treino Ilimitado",
+    "card1Desc": "Registre quantos treinos quiser. Sem limite, sem trava, sem frescura.",
+    "card2Icon": "🏛️",
+    "card2Title": "Gestão Completa",
+    "card2Desc": "Alunos, check-ins, faixas, professores. Sua academia no bolso.",
+    "card3Icon": "🏆",
+    "card3Title": "Gamificação",
+    "card3Desc": "Ranking, streak de fogo e conquistas que criam vício bom.",
+    "card4Icon": "📊",
+    "card4Title": "Estatísticas",
+    "card4Desc": "Relatórios em tempo real. Frequência, evolução, retenção.",
+    "cta": "Comece agora — é grátis"
+  },
+  "perfilPage": {
+    "max5mb": "Max 5MB",
+    "erroLerArquivo": "Erro ao ler arquivo",
+    "erroSalvar": "Erro ao salvar perfil",
+    "dadosPrivacidade": "Dados e Privacidade",
+    "erroExportar": "Erro ao exportar dados",
+    "exportarDados": "Exportar meus dados",
+    "confirmarExcluir": "Tem certeza? Esta ação é irreversível. Todos os seus dados serão excluídos permanentemente.",
+    "erroExcluir": "Erro ao excluir conta",
+    "excluirConta": "Excluir minha conta",
+    "semAcademia": "Sem academia",
+    "desde": "🥋 Desde",
+    "editarPerfil": "Editar Perfil",
+    "nome": "Nome",
+    "telefone": "Telefone",
+    "telefonePlaceholder": "(81) 99999-8888",
+    "dataNascimento": "Data de Nascimento",
+    "fotoAvatar": "Foto ou avatar",
+    "enviando": "Enviando...",
+    "clicarEnviar": "Clique para enviar uma foto",
+    "colarLink": "Ou cole o link de uma imagem",
+    "fotoCarregada": "✅ Foto carregada",
+    "salvando": "Salvando...",
+    "salvar": "Salvar",
+    "cancelar": "Cancelar",
+    "totalAulas": "Total de Aulas",
+    "presencas": "Presenças",
+    "aulasEsteMes": "Aulas este Mês",
+    "streakAtual": "Streak Atual",
+    "atual": "Atual",
+    "melhor": "Melhor",
+    "doTotal": "do Total"
+  },
+  "compartilharPage": {
+    "badge": "Compartilhar",
+    "descricao": "Arte automática com suas estatísticas — pronta pra rede social",
+    "card600": "Card (600x600)",
+    "stories": "Stories (1080x1920)",
+    "compartilhar": "Compartilhar",
+    "copiar": "Copiar",
+    "copiado": "✅ Copiado!"
+  },
+  "alunoDashboard": {
+    "treinos": "Treinos",
+    "evolucao": "Evolução",
+    "conquistas": "Conquistas",
+    "ranking": "Ranking",
+    "convidar": "Convidar",
+    "jornadaFaixas": "Jornada das Faixas",
+    "verTodas": "Ver todas",
+    "desbloqueadas": "desbloqueadas",
+    "encontreAcademia": "Encontre sua academia",
+    "semVinculoDesc": "Você ainda não está vinculado a nenhuma academia. Busque uma para acompanhar suas aulas e evolução.",
+    "buscarAcademia": "Buscar academia",
+    "menos": "Menos",
+    "mais": "Mais",
+    "aulasNv": "aulas · Nv.",
+    "convidarOssTrack": "Convidar para o OssTrack",
+    "nivelDisciplina": "Nível de Disciplina",
+    "atleta": "Atleta",
+    "dias": "dias"
+  },
+  "relatorios": {
+    "subtitle": "Métricas e indicadores da academia",
+    "erroCarregar": "Erro ao carregar relatórios",
+    "erroDesc": "Não foi possível carregar os dados. Verifique sua conexão e tente novamente.",
+    "tentarNovamente": "Tentar novamente",
+    "totalAlunos": "Total de Alunos",
+    "totalPresencas": "Total: {n} presenças",
+    "alunos7d": "Alunos que treinaram nos últimos 7 dias",
+    "deAlunos": "de {n} alunos cadastrados",
+    "alunos90d": "Alunos ativos (últimos 90 dias)",
+    "retencao": "de retenção"
   }
 }

@@ -6,6 +6,7 @@ import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 import { CalendarIcon, XIcon, ClipboardIcon, DumbbellIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
+import { PageTransition } from "@/components/ui/page-transition"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 const diaNomes = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
@@ -30,7 +31,9 @@ export default function ProfessorAgendaPage() {
     try {
       const res = await fetch("/api/agenda/horarios")
       if (res.ok) setHorarios(await res.json())
-    } catch { /* ignore */ }
+    } catch {
+      toast.error(t("erroCarregarHorarios") || "Erro ao carregar horários")
+    }
     setLoading(false)
   }, [])
 
@@ -38,7 +41,9 @@ export default function ProfessorAgendaPage() {
     try {
       const res = await fetch("/api/turmas")
       if (res.ok) setTurmas(await res.json())
-    } catch { /* ignore */ }
+    } catch {
+      toast.error(t("erroCarregarTurmas") || "Erro ao carregar turmas")
+    }
   }, [])
 
   useEffect(() => { fetchHorarios(); fetchTurmas() }, [fetchHorarios, fetchTurmas])
@@ -99,7 +104,8 @@ export default function ProfessorAgendaPage() {
 
   return (
     <DashboardShell role="professor">
-      <div className="max-w-5xl mx-auto space-y-4">
+      <PageTransition>
+        <div className="max-w-5xl mx-auto space-y-4">
         <div className="text-center">
           <h3 className="font-bold text-lg">{t("title")}</h3>
           <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
@@ -121,7 +127,7 @@ export default function ProfessorAgendaPage() {
         {showForm && (
           <form
             onSubmit={handleAddSlot}
-            className="surface p-5 space-y-4"
+            className="glass-card p-5 space-y-4"
           >
             <h4 className="font-bold text-sm">
               {t("novoHorario")} —{" "}
@@ -224,7 +230,20 @@ export default function ProfessorAgendaPage() {
         )}
 
         {loading ? (
-          <div className="text-center py-20 text-[var(--text-secondary)] text-sm">{t("carregando")}</div>
+          <div className="glass-card p-4 space-y-3">
+            <div className="grid grid-cols-7 gap-2 mb-2">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="h-4 bg-white/10 rounded animate-pulse" />
+              ))}
+            </div>
+            {Array.from({ length: 5 }).map((_, r) => (
+              <div key={r} className="grid grid-cols-7 gap-2">
+                {Array.from({ length: 7 }).map((_, c) => (
+                  <div key={c} className="h-12 bg-white/10 rounded animate-pulse" />
+                ))}
+              </div>
+            ))}
+          </div>
         ) : (
           <WeeklyGrid
             horarios={horarios}
@@ -239,7 +258,8 @@ export default function ProfessorAgendaPage() {
             }}
           />
         )}
-      </div>
+        </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

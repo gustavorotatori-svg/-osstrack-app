@@ -109,7 +109,6 @@ test("Aluno - todas as páginas", async ({ browser }) => {
     { url: "/dashboard/aluno/compartilhar", desc: "Compartilhar" },
     { url: "/dashboard/aluno/perfil", desc: "Perfil" },
     { url: "/dashboard/aluno/notificacoes", desc: "Notificações" },
-    { url: "/dashboard/aluno/premium", desc: "Premium" },
   ]
 
   for (const p of pages) {

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { CameraScanner } from "@/components/scanner/camera-scanner"
 import { useT } from "@/lib/use-t"
+import { PageTransition } from "@/components/ui/page-transition"
 
 export default function EscanearPage() {
   const t = useT("professor.escanear")
@@ -51,7 +52,8 @@ export default function EscanearPage() {
 
   return (
     <DashboardShell role="professor">
-      <div className="max-w-5xl mx-auto space-y-4">
+      <PageTransition>
+        <div className="max-w-5xl mx-auto space-y-4">
         <div className="text-center py-4">
           <div className="text-3xl mb-2">📷</div>
           <h3 className="font-bold text-lg">{t("title")}</h3>
@@ -69,7 +71,7 @@ export default function EscanearPage() {
           </div>
         </div>
 
-        <div className="surface p-4">
+        <div className="glass-card p-4">
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -98,7 +100,7 @@ export default function EscanearPage() {
           </div>
         )}
 
-        <div className="surface p-5">
+        <div className="glass-card p-5">
           <h4 className="font-bold text-sm mb-2">{t("comoFunciona")}</h4>
           <ol className="text-xs text-[var(--text-secondary)] space-y-2 list-decimal list-inside">
             <li>{t("passo1")}</li>
@@ -107,7 +109,8 @@ export default function EscanearPage() {
             <li>{t("passo4")}</li>
           </ol>
         </div>
-      </div>
+        </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

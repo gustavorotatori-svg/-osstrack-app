@@ -55,6 +55,7 @@ export async function GET(request: Request) {
       grau: true,
       avatar: true,
       categoria: true,
+      nivelDisciplina: true,
     },
   })
 
@@ -94,6 +95,7 @@ export async function GET(request: Request) {
       grau: a.grau,
       avatar: a.avatar,
       categoria: a.categoria,
+      nivelDisciplina: a.nivelDisciplina,
       totalAulas: countMap.get(a.id) || 0,
     }))
     .sort((a, b) => b.totalAulas - a.totalAulas)

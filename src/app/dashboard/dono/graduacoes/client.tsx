@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
+import { PageTransition } from "@/components/ui/page-transition"
 
 type Graduacao = {
   id: string
@@ -60,7 +61,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
     fetch("/api/graduacoes")
       .then(r => { if (!r.ok) throw new Error("Erro ao carregar"); return r.json() })
       .then((d) => { setGraduacoes(d); setLoading(false) })
-      .catch(() => { setError("Erro ao carregar regras de graduação"); setLoading(false) })
+      .catch(() => { toast.error("Erro ao carregar regras de graduação"); setError("Erro ao carregar regras de graduação"); setLoading(false) })
   }, [])
 
   const filtered = graduacoes.filter(g => g.categoria === categoria)
@@ -98,14 +99,25 @@ export default function GraduacoesClient({ role }: { role: string }) {
 
   return (
     <DashboardShell role={role}>
-      <div className="max-w-5xl mx-auto space-y-4">
+      <PageTransition><div className="max-w-5xl mx-auto space-y-4">
         <div className="text-center py-4">
           {loading ? (
-            <div className="flex items-center justify-center py-20">
-              <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin" />
+            <div className="glass-card p-6 space-y-4">
+              <div className="h-5 bg-white/10 rounded animate-pulse w-1/3 mx-auto" />
+              <div className="h-3 bg-white/10 rounded animate-pulse w-2/3 mx-auto" />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="h-24 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-24 bg-white/10 rounded-xl animate-pulse" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
+              </div>
             </div>
           ) : error ? (
-            <div className="surface text-center py-12">
+            <div className="glass-card text-center py-12">
               <p className="text-sm text-[var(--white-muted)]">{error}</p>
               <button onClick={() => window.location.reload()} className="mt-4 px-6 py-2 rounded-xl text-xs font-bold btn-gold">
                 Tentar novamente
@@ -214,36 +226,36 @@ export default function GraduacoesClient({ role }: { role: string }) {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Faixa</label>
-                  <select className="input-premium text-sm mt-1" value={novo.faixa} onChange={e => setNovo({ ...novo, faixa: e.target.value })}>
+                  <select className="input-field text-sm mt-1" value={novo.faixa} onChange={e => setNovo({ ...novo, faixa: e.target.value })}>
                     {Object.keys(beltIcons).map(f => <option key={f} value={f}>{beltIcons[f]} {f}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Graus</label>
-                  <input type="number" className="input-premium text-sm mt-1" value={novo.graus} onChange={e => setNovo({ ...novo, graus: Number(e.target.value) })} min={1} max={10} />
+                  <input type="number" className="input-field text-sm mt-1" value={novo.graus} onChange={e => setNovo({ ...novo, graus: Number(e.target.value) })} min={1} max={10} />
                 </div>
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas por Grau</label>
-                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasPorGrau} onChange={e => setNovo({ ...novo, aulasPorGrau: Number(e.target.value) })} min={1} />
+                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasPorGrau} onChange={e => setNovo({ ...novo, aulasPorGrau: Number(e.target.value) })} min={1} />
                 </div>
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas p/ próx. faixa</label>
-                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasProxFx} onChange={e => setNovo({ ...novo, aulasProxFx: e.target.value })} placeholder="Automático" />
+                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasProxFx} onChange={e => setNovo({ ...novo, aulasProxFx: e.target.value })} placeholder="Automático" />
                 </div>
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas mín/ano</label>
-                  <input type="number" className="input-premium text-sm mt-1" value={novo.aulasMinimasAno} onChange={e => setNovo({ ...novo, aulasMinimasAno: e.target.value })} placeholder="Opcional" />
+                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasMinimasAno} onChange={e => setNovo({ ...novo, aulasMinimasAno: e.target.value })} placeholder="Opcional" />
                 </div>
                 <div>
                   <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Regra</label>
-                  <select className="input-premium text-sm mt-1" value={novo.regraTroca} onChange={e => setNovo({ ...novo, regraTroca: e.target.value })}>
+                  <select className="input-field text-sm mt-1" value={novo.regraTroca} onChange={e => setNovo({ ...novo, regraTroca: e.target.value })}>
                     {regrasTroca.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
                   </select>
                 </div>
               </div>
               <div>
                 <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Data do exame</label>
-                <input type="date" className="input-premium text-sm mt-1" value={novo.dataProva} onChange={e => setNovo({ ...novo, dataProva: e.target.value })} />
+                <input type="date" className="input-field text-sm mt-1" value={novo.dataProva} onChange={e => setNovo({ ...novo, dataProva: e.target.value })} />
               </div>
               <button onClick={async () => {
                 setCriando(true)
@@ -276,35 +288,35 @@ export default function GraduacoesClient({ role }: { role: string }) {
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Graus</label>
-                        <input type="number" className="input-premium text-sm mt-1" value={editForm.graus}
+                        <input type="number" className="input-field text-sm mt-1" value={editForm.graus}
                           onChange={e => updateField("graus", Number(e.target.value))} />
                       </div>
                       <div>
                         <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas por Grau</label>
-                        <input type="number" className="input-premium text-sm mt-1" value={editForm.aulasPorGrau}
+                        <input type="number" className="input-field text-sm mt-1" value={editForm.aulasPorGrau}
                           onChange={e => updateField("aulasPorGrau", Number(e.target.value))} />
                       </div>
                       <div>
                         <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas p/ próx. faixa</label>
-                        <input type="number" className="input-premium text-sm mt-1" value={editForm.aulasProxFx ?? ""}
+                        <input type="number" className="input-field text-sm mt-1" value={editForm.aulasProxFx ?? ""}
                           onChange={e => updateField("aulasProxFx", e.target.value ? Number(e.target.value) : null)} placeholder="Automático" />
                       </div>
                       <div>
                         <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Aulas mín/ano</label>
-                        <input type="number" className="input-premium text-sm mt-1" value={editForm.aulasMinimasAno ?? ""}
+                        <input type="number" className="input-field text-sm mt-1" value={editForm.aulasMinimasAno ?? ""}
                           onChange={e => updateField("aulasMinimasAno", e.target.value ? Number(e.target.value) : null)} placeholder="Opcional" />
                       </div>
                     </div>
                     <div>
                       <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Regra de troca</label>
-                      <select className="input-premium text-sm mt-1" value={editForm.regraTroca}
+                      <select className="input-field text-sm mt-1" value={editForm.regraTroca}
                         onChange={e => updateField("regraTroca", e.target.value)}>
 {regrasTroca.map((r, i) => <option key={r.value} value={r.value}>{t(`regrasTroca.${i}.label`)}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="text-[9px] text-[var(--gray)] uppercase tracking-wide font-semibold">Data do exame</label>
-                      <input type="date" className="input-premium text-sm mt-1"
+                      <input type="date" className="input-field text-sm mt-1"
                         value={editForm.dataProva ? editForm.dataProva.split("T")[0] : ""}
                         onChange={e => updateField("dataProva", e.target.value || null)} />
                     </div>
@@ -379,7 +391,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
             </div>
           </div>
         )}
-      </div>
+      </div></PageTransition>
     </DashboardShell>
   )
 }

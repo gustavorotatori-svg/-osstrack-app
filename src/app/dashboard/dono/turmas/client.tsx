@@ -216,27 +216,27 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("nome")}</label>
                 <input value={nome} onChange={(e) => setNome(e.target.value)}
-                  className="input-premium w-full text-sm mt-1" placeholder={tr("placeholderNome")} required />
+                  className="input-field w-full text-sm mt-1" placeholder={tr("placeholderNome")} required />
               </div>
 
               <div>
                 <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("descricao")}</label>
                 <input value={descricao} onChange={(e) => setDescricao(e.target.value)}
-                  className="input-premium w-full text-sm mt-1" placeholder={tr("placeholderDesc")} />
+                  className="input-field w-full text-sm mt-1" placeholder={tr("placeholderDesc")} />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("categoria")}</label>
                   <select value={categoria} onChange={(e) => setCategoria(e.target.value)}
-                    className="input-premium w-full text-sm mt-1">
+                    className="input-field w-full text-sm mt-1">
                     {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("maxAlunos")}</label>
                   <input type="number" value={maxAlunos} onChange={(e) => setMaxAlunos(Number(e.target.value))}
-                    className="input-premium w-full text-sm mt-1" />
+                    className="input-field w-full text-sm mt-1" />
                 </div>
               </div>
 

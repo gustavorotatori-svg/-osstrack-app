@@ -5,9 +5,9 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   const publicPaths = [
-    "/", "/login", "/cadastro",
+    "/", "/login", "/cadastro", "/convite",
     "/ajuda", "/lgpd",
-    "/api/auth",
+    "/api/auth", "/ebook",
   ]
   if (
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||

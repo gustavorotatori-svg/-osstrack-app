@@ -2,6 +2,7 @@
 
 import { useT } from "@/lib/use-t"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { PageTransition } from "@/components/ui/page-transition"
 import { getBeltEmoji } from "@/lib/utils"
 import { TrendingUp, Calendar, Target, BarChart3, Clock, Award, FileSearch } from "lucide-react"
 
@@ -17,12 +18,14 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
   if (!graduacoes || graduacoes.length === 0) {
     return (
       <DashboardShell role="aluno">
-        <div className="max-w-5xl mx-auto space-y-4">
-          <div className="tech-card p-8 text-center">
-            <FileSearch className="w-10 h-10 mb-3 mx-auto text-[var(--text-secondary)]" />
-            <p className="text-sm text-[var(--text-secondary)]">Nenhuma graduação disponível</p>
+        <PageTransition>
+          <div className="max-w-5xl mx-auto space-y-4">
+            <div className="glass-card p-8 text-center">
+              <FileSearch className="w-10 h-10 mb-3 mx-auto text-[var(--text-secondary)]" />
+              <p className="text-sm text-[var(--text-secondary)]">Nenhuma graduação disponível</p>
+            </div>
           </div>
-        </div>
+        </PageTransition>
       </DashboardShell>
     )
   }
@@ -55,7 +58,8 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
 
   return (
     <DashboardShell role="aluno">
-      <div className="max-w-5xl mx-auto space-y-4">
+      <PageTransition>
+        <div className="max-w-5xl mx-auto space-y-4">
 
         {/* Tech Hero */}
         <div className="relative overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[rgba(201,168,76,0.08)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-6">
@@ -70,42 +74,42 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
 
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="tech-stat">
+          <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
               <Calendar className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
               <span className="live-dot" />
             </div>
-            <div className="tech-stat-value text-lg">{aluno.totalAulas}</div>
-            <div className="tech-stat-label">{t("totalAulas")}</div>
+            <div className="stat-glass-value text-lg">{aluno.totalAulas}</div>
+            <div className="stat-glass-label">{t("totalAulas")}</div>
           </div>
-          <div className="tech-stat">
+          <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
               <BarChart3 className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
               <span className="live-dot" />
             </div>
-            <div className="tech-stat-value text-lg">{mediaMensal}</div>
-            <div className="tech-stat-label">média/mês</div>
+            <div className="stat-glass-value text-lg">{mediaMensal}</div>
+            <div className="stat-glass-label">média/mês</div>
           </div>
-          <div className="tech-stat">
+          <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
               <Clock className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
               <span className={`w-1.5 h-1.5 rounded-full ${diasDesdeInicio > 30 ? "bg-emerald-500" : "bg-gray-500"} inline-block`} />
             </div>
-            <div className="tech-stat-value text-lg">{diasDesdeInicio}</div>
-            <div className="tech-stat-label">dias ativo</div>
+            <div className="stat-glass-value text-lg">{diasDesdeInicio}</div>
+            <div className="stat-glass-label">dias ativo</div>
           </div>
-          <div className="tech-stat">
+          <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
               <Award className="w-4 h-4 text-[rgba(255,255,255,0.25)]" />
               <span className="live-dot" />
             </div>
-            <div className="tech-stat-value text-lg">{aluno.grau + 1}/{currentGrad?.graus || 5}</div>
-            <div className="tech-stat-label">{t("grauAtual")}</div>
+            <div className="stat-glass-value text-lg">{aluno.grau + 1}/{currentGrad?.graus || 5}</div>
+            <div className="stat-glass-label">{t("grauAtual")}</div>
           </div>
         </div>
 
         {/* Monthly chart */}
-        <div className="tech-card p-5">
+        <div className="glass-card p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-[var(--gold)]" />
@@ -135,7 +139,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
         </div>
 
         {/* Belt timeline */}
-        <div className="tech-card p-5">
+        <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-5">
             <TrendingUp className="w-4 h-4 text-[var(--gold)]" />
             <span className="section-header mb-0">{t("progression")}</span>
@@ -145,7 +149,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
             {graduacoes.map((g, i) => {
               const isCurrent = i === beltIndex
               const isPast = i < beltIndex
-              const totalClassesNeeded = g.aulasProxFx || 999
+              const totalClassesNeeded = g.aulasProxFx ?? g.aulasPorGrau * g.graus * 5
               const progress = isCurrent ? Math.min(100, (aluno.totalAulas / totalClassesNeeded) * 100) : isPast ? 100 : 0
               return (
                 <div key={g.faixa} className="relative pb-7 last:pb-0">
@@ -178,7 +182,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
 
         {/* Projection card */}
         {nextGrad && aulasRestantes !== null && (
-          <div className="tech-card p-5">
+          <div className="glass-card p-5">
             <div className="flex items-center gap-2 mb-3">
               <Target className="w-4 h-4 text-[var(--gold)]" />
               <span className="section-header mb-0">Projeção</span>
@@ -206,7 +210,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
         )}
 
         {/* Pace indicator */}
-        <div className="tech-card p-5">
+        <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <BarChart3 className="w-4 h-4 text-[var(--gold)]" />
             <span className="section-header mb-0">Ritmo</span>
@@ -232,8 +236,9 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
               )
             })}
           </div>
+          </div>
         </div>
-      </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

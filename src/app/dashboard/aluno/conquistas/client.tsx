@@ -73,8 +73,10 @@ export function AchievementsClient({ conquistas }: Props) {
   if (loading) {
     return (
       <DashboardShell role="aluno">
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin" />
+        <div className="grid grid-cols-4 gap-2 py-8">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="glass-card p-4 h-32 animate-pulse" />
+          ))}
         </div>
       </DashboardShell>
     )
@@ -84,7 +86,7 @@ export function AchievementsClient({ conquistas }: Props) {
     return (
       <DashboardShell role="aluno">
         <div className="max-w-5xl mx-auto py-20">
-          <div className="surface text-center py-12">
+          <div className="glass-card text-center py-12">
             <SearchIcon className="w-10 h-10 mb-3 mx-auto text-[var(--text-secondary)]" />
             <p className="text-sm text-[var(--text-secondary)]">{error}</p>
             <button onClick={() => window.location.reload()} className="btn-primary mt-4 px-6 py-2 text-xs font-bold rounded-xl">
@@ -111,7 +113,7 @@ export function AchievementsClient({ conquistas }: Props) {
           {/* Stats por categoria */}
           <div className="grid grid-cols-3 gap-2">
             {catStats.map((cat) => (
-              <div key={cat.key} className="surface text-center p-3">
+              <div key={cat.key} className="glass-card text-center p-3">
                 <div className="flex justify-center">{cat.icon}</div>
                 <div className="text-xs font-bold mt-1">{cat.label}</div>
                 <div className="text-[10px] text-[var(--text-secondary)]">{cat.desbloqueadas}/{cat.total}</div>
@@ -127,14 +129,14 @@ export function AchievementsClient({ conquistas }: Props) {
           <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button onClick={() => setCatFilter("todas")}
               className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                catFilter === "todas" ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                catFilter === "todas" ? "bg-[var(--red)] text-white shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
               }`}>
               <ClipboardIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("todas")}
             </button>
             {Object.entries(categorias).map(([key, val]) => (
               <button key={key} onClick={() => setCatFilter(key)}
                 className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize ${
-                  catFilter === key ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                  catFilter === key ? "bg-[var(--red)] text-white shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
                 }`}>
                 <span className="inline-flex items-center gap-1">{val.icon} {val.label}</span>
               </button>
@@ -142,13 +144,13 @@ export function AchievementsClient({ conquistas }: Props) {
           </div>
 
           {/* Toggle mostrar bloqueadas */}
-          <div className="flex items-center justify-between surface p-3">
+          <div className="flex items-center justify-between glass-card p-3">
             <div className="text-xs font-semibold">{t("mostrarBloqueadas")}</div>
             <button
               onClick={() => setShowBloqueadas(!showBloqueadas)}
               className={`relative w-10 h-6 rounded-full transition-all ${showBloqueadas ? "bg-emerald-600" : "bg-[var(--border)]"}`}
             >
-              <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-md transition-all ${showBloqueadas ? "left-4.5" : "left-0.5"}`} />
+              <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-md transition-all ${showBloqueadas ? "right-0.5" : "left-0.5"}`} />
             </button>
           </div>
 
@@ -172,7 +174,7 @@ export function AchievementsClient({ conquistas }: Props) {
           </div>
 
           {visible.length === 0 && (
-            <div className="surface text-center py-10">
+            <div className="glass-card text-center py-10">
               <SearchIcon className="w-10 h-10 mb-2 mx-auto" />
               <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaEncontrada")}</p>
             </div>
