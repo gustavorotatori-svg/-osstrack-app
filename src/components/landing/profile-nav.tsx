@@ -45,11 +45,12 @@ export function ProfileNav() {
           className="text-center max-w-xl mx-auto mb-16"
         >
           <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9, skewX: -8 }}
+            whileInView={{ opacity: 1, scale: 1, skewX: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3 }}
-            className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            className="inline-block px-5 py-2 bg-[rgba(201,168,76,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            style={{ clipPath: "polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%)" }}
           >
             PARA QUEM É
           </motion.span>

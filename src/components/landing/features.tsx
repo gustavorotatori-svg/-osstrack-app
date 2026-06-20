@@ -1,11 +1,27 @@
 "use client"
 
 import { useT } from "@/lib/use-t"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { useRef } from "react"
+import { motion } from "framer-motion"
 
-const beltColors = ["#e8e8e8", "#2563eb", "#9333ea", "#92400e", "#1a1a1a", "#d4a847"]
-const beltLabels = ["Branca", "Azul", "Roxa", "Marrom", "Preta", "Coral"]
+const cardStyles = [
+  { bg: "linear-gradient(135deg, #1e293b, #0f172a)", border: "#334155", accent: "#3b82f6", radius: "24px 8px 24px 8px" },
+  { bg: "linear-gradient(135deg, #1a1a2e, #16213e)", border: "#0f3460", accent: "#6366f1", radius: "8px 24px 8px 24px" },
+  { bg: "linear-gradient(135deg, #1c1917, #292524)", border: "#44403c", accent: "#d4a847", radius: "24px 24px 8px 8px" },
+  { bg: "linear-gradient(135deg, #0f172a, #020617)", border: "#1e293b", accent: "#06b6d4", radius: "8px 8px 24px 24px" },
+  { bg: "linear-gradient(135deg, #1a1a1a, #262626)", border: "#404040", accent: "#22c55e", radius: "20px 4px 20px 4px" },
+  { bg: "linear-gradient(135deg, #2d0a0a, #1a0505)", border: "#450a0a", accent: "#ef4444", radius: "4px 20px 4px 20px" },
+]
+
+const floatVariants = [
+  { y: [0, -6, 0], rotate: [0, 1, 0] },
+  { y: [0, 8, 0], rotate: [0, -0.5, 0] },
+  { y: [0, -4, 0], rotate: [0, 0.5, 0] },
+  { y: [0, 6, 0], rotate: [0, -1, 0] },
+  { y: [0, -8, 0], rotate: [0, 0.5, 0] },
+  { y: [0, 5, 0], rotate: [0, -0.5, 0] },
+]
+
+const durations = [4, 5, 3.5, 6, 4.5, 5.5]
 
 export function Features() {
   const t = useT("features")
@@ -19,123 +35,83 @@ export function Features() {
     { icon: "🥋", titleKey: "graduacao", descKey: "graduacaoDesc" },
   ]
 
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  })
-
-  const beltX = useTransform(scrollYProgress, [0, 0.5, 1], ["-10%", "0%", "10%"])
-  const beltOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.3, 1, 1, 0.3])
-
   return (
-    <section id="recursos" ref={sectionRef} className="py-32 px-5 relative overflow-hidden">
+    <section id="recursos" className="py-32 px-5 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(201,168,76,0.01)] to-transparent" />
 
       <div className="max-w-6xl mx-auto relative">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-xl mx-auto mb-20"
-        >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.3 }}
-            className="inline-block px-4 py-1.5 bg-[rgba(201,168,76,0.08)] border border-[rgba(201,168,76,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+        <div className="text-center max-w-xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5 }}
           >
-            {t("badge")}
-          </motion.span>
-          <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
-            {t("titulo")}
-          </h2>
-          <p className="text-[var(--text-secondary)] leading-relaxed">
-            {t("subtitulo")}
-          </p>
-        </motion.div>
-
-        {/* Belt horizontal — cada grau é uma feature */}
-        <motion.div
-          style={{ x: beltX, opacity: beltOpacity }}
-          className="flex rounded-2xl overflow-hidden border border-white/5 shadow-2xl"
-        >
-          {features.map((f, i) => (
-            <motion.div
-              key={f.titleKey}
-              className="group relative flex-1 min-w-0 transition-all duration-500"
-              whileHover={{ flex: 2 }}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3 }}
+              className="inline-block px-5 py-2 bg-[rgba(201,168,76,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+              style={{ clipPath: "polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)" }}
             >
-              {/* Belt color section */}
-              <div
-                className="relative h-80 flex flex-col items-center justify-center px-3 transition-all duration-500"
-                style={{ background: beltColors[i] }}
+              {t("badge")}
+            </motion.span>
+            <h2 className="text-[clamp(1.75rem,5vw,2.75rem)] font-extrabold tracking-tight mb-4">
+              {t("titulo")}
+            </h2>
+            <p className="text-[var(--text-secondary)] leading-relaxed">
+              {t("subtitulo")}
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {features.map((f, i) => {
+            const style = cardStyles[i]
+            const float = floatVariants[i]
+            return (
+              <motion.div
+                key={f.titleKey}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               >
-                {/* Overlay escuro pra legibilidade */}
+                <motion.div
+                  className="group relative overflow-hidden"
+                  style={{ borderRadius: style.radius }}
+                  animate={{ y: float.y, rotate: float.rotate }}
+                  transition={{ duration: durations[i], repeat: Infinity, ease: "easeInOut" }}
+                >
                 <div
-                  className="absolute inset-0 transition-opacity duration-500"
-                  style={{
-                    background: i === 4 ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)",
-                  }}
-                />
-                {/* Gold stripe pra preta */}
-                {i === 4 && (
-                  <div className="absolute inset-x-[15%] top-1/2 -translate-y-1/2 h-[3px] bg-[var(--gold)] rounded-full opacity-60" />
-                )}
-
-                <span className="text-3xl relative z-10 mb-2">{f.icon}</span>
-                <h3
-                  className="text-sm font-extrabold text-center leading-tight relative z-10"
-                  style={{ color: i === 4 ? "var(--gold)" : i === 0 ? "#1a1a1a" : "#fff" }}
+                  className="relative p-6 md:p-7 h-full border"
+                  style={{ background: style.bg, borderColor: style.border, borderRadius: style.radius }}
                 >
-                  {t(f.titleKey)}
-                </h3>
+                  {/* Accent line */}
+                  <div
+                    className="absolute top-0 left-4 right-4 h-0.5 rounded-full opacity-60"
+                    style={{ background: style.accent }}
+                  />
 
-                {/* Belt label */}
-                <span
-                  className="text-[10px] font-bold uppercase tracking-widest mt-2 relative z-10 px-2 py-0.5 rounded"
-                  style={{
-                    background: "rgba(0,0,0,0.2)",
-                    color: i === 4 ? "var(--gold)" : "#fff",
-                  }}
-                >
-                  {beltLabels[i]} · {i + 1}º grau
-                </span>
+                  <span className="text-3xl block mb-4">{f.icon}</span>
+                  <h3 className="text-base font-extrabold mb-2">{t(f.titleKey)}</h3>
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    {t(f.descKey)}
+                  </p>
 
-                {/* Descrição expande no hover */}
-                <motion.p
-                  className="text-xs text-center leading-relaxed mt-3 relative z-10 max-w-[180px]"
-                  style={{ color: i === 0 ? "#333" : "rgba(255,255,255,0.85)" }}
-                  initial={{ opacity: 0, height: 0 }}
-                  whileHover={{ opacity: 1, height: "auto" }}
-                >
-                  {t(f.descKey)}
-                </motion.p>
-              </div>
-
-              {/* Glow na borda direita */}
-              <div
-                className="absolute right-0 top-0 bottom-0 w-px"
-                style={{
-                  background: `linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent)`,
-                }}
-              />
+                  {/* Bottom accent indicator */}
+                  <div
+                    className="absolute bottom-3 right-3 w-8 h-8 rounded-full opacity-10 group-hover:opacity-25 transition-opacity duration-300"
+                    style={{ background: style.accent }}
+                  />
+                </div>
+              </motion.div>
             </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Scroll hint */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="text-center text-[10px] text-[var(--text-muted)] mt-6"
-        >
-          Passe o mouse sobre cada grau para detalhes
-        </motion.p>
+          )
+          })}
+        </div>
       </div>
     </section>
   )

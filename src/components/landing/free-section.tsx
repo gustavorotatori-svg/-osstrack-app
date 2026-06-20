@@ -10,7 +10,7 @@ const benefits = [
   { icon: "📊", label: "Estatísticas" },
 ]
 
-const beltColors = ["#d4a847", "#2563eb", "#9333ea", "#059669"]
+const accentColors = ["#d4a847", "#2563eb", "#9333ea", "#059669"]
 
 export function FreeSection() {
   return (
@@ -43,11 +43,12 @@ export function FreeSection() {
           transition={{ duration: 0.5 }}
         >
           <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9, y: -5 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3 }}
-            className="inline-block px-4 py-1.5 bg-[rgba(212,168,71,0.08)] border border-[rgba(212,168,71,0.2)] rounded-full text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="inline-block px-5 py-2 bg-[rgba(212,168,71,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
+            style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%)" }}
           >
             100% gratuito
           </motion.span>
@@ -94,8 +95,8 @@ export function FreeSection() {
                   borderColor: "rgba(255,255,255,0.06)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = beltColors[i]
-                  e.currentTarget.style.background = `${beltColors[i]}12`
+                  e.currentTarget.style.borderColor = accentColors[i]
+                  e.currentTarget.style.background = `${accentColors[i]}12`
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"

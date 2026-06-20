@@ -5,14 +5,6 @@ import { motion } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { useEffect, useState } from "react"
 
-const rankBelts = [
-  { color: "#e8e8e8", shadow: "rgba(200,200,200,0.3)", label: "Branca" },
-  { color: "#2563eb", shadow: "rgba(37,99,235,0.3)", label: "Azul" },
-  { color: "#9333ea", shadow: "rgba(147,51,234,0.3)", label: "Roxa" },
-  { color: "#92400e", shadow: "rgba(146,64,14,0.3)", label: "Marrom" },
-  { color: "#1a1a1a", shadow: "rgba(255,255,255,0.15)", label: "Preta" },
-]
-
 export function Hero() {
   const t = useT("hero")
   const [mounted, setMounted] = useState(false)
@@ -22,24 +14,31 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden bg-[#0a0a0a]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
 
-      {/* Belts — positioned above text area para não interferir */}
+      {/* Abstract geometric orbs instead of belts */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        {rankBelts.map((belt, i) => (
+        {[0, 1, 2, 3, 4].map((i) => (
           <motion.div
-            key={belt.label}
-            initial={{ x: "120vw", rotate: 12 - i * 3, opacity: 0 }}
-            animate={mounted ? { x: `${45 - i * 8}vw`, rotate: -2 + i * 0.5, opacity: 0.6 } : {}}
-            transition={{ duration: 1.2, delay: 0.15 * i + 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            key={i}
+            className="absolute rounded-full"
             style={{
-              position: "absolute", top: `${8 + i * 4}%`, height: 4 + i * 1.2,
-              width: `${60 - i * 5}vw`, maxWidth: 420, borderRadius: 4,
-              background: belt.color,
-              boxShadow: `0 0 20px ${belt.shadow}`,
-              transformOrigin: "left center",
+              width: 120 + i * 80,
+              height: 120 + i * 80,
+              top: `${10 + i * 8}%`,
+              left: `${20 + i * 12}%`,
+              background: `radial-gradient(circle, rgba(212,168,71,${0.04 - i * 0.005}), transparent)`,
+              opacity: 0.4,
             }}
-          >
-            <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          </motion.div>
+            animate={{
+              x: [0, 30 - i * 5, 0],
+              y: [0, -20 + i * 3, 0],
+              scale: [1, 1.05 + i * 0.02, 1],
+            }}
+            transition={{
+              duration: 6 + i * 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
         ))}
       </div>
 
