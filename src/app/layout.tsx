@@ -60,7 +60,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{
           __html: `(function(){try{var t=localStorage.getItem("osstrack_theme");if(!t)t="dark";document.documentElement.className=t}catch(e){document.documentElement.className="dark"}})()`
         }} />
-        <link rel="apple-touch-icon" href="/icon-192.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
