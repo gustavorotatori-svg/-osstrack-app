@@ -3,6 +3,7 @@
 import { useT } from "@/lib/use-t"
 import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { PageTransition } from "@/components/ui/page-transition"
 import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 
@@ -21,7 +22,7 @@ export default function AlunoAgendaPage() {
       ])
       if (hRes.ok) setHorarios(await hRes.json())
       if (aRes.ok) setMeusAgendamentos(await aRes.json())
-    } catch { /* ignore */ }
+    } catch { toast.error(t("erroCarregar") || "Erro ao carregar") }
     setLoading(false)
   }, [])
 
@@ -66,18 +67,26 @@ export default function AlunoAgendaPage() {
 
   return (
     <DashboardShell role="aluno">
+      <PageTransition>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-bold text-lg">📅 {t("title")}</h3>
-            <p className="text-xs text-[var(--white-muted)]">
+            <p className="text-xs text-[var(--text-secondary)]">
               {t("subtitle")}
             </p>
           </div>
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-[var(--white-muted)] text-sm">{t("carregando")}</div>
+          <div className="grid grid-cols-7 gap-2">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <div key={i} className="glass-card p-3 animate-pulse">
+                <div className="h-3 w-8 bg-[var(--border)] rounded mb-2" />
+                <div className="h-8 w-full bg-[var(--border)] rounded" />
+              </div>
+            ))}
+          </div>
         ) : (
           <WeeklyGrid
             horarios={horarios}
@@ -95,7 +104,7 @@ export default function AlunoAgendaPage() {
         )}
 
         {meusAgendamentos.length > 0 && (
-          <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5">
+          <div className="glass-card p-5">
             <h4 className="font-bold text-sm mb-3">📋 {t("meusAgendamentos")}</h4>
             <div className="space-y-2">
               {meusAgendamentos.slice(0, 5).map((a: any) => (
@@ -111,7 +120,7 @@ export default function AlunoAgendaPage() {
                       {a.horario?.horaInicio}
                     </span>
                   </div>
-                  <span className="text-[10px] text-[var(--white-muted)]">
+                  <span className="text-[10px] text-[var(--text-secondary)]">
                     {new Date(a.data).toLocaleDateString("pt-BR")}
                   </span>
                 </div>
@@ -120,6 +129,7 @@ export default function AlunoAgendaPage() {
           </div>
         )}
       </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

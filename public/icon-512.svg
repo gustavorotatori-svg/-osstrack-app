@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="64" fill="#0a0a0a"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="#d4a847" stroke-width="8"/>
+  <path d="M160 280 Q200 140 256 170 Q312 200 352 280 Q312 310 256 320 Q200 330 160 280Z" fill="#d4a847" opacity="0.9"/>
+  <path d="M190 266 Q218 190 256 202 Q294 214 322 266 Q294 284 256 290 Q218 296 190 266Z" fill="#f0d078"/>
+  <text x="256" y="410" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="56" fill="#d4a847">OSSTRACK</text>
+</svg>

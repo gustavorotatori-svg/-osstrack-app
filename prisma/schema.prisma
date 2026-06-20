@@ -38,6 +38,7 @@ model Academia {
   planosMensalidade PlanoMensalidade[]
   contratos         Contrato[]
   cobrancas         Cobranca[]
+  despesas          Despesa[]
 }
 
 model Usuario {
@@ -55,11 +56,6 @@ model Usuario {
   academiaId String?
   academia   Academia? @relation(fields: [academiaId], references: [id])
   professorId String?
-  plano      String   @default("free")
-  planoInicio DateTime?
-  planoExpiracao DateTime?
-  stripeCustomerId String?
-  stripeSubscriptionId String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -77,13 +73,23 @@ model Usuario {
   curtidasMural CurtidaMural[]
   horariosAula    HorarioAula[]
   streak          Streak?
-  pagamentos      Pagamento[]
   contratos       Contrato[]
   cobrancas       Cobranca[]
   agendamentos    Agendamento[]
   convites        Convite[]
   pontos          Int      @default(0)
-}
+  tourVisto       Boolean  @default(false)
+  aceitouTermos   Boolean  @default(false)
+  aceitouLGPD     Boolean  @default(false)
+  aceitouMarketing Boolean @default(false)
+  dataAceite      DateTime?
+   resetToken      String?
+   resetTokenExpires DateTime?
+   dataNascimento  String?
+   nivelDisciplina String?
+   pushSubscriptions PushSubscription[]
+   premiumSubscription PremiumSubscription?
+ }
 
 model PlanoMensalidade {
   id         String   @id @default(cuid())
@@ -91,6 +97,7 @@ model PlanoMensalidade {
   academia   Academia @relation(fields: [academiaId], references: [id])
   nome       String
   valor      Int
+  taxaMatricula Int  @default(0)
   descricao  String?
   periodo    String   @default("mensal")
   ativo      Boolean  @default(true)
@@ -135,21 +142,6 @@ model Cobranca {
   pagoEm         String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-}
-
-model Pagamento {
-  id             String   @id @default(cuid())
-  usuarioId      String
-  usuario        Usuario  @relation(fields: [usuarioId], references: [id])
-  valor          Int
-  status         String   @default("pending")
-  metodo         String?
-  stripeId       String?
-  stripeSessionId String?
-  mesReferencia  Int
-  anoReferencia  Int
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
 }
 
 model Turma {
@@ -336,6 +328,9 @@ model Streak {
   currentStreak   Int      @default(0)
   bestStreak      Int      @default(0)
   lastCheckinDate DateTime?
+  streakFreeze    Int      @default(1)
+  freezeUsado     Boolean  @default(false)
+  semanaFreeze    String?
   updatedAt       DateTime @updatedAt
 }
 
@@ -389,6 +384,49 @@ model Agendamento {
   @@unique([horarioId, alunoId, data])
 }
 
+model PushSubscription {
+  id        String   @id @default(cuid())
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PremiumSubscription {
+  id             String    @id @default(cuid())
+  usuarioId      String    @unique
+  usuario        Usuario   @relation(fields: [usuarioId], references: [id])
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  status         String    @default("inactive")
+  plan           String    @default("premium")
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean  @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Despesa {
+  id          String   @id @default(cuid())
+  academiaId  String
+  academia    Academia @relation(fields: [academiaId], references: [id])
+  descricao   String
+  valor       Int
+  categoria   String   @default("outras")
+  dataVencimento DateTime
+  dataPagamento  DateTime?
+  status      String   @default("pendente")
+  observacao  String?
+  pagoEm      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model Contato {
   id        String   @id @default(cuid())
   nome      String
@@ -396,4 +434,26 @@ model Contato {
   mensagem  String
   lido      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  nome        String
+  email       String
+  academia    String?
+  telefone    String?
+  baixouEbook Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model RateLimitAttempt {
+  id         String   @id @default(cuid())
+  identifier String   // e.g., "email:test@test.com" or "ip:192.168.1.1"
+  endpoint   String   // e.g., "login", "register", "recuperar-senha"
+  attempts   Int      @default(1)
+  windowStart DateTime
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, endpoint])
+  @@index([identifier, endpoint, windowStart])
 }

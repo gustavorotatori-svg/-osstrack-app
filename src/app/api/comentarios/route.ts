@@ -14,6 +14,15 @@ export async function GET(request: Request) {
 
     if (!postagemId) return NextResponse.json({ error: "postagemId é obrigatório" }, { status: 400 })
 
+    // Check post belongs to user's academy
+    const postagem = await prisma.postagemMural.findUnique({
+      where: { id: postagemId },
+      include: { aluno: { select: { academiaId: true } } },
+    })
+    if (!postagem || postagem.aluno.academiaId !== session.user.academiaId) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+    }
+
     const comentarios = await prisma.comentarioMural.findMany({
       where: { postagemId },
       include: { usuario: { select: { id: true, nome: true, faixa: true } } },
@@ -37,13 +46,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "postagemId e conteudo são obrigatórios" }, { status: 400 })
     }
 
+    // Check post belongs to user's academy
+    const postagem = await prisma.postagemMural.findUnique({
+      where: { id: postagemId },
+      include: { aluno: { select: { academiaId: true } } },
+    })
+    if (!postagem || postagem.aluno.academiaId !== session.user.academiaId) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+    }
+
     const comentario = await prisma.comentarioMural.create({
       data: { postagemId, usuarioId: session.user.id, conteudo: conteudo.trim() },
       include: { usuario: { select: { id: true, nome: true, faixa: true } } },
     })
 
-    const postagem = await prisma.postagemMural.findUnique({ where: { id: postagemId } })
-    if (postagem && postagem.alunoId !== session.user.id) {
+    if (postagem.alunoId !== session.user.id) {
       await prisma.notificacao.create({
         data: {
           usuarioId: postagem.alunoId,

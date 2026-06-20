@@ -15,15 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Tipo inválido" }, { status: 400 })
     }
 
-    // aluno role só pode criar convite tipo "amigo"
-    if (session.user.role === "aluno" && tipo !== "amigo") {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-    }
-
-    // professor ou dono pode criar convite de academia
-    if (tipo === "academia" && !["professor", "dono"].includes(session.user.role)) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-    }
+    // TODO: no future, limitar tipos de convite por role se necessário
 
     const codigo = crypto.randomBytes(4).toString("hex")
     const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack-app.vercel.app"
@@ -45,15 +37,16 @@ export async function POST(request: Request) {
 
     await prisma.convite.create({ data: conviteData })
 
+    const remetenteNome = session.user.name || "Um amigo"
     let msg: string
     if (tipo === "professor") {
-      msg = `Olá! Fui convidado(a) a fazer parte da equipe no OssTrack. Acesse ${link} para se cadastrar como professor.`
+      msg = `${remetenteNome} te convidou para fazer parte da equipe no OssTrack 🥋 Acesse ${link} e cadastre-se como professor!`
     } else if (tipo === "amigo") {
-      msg = `E aí! Vem treinar comigo! 🥋 Acesse ${link} e se cadastre no OssTrack para acompanharmos nossa evolução juntos.`
+      msg = `${remetenteNome} te convidou para treinar juntos! 🥋 Acesse ${link} e cadastre-se no OssTrack para acompanharmos nossa evolução!`
     } else if (tipo === "academia") {
-      msg = `Olá! Sou professor e convido sua academia a se juntar ao OssTrack 🥋 Plataforma gratuita para academias e professores. Acesse ${link} e cadastre-se!`
+      msg = `${remetenteNome} convida sua academia a se juntar ao OssTrack 🥋 Plataforma gratuita para academias e professores. Acesse ${link} e cadastre-se!`
     } else {
-      msg = `Olá! Seu professor te convidou para treinar conosco. Acesse ${link} e cadastre-se no OssTrack para acompanhar sua evolução.`
+      msg = `${remetenteNome} te convidou para treinar no OssTrack! 🥋 Acesse ${link} e cadastre-se para acompanhar sua evolução!`
     }
 
     const whatsapp = `https://wa.me/?text=${encodeURIComponent(msg)}`

@@ -21,13 +21,21 @@ export function playBeep(freq = 660, duration = 0.15, volume = 0.3) {
   } catch {}
 }
 
+export function vibrate(pattern: number | number[]) {
+  if (typeof navigator !== "undefined" && navigator.vibrate) {
+    try { navigator.vibrate(pattern) } catch {}
+  }
+}
+
 export function playCheckinSound() {
+  vibrate(50)
   playBeep(880, 0.1, 0.3)
   setTimeout(() => playBeep(1100, 0.15, 0.35), 100)
   setTimeout(() => playBeep(1320, 0.25, 0.4), 200)
 }
 
 export function playCelebrationSound() {
+  vibrate([100, 50, 100, 50, 200])
   const notes = [523, 659, 784, 1047]
   notes.forEach((f, i) => setTimeout(() => playBeep(f, 0.2, 0.35), i * 120))
   setTimeout(() => {
@@ -38,9 +46,13 @@ export function playCelebrationSound() {
 export function playStreakSound(streak: number) {
   if (streak >= 30) playCelebrationSound()
   else if (streak >= 10) {
+    vibrate([60, 40, 60])
     playBeep(880, 0.15, 0.3)
     setTimeout(() => playBeep(1100, 0.2, 0.4), 150)
-  } else playBeep(660, 0.15, 0.3)
+  } else {
+    vibrate(30)
+    playBeep(660, 0.15, 0.3)
+  }
 }
 
 export function playAmbience(volume = 0.05) {

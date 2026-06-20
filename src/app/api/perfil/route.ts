@@ -37,6 +37,7 @@ export async function GET() {
       nome: usuario.nome,
       email: usuario.email,
       telefone: usuario.telefone,
+      dataNascimento: usuario.dataNascimento,
       avatar: usuario.avatar,
       faixa: usuario.faixa,
       grau: usuario.grau,
@@ -47,6 +48,7 @@ export async function GET() {
       thisMonth,
       currentStreak: usuario.streak?.currentStreak || 0,
       bestStreak: usuario.streak?.bestStreak || 0,
+      nivelDisciplina: usuario.nivelDisciplina,
     })
   } catch (error) {
     return handleApiError(error)
@@ -58,12 +60,13 @@ export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { nome, telefone, avatar } = await request.json()
+    const { nome, telefone, avatar, dataNascimento } = await request.json()
 
-    const data: Record<string, string> = {}
+    const data: Record<string, string | null> = {}
     if (nome !== undefined) data.nome = nome
     if (telefone !== undefined) data.telefone = telefone
     if (avatar !== undefined) data.avatar = avatar
+    if (dataNascimento !== undefined) data.dataNascimento = dataNascimento
 
     const updated = await prisma.usuario.update({
       where: { id: session.user.id },

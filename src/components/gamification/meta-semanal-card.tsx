@@ -19,11 +19,11 @@ export function MetaSemanalCard() {
   const [goals, setGoals] = useState<WeeklyGoal[]>([])
 
   useEffect(() => {
-    fetch("/api/meta-semanal").then(r => r.json()).then(setGoals).catch(() => {})
+    fetch("/api/metasemanal").then(r => r.json()).then(setGoals).catch(() => {})
   }, [])
 
   return (
-    <div className="tech-card p-5">
+    <div className="glass-card p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-[var(--gold)]" />

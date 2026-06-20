@@ -17,7 +17,7 @@ const faqItems = [
   },
   {
     q: "Quanto custa?",
-    r: "Academias e professores não pagam nada — é gratuito para sempre. Alunos podem usar o plano Free sem custo ou assinar o Premium por apenas R$4,90/mês para desbloquear recursos exclusivos como gráficos de evolução, conquistas especiais e o Mestre do Mês."
+    r: "Academias e professores não pagam nada — é gratuito para sempre. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês."
   },
   {
     q: "Como funciona o check-in?",
@@ -91,18 +91,18 @@ function ContatoForm() {
         <div>
           <label htmlFor="nome" className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">Nome</label>
           <input id="nome" name="nome" type="text" required placeholder="Seu nome"
-            className="input-premium" />
+            className="input-field" />
         </div>
         <div>
           <label htmlFor="email" className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">E-mail</label>
           <input id="email" name="email" type="email" required placeholder="seu@email.com"
-            className="input-premium" />
+            className="input-field" />
         </div>
       </div>
       <div>
         <label htmlFor="mensagem" className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">Mensagem</label>
         <textarea id="mensagem" name="mensagem" required rows={5} placeholder="Como podemos ajudar?"
-          className="input-premium resize-none" />
+          className="input-field resize-none" />
       </div>
       <button type="submit"
         className="btn-gold px-8 py-3.5 text-sm font-bold w-full md:w-auto active:scale-[0.98]">

@@ -8,7 +8,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
   const { id } = await params
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

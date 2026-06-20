@@ -6,6 +6,7 @@ import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 import { CalendarIcon, XIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
+import { PageTransition } from "@/components/ui/page-transition"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 const diaNomes = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
@@ -32,7 +33,9 @@ export default function DonoAgendaPage() {
     try {
       const res = await fetch("/api/agenda/horarios")
       if (res.ok) setHorarios(await res.json())
-    } catch { /* ignore */ }
+    } catch {
+      toast.error(t("erroCarregarHorarios"))
+    }
     setLoading(false)
   }, [])
 
@@ -41,7 +44,9 @@ export default function DonoAgendaPage() {
       const res = await fetch("/api/professores")
       if (res.ok) setProfessores(await res.json())
       else setProfessores([])
-    } catch { /* ignore */ }
+    } catch {
+      toast.error(t("erroCarregarProfessores"))
+    }
   }, [])
 
   const fetchTurmas = useCallback(async () => {
@@ -49,7 +54,9 @@ export default function DonoAgendaPage() {
       const res = await fetch("/api/turmas")
       if (res.ok) setTurmas(await res.json())
       else setTurmas([])
-    } catch { /* ignore */ }
+    } catch {
+      toast.error(t("erroCarregarTurmas"))
+    }
   }, [])
 
   useEffect(() => {
@@ -115,162 +122,177 @@ export default function DonoAgendaPage() {
 
   return (
     <DashboardShell role="dono">
-      <div className="max-w-5xl mx-auto space-y-4">
-        <div className="text-center">
-          <h3 className="font-bold text-lg">{t("title")}</h3>
-          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
-          <button
-            onClick={() => {
-              setShowForm(!showForm)
-              if (!showForm) {
-                const hoje = new Date().getDay()
-                setSelectedDay(hoje)
-                setSelectedHour("")
-              }
-            }}
-            className="btn-primary px-4 py-2 text-sm mt-3"
-          >
-            {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novoHorario")}
-          </button>
-        </div>
-
-        {showForm && (
-          <form
-            onSubmit={handleAddSlot}
-            className="glass-card p-5 space-y-4"
-          >
-            <h4 className="font-bold text-sm">
-              {t("novoHorario")} —{" "}
-              {selectedDay !== null ? diaNomes[selectedDay] : ""}
-              {selectedHour ? ` às ${selectedHour}` : ""}
-            </h4>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("turma")}
-                </label>
-                <select
-                  value={turmaId}
-                  onChange={(e) => setTurmaId(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
-                  required
-                >
-                  <option value="">{t("selecione")}</option>
-                  {turmas.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.nome}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("professor")}
-                </label>
-                <select
-                  value={professorId}
-                  onChange={(e) => setProfessorId(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
-                  required
-                >
-                  <option value="">{t("selecione")}</option>
-                  {professores.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.nome} {p.faixa ? `(${p.faixa})` : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("dia")}
-                </label>
-                <select
-                  value={selectedDay ?? 1}
-                  onChange={(e) => setSelectedDay(Number(e.target.value))}
-                  className="input-premium w-full text-sm mt-1"
-                >
-                  {diasSemana.map((d, i) => (
-                    <option key={d} value={i}>
-                      {d}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("local")}
-                </label>
-                <input
-                  value={local}
-                  onChange={(e) => setLocal(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
-                  placeholder={t("placeholderLocal")}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("inicio")}
-                </label>
-                <input
-                  type="time"
-                  value={horaInicio}
-                  onChange={(e) => setHoraInicio(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
-                  required
-                />
-              </div>
-              <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                  {t("fim")}
-                </label>
-                <input
-                  type="time"
-                  value={horaFim}
-                  onChange={(e) => setHoraFim(e.target.value)}
-                  className="input-premium w-full text-sm mt-1"
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
-                {t("maxAlunos")}
-              </label>
-              <input
-                type="number"
-                value={maxAlunos}
-                onChange={(e) => setMaxAlunos(Number(e.target.value))}
-                className="input-premium w-full text-sm mt-1"
-              />
-            </div>
-            <button type="submit" disabled={saving} className="btn-gold px-6 py-2.5 text-sm font-bold">
-              {saving ? t("salvando") : t("salvarHorario")}
+      <PageTransition>
+        <div className="max-w-5xl mx-auto space-y-4">
+          <div className="text-center">
+            <h3 className="font-bold text-lg">{t("title")}</h3>
+            <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
+            <button
+              onClick={() => {
+                setShowForm(!showForm)
+                if (!showForm) {
+                  const hoje = new Date().getDay()
+                  setSelectedDay(hoje)
+                  setSelectedHour("")
+                }
+              }}
+              className="btn-primary px-4 py-2 text-sm mt-3"
+            >
+              {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novoHorario")}
             </button>
-          </form>
-        )}
+          </div>
 
-        {loading ? (
-          <div className="text-center py-20 text-[var(--white-muted)] text-sm">{t("carregando")}</div>
-        ) : (
-          <WeeklyGrid
-            horarios={horarios}
-            onEmptyCell={openAddForm}
-            onClassCell={(h) => {
-              if (
-                confirm(
-                  `${t("confirmarExcluir")} "${h.turma?.nome || t("treino")}" (${h.horaInicio}-${h.horaFim})?`
+          {showForm && (
+            <form
+              onSubmit={handleAddSlot}
+              className="glass-card p-5 space-y-4"
+            >
+              <h4 className="font-bold text-sm">
+                {t("novoHorario")} —{" "}
+                {selectedDay !== null ? diaNomes[selectedDay] : ""}
+                {selectedHour ? ` às ${selectedHour}` : ""}
+              </h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("turma")}
+                  </label>
+                  <select
+                    value={turmaId}
+                    onChange={(e) => setTurmaId(e.target.value)}
+                    className="input-field w-full text-sm mt-1"
+                    required
+                  >
+                    <option value="">{t("selecione")}</option>
+                    {turmas.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.nome}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("professor")}
+                  </label>
+                  <select
+                    value={professorId}
+                    onChange={(e) => setProfessorId(e.target.value)}
+                    className="input-field w-full text-sm mt-1"
+                    required
+                  >
+                    <option value="">{t("selecione")}</option>
+                    {professores.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.nome} {p.faixa ? `(${p.faixa})` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("dia")}
+                  </label>
+                  <select
+                    value={selectedDay ?? 1}
+                    onChange={(e) => setSelectedDay(Number(e.target.value))}
+                    className="input-field w-full text-sm mt-1"
+                  >
+                    {diasSemana.map((d, i) => (
+                      <option key={d} value={i}>
+                        {d}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("local")}
+                  </label>
+                  <input
+                    value={local}
+                    onChange={(e) => setLocal(e.target.value)}
+                    className="input-field w-full text-sm mt-1"
+                    placeholder={t("placeholderLocal")}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("inicio")}
+                  </label>
+                  <input
+                    type="time"
+                    value={horaInicio}
+                    onChange={(e) => setHoraInicio(e.target.value)}
+                    className="input-field w-full text-sm mt-1"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                    {t("fim")}
+                  </label>
+                  <input
+                    type="time"
+                    value={horaFim}
+                    onChange={(e) => setHoraFim(e.target.value)}
+                    className="input-field w-full text-sm mt-1"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  {t("maxAlunos")}
+                </label>
+                <input
+                  type="number"
+                  value={maxAlunos}
+                  onChange={(e) => setMaxAlunos(Number(e.target.value))}
+                  className="input-field w-full text-sm mt-1"
+                />
+              </div>
+              <button type="submit" disabled={saving} className="btn-gold px-6 py-2.5 text-sm font-bold">
+                {saving ? t("salvando") : t("salvarHorario")}
+              </button>
+            </form>
+          )}
+
+          {loading ? (
+            <div className="glass-card p-8 space-y-4">
+              <div className="h-5 w-48 rounded bg-[var(--border-subtle)] mx-auto animate-pulse" />
+              <div className="h-3 w-64 rounded bg-[var(--border-subtle)] mx-auto animate-pulse" />
+              <div className="grid grid-cols-7 gap-2 mt-4">
+                {Array.from({ length: 7 }).map((_, i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="h-3 w-full rounded bg-[var(--border-subtle)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <WeeklyGrid
+              horarios={horarios}
+              onEmptyCell={openAddForm}
+              onClassCell={(h) => {
+                if (
+                  confirm(
+                    `${t("confirmarExcluir")} "${h.turma?.nome || t("treino")}" (${h.horaInicio}-${h.horaFim})?`
+                  )
                 )
-              )
-                handleDeleteSlot(h)
-            }}
-          />
-        )}
-      </div>
+                  handleDeleteSlot(h)
+              }}
+            />
+          )}
+        </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

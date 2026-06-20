@@ -1,18 +1,20 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Crown, TrendingUp, HelpCircle, Target, ArrowUpRight, BarChart3, Users, GraduationCap, Calendar, Settings, Wallet, FileText, ClipboardList, Link2 } from "lucide-react"
+import { motion } from "framer-motion"
+import { Crown, TrendingUp, HelpCircle, Target, ArrowUpRight, BarChart3, Users, GraduationCap, Calendar, Settings, Wallet, FileText, ClipboardList, Link2, Gift, AlertTriangle } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
 import { ConviteSection } from "@/components/convites/convite-section"
-import { MestreDoMesCard } from "@/components/gamification/mestre-do-mes-card"
+import { MestreDoMesSelector } from "@/components/gamification/mestre-do-mes-selector"
 import { UsersIcon, GraduationIcon, AwardIcon, ClipboardIcon, CalendarIcon } from "@/components/ui/icons"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
 import { useRouter } from "next/navigation"
+import { triggerOssTransition } from "@/components/ui/oss-transition"
 
 type Props = {
   role: "dono" | "professor"
@@ -30,9 +32,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   const router = useRouter()
   const [tab, setTab] = useState<"geral" | "alunos" | "graduacoes" | "ranking" | "prospectos">("geral")
   const [prospectStats, setProspectStats] = useState<{ stats: { total: number; usados: number; pendentes: number; expirados: number; conversao: number }; porTipo: { tipo: string; total: number }[]; ultimos: { id: string; tipo: string; codigo: string; usado: boolean; createdAt: string; expiresAt: string | null }[] } | null>(null)
+  const [aniversariantes, setAniversariantes] = useState<{ id: string; nome: string; faixa: string; avatar: string | null; dia: number }[]>([])
+  const [inativos, setInativos] = useState<{ id: string; nome: string; faixa: string; grau: number; avatar: string | null; ultimaPresenca: string | null; diasSemTreinar: number }[]>([])
 
   useEffect(() => {
     fetch("/api/prospectos").then((r) => r.json()).then(setProspectStats).catch(() => {})
+    fetch("/api/dashboard/aniversariantes").then((r) => r.json()).then((d) => setAniversariantes(d.aniversariantes || [])).catch(() => {})
+    fetch("/api/dashboard/inativos?dias=7").then((r) => r.json()).then((d) => setInativos(d.inativos || [])).catch(() => {})
   }, [])
 
   const [rankingVisivel, setRankingVisivel] = useState(academia.rankingVisivel)
@@ -73,9 +79,9 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
       { label: "Presenças", icon: ClipboardList, href: `/${role === "dono" ? "dono" : "professor"}/presencas`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
       { label: "Graduações", icon: GraduationCap, href: `/${role === "dono" ? "dono" : "professor"}/graduacoes`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
     ]
-    if (role === "dono") {
+    if (role === "dono" || role === "professor") {
       base.push(
-        { label: "Financeiro", icon: Wallet, href: "/dashboard/dono/financeiro", color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
+        { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
         { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
         { label: "Agenda", icon: Calendar, href: "/dashboard/dono/agenda", color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
         { label: "Config", icon: Settings, href: "/dashboard/dono/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
@@ -92,7 +98,8 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
         <div className="max-w-6xl mx-auto space-y-6">
 
           {/* Hero */}
-          <div className="hero">
+          <div className="hero-gradient p-5 md:p-6">
+            <div className="hero-orbs"><div className="hero-orb" /><div className="hero-orb" /></div>
             <div className="relative z-10 flex items-start justify-between">
               <div>
                 <div className="label text-[var(--gold)] mb-1">{role === "dono" ? "DONO" : "PROFESSOR"}</div>
@@ -108,54 +115,48 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 enter-stagger">
             {quickActions.map((action) => {
               const Icon = action.icon
               return (
-                <button key={action.label} onClick={() => router.push(action.href)}
-                  className={`relative overflow-hidden rounded-xl border ${action.border} p-3 text-center transition-all hover:scale-[1.02] active:scale-95 group`}
-                  style={{ background: `linear-gradient(135deg, ${action.color.split(" ")[0].replace("from-", "")}, ${action.color.split(" ")[1].replace("to-", "")})` }}>
-                  <Icon className="w-5 h-5 mx-auto mb-1.5 text-[var(--text-secondary)] group-hover:text-white transition-colors" />
-                  <span className="text-[10px] font-semibold text-[var(--text-secondary)] group-hover:text-white transition-colors">{action.label}</span>
-                  <ArrowUpRight className="w-3 h-3 absolute top-1.5 right-1.5 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-all" />
+                <button key={action.label} onClick={async () => { await triggerOssTransition(); router.push(action.href) }}
+                  className="quick-action">
+                  <Icon className="quick-action-icon" />
+                  <span className="quick-action-label">{action.label}</span>
                 </button>
               )
             })}
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="stat-block">
-              <div className="flex items-center justify-between mb-2">
-                <Users className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
-                <span className="live-dot" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 enter-stagger">
+            <div className="stat-glass">
+              <div className="stat-glass-icon" style={{ background: "var(--blue-dim)", color: "var(--blue)" }}>
+                <Users className="w-4 h-4" />
               </div>
-              <div className="stat-block-value"><AnimatedCounter value={stats.totalAlunos} /></div>
-              <div className="stat-block-label">{t("alunos")}</div>
+              <div className="stat-glass-value"><AnimatedCounter value={stats.totalAlunos} /></div>
+              <div className="stat-glass-label">{t("alunos")}</div>
             </div>
-            <div className="stat-block">
-              <div className="flex items-center justify-between mb-2">
-                <GraduationCap className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
-                <span className="live-dot" />
+            <div className="stat-glass">
+              <div className="stat-glass-icon" style={{ background: "var(--purple-dim)", color: "var(--purple)" }}>
+                <GraduationCap className="w-4 h-4" />
               </div>
-              <div className="stat-block-value"><AnimatedCounter value={stats.totalProfessores} /></div>
-              <div className="stat-block-label">{t("professores")}</div>
+              <div className="stat-glass-value"><AnimatedCounter value={stats.totalProfessores} /></div>
+              <div className="stat-glass-label">{t("professores")}</div>
             </div>
-            <div className="stat-block">
-              <div className="flex items-center justify-between mb-2">
-                <BarChart3 className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
-                <span className="live-dot" />
+            <div className="stat-glass">
+              <div className="stat-glass-icon" style={{ background: "var(--green-dim)", color: "var(--green)" }}>
+                <BarChart3 className="w-4 h-4" />
               </div>
-              <div className="stat-block-value"><AnimatedCounter value={stats.totalPresencas} /></div>
-              <div className="stat-block-label">{t("presencas")}</div>
+              <div className="stat-glass-value"><AnimatedCounter value={stats.totalPresencas} /></div>
+              <div className="stat-glass-label">{t("presencas")}</div>
             </div>
-            <div className="stat-block">
-              <div className="flex items-center justify-between mb-2">
-                <Calendar className="w-4 h-4 text-[rgba(255,255,255,0.2)]" />
-                <span className={`w-1.5 h-1.5 rounded-full ${presencasPorMes > 0 ? "bg-emerald-500" : "bg-gray-500"} inline-block`} />
+            <div className="stat-glass">
+              <div className="stat-glass-icon" style={{ background: "rgba(212,168,71,0.08)", color: "var(--gold)" }}>
+                <Calendar className="w-4 h-4" />
               </div>
-              <div className="stat-block-value"><AnimatedCounter value={presencasPorMes} /></div>
-              <div className="stat-block-label">{t("esteMes")}</div>
+              <div className="stat-glass-value"><AnimatedCounter value={presencasPorMes} /></div>
+              <div className="stat-glass-label">{t("esteMes")}</div>
             </div>
           </div>
 
@@ -167,7 +168,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* Monthly chart */}
-          <div className="card p-5">
+          <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-coral)"} as React.CSSProperties}>
             <div className="flex items-center justify-between mb-4">
               <div className="section-header mb-0">{t("presencasPorMes")}</div>
               <span className="label">Últimos 6 meses</span>
@@ -191,6 +192,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* Tabs */}
+          <div className="belt-divider">{t("navegacao")}</div>
           <div className="tab-bar">
             <button className={`tab-btn gap-1.5 ${tab === "geral" ? "active" : ""}`} onClick={() => setTab("geral")}>
               <ClipboardIcon className="w-4 h-4" /> {t("geral")}
@@ -211,10 +213,10 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Geral */}
           {tab === "geral" && (
-            <div className="space-y-3">
-              <MestreDoMesCard />
+            <div className="space-y-3 enter-stagger">
+              <MestreDoMesSelector />
 
-              <div className="card p-5">
+              <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-azul)"} as React.CSSProperties}>
                 <div className="section-header">{t("alunosPorCategoria")}</div>
                 {alunosPorCategoria.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">{t("nenhumAluno")}</p>
@@ -236,7 +238,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 )}
               </div>
 
-              <div className="card p-5">
+              <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-roxa)"} as React.CSSProperties}>
                 <div className="section-header">{t("alunosPorFaixa")}</div>
                 {alunos.length === 0 ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-6">{t("nenhumAluno")}</p>
@@ -260,7 +262,47 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 )}
               </div>
 
-              <div className="card p-5">
+              {aniversariantes.length > 0 && (
+                <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-vermelha)"} as React.CSSProperties}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Gift className="w-4 h-4 text-pink-400" />
+                    <div className="section-header mb-0">{t("aniversariantes")}</div>
+                    <span className="badge ml-auto">{aniversariantes.length}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {aniversariantes.map((a) => (
+                      <div key={a.id} className="surface px-3 py-2 flex items-center gap-2">
+                        <span className="text-xs opacity-60">{a.dia}</span>
+                        <span className="text-sm font-semibold">{a.nome}</span>
+                        <span className="text-[10px] text-[var(--gold)]">{a.faixa}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {inativos.length > 0 && (
+                <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-marrom)"} as React.CSSProperties}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <AlertTriangle className="w-4 h-4 text-yellow-400" />
+                    <div className="section-header mb-0">{t("alunosInativosTitle")}</div>
+                    <span className="badge ml-auto">{inativos.length}</span>
+                  </div>
+                  <p className="text-xs text-[var(--text-secondary)] mb-3">7 dias sem treinar</p>
+                  <div className="space-y-1">
+                    {inativos.slice(0, 10).map((a) => (
+                      <div key={a.id} className="flex items-center gap-3 py-2 border-b border-[rgba(255,255,255,0.03)] last:border-0">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-semibold truncate">{a.nome}</div>
+                          <div className="text-xs text-[var(--text-secondary)]">{a.faixa} · {a.diasSemTreinar} dias sem treinar</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-branca)"} as React.CSSProperties}>
                 <div className="section-header">{t("presencasRecentes")}</div>
                 {presencas.length === 0 ? (
                   <div className="text-center py-8">
@@ -290,7 +332,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Alunos */}
           {tab === "alunos" && (
-            <div className="card p-5">
+            <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-azul)"} as React.CSSProperties}>
               <div className="flex items-center justify-between mb-3">
                 <div className="section-header mb-0">{t("todosAlunos")}</div>
                 <span className="badge">{alunos.length} {t("total")}</span>
@@ -320,7 +362,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Graduações */}
           {tab === "graduacoes" && (
-            <div className="card p-5">
+            <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-roxa)"} as React.CSSProperties}>
               <div className="section-header">{t("regrasGraduacao")}</div>
               {graduacoes.length === 0 ? (
                 <div className="text-center py-8">
@@ -347,8 +389,8 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Tab: Prospectos */}
           {tab === "prospectos" && (
-            <div className="space-y-3">
-              <div className="card p-5">
+            <div className="space-y-3 enter-stagger">
+              <div className="glass-card p-5">
                 <div className="section-header">Funil de Prospecção</div>
                 {!prospectStats ? (
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
@@ -397,7 +439,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               </div>
 
               {prospectStats && prospectStats.ultimos.length > 0 && (
-                <div className="card p-5">
+                <div className="glass-card p-5">
                   <div className="section-header">Últimos Convites</div>
                   <div className="space-y-1">
                     {prospectStats.ultimos.map((c) => (
@@ -424,7 +466,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           {/* Tab: Ranking */}
           {tab === "ranking" && (
             <div className="space-y-3">
-              <div className="card p-5">
+              <div className="glass-card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="section-header mb-0">{t("configRanking")}</div>
                 </div>

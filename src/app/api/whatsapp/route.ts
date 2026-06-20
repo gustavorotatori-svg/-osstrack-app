@@ -17,8 +17,15 @@ export async function POST(req: Request) {
 
   if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
 
-  const aluno = await prisma.usuario.findUnique({ where: { id: alunoId } })
+  // Must belong to same academy
+  const aluno = await prisma.usuario.findUnique({
+    where: { id: alunoId },
+    select: { id: true, nome: true, telefone: true, academiaId: true },
+  })
   if (!aluno) return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
+  if (aluno.academiaId !== session.user.academiaId) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+  }
 
   const academia = await prisma.academia.findUnique({ where: { id: session.user.academiaId } })
   const telefone = aluno.telefone ? limparTelefone(aluno.telefone) : null

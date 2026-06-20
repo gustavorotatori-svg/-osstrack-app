@@ -2,17 +2,21 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
+import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const t = useT("login")
+  const { install, canInstall, isIOS, isStandalone } = useInstall()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -20,9 +24,26 @@ export default function Login() {
     setError("")
 
     try {
+      let recaptchaToken = ""
+
+      if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+        try {
+          if (!(window as any).grecaptcha) {
+            await new Promise<void>((resolve) => {
+              const script = document.createElement("script")
+              script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
+              script.onload = () => resolve()
+              document.head.appendChild(script)
+            })
+          }
+          recaptchaToken = await (window as any).grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: "login" })
+        } catch {}
+      }
+
       const result = await signIn("credentials", {
         email,
         password,
+        recaptchaToken: recaptchaToken || undefined,
         redirect: false,
       })
 
@@ -32,7 +53,8 @@ export default function Login() {
         return
       }
 
-      router.push("/dashboard")
+      const ref = searchParams.get("ref")
+      router.push(ref === "ebook" ? "/ebook/conteudo" : "/dashboard")
     } catch {
       setError(t("erroConexao"))
       setLoading(false)
@@ -40,10 +62,16 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(212,168,71,0.03)_0%,transparent_70%)]" />
+      <div className="w-full max-w-sm relative z-10">
+        <button onClick={() => router.push("/")} className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors mb-6">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+          Voltar
+        </button>
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg"
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg"
             style={{ background: "var(--gold)", color: "#000" }}>
             🥋
           </div>
@@ -51,26 +79,45 @@ export default function Login() {
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>{t("subtitle")}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="surface p-7 space-y-4">
+        <form onSubmit={handleSubmit} className="glass-card p-7 space-y-4">
           <div>
             <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("email")}</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="input"
+              className="input-field"
               required
             />
           </div>
           <div>
             <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("senha")}</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input-field w-full pr-10"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors"
+              >
+                {showPassword ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <Link href="/recuperar-senha" className="text-xs text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
+              Esqueceu a senha?
+            </Link>
           </div>
 
           {error && (
@@ -82,7 +129,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="btn w-full py-3.5 text-sm"
+            className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
             style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
           >
             {loading ? t("entrando") : t("entrar")}
@@ -96,12 +143,25 @@ export default function Login() {
           </p>
 
           {email && password && (
-            <div className="text-center text-[10px] text-[var(--text-muted)] leading-relaxed pt-1 divider">
+            <div className="text-center text-[10px] text-[var(--text-muted)] leading-relaxed pt-1 border-t border-[var(--border)]">
               {t("contasDemo")}
             </div>
           )}
         </form>
+
+        {!isStandalone && (
+          <div className="text-center mt-6">
+            <button
+              onClick={install}
+              className="inline-flex items-center gap-2 text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              {isIOS ? "Instalar na Tela de Início" : "Instalar App"}
+            </button>
+          </div>
+        )}
       </div>
+      <InstallPrompt />
     </div>
   )
 }

@@ -7,9 +7,12 @@ import { useSession } from "next-auth/react"
 import { playBeep } from "@/lib/sound"
 import { getBeltEmoji } from "@/lib/utils"
 import { Share2, Copy, Download, Image } from "lucide-react"
+import { toast } from "sonner"
+import { PageTransition } from "@/components/ui/page-transition"
 
 export default function CompartilharPage() {
   const t = useT("aluno.compartilhar")
+  const tc = useT("compartilharPage")
   const { data: session } = useSession()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [loading, setLoading] = useState(true)
@@ -30,7 +33,7 @@ export default function CompartilharPage() {
         })
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(() => { toast.error("Erro ao carregar perfil"); setLoading(false) })
   }, [])
 
   function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
@@ -243,85 +246,113 @@ export default function CompartilharPage() {
 
   const faixa = session?.user?.faixa || ""
 
-  if (loading) return null
+  if (loading) {
+    return (
+      <DashboardShell role="aluno">
+        <div className="max-w-5xl mx-auto space-y-4">
+          <div className="glass-card p-6 text-center space-y-4">
+            <div className="h-4 w-32 glass-card rounded-lg mx-auto" />
+            <div className="h-8 w-48 glass-card rounded-lg mx-auto" />
+            <div className="w-20 h-20 rounded-full glass-card mx-auto" />
+            <div className="h-4 w-56 glass-card rounded-lg mx-auto" />
+            <div className="h-4 w-64 glass-card rounded-lg mx-auto" />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="glass-card p-4 text-center space-y-3">
+              <div className="h-6 w-6 glass-card rounded mx-auto" />
+              <div className="h-3 w-20 glass-card rounded mx-auto" />
+              <div className="h-8 w-12 glass-card rounded mx-auto" />
+            </div>
+            <div className="glass-card p-4 text-center space-y-3">
+              <div className="h-6 w-6 glass-card rounded mx-auto" />
+              <div className="h-3 w-20 glass-card rounded mx-auto" />
+              <div className="h-8 w-12 glass-card rounded mx-auto" />
+            </div>
+          </div>
+        </div>
+      </DashboardShell>
+    )
+  }
 
   return (
     <DashboardShell role="aluno">
-      <div className="animate-fade-in max-w-5xl mx-auto space-y-4">
+      <PageTransition>
+        <div className="animate-fade-in max-w-5xl mx-auto space-y-4">
 
-        {/* Tech Hero */}
-        <div className="relative overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[rgba(201,168,76,0.08)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-6">
-          <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
-          <div className="relative z-10">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Compartilhar</span>
-            <h1 className="text-2xl font-black tracking-tight">{t("title")}</h1>
-            <p className="text-xs text-[var(--text-secondary)] mt-1">Arte automática com suas estatísticas — pronta pra rede social</p>
-          </div>
-        </div>
-
-        {/* Preview */}
-        <div className="tech-card overflow-hidden">
-          {/* Card preview */}
-          <div className="bg-gradient-to-br from-black via-[#1a0a0a] to-black p-6 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,168,76,0.15),transparent_60%)]" />
-            <div className="relative">
-              <div className="text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">OSSTRACK</div>
-              <div className={`w-20 h-20 rounded-full border-2 mx-auto mb-3 flex items-center justify-center text-3xl font-bold bg-[var(--surface)]`} style={{ borderColor: "var(--gold)" }}>
-                <span className="text-[var(--gold)]">{(session?.user?.name || "?").charAt(0).toUpperCase()}</span>
-              </div>
-              <div className="text-xl font-extrabold">{session?.user?.name || ""}</div>
-              <div className="text-sm text-[var(--gold)] font-semibold mt-1">
-                {getBeltEmoji(faixa)} {faixa} {"★".repeat((session?.user?.grau || 0) + 1)}
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 mt-5 max-w-xs mx-auto">
-                {[
-                  { label: t("totalAulas"), value: stats.totalAulas, icon: "🥋" },
-                  { label: t("esteMes"), value: stats.presencasMes, icon: "📅" },
-                  { label: t("streakAtual"), value: `🔥 ${stats.streak}`, icon: "🔥" },
-                  { label: t("melhorStreak"), value: `🏆 ${stats.bestStreak}`, icon: "🏆" },
-                ].map((s) => (
-                  <div key={s.label} className="bg-black/40 border border-[var(--gold-dim)] rounded-xl p-3 text-center">
-                    <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wide">{s.label}</div>
-                    <div className="text-base font-extrabold text-[var(--gold)] mt-1">{s.icon} {s.value}</div>
-                  </div>
-                ))}
-              </div>
+          {/* Tech Hero */}
+          <div className="relative overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[rgba(201,168,76,0.08)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-6">
+            <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
+            <div className="relative z-10">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">{tc("badge")}</span>
+              <h1 className="text-2xl font-black tracking-tight">{t("title")}</h1>
+              <p className="text-xs text-[var(--text-secondary)] mt-1">{tc("descricao")}</p>
             </div>
           </div>
-          <div className="px-6 py-3 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
-            <span className="font-extrabold">🥋 OssTrack</span>
-            <span className="text-[var(--text-secondary)]">ossTrack.app</span>
+
+          {/* Preview */}
+          <div className="tech-card overflow-hidden">
+            {/* Card preview */}
+            <div className="bg-gradient-to-br from-black via-[#1a0a0a] to-black p-6 text-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,168,76,0.15),transparent_60%)]" />
+              <div className="relative">
+                <div className="text-[10px] font-bold text-[var(--gold)] tracking-widest uppercase mb-3">OSSTRACK</div>
+                <div className={`w-20 h-20 rounded-full border-2 mx-auto mb-3 flex items-center justify-center text-3xl font-bold bg-black/20`} style={{ borderColor: "var(--gold)" }}>
+                  <span className="text-[var(--gold)]">{(session?.user?.name || "?").charAt(0).toUpperCase()}</span>
+                </div>
+                <div className="text-xl font-extrabold">{session?.user?.name || ""}</div>
+                <div className="text-sm text-[var(--gold)] font-semibold mt-1">
+                  {getBeltEmoji(faixa)} {faixa} {"★".repeat((session?.user?.grau || 0) + 1)}
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 mt-5 max-w-xs mx-auto">
+                  {[
+                    { label: t("totalAulas"), value: stats.totalAulas, icon: "🥋" },
+                    { label: t("esteMes"), value: stats.presencasMes, icon: "📅" },
+                    { label: t("streakAtual"), value: `🔥 ${stats.streak}`, icon: "🔥" },
+                    { label: t("melhorStreak"), value: `🏆 ${stats.bestStreak}`, icon: "🏆" },
+                  ].map((s) => (
+                    <div key={s.label} className="bg-black/40 border border-[var(--gold-dim)] rounded-xl p-3 text-center">
+                      <div className="text-[9px] text-[var(--text-secondary)] uppercase tracking-wide">{s.label}</div>
+                      <div className="text-base font-extrabold text-[var(--gold)] mt-1">{s.icon} {s.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="px-6 py-3 border-t border-[var(--border)] flex justify-between items-center text-[11px]">
+              <span className="font-extrabold">🥋 OssTrack</span>
+              <span className="text-[var(--text-secondary)]">ossTrack.app</span>
+            </div>
           </div>
-        </div>
 
-        {/* Download buttons */}
-        <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => generateImage(false)} disabled={generating}
-            className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[var(--gold)] to-[#e8c84a] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-[0.98]">
-<Download className="w-4 h-4" /> Card (600x600)
-          </button>
-          <button onClick={() => generateImage(true)} disabled={generating}
-            className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm border border-[var(--gold)]/30 text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all active:scale-[0.98]">
-<Image className="w-4 h-4" /> Stories (1080x1920)
-          </button>
-        </div>
+          {/* Download buttons */}
+          <div className="grid grid-cols-2 gap-3">
+            <button onClick={() => generateImage(false)} disabled={generating}
+              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[var(--gold)] to-[#e8c84a] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-[0.98]">
+<Download className="w-4 h-4" /> {tc("card600")}
+            </button>
+            <button onClick={() => generateImage(true)} disabled={generating}
+              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm border border-[var(--gold)]/30 text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all active:scale-[0.98]">
+<Image className="w-4 h-4" /> {tc("stories")}
+            </button>
+          </div>
 
-        {/* Share buttons */}
-        <div className="grid grid-cols-2 gap-3">
-          <button onClick={shareWhatsApp}
-            className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-xs border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all">
-            <Share2 className="w-4 h-4" /> Compartilhar
-          </button>
-          <button onClick={copyToClipboard}
-            className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-xs border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all">
-            {copied ? <span>✅ Copiado!</span> : <><Copy className="w-4 h-4" /> Copiar</>}
-          </button>
-        </div>
+          {/* Share buttons */}
+          <div className="grid grid-cols-2 gap-3">
+            <button onClick={shareWhatsApp}
+              className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-xs border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all">
+              <Share2 className="w-4 h-4" /> {tc("compartilhar")}
+            </button>
+            <button onClick={copyToClipboard}
+              className="flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-xs border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.06)] transition-all">
+              {copied ? <span>{tc("copiado")}</span> : <><Copy className="w-4 h-4" /> {tc("copiar")}</>}
+            </button>
+          </div>
 
-        <canvas ref={canvasRef} className="hidden" />
-      </div>
+          <canvas ref={canvasRef} className="hidden" />
+        </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

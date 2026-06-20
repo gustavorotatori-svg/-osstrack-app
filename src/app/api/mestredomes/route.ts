@@ -1,8 +1,20 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 
-export async function POST() {
+export async function POST(req: NextRequest) {
   try {
+    // Allow Vercel cron, custom cron trigger, or authenticated admin
+    const isVercelCron = req.headers.get("x-vercel-cron") === "1"
+    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
+
+    if (!isVercelCron && !isCronWithSecret) {
+      const session = await getServerSession(authOptions)
+      if (!session || session.user.role !== "dono") {
+        return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+      }
+    }
     const academias = await prisma.academia.findMany()
 
     const results = []

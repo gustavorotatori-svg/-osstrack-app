@@ -73,7 +73,7 @@ export default async function CompartilharRegrasPage({ params }: { params: Promi
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-xl">{beltIcons[g.faixa] || "🥋"}</span>
                       <h4 className="font-bold text-sm">{g.faixa}</h4>
-                      {i === 0 && <span className="tag-premium text-[8px]">Início</span>}
+                      {i === 0 && <span className="tag-destaque text-[8px]">Início</span>}
                       {i === sorted.length - 1 && (
                         <span className="text-[9px] px-2 py-0.5 rounded-full bg-[rgba(201,168,76,0.1)] text-[var(--gold)]">
                           TOPO

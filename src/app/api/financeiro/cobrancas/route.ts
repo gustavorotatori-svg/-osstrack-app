@@ -7,7 +7,7 @@ import { handleApiError } from "@/lib/api-error"
 export async function GET() {
   try {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -29,7 +29,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 

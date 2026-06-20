@@ -15,7 +15,7 @@ const sections = [
   },
   {
     title: "2. Para que Usamos Seus Dados",
-    content: "Seus dados são utilizados para: registrar e exibir seu histórico de presenças e evolução nas faixas, calcular streaks e conquistas, gerar rankings na academia, processar pagamentos de assinatura premium, enviar notificações relevantes via WhatsApp ou e-mail, e melhorar continuamente a experiência da plataforma."
+    content: "Seus dados são utilizados para: registrar e exibir seu histórico de presenças e evolução nas faixas, calcular streaks e conquistas, gerar rankings na academia, gerenciar a plataforma, enviar notificações relevantes via WhatsApp ou e-mail, e melhorar continuamente a experiência da plataforma."
   },
   {
     title: "3. Compartilhamento de Dados",

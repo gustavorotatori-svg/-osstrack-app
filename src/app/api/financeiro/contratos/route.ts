@@ -7,7 +7,7 @@ import { handleApiError } from "@/lib/api-error"
 export async function GET() {
   try {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -29,7 +29,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
   const session = await getServerSession(authOptions)
-  if (!session || session.user.role !== "dono" || !session.user.academiaId) {
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
@@ -54,20 +54,40 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Aluno já possui um contrato ativo" }, { status: 400 })
   }
 
+  const plano = await prisma.planoMensalidade.findUnique({
+    where: { id: planoId },
+  })
+
+  const dataInicioContrato = dataInicio ? new Date(dataInicio) : new Date()
+
   const contrato = await prisma.contrato.create({
     data: {
       alunoId,
       academiaId: session.user.academiaId,
       planoId,
       valor: Math.round((valor || 0) * 100),
-      dataInicio: dataInicio ? new Date(dataInicio) : new Date(),
+      dataInicio: dataInicioContrato,
       dataFim: dataFim ? new Date(dataFim) : null,
     },
     include: {
       aluno: { select: { id: true, nome: true, faixa: true, grau: true } },
-      plano: { select: { id: true, nome: true, valor: true, periodo: true } },
+      plano: { select: { id: true, nome: true, valor: true, periodo: true, taxaMatricula: true } },
     },
   })
+
+  if (plano?.taxaMatricula && plano.taxaMatricula > 0) {
+    await prisma.cobranca.create({
+      data: {
+        contratoId: contrato.id,
+        alunoId,
+        academiaId: session.user.academiaId,
+        valor: plano.taxaMatricula,
+        dataVencimento: dataInicioContrato,
+        status: "pendente",
+        observacao: "Taxa de Matrícula",
+      },
+    })
+  }
 
   return NextResponse.json(contrato)
   } catch (error) {

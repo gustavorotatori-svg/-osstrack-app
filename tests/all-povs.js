@@ -88,7 +88,6 @@ async function main() {
     { url: "/dashboard/aluno/ranking", desc: "Ranking" },
     { url: "/dashboard/aluno/mural", desc: "Mural" },
     { url: "/dashboard/aluno/perfil", desc: "Perfil" },
-    { url: "/dashboard/aluno/premium", desc: "Premium" },
     { url: "/dashboard/aluno/compartilhar", desc: "Compartilhar" },
     { url: "/dashboard/aluno/notificacoes", desc: "Notificacoes" },
   ]

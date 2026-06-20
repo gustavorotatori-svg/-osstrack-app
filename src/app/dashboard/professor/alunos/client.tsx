@@ -91,12 +91,12 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
       <Celebration show={celebrate.show} title={celebrate.title} onDone={() => setCelebrate({ show: false, title: "" })} />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-3">
-          <div className="surface border border-[var(--gold-dim)] text-center p-5">
+          <div className="glass-card border border-[var(--gold-dim)] text-center p-5">
             <h2 className="text-lg font-extrabold tracking-tight">{t("title")}</h2>
             <p className="text-xs text-[var(--text-secondary)] mt-0.5"><AnimatedCounter value={alunos.length} /> {t("alunosVinculados")}</p>
           </div>
 
-          <div className="surface p-4">
+          <div className="glass-card p-4">
             {/* Busca */}
             <input className="input text-sm mb-3" placeholder={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
 
@@ -126,7 +126,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
             </div>
           </div>
 
-          <div className="surface p-4">
+          <div className="glass-card p-4">
             {filtrados.length === 0 ? (
               <div className="text-center py-10">
                 <div className="text-2xl mb-2">👥</div>
@@ -136,7 +136,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
             ) : (
               <div className="grid-modern">
                 {filtrados.map((a) => (
-                  <div key={a.id} className="surface text-center p-4">
+                  <div key={a.id} className="glass-card text-center p-4">
                     <Avatar name={a.nome} faixa={a.faixa} size={44} />
                     <div className="text-sm font-semibold mt-1.5 truncate">{a.nome}</div>
                     <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
@@ -155,7 +155,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
           {showPromote && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowPromote(null)}>
-              <div className="surface p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
+              <div className="glass-card p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
                 <h3 className="font-bold text-base mb-4">{t("promoverAluno")}</h3>
                 <p className="text-sm text-[var(--text-secondary)] mb-4">{t("selecioneFaixa")}</p>
                 <div className="grid grid-cols-2 gap-2 mb-4">

@@ -4,6 +4,8 @@ import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { CameraScanner } from "@/components/scanner/camera-scanner"
 import { useT } from "@/lib/use-t"
+import { PageTransition } from "@/components/ui/page-transition"
+import { toast } from "sonner"
 
 export default function DonoEscanearPage() {
   const t = useT("dono.escanear")
@@ -33,10 +35,12 @@ export default function DonoEscanearPage() {
         const err = await res.json()
         setStatus("error")
         setMsg(err.error || t("alunoNaoEncontrado"))
+        toast.error(err.error || t("alunoNaoEncontrado"))
       }
     } catch {
       setStatus("error")
       setMsg(t("erroConfirmar"))
+      toast.error(t("erroConfirmar"))
     }
     setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
   }
@@ -52,14 +56,15 @@ export default function DonoEscanearPage() {
 
   return (
     <DashboardShell role="dono">
+      <PageTransition>
       <div className="space-y-4">
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-5 text-center">
+        <div className="glass-card p-5 text-center">
           <div className="text-3xl mb-2">📷</div>
           <h3 className="font-bold text-lg">{t("title")}</h3>
           <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
         </div>
 
-        <CameraScanner onScan={handleScan} onError={(e) => { setStatus("error"); setMsg(e) }} />
+        <CameraScanner onScan={handleScan} onError={(e) => { setStatus("error"); setMsg(e); toast.error(e) }} />
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -70,25 +75,32 @@ export default function DonoEscanearPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--dark-border)] rounded-2xl p-4">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="input-premium w-full text-sm"
-            placeholder={t("placeholder")}
-          />
-          <button
-            onClick={() => confirmarPresenca()}
-            disabled={status === "loading" || !input.trim()}
-            className={`w-full mt-3 py-3 rounded-xl font-bold text-sm transition-all ${
-              status === "ok" ? "bg-emerald-600 text-white"
-              : status === "error" ? "bg-red-600 text-white"
-              : "btn-gold"
-            }`}
-          >
-            {status === "loading" ? t("confirmando") : status === "ok" ? msg : status === "error" ? msg : t("confirmar")}
-          </button>
-        </div>
+        {status === "loading" ? (
+          <div className="space-y-3">
+            <div className="h-12 w-full glass-card rounded-lg" />
+            <div className="h-12 w-full glass-card rounded-xl" />
+          </div>
+        ) : (
+          <div className="glass-card p-4">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="input-field w-full text-sm"
+              placeholder={t("placeholder")}
+            />
+            <button
+              onClick={() => confirmarPresenca()}
+              disabled={!input.trim()}
+              className={`w-full mt-3 py-3 rounded-xl font-bold text-sm transition-all ${
+                status === "ok" ? "bg-emerald-600 text-white"
+                : status === "error" ? "bg-red-600 text-white"
+                : "btn-gold"
+              }`}
+            >
+              {status === "ok" ? msg : status === "error" ? msg : t("confirmar")}
+            </button>
+          </div>
+        )}
 
         {status === "ok" && (
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-center animate-scale-in">
@@ -98,6 +110,7 @@ export default function DonoEscanearPage() {
           </div>
         )}
       </div>
+      </PageTransition>
     </DashboardShell>
   )
 }

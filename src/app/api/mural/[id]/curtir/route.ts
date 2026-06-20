@@ -15,6 +15,15 @@ export async function POST(
     const { id: postagemId } = await params
     if (!postagemId) return NextResponse.json({ error: "ID inválido" }, { status: 400 })
 
+    // Check post belongs to user's academy
+    const post = await prisma.postagemMural.findUnique({
+      where: { id: postagemId },
+      include: { aluno: { select: { academiaId: true } } },
+    })
+    if (!post || post.aluno.academiaId !== session.user.academiaId) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+    }
+
     const existing = await prisma.curtidaMural.findUnique({
       where: { postagemId_usuarioId: { postagemId, usuarioId: session.user.id } },
     })
@@ -27,12 +36,7 @@ export async function POST(
       await prisma.postagemMural.update({ where: { id: postagemId }, data: { curtidas: { increment: 1 } } })
     }
 
-    const postagem = await prisma.postagemMural.findUnique({
-      where: { id: postagemId },
-      select: { curtidas: true },
-    })
-
-    return NextResponse.json({ curtidas: postagem?.curtidas || 0, liked: !existing })
+    return NextResponse.json({ curtidas: (post.curtidas ?? 0) + (existing ? -1 : 1), liked: !existing })
   } catch (error) {
     return handleApiError(error)
   }

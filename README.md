@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OssTrack — Sua jornada no tatame
 
-## Getting Started
+Plataforma de evolução para academias de Jiu-Jitsu. 100% gratuita.
 
-First, run the development server:
+## Pré-requisitos
+
+- Node.js 18+
+- PostgreSQL (via Neon ou local)
+
+## Setup local
 
 ```bash
+npm install
+cp .env.example .env  # configure DATABASE_URL e NEXTAUTH_SECRET
+npx prisma db push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Dados demo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+GET /api/setup
+```
 
-## Learn More
+| Papel | Email | Senha |
+|---|---|---|
+| Dono | carlos@email.com | 123456 |
+| Professor | leandro@email.com | 123456 |
+| Aluno | rafael@email.com | 123456 |
 
-To learn more about Next.js, take a look at the following resources:
+## Screenshots para landing page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Com o app rodando em http://localhost:3000:
+npm run capture
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Ou contra um deploy específico:
+```bash
+CAPTURE_URL=https://osstrack-app.vercel.app npm run capture
+```
 
-## Deploy on Vercel
+As imagens são salvas em `public/screenshots/`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Pré-deploy checklist
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] `NEXTAUTH_URL` configurada no Vercel (https://seu-dominio.vercel.app)
+- [ ] `NEXTAUTH_SECRET` configurada no Vercel
+- [ ] `DATABASE_URL` configurada no Vercel (Neon PostgreSQL)
+- [ ] Rodar `GET /api/setup?force=true` no deploy inicial para popular dados demo
+- [ ] Rodar `npm run capture` para gerar screenshots reais
+- [ ] Verificar se o iframe `/screenshot/demo` carrega corretamente na landing page
+
+## Rotas principais
+
+| Rota | Descrição |
+|---|---|
+| `/` | Landing page |
+| `/cadastro` | Cadastro |
+| `/login` | Login |
+| `/dashboard/aluno` | Dashboard do aluno |
+| `/dashboard/dono` | Dashboard do dono |
+| `/dashboard/professor` | Dashboard do professor |
+| `/screenshot/demo` | Aluno (para screenshot) |
+| `/screenshot/demo/dono` | Dono (para screenshot) |
+
+## Stack
+
+- Next.js 16 (Turbopack)
+- Prisma + PostgreSQL (Neon)
+- NextAuth v4
+- Framer Motion
+- Playwright (screenshots / e2e)

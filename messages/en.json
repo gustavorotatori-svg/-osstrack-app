@@ -5,7 +5,7 @@
     "dashboard": "Dashboard",
     "recursos": "Features",
     "comoFunciona": "How It Works",
-    "planos": "Pricing"
+    "gratis": "Free"
   },
   "hero": {
     "titulo1": "Your journey on the",
@@ -19,27 +19,27 @@
   },
   "frases": [
     "Every black belt was once a white belt who never gave up.",
-    "Academy and professor: $0. Premium student: $4.90.",
+    "Academy, professor and student: $0. Everything free.",
     "Every check-in is a chapter in your mat story.",
     "Evolution isn't linear — on OssTrack it's visible.",
     "Your best self shows up when no one is watching."
   ],
   "features": {
-    "badge": "Behind the code",
-    "titulo": "Everything your academy needs",
-    "subtitulo": "A complete platform to turn attendance into evolution.",
+    "badge": "Everything your academy deserves",
+    "titulo": "Take your academy to the next level",
+    "subtitulo": "Less spreadsheets, more Jiu-Jitsu. We handle the management while you handle the students.",
     "checkin": "Smart Check-in",
-    "checkinDesc": "QR code with geolocation. Your student checks in in seconds.",
+    "checkinDesc": "QR code with geolocation. Your student arrives, scans, done. Attendance confirmed in seconds.",
     "evolucao": "Visual Evolution",
-    "evolucaoDesc": "Every class counts. Every degree matters. Progression is clear to everyone.",
+    "evolucaoDesc": "Every class becomes progress. Every degree becomes an achievement. Your student's evolution is crystal clear.",
     "gamificacao": "Gamification",
-    "gamificacaoDesc": "Streaks, achievements and ranking. Turn discipline into a game.",
+    "gamificacaoDesc": "Fire streaks, epic achievements and live ranking. Turning discipline into a game has never been this fun.",
     "metas": "Goals & Missions",
-    "metasDesc": "Weekly goals and daily missions to keep discipline and training focus.",
-    "whatsapp": "WhatsApp Integration",
-    "whatsappDesc": "Notifications and billing via WhatsApp. No additional app.",
+    "metasDesc": "Weekly goals, daily missions and that little push every student needs to show up.",
+    "whatsapp": "WhatsApp",
+    "whatsappDesc": "Direct WhatsApp links. Share check-ins, invites and results with one click.",
     "graduacao": "Graduation Rules",
-    "graduacaoDesc": "Set objective belt criteria. Promote with fairness."
+    "graduacaoDesc": "Clear rules, fair criteria and automatic promotions. Goodbye, Excel spreadsheet."
   },
   "comoFunciona": {
     "badge": "How it works",
@@ -65,11 +65,10 @@
       "Master of the Month",
       "Achievements & belt progress"
     ],
-    "premium": "Premium",
-    "premiumPreco": "$4.90",
-    "premiumPeriodo": "/mo",
-    "premiumDesc": "For students who want to truly evolve",
-    "premiumFeatures": [
+    "tudoGratis": "Everything Free",
+    "tudoGratisPreco": "$0",
+    "tudoGratisDesc": "For students who want to truly evolve",
+    "tudoGratisFeatures": [
       "Everything in Free",
       "Advanced analytics (charts & heatmap)",
       "Shareable art cards",
@@ -89,9 +88,9 @@
       "QR code check-in"
     ],
     "gratisCta": "Start Free",
-    "premiumCta": "I'm a student",
     "academiaCta": "I'm an academy owner",
-    "maisPopulares": "Most popular"
+    "titulo": "Plans",
+    "subtitulo": "Academy, professor and student: $0. Always free."
   },
   "testimonials": {
     "titulo": "What the masters say",
@@ -99,7 +98,7 @@
     "subtitulo": "Masters and professors who transformed their academy management — and their students' relationship with training."
   },
   "footer": {
-    "descricao": "The complete platform for your academy.",
+    "descricao": "Your academy more organized, your students more motivated. All in one place, 100% free.",
     "whatsapp": "WhatsApp",
     "direitos": "All rights reserved.",
     "termos": "Terms of Service",
@@ -130,7 +129,7 @@
     "sair": "Sign Out",
     "notificacoes": "Notifications",
     "conquistas": "Achievements",
-    "premium": "Premium",
+    "premium": "Free",
     "perfil": "Profile",
     "dono": "Academy",
     "professor": "Professor",
@@ -263,77 +262,6 @@
       "posicaoFaixa": "You are in {pos}th position in {faixa} belt",
       "faltamAulas": "{n} classes to reach 1st place!"
     },
-    "premium": {
-      "title": "OssTrack Premium",
-      "preco": "$4.90/mo · Cancel anytime",
-      "bemVindo": "Welcome to Premium!",
-      "contaAtualizada": "Your account has been updated. Enjoy all the benefits!",
-      "irDashboard": "Go to Dashboard",
-      "processando": "Processing...",
-      "jaPremium": "✓ You are already Premium",
-      "assinar": "Subscribe for $4.90/mo",
-      "simulacao": "* Payment simulation. In production, Stripe/Asaas integration will be activated.",
-      "comparacao": "Comparison",
-      "features": [
-        {
-          "name": "Your journey as art",
-          "desc": "Turn your stats into Instagram-ready art. Your story deserves to be seen."
-        },
-        {
-          "name": "Endless history",
-          "desc": "Access every class, every degree, every check-in since day one. Your timeline on the mats."
-        },
-        {
-          "name": "Goals that move you",
-          "desc": "Weekly training goals that adapt to you. The only goal is to keep showing up."
-        },
-        {
-          "name": "Master of the Month",
-          "desc": "The title everyone wants. Whoever trained the most gets the honor badge on their profile."
-        },
-        {
-          "name": "7-day missions",
-          "desc": "Gamified onboarding that turns your first 7 days into a discovery journey."
-        },
-        {
-          "name": "Inspire those who follow",
-          "desc": "Share your evolution on social media. Your post might be the push someone needs to start."
-        }
-      ],
-      "comparacaoRows": [
-        {
-          "label": "Check-in with geolocation"
-        },
-        {
-          "label": "View academy ranking"
-        },
-        {
-          "label": "View evolution"
-        },
-        {
-          "label": "Full attendance history"
-        },
-        {
-          "label": "Instagram art"
-        },
-        {
-          "label": "Custom weekly goals"
-        },
-        {
-          "label": "Master of the Month badge"
-        },
-        {
-          "label": "7-mission onboarding"
-        },
-        {
-          "label": "Share achievements"
-        }
-      ],
-      "free": "Free",
-      "premiumLabel": "Premium",
-      "trintaDias": "30 days",
-      "ilimitado": "Unlimited"
-    },
     "agenda": {
       "title": "Class Schedule",
       "subtitle": "Hover over classes for details",
@@ -348,13 +276,13 @@
     "compartilhar": {
       "title": "Share Evolution",
       "descPremium": "Auto art with your real stats — ready for Instagram",
-      "descBloqueado": "Available only for Premium subscribers",
+      "descBloqueado": "Auto art with your real stats — available for everyone",
       "totalAulas": "Total Classes",
       "esteMes": "This Month",
       "streakAtual": "Current Streak",
       "melhorStreak": "Best Streak",
       "baixarArte": "Download Art",
-      "desbloquearPremium": "Unlock with Premium",
+      "desbloquearPremium": "Download Art",
       "gerando": "Generating...",
       "whatsapp": "WhatsApp",
       "instagram": "Instagram",
@@ -584,7 +512,11 @@
       "rankingOculto": "Ranking hidden from students",
       "rankingVisivel": "Ranking visible to students",
       "erroVisibilidade": "Error changing visibility",
-      "infoRanking": "The ranking shows students with the most confirmed attendance. Students can filter by belt in the app."
+      "infoRanking": "The ranking shows students with the most confirmed attendance. Students can filter by belt in the app.",
+      "aniversariantes": "Birthdays This Month",
+      "semAniversariantes": "No birthdays this month",
+      "alunosInativos": "Students inactive for 7 days",
+      "alunosInativosTitle": "Inactive Students"
     },
     "turmas": {
       "title": "Classes",
@@ -715,7 +647,7 @@
       "nomeAcademia": "Academy Name",
       "whatsapp": "WhatsApp",
       "placeholderWhatsapp": "+55 81 99999-8888",
-      "whatsappDesc": "Used for billing and promotion notifications via WhatsApp",
+      "whatsappDesc": "Number used for direct WhatsApp links to contact the academy",
       "chavePix": "PIX Key",
       "placeholderPix": "CPF, CNPJ, email or phone",
       "raioCheckin": "Check-in Radius (meters)",
@@ -745,15 +677,20 @@
     },
     "financeiro": {
       "title": "Financial",
-      "subtitle": "Manage subscriptions and cash flow for your academy",
+      "subtitle": "Manage subscriptions, expenses and cash flow for your academy",
       "receitaMes": "Month Revenue",
       "potencialMes": "Month Potential",
+      "despesaMes": "Paid Expenses",
+      "fluxoCaixa": "Cash Flow",
       "adimplencia": "Payment Rate",
       "inadimplentes": "Defaulters",
       "contratosAtivos": "Active Contracts",
       "planosAtivos": "Active Plans",
       "gerarCobrancas": "Generate Month Charges",
       "ultimasCobrancas": "Latest Charges",
+      "ultimasDespesas": "Latest Expenses",
+      "verTodas": "View all",
+      "verDespesas": "View Expenses",
       "nenhumaCobranca": "No charges registered",
       "gerando": "Generating...",
       "planosTitle": "Subscription Plans",
@@ -762,6 +699,8 @@
       "planoCriado": "Plan created!",
       "planoAtualizado": "Plan updated!",
       "nenhumPlano": "No plans registered",
+      "taxaMatricula": "Enrollment Fee ($)",
+      "matricula": "enrollment",
       "contratosTitle": "Contracts",
       "novoContrato": "New Contract",
       "criarContrato": "Create Contract",
@@ -772,10 +711,29 @@
       "registrarPagamento": "Pay",
       "cobrancaPaga": "Payment registered!",
       "cobrancaCancelada": "Charge cancelled",
+      "despesasTitle": "Expenses",
+      "novaDespesa": "New Expense",
+      "criarDespesa": "Create Expense",
+      "despesaCriada": "Expense created!",
+      "despesaPaga": "Expense paid!",
+      "despesaCancelada": "Expense cancelled",
+      "despesaExcluida": "Expense deleted",
+      "nenhumaDespesa": "No expenses registered",
+      "totalFiltrado": "Filtered total",
+      "pagar": "Pay",
+      "excluir": "Delete",
+      "fechar": "Close",
+      "preenchaCampos": "Fill in all fields",
+      "confirmarExcluir": "Delete this expense?",
+      "dataVencimento": "Due Date",
+      "observacao": "Notes",
+      "obsPlaceholder": "Ex: July electricity bill",
+      "descricaoPlaceholder": "Ex: Monthly rent",
       "nome": "Name",
       "valor": "Value (R$)",
       "periodo": "Period",
       "descricao": "Description",
+      "categoria": "Category",
       "aluno": "Student",
       "plano": "Plan",
       "valorContrato": "Contract Value (R$)",
@@ -805,7 +763,18 @@
       "desde": "Since",
       "pagoVia": "via",
       "marcarInadimplente": "Default",
-      "reativar": "Reactivate"
+      "reativar": "Reactivate",
+      "catAluguel": "Rent",
+      "catSalarios": "Salaries",
+      "catAgua": "Water",
+      "catLuz": "Electricity",
+      "catInternet": "Internet",
+      "catMaterial": "Supplies",
+      "catEquipamentos": "Equipment",
+      "catMarketing": "Marketing",
+      "catAlimentacao": "Food",
+      "catImpostos": "Taxes",
+      "catOutras": "Other"
     },
     "relatorios": {
       "title": "Reports",
@@ -835,7 +804,7 @@
   },
   "cadastro": {
     "title": "Create Account",
-    "subtitleAluno": "Free for 7 days. Then $4.90/mo.",
+    "subtitleAluno": "Create your account for free.",
     "subtitleOther": "Create your account for free.",
     "step1": {
       "nomeLabel": "Full Name",
@@ -844,6 +813,7 @@
       "emailPlaceholder": "you@email.com",
       "telefoneLabel": "Phone",
       "telefonePlaceholder": "+55 81 99999-8888",
+      "dataNascimentoLabel": "Date of Birth",
       "senhaLabel": "Password",
       "senhaPlaceholder": "Min 6 characters",
       "tipoContaLabel": "Account Type",
@@ -891,23 +861,12 @@
       "professorSelecionado": "Selected professor",
       "pular": "You can skip this step."
     },
-    "step5Aluno": {
-      "title": "7 Days Free",
-      "price": "Then $4.90/mo",
-      "feature1": "Check-in with geolocation",
-      "feature2": "Evolution tracking",
-      "feature3": "Ranking and gamification",
-      "feature4": "Academy wall",
-      "feature5": "Cancel anytime",
-      "warning": "Your card will be charged now, but you only pay after 7 days.",
-      "seguranca": "100% secure payment via Stripe."
-    },
     "grauOption": "{g}th Degree",
     "buttons": {
       "voltar": "Back",
       "proximo": "Next",
       "criandoConta": "Creating account...",
-      "cadastrarPagamento": "Sign Up and Go to Payment",
+      "cadastrarPagamento": "Create Account",
       "criarGratis": "Create Free Account"
     },
     "errors": {
@@ -1095,14 +1054,102 @@
     "sexta": "Friday",
     "sabado": "Saturday"
   },
-  "premiumLock": {
-    "funcionalidade": "Premium Feature",
-    "assinar": "Subscribe for $4.90/mo",
-    "titulo": "OssTrack Premium",
-    "descricao": "Unlock Instagram art, custom goals, unlimited history and much more!"
-  },
   "whatsappFab": {
     "mensagem": "Hello! I want to know more about OssTrack",
     "title": "Contact us on WhatsApp"
+  },
+  "alunoDashboard": {
+    "verTodas": "View All",
+    "aulasNv": "classes � Lv.",
+    "atleta": "Athlete",
+    "encontreAcademia": "Find Your Academy",
+    "ranking": "Ranking",
+    "desbloqueadas": "unlocked",
+    "nivelDisciplina": "Discipline Level",
+    "semVinculoDesc": "Link your academy to start tracking your progress and seeing the ranking.",
+    "evolucao": "Evolution",
+    "convidar": "Invite",
+    "jornadaFaixas": "Belt Journey",
+    "treinos": "Training",
+    "dias": "days",
+    "menos": "less",
+    "mais": "more",
+    "buscarAcademia": "Find Academy",
+    "conquistas": "Achievements",
+    "convidarOssTrack": "Invite to OssTrack"
+  },
+  "compartilharPage": {
+    "compartilhar": "Share",
+    "copiar": "Copy",
+    "copiado": "Copied!",
+    "badge": "Share your progress",
+    "stories": "Stories (1080x1920)",
+    "card600": "Card (600x600)",
+    "descricao": "Share your BJJ journey with friends"
+  },
+  "gratuito": {
+    "badge": "100% free",
+    "titulo": "No subscription.",
+    "tituloDestaque": "No catch.",
+    "descricao": "Academy, professor and student: $0. Always. OssTrack is and always will be completely free.",
+    "card1Icon": "🥋",
+    "card1Title": "Unlimited Training",
+    "card1Desc": "Log as many classes as you want. No limits, no locks, no nonsense.",
+    "card2Icon": "🏛️",
+    "card2Title": "Complete Management",
+    "card2Desc": "Students, check-ins, belts, professors. Your academy in your pocket.",
+    "card3Icon": "🏆",
+    "card3Title": "Gamification",
+    "card3Desc": "Ranking, fire streaks and achievements that create good addiction.",
+    "card4Icon": "📊",
+    "card4Title": "Statistics",
+    "card4Desc": "Real-time reports. Frequency, evolution, retention.",
+    "cta": "Start now — it's free"
+  },
+  "perfilPage": {
+    "desde": "Since",
+    "dadosPrivacidade": "Your data, your privacy",
+    "totalAulas": "Total Classes",
+    "telefone": "Phone",
+    "erroExportar": "Error exporting data",
+    "confirmarExcluir": "Are you sure? This action is irreversible. All your data will be permanently deleted.",
+    "doTotal": "of total",
+    "salvando": "Saving...",
+    "editarPerfil": "Edit Profile",
+    "erroLerArquivo": "Error reading file",
+    "erroExcluir": "Error deleting account",
+    "clicarEnviar": "Click to send",
+    "cancelar": "Cancel",
+    "max5mb": "Max 5MB",
+    "exportarDados": "Export My Data",
+    "erroSalvar": "Error saving profile",
+    "telefonePlaceholder": "+55 (11) 99999-9999",
+    "nome": "Name",
+    "telefone": "Phone",
+    "dataNascimento": "Date of Birth",
+    "melhor": "best",
+    "atual": "current",
+    "excluirConta": "Delete Account",
+    "enviando": "Sending...",
+    "semAcademia": "No academy",
+    "colarLink": "Or paste image URL",
+    "fotoAvatar": "Avatar Photo",
+    "aulasEsteMes": "Classes This Month",
+    "fotoCarregada": "Photo loaded!",
+    "streakAtual": "Current Streak",
+    "presencas": "Check-ins",
+    "salvar": "Save"
+  },
+  "relatorios": {
+    "subtitle": "Track your academy's performance",
+    "totalPresencas": "Total Attendance",
+    "totalAlunos": "Total Students",
+    "retencao": "Retention",
+    "alunos7d": "Students (7 days)",
+    "alunos90d": "Students (90 days)",
+    "erroCarregar": "Error loading reports",
+    "erroDesc": "Could not load data. Check your connection.",
+    "tentarNovamente": "Try Again",
+    "deAlunos": "of students"
   }
 }

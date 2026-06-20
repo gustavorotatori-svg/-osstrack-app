@@ -10,7 +10,7 @@ export default function PlanosPage() {
   const [planos, setPlanos] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ nome: "", valor: "", descricao: "", periodo: "mensal" })
+  const [form, setForm] = useState({ nome: "", valor: "", taxaMatricula: "", descricao: "", periodo: "mensal" })
   const [saving, setSaving] = useState(false)
   const [editId, setEditId] = useState<string | null>(null)
 
@@ -34,7 +34,7 @@ export default function PlanosPage() {
     if (r.ok) {
       toast.success(t("planoCriado"))
       setShowForm(false)
-      setForm({ nome: "", valor: "", descricao: "", periodo: "mensal" })
+      setForm({ nome: "", valor: "", taxaMatricula: "", descricao: "", periodo: "mensal" })
       load()
     } else {
       const err = await r.json()
@@ -78,6 +78,11 @@ export default function PlanosPage() {
                 className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
             </div>
             <div>
+              <label className="text-[11px] text-[var(--white-muted)]">{t("taxaMatricula")}</label>
+              <input type="number" step="0.01" min="0" value={form.taxaMatricula} onChange={e => setForm({...form, taxaMatricula: e.target.value})}
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+            </div>
+            <div>
               <label className="text-[11px] text-[var(--white-muted)]">{t("periodo")}</label>
               <select value={form.periodo} onChange={e => setForm({...form, periodo: e.target.value})}
                 className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1">
@@ -114,6 +119,7 @@ export default function PlanosPage() {
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(p.valor / 100).toFixed(2)}</p>
+                    {p.taxaMatricula > 0 && <p className="text-[10px] text-[var(--white-muted)]">+ R$ {(p.taxaMatricula / 100).toFixed(2)} {t("matricula")}</p>}
                     <button onClick={() => toggleAtivo(p.id, p.ativo)}
                       className={`text-[10px] mt-1 px-2 py-0.5 rounded-full ${p.ativo ? "bg-green-900/40 text-green-400" : "bg-gray-900/40 text-gray-400"}`}>
                       {p.ativo ? t("ativo") : t("inativo")}

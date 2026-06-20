@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="32" fill="#0a0a0a"/>
+  <circle cx="96" cy="96" r="72" fill="none" stroke="#d4a847" stroke-width="4"/>
+  <path d="M62 110 Q76 50 96 65 Q116 80 130 110 Q116 125 96 130 Q76 135 62 110Z" fill="#d4a847" opacity="0.9"/>
+  <path d="M74 104 Q86 68 96 75 Q106 82 118 104 Q106 112 96 115 Q86 118 74 104Z" fill="#f0d078"/>
+  <text x="96" y="158" text-anchor="middle" font-family="system-ui" font-weight="900" font-size="22" fill="#d4a847">OSS</text>
+</svg>

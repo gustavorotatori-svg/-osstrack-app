@@ -20,8 +20,37 @@ export const authOptions: NextAuthOptions = {
         email: { label: "E-mail", type: "email" },
         password: { label: "Senha", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null
+
+        // Simple IP-based rate limiting for login
+        const ip = req?.headers?.["x-forwarded-for"]?.split(",")?.[0]?.trim() || req?.headers?.["x-real-ip"] || "127.0.0.1"
+        
+        const { checkRateLimit } = await import("@/lib/rate-limit")
+
+        const ipCheck = await checkRateLimit(`ip:${ip}`, "login")
+        if (!ipCheck.allowed) {
+          throw new Error("Muitas tentativas de login. Tente novamente em 1 minuto.")
+        }
+
+        const emailCheck = await checkRateLimit(`email:${credentials.email}`, "login")
+        if (!emailCheck.allowed) {
+          throw new Error("Muitas tentativas para este e-mail. Tente novamente em 1 minuto.")
+        }
+
+        // Verify recaptcha for login if configured
+        if (process.env.RECAPTCHA_SECRET_KEY) {
+          const recaptchaToken = (credentials as any).recaptchaToken
+          if (!recaptchaToken) {
+            throw new Error("reCAPTCHA é obrigatório")
+          }
+          const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
+          const verifyRes = await fetch(verifyUrl, { method: "POST" })
+          const verifyData = await verifyRes.json()
+          if (!verifyData.success || (verifyData.score && verifyData.score < 0.5)) {
+            throw new Error("Falha na verificação de segurança. Tente novamente.")
+          }
+        }
 
         const user = await prisma.usuario.findUnique({
           where: { email: credentials.email },
