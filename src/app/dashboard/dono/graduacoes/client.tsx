@@ -89,6 +89,10 @@ export default function GraduacoesClient({ role }: { role: string }) {
       setGraduacoes(prev => prev.map(g => g.id === updated.id ? updated : g))
       setEditing(null)
       setEditForm(null)
+      toast.success("Regra atualizada")
+    } else {
+      const err = await res.json().catch(() => ({}))
+      toast.error(err.error || "Erro ao salvar regra")
     }
     setSaving(false)
   }
@@ -269,6 +273,10 @@ export default function GraduacoesClient({ role }: { role: string }) {
                   setGraduacoes(prev => [...prev, created])
                   setShowCriar(false)
                   setNovo({ faixa: "Branca", graus: 4, aulasPorGrau: 20, aulasProxFx: "", aulasMinimasAno: "", dataProva: "", regraTroca: "graus" })
+                  toast.success("Regra criada!")
+                } else {
+                  const err = await res.json().catch(() => ({}))
+                  toast.error(err.error || "Erro ao criar regra")
                 }
                 setCriando(false)
               }} disabled={criando}
@@ -335,8 +343,22 @@ export default function GraduacoesClient({ role }: { role: string }) {
                         <h4 className="font-bold text-sm">{g.faixa}</h4>
                       </div>
                       {(role === "dono" || role === "professor") && (
-                        <button onClick={() => startEdit(g)}
-                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ Editar</button>
+                        <div className="flex gap-1.5">
+                          <button onClick={() => startEdit(g)}
+                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ Editar</button>
+                          <button onClick={async () => {
+                            if (!confirm(`Excluir regra da faixa ${g.faixa}?`)) return
+                            const r = await fetch("/api/graduacoes", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: g.id }) })
+                            if (r.ok) {
+                              setGraduacoes(prev => prev.filter(x => x.id !== g.id))
+                              toast.success("Regra excluída")
+                            } else {
+                              const err = await r.json().catch(() => ({}))
+                              toast.error(err.error || "Erro ao excluir regra")
+                            }
+                          }}
+                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-red-900/30 text-red-400 border border-red-800/30 hover:bg-red-800/40 transition-all">🗑️</button>
+                        </div>
                       )}
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">

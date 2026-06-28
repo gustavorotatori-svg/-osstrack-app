@@ -2,15 +2,26 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 
-export async function GET(request: Request) {
+export async function POST(request: Request) {
   try {
     // Protected: only allowed in development or with explicit flag
     if (process.env.NODE_ENV === "production" && !process.env.ALLOW_SETUP) {
       return NextResponse.json({ error: "Não disponível em produção" }, { status: 403 })
     }
 
-    const url = new URL(request.url)
-    const force = url.searchParams.get("force") === "true"
+    // Same-Origin check (CSRF protection)
+    const origin = request.headers.get("origin") || request.headers.get("referer") || ""
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://osstrack-app.vercel.app",
+      "https://osstrack.app",
+    ]
+    if (!allowedOrigins.some((o) => origin.startsWith(o))) {
+      return NextResponse.json({ error: "Origem não permitida" }, { status: 403 })
+    }
+
+    const body = await request.json().catch(() => ({}))
+    const force = body.force === true
 
     if (force) {
       await prisma.postagemMural.deleteMany()

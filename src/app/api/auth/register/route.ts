@@ -2,11 +2,23 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
+import { registerSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { nome, email, telefone, senha, role, dataNascimento, recaptchaToken } = body
+    const parsed = registerSchema.safeParse(body)
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Dados inválidos"
+      return NextResponse.json({ error: firstError }, { status: 400 })
+    }
+    const {
+      nome, email, telefone, senha, role, dataNascimento, recaptchaToken,
+      academia: academiaData, codigoConvite, professorId,
+      faixa, grau, academiaId: acId,
+      aceitouTermos, aceitouLGPD, aceitouMarketing,
+      endereco, cidade, estado, lat, lng, raio,
+    } = parsed.data
 
     // Rate limit by IP
     const ip = getClientIp(request)
@@ -16,11 +28,9 @@ export async function POST(request: Request) {
     }
 
     // Rate limit by email
-    if (email) {
-      const emailCheck = await checkRateLimit(`email:${email}`, "register")
-      if (!emailCheck.allowed) {
-        return NextResponse.json({ error: "Muitas tentativas para este e-mail. Tente novamente em 1 minuto." }, { status: 429 })
-      }
+    const emailCheck = await checkRateLimit(`email:${email}`, "register")
+    if (!emailCheck.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas para este e-mail. Tente novamente em 1 minuto." }, { status: 429 })
     }
 
     // Verify recaptcha if secret is configured
@@ -28,24 +38,12 @@ export async function POST(request: Request) {
       if (!recaptchaToken) {
         return NextResponse.json({ error: "reCAPTCHA é obrigatório" }, { status: 400 })
       }
-      const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
-      const verifyRes = await fetch(verifyUrl, { method: "POST" })
+      const params = new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: recaptchaToken })
+      const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", { method: "POST", body: params })
       const verifyData = await verifyRes.json()
       if (!verifyData.success || (verifyData.score && verifyData.score < 0.5)) {
         return NextResponse.json({ error: "Falha na verificação de segurança. Tente novamente." }, { status: 400 })
       }
-    }
-
-    if (!nome || !email || !senha || !role) {
-      return NextResponse.json({ error: "Campos obrigatórios faltando" }, { status: 400 })
-    }
-
-    if (senha.length < 8) {
-      return NextResponse.json({ error: "A senha deve ter no mínimo 8 caracteres" }, { status: 400 })
-    }
-
-    if (!body.aceitouTermos || !body.aceitouLGPD) {
-      return NextResponse.json({ error: "Você precisa aceitar os Termos de Uso e a Política de Privacidade" }, { status: 400 })
     }
 
     const existing = await prisma.usuario.findUnique({ where: { email } })
@@ -55,29 +53,27 @@ export async function POST(request: Request) {
 
     const hashed = await bcrypt.hash(senha, 10)
 
-    if (body.codigoConvite) {
-      const convite = await prisma.convite.findUnique({ where: { codigo: body.codigoConvite } })
+    if (codigoConvite) {
+      const convite = await prisma.convite.findUnique({ where: { codigo: codigoConvite } })
       if (convite && !convite.usado && (!convite.expiresAt || convite.expiresAt > new Date())) {
         await prisma.convite.update({ where: { id: convite.id }, data: { usado: true } })
-        if (!body.academiaId && convite.academiaId) body.academiaId = convite.academiaId
       }
     }
 
     if (role === "dono") {
-      const { academia } = body
-      if (!academia?.nome) {
+      if (!academiaData?.nome) {
         return NextResponse.json({ error: "Dados da academia obrigatórios" }, { status: 400 })
       }
 
       const novaAcademia = await prisma.academia.create({
         data: {
-          nome: academia.nome,
-          endereco: academia.endereco || "",
-          cidade: academia.cidade || "",
-          estado: academia.estado || "",
-          lat: academia.lat || 0,
-          lng: academia.lng || 0,
-          raio: academia.raio || 200,
+          nome: academiaData.nome,
+          endereco: academiaData.endereco || "",
+          cidade: academiaData.cidade || "",
+          estado: academiaData.estado || "",
+          lat: academiaData.lat || 0,
+          lng: academiaData.lng || 0,
+          raio: academiaData.raio || 200,
           responsavel: nome,
           telefone: telefone || "",
         },
@@ -95,9 +91,9 @@ export async function POST(request: Request) {
           dataNascimento: dataNascimento || null,
           academiaId: novaAcademia.id,
           dataInicio: new Date(),
-          aceitouTermos: body.aceitouTermos || false,
-          aceitouLGPD: body.aceitouLGPD || false,
-          aceitouMarketing: body.aceitouMarketing || false,
+          aceitouTermos: aceitouTermos || false,
+          aceitouLGPD: aceitouLGPD || false,
+          aceitouMarketing: aceitouMarketing || false,
           dataAceite: new Date(),
         },
       })
@@ -124,9 +120,9 @@ export async function POST(request: Request) {
       })
 
       // If dono was invited by a professor, link the professor to the academy
-      if (body.professorId) {
+      if (professorId) {
         await prisma.usuario.update({
-          where: { id: body.professorId },
+          where: { id: professorId },
           data: { academiaId: novaAcademia.id },
         })
       }
@@ -135,19 +131,19 @@ export async function POST(request: Request) {
     }
 
     if (role === "professor") {
-      let academiaId = body.academiaId || null
+      let academiaId = acId || null
 
       // Professor sem academia → cria uma automaticamente
       if (!academiaId) {
         const novaAcademia = await prisma.academia.create({
           data: {
             nome: `Academia do ${nome.split(" ")[0]}`,
-            endereco: body.endereco || "",
-            cidade: body.cidade || "",
-            estado: body.estado || "",
-            lat: body.lat || 0,
-            lng: body.lng || 0,
-            raio: body.raio || 200,
+            endereco: endereco || "",
+            cidade: cidade || "",
+            estado: estado || "",
+            lat: lat || 0,
+            lng: lng || 0,
+            raio: raio || 200,
             responsavel: nome,
             telefone: telefone || "",
           },
@@ -174,14 +170,14 @@ export async function POST(request: Request) {
           senha: hashed,
           telefone: telefone || "",
           role: "professor",
-          faixa: body.faixa || "Preta",
-          grau: body.grau ?? 3,
+          faixa: faixa || "Preta",
+          grau: grau ?? 3,
           dataNascimento: dataNascimento || null,
           academiaId,
           dataInicio: new Date(),
-          aceitouTermos: body.aceitouTermos || false,
-          aceitouLGPD: body.aceitouLGPD || false,
-          aceitouMarketing: body.aceitouMarketing || false,
+          aceitouTermos: aceitouTermos || false,
+          aceitouLGPD: aceitouLGPD || false,
+          aceitouMarketing: aceitouMarketing || false,
           dataAceite: new Date(),
         },
       })
@@ -206,15 +202,15 @@ export async function POST(request: Request) {
         senha: hashed,
         telefone: telefone || "",
         role: "aluno",
-        faixa: body.faixa || "Branca",
-        grau: body.grau ?? 2,
+        faixa: faixa || "Branca",
+        grau: grau ?? 2,
         dataNascimento: dataNascimento || null,
-        academiaId: body.academiaId || null,
-        professorId: body.professorId || null,
+        academiaId: acId || null,
+        professorId: professorId || null,
         dataInicio: new Date(),
-        aceitouTermos: body.aceitouTermos || false,
-        aceitouLGPD: body.aceitouLGPD || false,
-        aceitouMarketing: body.aceitouMarketing || false,
+        aceitouTermos: aceitouTermos || false,
+        aceitouLGPD: aceitouLGPD || false,
+        aceitouMarketing: aceitouMarketing || false,
         dataAceite: new Date(),
       },
     })

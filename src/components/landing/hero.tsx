@@ -5,10 +5,16 @@ import { motion } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { useEffect, useState } from "react"
 
-export function Hero() {
+export function Hero({ stats }: { stats?: { academias: number; alunos: number; retencao: number } }) {
   const t = useT("hero")
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
+
+  function formatStat(n: number) {
+    if (n >= 10000) return `${(n / 1000).toFixed(0)}K+`
+    if (n >= 1000) return `${(n / 1000).toFixed(1).replace(".0", "")}K+`
+    return String(n)
+  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden bg-[#0a0a0a]">
@@ -49,11 +55,8 @@ export function Hero() {
           <span className="gradient-gold-text">Track</span>
         </h1>
 
-        {/* Taglines — white sólido, alta legibilidade */}
-        <p className={`text-base md:text-lg text-white/90 max-w-lg mx-auto leading-relaxed font-medium transition-all duration-700 delay-100 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          {t("badge")}
-        </p>
-        <p className={`text-sm md:text-base text-white/70 max-w-lg mx-auto leading-relaxed mt-1 transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        {/* Tagline */}
+        <p className={`text-lg md:text-xl gradient-gold-text max-w-xl mx-auto leading-relaxed font-black tracking-wide transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
           The Jiu Jitsu Revolution &mdash; {t("titulo2")}
         </p>
 
@@ -70,20 +73,22 @@ export function Hero() {
           </Link>
         </div>
 
-        {/* Stats */}
-        <div className={`flex items-center justify-center gap-10 md:gap-16 mt-20 transition-all duration-700 delay-300 ${mounted ? "opacity-100" : "opacity-0"}`}>
-          {[
-            { value: mounted ? "500+" : "0", label: t("statsAcademias") },
-            { value: mounted ? "15.000+" : "0", label: t("statsAlunos") },
-            { value: mounted ? "98%" : "0%", label: t("statsRetencao") },
-          ].map((stat, i) => (
-            <div key={stat.label} className="text-center relative">
-              <div className="text-3xl md:text-4xl font-black gradient-gold-text">{stat.value}</div>
-              <div className="text-xs text-white/60 mt-1.5 tracking-wide uppercase font-semibold">{stat.label}</div>
-              {i < 2 && <div className="hidden md:block absolute top-1/2 -translate-y-1/2 w-px h-8 bg-white/10" style={{ left: "calc(100% + 2.5rem)" }} />}
-            </div>
-          ))}
-        </div>
+        {/* Stats — agora obtidos do banco de dados */}
+        {stats && (
+          <div className={`flex items-center justify-center gap-10 md:gap-16 mt-20 transition-all duration-700 delay-300 ${mounted ? "opacity-100" : "opacity-0"}`}>
+            {[
+              { value: mounted ? formatStat(stats.academias) : "0", label: t("statsAcademias") },
+              { value: mounted ? formatStat(stats.alunos) : "0", label: t("statsAlunos") },
+              { value: mounted ? `${stats.retencao}%` : "0%", label: t("statsRetencao") },
+            ].map((stat, i) => (
+              <div key={stat.label} className="text-center relative">
+                <div className="text-3xl md:text-4xl font-black gradient-gold-text">{stat.value}</div>
+                <div className="text-xs text-white/60 mt-1.5 tracking-wide uppercase font-semibold">{stat.label}</div>
+                {i < 2 && <div className="hidden md:block absolute top-1/2 -translate-y-1/2 w-px h-8 bg-white/10" style={{ left: "calc(100% + 2.5rem)" }} />}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

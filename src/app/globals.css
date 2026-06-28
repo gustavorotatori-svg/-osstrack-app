@@ -535,11 +535,11 @@ body {
   min-height: 44px;
   text-decoration: none;
 }
-.btn:active { transform: scale(0.96); }
-.btn:focus-visible {
+*:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
+.btn:active { transform: scale(0.96); }
 
 .btn-primary {
   background: var(--gold-gradient);
@@ -579,7 +579,6 @@ body {
   border: 1px solid var(--border);
   color: var(--text);
   font-size: 0.875rem;
-  outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .input::placeholder { color: var(--text-muted); }
@@ -663,7 +662,6 @@ body {
   border: 1px solid var(--dark-border, rgba(255,255,255,0.06));
   color: #fff;
   font-size: 0.875rem;
-  outline: none;
   transition: border-color 0.2s;
 }
 .input-field:focus {

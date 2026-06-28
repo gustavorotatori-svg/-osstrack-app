@@ -84,3 +84,21 @@ export async function PUT(request: Request) {
     return handleApiError(error)
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+  const session = await getServerSession(authOptions)
+  if (!session || !["dono", "professor"].includes(session.user.role)) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  }
+
+  const body = await request.json()
+  const { id } = body
+  if (!id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
+
+  await prisma.graduacao.delete({ where: { id } })
+  return NextResponse.json({ success: true })
+  } catch (error) {
+    return handleApiError(error)
+  }
+}

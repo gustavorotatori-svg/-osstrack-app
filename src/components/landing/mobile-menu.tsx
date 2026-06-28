@@ -33,17 +33,17 @@ export function MobileMenu() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setOpen(false)}>
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+        <div className="fixed inset-0 z-[60] md:hidden" onClick={() => setOpen(false)}>
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-2xl" />
           <div className="relative z-10 flex flex-col h-full p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-12">
               <Link href="/" className="flex items-center gap-3 font-extrabold text-xl" onClick={() => setOpen(false)}>
                 <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center">
                   <DumbbellIcon className="w-5 h-5 text-black" />
                 </span>
-                <span>OssTrack</span>
+                <span className="text-white font-extrabold">OssTrack</span>
               </Link>
-              <button onClick={() => setOpen(false)} className="p-2 rounded-xl text-[var(--white-muted)] hover:text-white hover:bg-white/5 transition-all">
+              <button onClick={() => setOpen(false)} aria-label="Fechar menu" className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-all">
                 <XIcon className="w-5 h-5" />
               </button>
             </div>
@@ -54,7 +54,7 @@ export function MobileMenu() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="text-lg font-semibold text-[var(--white-muted)] hover:text-white py-3 px-4 rounded-xl hover:bg-white/5 transition-all"
+                  className="text-lg font-bold text-white/70 hover:text-white py-3 px-4 rounded-xl hover:bg-white/10 transition-all"
                 >
                   {l.label}
                 </Link>
@@ -76,7 +76,7 @@ export function MobileMenu() {
                   <Link
                     href="/login"
                     onClick={() => setOpen(false)}
-                    className="w-full py-3.5 rounded-xl font-semibold text-center text-white border border-white/20 hover:bg-white/5 transition-all"
+                    className="w-full py-3.5 rounded-xl font-semibold text-center text-white/80 border border-white/20 hover:bg-white/10 transition-all"
                   >
                     {t("entrar")}
                   </Link>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { CookieConsent } from "@/components/layout/cookie-consent"
@@ -57,18 +58,20 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
+        <style>{`#skip-to-content{position:absolute;top:-100%;left:8px;z-index:9999;padding:8px 16px;background:var(--gold);color:#000;font-size:14px;font-weight:700;border-radius:0 0 8px 8px;text-decoration:none;transition:top .15s}#skip-to-content:focus{top:0;outline:2px solid var(--gold)}`}</style>
         <script dangerouslySetInnerHTML={{
           __html: `(function(){try{var t=localStorage.getItem("osstrack_theme");if(!t)t="dark";document.documentElement.className=t}catch(e){document.documentElement.className="dark"}})()`
         }} />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <Script id="schema-jsonld" type="application/ld+json" strategy="beforeInteractive">{JSON.stringify(jsonLd)}</Script>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="OssTrack" />
       </head>
       <body className="antialiased">
+        <a id="skip-to-content" href="#main-content">Ir para o conteúdo</a>
         <Providers>
           {children}
           <CookieConsent />

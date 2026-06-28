@@ -62,6 +62,25 @@ type Props = {
   nivelDisciplina: string | null
 }
 
+const gamificationLevels = [
+  { pontos: 0, title: "Iniciante" }, { pontos: 500, title: "Guerreiro" }, { pontos: 1500, title: "Lutador" },
+  { pontos: 3000, title: "Faixa Azul" }, { pontos: 5000, title: "Competidor" }, { pontos: 7500, title: "Atleta" },
+  { pontos: 10500, title: "Graduado" }, { pontos: 14000, title: "Expert" }, { pontos: 18000, title: "Mestre" },
+  { pontos: 22500, title: "Grão-Mestre" }, { pontos: 28000, title: "Lenda" }, { pontos: 35000, title: "Kami" },
+]
+
+function getGamificationLevel(pontos: number) {
+  for (let i = gamificationLevels.length - 1; i >= 0; i--) {
+    if (pontos >= gamificationLevels[i].pontos) {
+      const current = pontos - gamificationLevels[i].pontos
+      const nextLevel = gamificationLevels[i + 1]
+      const nextThreshold = nextLevel ? nextLevel.pontos - gamificationLevels[i].pontos : Infinity
+      return { level: i + 1, current, next: nextThreshold, progress: Math.min((current / nextThreshold) * 100, 100), title: gamificationLevels[i].title }
+    }
+  }
+  return { level: 1, current: 0, next: 500, progress: 0, title: "Iniciante" }
+}
+
 function getLevelInfo(totalAulas: number) {
   const thresholds = [0, 50, 150, 300, 500, 800, 1200]
   const titles = ["Iniciante", "Regular", "Dedicado", "Experiente", "Avançado", "Elite", "Master"]
@@ -173,19 +192,34 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
             </div>
           </div>
 
-          {/* XP BAR */}
-          <div className="mb-6" title="Cada check-in vale XP. Treine mais para subir de nível e desbloquear conquistas!">
-            <div className="flex items-center justify-between gap-3 mb-1.5">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-black text-[10px] font-black">{levelInfo.level}</div>
-                <span className="text-xs font-bold">{levelInfo.title}</span>
+          {/* GAMIFICATION XP BAR */}
+          {(() => {
+            const gl = getGamificationLevel(pontos)
+            return (
+              <div className="mb-6" title="Cada check-in vale 50 XP. Treine mais para subir de nível!">
+                <div className="flex items-center justify-between gap-3 mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-black text-[10px] font-black">{gl.level}</div>
+                    <span className="text-xs font-bold">{gl.title}</span>
+                  </div>
+                  <span className="text-[10px] text-[var(--text-muted)]">{pontos.toLocaleString()} / {gl.next.toLocaleString()} XP</span>
+                </div>
+                <div className="h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
+                  <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${gl.progress}%` }} />
+                </div>
+                <div className="flex items-center justify-between mt-1.5">
+                  <span className="text-[10px] text-[var(--text-muted)]">
+                    {gl.next === Infinity ? "Nível máximo!" : `Faltam ${Math.ceil((gl.next - gl.current) / 50)} check-ins para ${gamificationLevels[gl.level]?.title || "próximo nível"}`}
+                  </span>
+                  {graduacao && (
+                    <span className="text-[10px] text-[var(--text-muted)]">
+                      {`${graduacao.aulasPorGrau} aulas/grau · ${graduacao.aulasProxFx ? graduacao.aulasProxFx + " aulas p/ próx. faixa" : "Faixa máxima"}`}
+                    </span>
+                  )}
+                </div>
               </div>
-              <span className="text-[10px] text-[var(--text-muted)]">{levelInfo.current.toLocaleString()} / {levelInfo.next.toLocaleString()} XP</span>
-            </div>
-            <div className="h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
-              <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${levelInfo.progress}%` }} />
-            </div>
-          </div>
+            )
+          })()}
 
           {/* SECTION TABS */}
           <div className="flex gap-1 mb-5 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>

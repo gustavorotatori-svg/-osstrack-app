@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { awardXp } from "@/lib/gamification"
 import { notificarUsuario } from "@/lib/notificar"
+import { confirmPresencaSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
@@ -13,10 +14,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { presencaId, userId, alunoId } = await request.json()
+    const body = await request.json()
+    const parsed = confirmPresencaSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
+    }
+    const { presencaId, status } = parsed.data
+    const targetId = body.userId || body.alunoId || null
+    const novoStatus = status === "rejected" ? "rejected" : "confirmed"
 
     // busca por userId (do QR code) — acha presença pendente mais recente
-    const targetId = userId || alunoId
     if (targetId) {
       const presenca = await prisma.presenca.findFirst({
         where: { alunoId: targetId, status: "pendente" },
@@ -35,18 +42,19 @@ export async function POST(request: Request) {
 
       await prisma.presenca.update({
         where: { id: presenca.id },
-        data: { status: "confirmed", confirmadoPor: session.user.id },
+        data: { status: novoStatus, confirmadoPor: session.user.id },
       })
 
-      await notificarUsuario({
-        usuarioId: presenca.alunoId,
-        tipo: "presenca",
-        titulo: "Presença confirmada!",
-        descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
-        link: "/dashboard/aluno",
-      })
-
-      await awardXp(presenca.alunoId, 15)
+      if (novoStatus === "confirmed") {
+        await notificarUsuario({
+          usuarioId: presenca.alunoId,
+          tipo: "presenca",
+          titulo: "Presença confirmada!",
+          descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
+          link: "/dashboard/aluno",
+        })
+        await awardXp(presenca.alunoId, 15)
+      }
 
       return NextResponse.json({ success: true, alunoNome: presenca.aluno.nome, horario: presenca.horario })
     }
@@ -70,18 +78,19 @@ export async function POST(request: Request) {
 
     await prisma.presenca.update({
       where: { id: presencaId },
-      data: { status: "confirmed", confirmadoPor: session.user.id },
+      data: { status: novoStatus, confirmadoPor: session.user.id },
     })
 
-    await notificarUsuario({
-      usuarioId: presenca.alunoId,
-      tipo: "presenca",
-      titulo: "Presença confirmada!",
-      descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
-      link: "/dashboard/aluno",
-    })
-
-    await awardXp(presenca.alunoId, 15)
+    if (novoStatus === "confirmed") {
+      await notificarUsuario({
+        usuarioId: presenca.alunoId,
+        tipo: "presenca",
+        titulo: "Presença confirmada!",
+        descricao: `Sua presença de ${presenca.horario} foi confirmada por ${session.user.name}`,
+        link: "/dashboard/aluno",
+      })
+      await awardXp(presenca.alunoId, 15)
+    }
 
     return NextResponse.json({ success: true, alunoNome: presenca.aluno.nome, horario: presenca.horario })
   } catch (error) {

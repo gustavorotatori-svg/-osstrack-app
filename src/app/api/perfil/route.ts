@@ -66,7 +66,7 @@ export async function PATCH(request: Request) {
     if (nome !== undefined) data.nome = nome
     if (telefone !== undefined) data.telefone = telefone
     if (avatar !== undefined) data.avatar = avatar
-    if (dataNascimento !== undefined) data.dataNascimento = dataNascimento
+    if (dataNascimento !== undefined) data.dataNascimento = dataNascimento || null
 
     const updated = await prisma.usuario.update({
       where: { id: session.user.id },

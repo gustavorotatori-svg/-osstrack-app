@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { useRouter } from "next/navigation"
 import { triggerOssTransition } from "@/components/ui/oss-transition"
+import { toast } from "sonner"
 import { CreditCardIcon, TrendingDown, TrendingUp, ArrowRight } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts"
 
@@ -38,14 +39,22 @@ export default function FinanceiroPage() {
 
   async function gerarCobrancas() {
     setGerando(true)
-    const r = await fetch("/api/financeiro/cobrancas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ acao: "gerar-todas" }),
-    })
-    if (r.ok) {
-      const res = await r.json()
-      fetch("/api/financeiro/dashboard").then(r => r.json()).then(setData)
+    try {
+      const r = await fetch("/api/financeiro/cobrancas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ acao: "gerar-todas" }),
+      })
+      if (r.ok) {
+        const res = await r.json()
+        fetch("/api/financeiro/dashboard").then(r => r.json()).then(setData)
+        toast.success(res.criadas > 0 ? `${res.criadas} cobranças geradas` : "Nenhuma cobrança nova necessária")
+      } else {
+        const err = await r.json().catch(() => ({}))
+        toast.error(err.error || "Erro ao gerar cobranças")
+      }
+    } catch (e) {
+      toast.error("Erro de rede ao gerar cobranças")
     }
     setGerando(false)
   }
