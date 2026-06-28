@@ -22,7 +22,7 @@ export function Navbar() {
   }, [])
 
   return (
-    <nav
+    <nav aria-label="Navegação principal"
       className={`fixed top-0 left-0 right-0 z-50 px-5 py-3.5 transition-all duration-300 ${
         scrolled
           ? "bg-[rgba(10,10,10,0.92)] backdrop-blur-2xl border-b border-[var(--dark-border)]"

@@ -65,7 +65,7 @@ export function GamificationGuide() {
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="section-header mb-0">🎮 Como funciona</span>
-                <button onClick={() => setOpen(false)}><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
+                <button onClick={() => setOpen(false)} aria-label="Fechar guia"><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
               </div>
 
               <div className="space-y-5 min-h-[200px]">
@@ -93,6 +93,7 @@ export function GamificationGuide() {
                 <div className="flex items-center justify-center gap-1.5 pt-2">
                   {steps.map((_, i) => (
                     <button key={i} onClick={() => setStep(i)}
+                      aria-label={`Passo ${i + 1} de ${steps.length}`}
                       className={`w-2 h-2 rounded-full transition-all ${i === step ? "w-5" : ""}`}
                       style={{ background: i === step ? "var(--gold)" : "var(--border)" }}
                     />

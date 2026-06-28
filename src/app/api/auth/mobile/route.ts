@@ -3,13 +3,27 @@ import bcrypt from "bcryptjs"
 import { encode } from "next-auth/jwt"
 import prisma from "@/lib/prisma"
 import { isUserRole } from "@/lib/auth-types"
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
+import { loginSchema } from "@/lib/validation"
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, senha } = await req.json()
-
-    if (!email || !senha) {
+    const body = await req.json()
+    const parsed = loginSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "Email e senha obrigatórios" }, { status: 400 })
+    }
+    const { email, senha } = parsed.data
+
+    // Rate limit by IP and email
+    const ip = getClientIp(req)
+    const ipCheck = await checkRateLimit(`mobile:ip:${ip}`, "login")
+    if (!ipCheck.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas. Tente novamente em 1 minuto." }, { status: 429 })
+    }
+    const emailCheck = await checkRateLimit(`mobile:email:${email}`, "login")
+    if (!emailCheck.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas para este e-mail. Tente novamente em 1 minuto." }, { status: 429 })
     }
 
     const user = await prisma.usuario.findUnique({

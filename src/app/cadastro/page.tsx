@@ -81,9 +81,9 @@ export default function Cadastro() {
 
   const t = useT("cadastro")
   const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
-  const TOTAL_STEPS = 4
+  const TOTAL_STEPS = 2
 
-  const stepLabels: string[] = ["Dados", "Tipo", "Perfil", "Termos"]
+  const stepLabels: string[] = ["Cadastro", "Finalizar"]
 
   // URL params
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function Cadastro() {
 
   // Auto-capture lat/lng for owner
   useEffect(() => {
-    if (form.role === "dono" && step === 3 && "geolocation" in navigator) {
+    if (form.role === "dono" && step === 2 && "geolocation" in navigator) {
       setGeoLoading(true)
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -119,9 +119,9 @@ export default function Cadastro() {
     }
   }, [form.role, step])
 
-  // Skip role step if already chosen via URL
+  // Skip role step if already chosen via URL — go to step 2
   useEffect(() => {
-    if (roleChosen) setStep(3)
+    if (roleChosen) setStep(2)
   }, [roleChosen])
 
   function update(key: string, value: string | number | boolean) {
@@ -160,10 +160,7 @@ export default function Cadastro() {
   }
 
   function voltarStep() {
-    setStep((s) => {
-      if (s === 3 && roleChosen) return 2 // if role was pre-set, go back to role selection
-      return Math.max(1, s - 1)
-    })
+    setStep((s) => Math.max(1, s - 1))
     setError("")
   }
 
@@ -176,24 +173,17 @@ export default function Cadastro() {
     if (step === 1) {
       if (!form.nome.trim()) { setError("Informe seu nome"); setLoading(false); return }
       if (!form.email.trim()) { setError("Informe seu email"); setLoading(false); return }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("E-mail inválido"); setLoading(false); return }
       if (form.senha.length < 8) { setError("A senha deve ter no mínimo 8 caracteres"); setLoading(false); return }
       if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); setLoading(false); return }
-      avancarStep(); setLoading(false); return
-    }
-
-    if (step === 2) {
       if (!form.role) { setError("Selecione um tipo de conta"); setLoading(false); return }
       avancarStep(); setLoading(false); return
     }
 
-    if (step === 3) {
+    if (step === 2) {
       if (form.role === "dono" && !form.academiaNome.trim()) {
         setError("Informe o nome da academia"); setLoading(false); return
       }
-      avancarStep(); setLoading(false); return
-    }
-
-    if (step === TOTAL_STEPS) {
       if (!form.consentimentoTermos || !form.consentimentoLGPD) {
         setError("Você precisa aceitar os Termos de Uso e a Política de Privacidade")
         setLoading(false)
@@ -263,328 +253,307 @@ export default function Cadastro() {
   }
 
   function renderStep() {
-    // Step 1: Dados pessoais (ALL roles)
+    // STEP 1: Dados pessoais + Tipo de conta (combined)
     if (step === 1) {
       return (
-        <div className="space-y-3">
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
-            <input type="text" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
-            <input type="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
-            <input type="tel" className="input" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.dataNascimentoLabel")}</label>
-            <input type="date" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-4">
+          <div className="space-y-3">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Seus dados</p>
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
-              <div className="relative">
-                <input type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
-                <button type="button" onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
-                  {showPassword ? (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                  ) : (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  )}
-                </button>
-              </div>
+              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
+              <input type="text" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
-              <div className="relative">
-                <input type={showConfirmPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
-                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
-                  {showConfirmPassword ? (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                  ) : (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  )}
-                </button>
+              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
+              <input type="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
+                <input type="tel" className="input" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.dataNascimentoLabel")}</label>
+                <input type="date" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
+                <div className="relative">
+                  <input type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
+                    {showPassword ? (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    ) : (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
+                <div className="relative">
+                  <input type={showConfirmPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
+                    {showConfirmPassword ? (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    ) : (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            {form.confirmarSenha && form.senha !== form.confirmarSenha && (
+              <p className="text-[10px] text-red-400 -mt-1">As senhas não conferem</p>
+            )}
           </div>
-          {form.confirmarSenha && form.senha !== form.confirmarSenha && (
-            <p className="text-[10px] text-red-400 -mt-1">As senhas não conferem</p>
-          )}
+
+          <div className="h-px bg-[var(--border)]" />
+
+          <div className="space-y-2">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Tipo de conta</p>
+            <div className="grid grid-cols-3 gap-2">
+              {ROLE_CARDS.map((card) => {
+                const selected = form.role === card.role
+                return (
+                  <button key={card.role} type="button" onClick={() => update("role", card.role)}
+                    className={`text-center p-3 rounded-xl border transition-all duration-200 ${
+                      selected
+                        ? "border-[var(--gold)] bg-[rgba(212,168,71,0.06)] shadow-lg shadow-[var(--gold)]/5"
+                        : "border-[var(--border)] bg-[var(--bg-surface)] hover:border-[var(--border-hover)]"
+                    }`}>
+                    <div className="text-xl mb-1">{card.icon}</div>
+                    <div className={`text-[10px] font-bold leading-tight ${selected ? "text-[var(--gold)]" : "text-[var(--text)]"}`}>{card.title}</div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </div>
       )
     }
 
-    // Step 2: Tipo de conta (ALL roles — cards)
+    // STEP 2: Perfil (role-specific) + Termos (combined)
     if (step === 2) {
       return (
-        <div className="space-y-3">
-          <p className="text-sm text-[var(--text-secondary)] text-center mb-2">Escolha como você vai usar o OssTrack:</p>
-          {ROLE_CARDS.map((card) => {
-            const selected = form.role === card.role
-            return (
-              <button key={card.role} type="button" onClick={() => update("role", card.role)}
-                className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 ${
-                  selected
-                    ? "border-[var(--gold)] bg-[rgba(212,168,71,0.06)] shadow-lg shadow-[var(--gold)]/5"
-                    : "border-[var(--border)] bg-[var(--bg-surface)] hover:border-[var(--border-hover)] hover:bg-[rgba(212,168,71,0.02)]"
-                }`}>
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{card.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className={`font-bold text-sm ${selected ? "text-[var(--gold)]" : "text-[var(--text)]"}`}>{card.title}</div>
-                    <div className="text-xs text-[var(--text-secondary)] mt-0.5">{card.desc}</div>
-                  </div>
-                  {selected && (
-                    <svg className="w-5 h-5 shrink-0" style={{ color: "var(--gold)" }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                  )}
-                </div>
-              </button>
-            )
-          })}
-        </div>
-      )
-    }
-
-    // Step 3: Perfil (role-specific)
-    if (step === 3) {
-      // DONO: Criar academia
-      if (form.role === "dono") {
-        return (
-          <div className="space-y-4">
-            <p className="text-sm text-[var(--text-secondary)] text-center">Cadastre sua academia no OssTrack</p>
-            <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
-              <input type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
+        <div className="space-y-4">
+          {/* DONO: Criar academia */}
+          {form.role === "dono" && (
+            <div className="space-y-3">
+              <p className="text-xs text-[var(--text-secondary)] text-center">Cadastre sua academia no OssTrack</p>
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
-                <input type="text" className="input" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
+                <input type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
               </div>
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
-                <input type="text" className="input" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
-              </div>
-            </div>
-            <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">
-                {t("step2Dono.raioLabel")}
-                <span className="ml-1.5 text-[10px] font-normal text-[var(--text-muted)]">(distância máxima em metros para check-in automático)</span>
-              </label>
-              <input type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
-            </div>
-            <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="10" r="3" /><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" /></svg>
-              {geoLoading ? "Capturando localização..." : form.academiaLat ? "📍 Localização capturada automaticamente" : "Localização será usada para check-in por GPS"}
-            </div>
-            {form.professorId && (
-              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
-                <p className="text-sm text-emerald-400 font-semibold">{t("step2Dono.convidadoProfessor")}</p>
-                <p className="text-xs text-[var(--text-secondary)] mt-1">{t("step2Dono.convidadoProfessorDesc")}</p>
-              </div>
-            )}
-          </div>
-        )
-      }
-
-      // PROFESSOR: Faixa/Grau + Academia
-      if (form.role === "professor") {
-        return (
-          <div className="space-y-4">
-            <p className="text-sm text-[var(--text-secondary)] text-center">Informe sua graduação e vínculo</p>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
-                <select className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
-                  {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.grauLabel")}</label>
-                <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
-                  {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("grauOption").replace("{g}", String(g))}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {!form.academiaId && !form.codigoConvite && (
-              <>
-                <div className="h-px bg-[var(--border)]" />
-                <p className="text-xs text-[var(--text-secondary)] text-center">Vincule-se a uma academia (opcional agora)</p>
-                <div className="relative">
-                  <input type="text" className="input" placeholder="Buscar academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
-                  {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
-                </div>
-                {resultados.length > 0 && (
-                  <div className="surface overflow-hidden">
-                    {resultados.map((acad) => (
-                      <button key={acad.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
-                        onClick={() => selecionarAcademia(acad)}>
-                        <span className="text-sm font-medium">{acad.nome}</span>
-                        {acad.cidade && <span className="text-xs text-[var(--text-secondary)] ml-2">{acad.cidade}/{acad.estado}</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-            {form.academiaId && (
-              <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
-                <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia selecionada</p>
-                <p className="text-sm font-medium">{form.academiaNome}</p>
-              </div>
-            )}
-          </div>
-        )
-      }
-
-      // ALUNO: Academia + Faixa/Grau + Professor (fundido)
-      if (form.role === "aluno") {
-        return (
-          <div className="space-y-4">
-            <p className="text-sm text-[var(--text-secondary)] text-center">Complete seu perfil de atleta</p>
-
-            {/* Academia search */}
-            {!form.academiaId && !form.codigoConvite && !form.skipAcademia ? (
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Buscar academia</label>
-                <div className="relative">
-                  <input type="text" className="input" placeholder="Digite o nome da sua academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
-                  {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
-                </div>
-                {resultados.length > 0 && (
-                  <div className="surface overflow-hidden mt-2">
-                    {resultados.map((acad) => (
-                      <button key={acad.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
-                        onClick={() => selecionarAcademia(acad)}>
-                        <span className="text-sm font-medium">{acad.nome}</span>
-                        {acad.cidade && <span className="text-xs text-[var(--text-secondary)] ml-2">{acad.cidade}/{acad.estado}</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
-                  <button type="button" onClick={() => { setForm((f) => ({ ...f, skipAcademia: true })) }}
-                    className="text-[var(--gold)] font-semibold hover:underline">
-                    Não encontrei minha academia
-                  </button>
-                </p>
-              </div>
-            ) : !form.academiaId && !form.codigoConvite && form.skipAcademia ? (
-              <div className="bg-[rgba(255,255,255,0.02)] border border-dashed border-[var(--border)] rounded-xl px-4 py-5 text-center">
-                <p className="text-sm font-semibold text-[var(--text-secondary)]">Você pode vincular uma academia depois</p>
-                <p className="text-xs text-[var(--text-muted)] mt-1">Vá em Perfil → Editar para buscar sua academia mais tarde</p>
-                <button type="button" onClick={() => setForm((f) => ({ ...f, skipAcademia: false }))}
-                  className="text-[10px] text-[var(--gold)] font-semibold hover:underline mt-2 inline-block">
-                  Buscar novamente
-                </button>
-              </div>
-            ) : (
-              <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
-                <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia</p>
-                <p className="text-sm font-medium">{form.academiaNome}</p>
-              </div>
-            )}
-
-            <div className="h-px bg-[var(--border)]" />
-
-            {/* Faixa/Grau */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
-                <select className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
-                  {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.grauLabel")}</label>
-                <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
-                  {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("step3Aluno.grauOption").replace("{g}", String(g))}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {/* Professor (opcional, only if has academia) */}
-            {form.academiaId && (
-              <>
-                <div className="h-px bg-[var(--border)]" />
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Professor (opcional)</label>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
+                  <input type="text" className="input" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
+                  <input type="text" className="input" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">
+                  {t("step2Dono.raioLabel")}
+                  <span className="ml-1.5 text-[10px] font-normal text-[var(--text-muted)]">(distância máxima em metros para check-in automático)</span>
+                </label>
+                <input type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
+              </div>
+              <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="10" r="3" /><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" /></svg>
+                {geoLoading ? "Capturando localização..." : form.academiaLat ? "📍 Localização capturada automaticamente" : "Localização será usada para check-in por GPS"}
+              </div>
+              {form.professorId && (
+                <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
+                  <p className="text-sm text-emerald-400 font-semibold">{t("step2Dono.convidadoProfessor")}</p>
+                  <p className="text-xs text-[var(--text-secondary)] mt-1">{t("step2Dono.convidadoProfessorDesc")}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* PROFESSOR: Faixa/Grau + Academia */}
+          {form.role === "professor" && (
+            <div className="space-y-3">
+              <p className="text-xs text-[var(--text-secondary)] text-center">Informe sua graduação e vínculo</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
+                  <select className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
+                    {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.grauLabel")}</label>
+                  <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+                    {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("grauOption").replace("{g}", String(g))}</option>)}
+                  </select>
+                </div>
+              </div>
+              {!form.academiaId && !form.codigoConvite && (
+                <>
+                  <div className="h-px bg-[var(--border)]" />
+                  <p className="text-xs text-[var(--text-secondary)] text-center">Vincule-se a uma academia (opcional agora)</p>
                   <div className="relative">
-                    <input type="text" className="input" placeholder="Buscar professor..." value={buscaProf}
-                      onChange={(e) => {
-                        setBuscaProf(e.target.value)
-                        if (buscaProfTimer.current) clearTimeout(buscaProfTimer.current)
-                        if (e.target.value.length < 2) { setProfessores([]); return }
-                        buscaProfTimer.current = setTimeout(async () => {
-                          try {
-                            const res = await fetch(`/api/professores?q=${encodeURIComponent(e.target.value)}&academiaId=${form.academiaId}`)
-                            setProfessores(await res.json())
-                          } catch { setProfessores([]) }
-                        }, 300)
-                      }} />
+                    <input type="text" className="input" placeholder="Buscar academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
                   </div>
-                  {professores.length > 0 && (
-                    <div className="surface overflow-hidden mt-2">
-                      {professores.map((prof) => (
-                        <button key={prof.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
-                          onClick={() => { update("professorId", prof.id); setProfessores([]); setBuscaProf(prof.nome) }}>
-                          {prof.nome}
+                  {resultados.length > 0 && (
+                    <div className="surface overflow-hidden">
+                      {resultados.map((acad) => (
+                        <button key={acad.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
+                          onClick={() => selecionarAcademia(acad)}>
+                          <span className="text-sm font-medium">{acad.nome}</span>
+                          {acad.cidade && <span className="text-xs text-[var(--text-secondary)] ml-2">{acad.cidade}/{acad.estado}</span>}
                         </button>
                       ))}
                     </div>
                   )}
-                  {form.professorId && (
-                    <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 mt-2">
-                      <p className="text-xs text-emerald-400 font-semibold">Professor selecionado</p>
-                      <p className="text-sm font-medium">{buscaProf}</p>
+                </>
+              )}
+              {form.academiaId && (
+                <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
+                  <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia selecionada</p>
+                  <p className="text-sm font-medium">{form.academiaNome}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ALUNO: Academia + Faixa/Grau + Professor */}
+          {form.role === "aluno" && (
+            <div className="space-y-3">
+              <p className="text-xs text-[var(--text-secondary)] text-center">Complete seu perfil de atleta</p>
+              {!form.academiaId && !form.codigoConvite && !form.skipAcademia ? (
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Buscar academia</label>
+                  <div className="relative">
+                    <input type="text" className="input" placeholder="Digite o nome da sua academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
+                  </div>
+                  {resultados.length > 0 && (
+                    <div className="surface overflow-hidden mt-2">
+                      {resultados.map((acad) => (
+                        <button key={acad.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
+                          onClick={() => selecionarAcademia(acad)}>
+                          <span className="text-sm font-medium">{acad.nome}</span>
+                          {acad.cidade && <span className="text-xs text-[var(--text-secondary)] ml-2">{acad.cidade}/{acad.estado}</span>}
+                        </button>
+                      ))}
                     </div>
                   )}
+                  <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
+                    <button type="button" onClick={() => { setForm((f) => ({ ...f, skipAcademia: true })) }}
+                      className="text-[var(--gold)] font-semibold hover:underline">
+                      Não encontrei minha academia
+                    </button>
+                  </p>
                 </div>
-              </>
-            )}
-          </div>
-        )
-      }
-    }
+              ) : !form.academiaId && !form.codigoConvite && form.skipAcademia ? (
+                <div className="bg-[rgba(255,255,255,0.02)] border border-dashed border-[var(--border)] rounded-xl px-4 py-5 text-center">
+                  <p className="text-sm font-semibold text-[var(--text-secondary)]">Você pode vincular uma academia depois</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">Vá em Perfil → Editar para buscar sua academia mais tarde</p>
+                  <button type="button" onClick={() => setForm((f) => ({ ...f, skipAcademia: false }))}
+                    className="text-[10px] text-[var(--gold)] font-semibold hover:underline mt-2 inline-block">
+                    Buscar novamente
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
+                  <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia</p>
+                  <p className="text-sm font-medium">{form.academiaNome}</p>
+                </div>
+              )}
+              <div className="h-px bg-[var(--border)]" />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
+                  <select className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
+                    {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.grauLabel")}</label>
+                  <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+                    {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("step3Aluno.grauOption").replace("{g}", String(g))}</option>)}
+                  </select>
+                </div>
+              </div>
+              {form.academiaId && (
+                <>
+                  <div className="h-px bg-[var(--border)]" />
+                  <div>
+                    <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Professor (opcional)</label>
+                    <div className="relative">
+                      <input type="text" className="input" placeholder="Buscar professor..." value={buscaProf}
+                        onChange={(e) => {
+                          setBuscaProf(e.target.value)
+                          if (buscaProfTimer.current) clearTimeout(buscaProfTimer.current)
+                          if (e.target.value.length < 2) { setProfessores([]); return }
+                          buscaProfTimer.current = setTimeout(async () => {
+                            try {
+                              const res = await fetch(`/api/professores?q=${encodeURIComponent(e.target.value)}&academiaId=${form.academiaId}`)
+                              setProfessores(await res.json())
+                            } catch { setProfessores([]) }
+                          }, 300)
+                        }} />
+                    </div>
+                    {professores.length > 0 && (
+                      <div className="surface overflow-hidden mt-2">
+                        {professores.map((prof) => (
+                          <button key={prof.id} type="button" className="w-full text-left px-4 py-3 hover:opacity-80 transition-colors border-b border-[var(--border)] last:border-0"
+                            onClick={() => { update("professorId", prof.id); setProfessores([]); setBuscaProf(prof.nome) }}>
+                            {prof.nome}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {form.professorId && (
+                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 mt-2">
+                        <p className="text-xs text-emerald-400 font-semibold">Professor selecionado</p>
+                        <p className="text-sm font-medium">{buscaProf}</p>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
 
-    // Step 4: Termos (ALL roles)
-    if (step === TOTAL_STEPS) {
-      return (
-        <div className="space-y-4">
-          <div className="text-center mb-2">
-            <div className="text-4xl mb-2">🎉</div>
-            <h3 className="text-lg font-extrabold">Tudo pronto!</h3>
-            <p className="text-sm text-[var(--text-secondary)]">Revise e aceite os termos para finalizar.</p>
+          <div className="h-px bg-[var(--border)]" />
+
+          {/* Terms (contained at the bottom of step 2) */}
+          <div className="space-y-2">
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" checked={form.consentimentoTermos} onChange={(e) => update("consentimentoTermos", e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
+              <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                Aceito os <Link href="/termos" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Termos de Uso</Link> e a{" "}
+                <Link href="/lgpd" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Política de Privacidade</Link> *
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" checked={form.consentimentoLGPD} onChange={(e) => update("consentimentoLGPD", e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
+              <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                Autorizo o tratamento dos meus dados pessoais conforme a LGPD (Lei 13.709/2018) *
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <input type="checkbox" checked={form.consentimentoMarketing} onChange={(e) => update("consentimentoMarketing", e.target.checked)}
+                className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
+              <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                Aceito receber comunicações sobre novidades, dicas e promoções (opcional)
+              </span>
+            </label>
           </div>
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox" checked={form.consentimentoTermos} onChange={(e) => update("consentimentoTermos", e.target.checked)}
-              className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
-            <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-              Aceito os <Link href="/termos" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Termos de Uso</Link> e a{" "}
-              <Link href="/lgpd" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Política de Privacidade</Link> *
-            </span>
-          </label>
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox" checked={form.consentimentoLGPD} onChange={(e) => update("consentimentoLGPD", e.target.checked)}
-              className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
-            <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-              Autorizo o tratamento dos meus dados pessoais conforme a LGPD (Lei 13.709/2018) *
-            </span>
-          </label>
-          <label className="flex items-start gap-3 cursor-pointer group">
-            <input type="checkbox" checked={form.consentimentoMarketing} onChange={(e) => update("consentimentoMarketing", e.target.checked)}
-              className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
-            <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-              Aceito receber comunicações sobre novidades, dicas e promoções (opcional)
-            </span>
-          </label>
         </div>
       )
     }
@@ -608,7 +577,7 @@ export default function Cadastro() {
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
-            {step === 2 ? "Escolha seu perfil" : form.role === "aluno" ? t("subtitleAluno") : t("subtitleOther")}
+            {step === 1 ? "Crie sua conta em menos de 1 minuto" : "Finalize seu cadastro"}
           </p>
         </div>
 
@@ -635,7 +604,7 @@ export default function Cadastro() {
             <button type="submit" disabled={loading}
               className={`btn flex-1 py-3 text-sm ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               style={loading ? { background: "var(--border)", color: "var(--text-muted)" } : { background: "var(--gold)", color: "#000", fontWeight: 700 }}>
-              {loading ? "Criando conta..." : step < TOTAL_STEPS ? "Próximo" : "Criar Conta Grátis"}
+              {loading ? "Criando conta..." : step === 1 ? "Próximo" : "Criar Conta Grátis"}
             </button>
           </div>
 

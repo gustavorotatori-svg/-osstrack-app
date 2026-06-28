@@ -65,7 +65,10 @@ export default function DonoAgendaPage() {
     fetchTurmas()
   }, [])
 
+  const [editId, setEditId] = useState<string | null>(null)
+
   function openAddForm(day: number, hour: string) {
+    setEditId(null)
     setSelectedDay(day)
     setSelectedHour(hour)
     setHoraInicio(hour)
@@ -78,6 +81,19 @@ export default function DonoAgendaPage() {
     setShowForm(true)
   }
 
+  function openEditForm(h: HorarioData) {
+    setEditId(h.id)
+    setSelectedDay(h.diaSemana)
+    setSelectedHour(h.horaInicio)
+    setHoraInicio(h.horaInicio)
+    setHoraFim(h.horaFim)
+    setTurmaId(h.turma?.id || "")
+    setProfessorId(h.professor?.id || "")
+    setMaxAlunos(h.maxAlunos || 30)
+    setLocal(h.local || "")
+    setShowForm(true)
+  }
+
   async function handleAddSlot(e: React.FormEvent) {
     e.preventDefault()
     if (!turmaId || !professorId || !horaInicio || !horaFim) {
@@ -85,10 +101,14 @@ export default function DonoAgendaPage() {
       return
     }
     setSaving(true)
-    const res = await fetch("/api/agenda/horarios", {
-      method: "POST",
+    const isEdit = !!editId
+    const url = isEdit ? `/api/agenda/horarios` : "/api/agenda/horarios"
+    const method = isEdit ? "PUT" : "POST"
+    const res = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        ...(isEdit ? { id: editId } : {}),
         turmaId,
         professorId,
         diaSemana: selectedDay ?? new Date().getDay(),
@@ -99,10 +119,16 @@ export default function DonoAgendaPage() {
       }),
     })
     if (res.ok) {
-      const novo = await res.json()
-      setHorarios((prev) => [...prev, novo])
-      toast.success(t("horarioCriado"))
+      if (isEdit) {
+        fetchHorarios()
+        toast.success("Horário atualizado")
+      } else {
+        const novo = await res.json()
+        setHorarios((prev) => [...prev, novo])
+        toast.success(t("horarioCriado"))
+      }
       setShowForm(false)
+      setEditId(null)
     } else {
       const err = await res.json()
       toast.error(err.error || t("erroCriar"))
@@ -129,12 +155,12 @@ export default function DonoAgendaPage() {
             <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
             <button
               onClick={() => {
-                setShowForm(!showForm)
-                if (!showForm) {
+                if (showForm) { setEditId(null); setShowForm(false) }
+                else {
                   const hoje = new Date().getDay()
-                  setSelectedDay(hoje)
-                  setSelectedHour("")
+                  setSelectedDay(hoje); setSelectedHour(""); setEditId(null)
                 }
+                setShowForm(!showForm)
               }}
               className="btn-primary px-4 py-2 text-sm mt-3"
             >
@@ -148,7 +174,7 @@ export default function DonoAgendaPage() {
               className="glass-card p-5 space-y-4"
             >
               <h4 className="font-bold text-sm">
-                {t("novoHorario")} —{" "}
+                {editId ? "Editar Horário" : t("novoHorario")} —{" "}
                 {selectedDay !== null ? diaNomes[selectedDay] : ""}
                 {selectedHour ? ` às ${selectedHour}` : ""}
               </h4>
@@ -257,7 +283,7 @@ export default function DonoAgendaPage() {
                 />
               </div>
               <button type="submit" disabled={saving} className="btn-gold px-6 py-2.5 text-sm font-bold">
-                {saving ? t("salvando") : t("salvarHorario")}
+                {saving ? t("salvando") : editId ? "Salvar Alterações" : t("salvarHorario")}
               </button>
             </form>
           )}
@@ -282,11 +308,11 @@ export default function DonoAgendaPage() {
               horarios={horarios}
               onEmptyCell={openAddForm}
               onClassCell={(h) => {
-                if (
-                  confirm(
-                    `${t("confirmarExcluir")} "${h.turma?.nome || t("treino")}" (${h.horaInicio}-${h.horaFim})?`
-                  )
+                const action = confirm(
+                  `Editar "${h.turma?.nome || t("treino")}"?\nOK = Editar | Cancelar = Excluir`
                 )
+                if (action) openEditForm(h)
+                else if (confirm(`Excluir "${h.turma?.nome || t("treino")}" (${h.horaInicio}-${h.horaFim})?`))
                   handleDeleteSlot(h)
               }}
             />

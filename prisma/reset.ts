@@ -2,18 +2,31 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 async function main() {
-  const tables = [
-    "CurtidaMural", "ComentarioMural", "PostagemMural",
-    "MissaoDiaria", "MetaSemanal", "MestreDoMes",
-    "AlunoConquista", "Agendamento", "Presenca",
-    "TurmaAluno", "Cobranca", "Contrato", "PlanoMensalidade",
-    "Notificacao", "HorarioAula", "Turma", "Graduacao",
-    "Conquista", "Streak", "Pagamento",
-    "Convite", "Usuario", "Academia", "Contato",
-  ]
-  for (const t of tables) {
-    await prisma.$executeRawUnsafe(`DELETE FROM "${t}"`)
-  }
+  await prisma.curtidaMural.deleteMany()
+  await prisma.comentarioMural.deleteMany()
+  await prisma.postagemMural.deleteMany()
+  await prisma.missaoDiaria.deleteMany()
+  await prisma.metaSemanal.deleteMany()
+  await prisma.mestreDoMes.deleteMany()
+  await prisma.alunoConquista.deleteMany()
+  await prisma.agendamento.deleteMany()
+  await prisma.presenca.deleteMany()
+  await prisma.turmaAluno.deleteMany()
+  await prisma.cobranca.deleteMany()
+  await prisma.contrato.deleteMany()
+  await prisma.planoMensalidade.deleteMany()
+  await prisma.notificacao.deleteMany()
+  await prisma.horarioAula.deleteMany()
+  await prisma.turma.deleteMany()
+  await prisma.graduacao.deleteMany()
+  await prisma.conquista.deleteMany()
+  await prisma.streak.deleteMany()
+  await prisma.convite.deleteMany()
+  await prisma.pushSubscription.deleteMany()
+  await prisma.usuario.deleteMany()
+  await prisma.academia.deleteMany()
+  await prisma.contato.deleteMany()
+  await prisma.lead.deleteMany()
   console.log("Todos os dados foram zerados.")
 }
 

@@ -4,16 +4,19 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { haversineDistance } from "@/lib/geo"
 import { handleApiError } from "@/lib/api-error"
+import { presencaSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { latitude, longitude } = await request.json()
-    if (!latitude || !longitude) {
+    const body = await request.json()
+    const parsed = presencaSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "Localização obrigatória. Ative o GPS para fazer check-in." }, { status: 400 })
     }
+    const { latitude, longitude } = parsed.data
 
     const academia = session.user.academiaId
       ? await prisma.academia.findUnique({

@@ -6,7 +6,7 @@ import { CelebrationOverlay } from "@/components/ui/celebration"
 import { useSession } from "next-auth/react"
 import { playCheckinSound, playStreakSound, playCelebrationSound } from "@/lib/sound"
 import { useT } from "@/lib/use-t"
-import { FlameIcon, TargetIcon, CheckIcon } from "@/components/ui/icons"
+import { FlameIcon, TargetIcon, CheckIcon, Share2Icon } from "@/components/ui/icons"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
 
@@ -279,6 +279,20 @@ export default function CheckinPage() {
                 {t("antiFraudeAtivo")}
               </div>
             </div>
+
+            {status === "done" && (
+              <button onClick={() => {
+                const texto = `🥋 Acabei de treinar no ${session?.user?.academiaNome || "OssTrack"}!\n🔥 Streak: ${streak} dias\n📊 Meta semanal: ${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo}\n\nBaixe o OssTrack e acompanhe sua evolução no Jiu-Jitsu!`
+                if (navigator.share) {
+                  navigator.share({ title: "OssTrack - Minha Evolução no Jiu-Jitsu", text: texto })
+                } else {
+                  navigator.clipboard.writeText(texto)
+                  toast.success("Texto copiado! Cole no WhatsApp ou Instagram")
+                }
+              }} className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-[var(--gold)] hover:text-amber-400 transition-colors px-4 py-2 rounded-lg border border-[rgba(212,168,71,0.15)] hover:bg-[rgba(212,168,71,0.06)]">
+                <Share2Icon className="w-3.5 h-3.5" /> Compartilhar evolução
+              </button>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">

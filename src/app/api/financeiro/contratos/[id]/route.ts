@@ -38,5 +38,26 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   } catch (error) {
     return handleApiError(error)
   }
+}
 
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+  const { id } = await params
+  const session = await getServerSession(authOptions)
+  if (!session || !["dono", "professor"].includes(session.user.role) || !session.user.academiaId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const contrato = await prisma.contrato.findFirst({
+    where: { id, academiaId: session.user.academiaId },
+  })
+  if (!contrato) {
+    return NextResponse.json({ error: "Contrato não encontrado" }, { status: 404 })
+  }
+
+  await prisma.contrato.delete({ where: { id } })
+  return NextResponse.json({ success: true })
+  } catch (error) {
+    return handleApiError(error)
+  }
 }

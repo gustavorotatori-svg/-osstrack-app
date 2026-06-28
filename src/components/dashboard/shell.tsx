@@ -100,6 +100,7 @@ const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps
     { href: "/dashboard/dono/relatorios", tkey: "relatorios", icon: ReportIcon },
     { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/dono/graduacoes", tkey: "graduacoes", icon: AwardIcon },
+    { href: "/dashboard/dono/professores", tkey: "professores", icon: UsersIcon },
     { href: "/dashboard/dono/config", tkey: "config", icon: SettingsIcon },
   ],
 }
@@ -391,19 +392,19 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       )}
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 w-full md:ml-60 relative z-10">
+      <main id="main-content" className="flex-1 w-full md:ml-60 relative z-10">
         <div className="px-4 py-4 pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:px-6 lg:px-8 dashboard-content">
           <PullToRefresh>
             {children}
           </PullToRefresh>
         </div>
-      </div>
+      </main>
 
       <InstallPrompt />
       <OssTransition />
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--bg)]/95 border-t border-[var(--border)] flex items-center justify-around px-1 pt-1 pb-[max(8px,env(safe-area-inset-bottom))] safe-area-bottom">
+      <nav aria-label="Navegação móvel" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--bg)]/95 border-t border-[var(--border)] flex items-center justify-around px-1 pt-1 pb-[max(8px,env(safe-area-inset-bottom))] safe-area-bottom">
         {items.slice(0, 5).map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
           const Icon = item.icon

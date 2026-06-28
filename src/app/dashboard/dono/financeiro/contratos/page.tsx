@@ -18,14 +18,16 @@ export default function ContratosPage() {
   useEffect(() => { load() }, [])
 
   async function load() {
-    const [c, p, a] = await Promise.all([
-      fetch("/api/financeiro/contratos").then(r => r.json()),
-      fetch("/api/financeiro/planos").then(r => r.json()),
-      fetch("/api/academia/alunos").then(r => r.json()).catch(() => []),
-    ])
-    setContratos(c)
-    setPlanos(p)
-    setAlunos(a)
+    try {
+      const [c, p, a] = await Promise.all([
+        fetch("/api/financeiro/contratos").then(async r => { if (!r.ok) throw new Error("Erro ao carregar contratos"); return r.json() }),
+        fetch("/api/financeiro/planos").then(async r => { if (!r.ok) throw new Error("Erro ao carregar planos"); return r.json() }),
+        fetch("/api/academia/alunos").then(r => r.json()).catch(() => []),
+      ])
+      setContratos(c); setPlanos(p); setAlunos(a)
+    } catch (e: any) {
+      toast.error(e.message || "Erro ao carregar dados")
+    }
     setLoading(false)
   }
 
@@ -156,6 +158,13 @@ export default function ContratosPage() {
                           {t("reativar")}
                         </button>
                       )}
+                      <button onClick={async () => {
+                        if (!confirm(`Excluir contrato de ${c.aluno.nome}?`)) return
+                        const r = await fetch(`/api/financeiro/contratos/${c.id}`, { method: "DELETE" })
+                        if (r.ok) { load(); toast.success("Contrato excluído") }
+                        else { const err = await r.json().catch(() => ({})); toast.error(err.error || "Erro ao excluir") }
+                      }}
+                        className="text-[9px] px-2 py-0.5 rounded bg-red-900/20 text-red-400/70 hover:text-red-400">🗑️</button>
                     </div>
                   </div>
                 </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { usePushNotifications } from "@/lib/use-push"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -90,10 +91,12 @@ const STEPS: Record<DeviceType, { icon: string; title: string; instructions: str
 }
 
 export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
+  const [step, setStep] = useState<"pwa" | "push">("pwa")
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [installed, setInstalled] = useState(false)
   const device = detectDevice()
-  const step = STEPS[device]
+  const pwaStep = STEPS[device]
+  const push = usePushNotifications()
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -116,6 +119,23 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
 
   const canAutoInstall = !!deferredPrompt
 
+  const handleNext = useCallback(() => {
+    if (step === "pwa") {
+      setStep("push")
+    } else {
+      onComplete()
+    }
+  }, [step, onComplete])
+
+  const handleSkip = useCallback(() => {
+    onComplete()
+  }, [onComplete])
+
+  const handleSubscribe = useCallback(async () => {
+    await push.subscribe()
+    onComplete()
+  }, [push, onComplete])
+
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center p-6"
@@ -126,64 +146,123 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
 
       <motion.div
+        key={step}
         className="relative z-10 w-full max-w-sm surface p-6 md:p-8 text-center space-y-6"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", duration: 0.5 }}
       >
-        <div className="text-5xl mb-2">{step.icon}</div>
+        {step === "pwa" ? (
+          <>
+            <div className="text-5xl mb-2">{pwaStep.icon}</div>
 
-        <div>
-          <h2 className="text-xl font-extrabold">{step.title}</h2>
-          <p className="text-sm text-[var(--text-secondary)] mt-1">
-            Adicione o OssTrack à sua área de trabalho para acessar rápido como um app nativo
-          </p>
-        </div>
-
-        <div className="space-y-0 text-left">
-          {step.instructions.map((text, i) => (
-            <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[var(--border)]/50 last:border-0">
-              <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>{i + 1}</span>
-              </div>
-              <p className="text-sm text-[var(--text)]">{text}</p>
+            <div>
+              <h2 className="text-xl font-extrabold">{pwaStep.title}</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-1">
+                Adicione o OssTrack à sua área de trabalho para acessar rápido como um app nativo
+              </p>
             </div>
-          ))}
-        </div>
 
-        {installed && (
-          <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
-            <p className="text-sm text-emerald-400 font-semibold">✓ Instalado com sucesso!</p>
-          </div>
+            <div className="space-y-0 text-left">
+              {pwaStep.instructions.map((text, i) => (
+                <div key={i} className="flex items-start gap-3 py-2.5 border-b border-[var(--border)]/50 last:border-0">
+                  <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>{i + 1}</span>
+                  </div>
+                  <p className="text-sm text-[var(--text)]">{text}</p>
+                </div>
+              ))}
+            </div>
+
+            {installed && (
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
+                <p className="text-sm text-emerald-400 font-semibold">✓ Instalado com sucesso!</p>
+              </div>
+            )}
+
+            <div className="space-y-3 pt-2">
+              {canAutoInstall && !installed && (
+                <button
+                  onClick={handleInstall}
+                  className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
+                  style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
+                >
+                  Instalar Agora
+                </button>
+              )}
+
+              <button
+                onClick={handleNext}
+                className={`w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
+                  !installed && canAutoInstall
+                    ? "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
+                    : "btn"
+                }`}
+                style={installed || !canAutoInstall ? { background: "var(--gold)", color: "#000", fontWeight: 700 } : {}}
+              >
+                {installed ? "Continuar →" : canAutoInstall ? "Pular por enquanto" : "Já adicionei! Continuar →"}
+              </button>
+            </div>
+
+            <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
+              Depois de instalar, você pode acessar o OssTrack de qualquer lugar com um toque
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="text-5xl mb-2">🔔</div>
+
+            <div>
+              <h2 className="text-xl font-extrabold">Não perca nenhum treino</h2>
+              <p className="text-sm text-[var(--text-secondary)] mt-1">
+                Ative as notificações para receber lembretes de check-in, novas missões e convites
+              </p>
+            </div>
+
+            <div className="space-y-3 text-left">
+              <div className="flex items-start gap-3 py-2.5">
+                <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>1</span>
+                </div>
+                <p className="text-sm text-[var(--text)]">Lembrete diário de check-in</p>
+              </div>
+              <div className="flex items-start gap-3 py-2.5">
+                <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>2</span>
+                </div>
+                <p className="text-sm text-[var(--text)]">Missões diárias e conquistas</p>
+              </div>
+              <div className="flex items-start gap-3 py-2.5">
+                <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>3</span>
+                </div>
+                <p className="text-sm text-[var(--text)]">Convites de academia e turma</p>
+              </div>
+            </div>
+
+            <div className="space-y-3 pt-2">
+              <button
+                onClick={handleSubscribe}
+                disabled={push.loading}
+                className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98] disabled:opacity-50"
+                style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
+              >
+                {push.loading ? "Ativando..." : "Ativar Notificações"}
+              </button>
+
+              <button
+                onClick={handleSkip}
+                className="w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
+              >
+                Agora não
+              </button>
+            </div>
+
+            <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
+              Você pode ativar ou desativar as notificações a qualquer momento nas configurações
+            </p>
+          </>
         )}
-
-        <div className="space-y-3 pt-2">
-          {canAutoInstall && !installed && (
-            <button
-              onClick={handleInstall}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
-              style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
-            >
-              Instalar Agora
-            </button>
-          )}
-
-          <button
-            onClick={onComplete}
-            className={`w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
-              !installed && canAutoInstall
-                ? "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
-                : "btn"
-            }`}
-            style={installed || !canAutoInstall ? { background: "var(--gold)", color: "#000", fontWeight: 700 } : {}}
-          >
-            {installed ? "Continuar →" : canAutoInstall ? "Pular por enquanto" : "Já adicionei! Continuar →"}
-          </button>
-        </div>
-
-        <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
-          Depois de instalar, você pode acessar o OssTrack de qualquer lugar com um toque
-        </p>
       </motion.div>
     </motion.div>
   )

@@ -74,6 +74,38 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PUT(req: Request) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || !["dono", "professor"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+
+    const body = await req.json()
+    const { id, turmaId, professorId, diaSemana, horaInicio, horaFim, maxAlunos, local } = body
+    if (!id) return NextResponse.json({ error: "id obrigatório" }, { status: 400 })
+
+    const horario = await prisma.horarioAula.findUnique({ where: { id } })
+    if (!horario) return NextResponse.json({ error: "Horário não encontrado" }, { status: 404 })
+    if (horario.academiaId !== session.user.academiaId) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+
+    const updated = await prisma.horarioAula.update({
+      where: { id },
+      data: {
+        ...(turmaId !== undefined && { turmaId }),
+        ...(professorId !== undefined && { professorId }),
+        ...(diaSemana !== undefined && { diaSemana: Number(diaSemana) }),
+        ...(horaInicio !== undefined && { horaInicio }),
+        ...(horaFim !== undefined && { horaFim }),
+        ...(maxAlunos !== undefined && { maxAlunos }),
+        ...(local !== undefined && { local }),
+      },
+    })
+
+    return NextResponse.json(updated)
+  } catch (error) {
+    return handleApiError(error)
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession(authOptions)

@@ -32,16 +32,21 @@ export async function GET() {
     const aniversariantes = alunos
       .filter((a) => {
         if (!a.dataNascimento) return false
-        const mes = parseInt(a.dataNascimento.split("-")[1], 10)
-        return mes === mesAtual
+        const parts = a.dataNascimento.split("-")
+        if (parts.length !== 3) return false
+        const mes = parseInt(parts[1], 10)
+        return !isNaN(mes) && mes === mesAtual
       })
-      .map((a) => ({
-        id: a.id,
-        nome: a.nome,
-        faixa: a.faixa,
-        avatar: a.avatar,
-        dia: parseInt(a.dataNascimento!.split("-")[2], 10),
-      }))
+      .map((a) => {
+        const dia = parseInt(a.dataNascimento!.split("-")[2], 10)
+        return {
+          id: a.id,
+          nome: a.nome,
+          faixa: a.faixa,
+          avatar: a.avatar,
+          dia: isNaN(dia) ? 0 : dia,
+        }
+      })
       .sort((a, b) => a.dia - b.dia)
 
     return NextResponse.json({ aniversariantes })

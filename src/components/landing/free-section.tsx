@@ -42,16 +42,33 @@ export function FreeSection() {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
         >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9, y: -5 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="inline-block px-5 py-2 bg-[rgba(212,168,71,0.08)] text-xs text-[var(--gold)] font-semibold uppercase tracking-widest mb-5"
-            style={{ clipPath: "polygon(0% 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%)" }}
+            transition={{ type: "spring", stiffness: 100, damping: 10 }}
+            className="relative mb-5 mx-auto"
+            style={{ width: 22, height: 22 }}
           >
-            100% gratuito
-          </motion.span>
+            <motion.div
+              className="absolute inset-0 rounded-full border-2"
+              style={{ borderColor: "var(--gold)" }}
+              animate={{ scale: [1, 2.2, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+            />
+            <motion.div
+              className="absolute inset-0 rounded-full border"
+              style={{ borderColor: "var(--gold)", borderWidth: 1.5 }}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.1, 0.3] }}
+              transition={{ duration: 1.8, delay: 0.3, repeat: Infinity, ease: "easeOut" }}
+            />
+            <motion.div
+              className="absolute inset-[3px] rounded-full"
+              style={{ background: "var(--gold)" }}
+              animate={{ scale: [1, 0.85, 1], opacity: [1, 0.5, 1] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
 
           <h2 className="text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-tight leading-tight mb-4">
             Sem mensalidade.{" "}
@@ -59,7 +76,7 @@ export function FreeSection() {
           </h2>
 
           <p className="text-[var(--white-muted)] text-lg leading-relaxed max-w-2xl mx-auto mb-16">
-            Academia, professor e aluno: R$ 0. Sempre. O OssTrack é e sempre será completamente gratuito.
+            Academia, professor e aluno: R$ 0. Sempre. O OssTrack é completamente gratuito.
           </p>
         </motion.div>
 

@@ -73,11 +73,12 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   const growth = mesAnterior > 0 ? Math.round(((mesAtual - mesAnterior) / mesAnterior) * 100) : 0
 
   function getQuickActions() {
+    const prefix = role === "dono" ? "dono" : "professor"
     const base = [
-      { label: "Turmas", icon: CalendarIcon, href: `/${role === "dono" ? "dono" : "professor"}/turmas`, color: "from-blue-600/20 to-blue-600/5", border: "border-blue-500/20" },
-      { label: "Alunos", icon: UsersIcon, href: `/${role === "dono" ? "dono" : "professor"}/alunos`, color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20" },
-      { label: "Presenças", icon: ClipboardList, href: `/${role === "dono" ? "dono" : "professor"}/presencas`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
-      { label: "Graduações", icon: GraduationCap, href: `/${role === "dono" ? "dono" : "professor"}/graduacoes`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
+      { label: "Turmas", icon: CalendarIcon, href: `/dashboard/${prefix}/turmas`, color: "from-blue-600/20 to-blue-600/5", border: "border-blue-500/20" },
+      { label: "Alunos", icon: UsersIcon, href: `/dashboard/${prefix}/alunos`, color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20" },
+      { label: "Presenças", icon: ClipboardList, href: `/dashboard/${prefix}/presencas`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
+      { label: "Graduações", icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
     ]
     if (role === "dono" || role === "professor") {
       base.push(

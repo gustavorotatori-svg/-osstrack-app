@@ -27,6 +27,10 @@ export default function RecuperarSenha() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error); return }
+      if (data.resetUrl) {
+        router.push(data.resetUrl)
+        return
+      }
       setToken(data.token)
       setMessage("Token gerado com sucesso! Clique no link abaixo para redefinir sua senha.")
     } catch {

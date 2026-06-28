@@ -34,7 +34,9 @@ export async function POST(request: Request) {
       data: { resetToken: token, resetTokenExpires: expires },
     })
 
-    return NextResponse.json({ success: true, token, message: "Link gerado! Clique abaixo para redefinir." })
+    // Retorna URL em vez do token bruto para evitar vazamento no JS frontend
+    const resetUrl = `${new URL(request.url).origin}/redefinir-senha?token=${token}`
+    return NextResponse.json({ success: true, resetUrl, message: "Link gerado! Clique abaixo para redefinir." })
   } catch {
     return NextResponse.json({ error: "Erro ao gerar token" }, { status: 500 })
   }
