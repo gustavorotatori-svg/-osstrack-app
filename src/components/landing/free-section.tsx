@@ -76,7 +76,7 @@ export function FreeSection() {
           </h2>
 
           <p className="text-[var(--white-muted)] text-lg leading-relaxed max-w-2xl mx-auto mb-16">
-            Academia, professor e aluno: R$ 0. Sempre. O OssTrack é completamente gratuito.
+            Academia, professor e aluno: R$ 0. O OssTrack é completamente gratuito.
           </p>
         </motion.div>
 
