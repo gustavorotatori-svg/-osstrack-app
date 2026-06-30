@@ -197,17 +197,24 @@ export default function Cadastro() {
 
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         try {
-          // Dynamically inject recaptcha script and get token
-          if (!(window as any).grecaptcha) {
-            await new Promise<void>((resolve) => {
+          const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+          if (!(window as any).grecaptcha?.ready) {
+            await new Promise<void>((resolve, reject) => {
               const script = document.createElement("script")
-              script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
-              script.onload = () => resolve()
+              script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+              script.onload = () => {
+                ;(window as any).grecaptcha.ready(() => resolve())
+              }
+              script.onerror = () => reject(new Error("Failed to load reCAPTCHA"))
               document.head.appendChild(script)
             })
+          } else {
+            await new Promise<void>((resolve) => (window as any).grecaptcha.ready(resolve))
           }
-          recaptchaToken = await (window as any).grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: "register" })
-        } catch {}
+          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "register" })
+        } catch (e) {
+          console.warn("[cadastro] reCAPTCHA error:", e)
+        }
       }
 
       const body: Record<string, unknown> = {
