@@ -23,24 +23,24 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
       {/* Jiu-Jitsu belts background — 7 faixas animando de cima e de baixo */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
         {[
-          "var(--belt-branca)",
-          "var(--belt-azul)",
-          "var(--belt-roxa)",
-          "var(--belt-marrom)",
-          "var(--belt-preta)",
-          "var(--belt-coral)",
-          "var(--belt-vermelha)",
-        ].map((color, i) => {
+          { hex: "#e5e5e5", label: "branca" },
+          { hex: "#3b82f6", label: "azul" },
+          { hex: "#9333ea", label: "roxa" },
+          { hex: "#92400e", label: "marrom" },
+          { hex: "#1a1a1a", label: "preta" },
+          { hex: "#d4a847", label: "coral" },
+          { hex: "#dc2626", label: "vermelha" },
+        ].map((belt, i) => {
           const fromTop = i % 2 === 0
           const topPos = 5 + i * 12
           const bottomPos = 5 + (6 - i) * 12
           return (
             <motion.div
-              key={i}
+              key={belt.label}
               className="absolute left-0 right-0 h-[14vh]"
               style={{
                 opacity: 0,
-                background: `linear-gradient(90deg, transparent 0%, ${color}18 10%, ${color}30 50%, ${color}18 90%, transparent 100%)`,
+                background: `linear-gradient(90deg, transparent 0%, ${belt.hex}22 10%, ${belt.hex}44 50%, ${belt.hex}22 90%, transparent 100%)`,
                 ...(fromTop ? { top: `${topPos}%` } : { bottom: `${bottomPos}%` }),
               }}
               initial={{ y: fromTop ? "-100%" : "100%", opacity: 0 }}
