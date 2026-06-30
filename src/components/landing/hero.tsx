@@ -20,35 +20,35 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
     <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden bg-[#0a0a0a]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
 
-      {/* Jiu-Jitsu belts background — alternating from top and bottom */}
+      {/* Jiu-Jitsu belts background — 7 faixas animando de cima e de baixo */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
         {[
-          { color: "var(--belt-branca)", label: "branca" },
-          { color: "var(--belt-azul)", label: "azul" },
-          { color: "var(--belt-roxa)", label: "roxa" },
-          { color: "var(--belt-marrom)", label: "marrom" },
-          { color: "var(--belt-preta)", label: "preta" },
-          { color: "var(--belt-coral)", label: "coral" },
-          { color: "var(--belt-vermelha)", label: "vermelha" },
-        ].map((belt, i) => {
+          "var(--belt-branca)",
+          "var(--belt-azul)",
+          "var(--belt-roxa)",
+          "var(--belt-marrom)",
+          "var(--belt-preta)",
+          "var(--belt-coral)",
+          "var(--belt-vermelha)",
+        ].map((color, i) => {
           const fromTop = i % 2 === 0
-          const verticalPos = 8 + i * 12
+          const topPos = 5 + i * 12
+          const bottomPos = 5 + (6 - i) * 12
           return (
             <motion.div
-              key={belt.label}
-              className="absolute left-0 right-0 h-[12vh]"
+              key={i}
+              className="absolute left-0 right-0 h-[14vh]"
               style={{
-                top: fromTop ? `${verticalPos}%` : undefined,
-                bottom: !fromTop ? `${100 - verticalPos - 12}%` : undefined,
-                background: `linear-gradient(90deg, transparent 0%, ${belt.color}15 15%, ${belt.color}22 50%, ${belt.color}15 85%, transparent 100%)`,
                 opacity: 0,
+                background: `linear-gradient(90deg, transparent 0%, ${color}18 10%, ${color}30 50%, ${color}18 90%, transparent 100%)`,
+                ...(fromTop ? { top: `${topPos}%` } : { bottom: `${bottomPos}%` }),
               }}
-              initial={{ y: fromTop ? "-120%" : "120%" }}
-              animate={mounted ? { y: "0%", opacity: 1 } : {}}
+              initial={{ y: fromTop ? "-100%" : "100%", opacity: 0 }}
+              animate={{ y: "0%", opacity: 1 }}
               transition={{
-                duration: 1.2,
-                delay: 0.15 * i,
-                ease: [0.25, 0.46, 0.45, 0.94],
+                duration: 1.4,
+                delay: 0.2 * i,
+                ease: [0.16, 1, 0.3, 1],
               }}
             />
           )
