@@ -55,7 +55,7 @@
   "planos": {
     "badge": "Preço justo",
     "titulo": "Planos",
-    "subtitulo": "Academia, professor e aluno: R$0. Tudo grátis. Sempre.",
+    "subtitulo": "Academia, professor e aluno: R$0. Tudo grátis.",
     "gratis": "Free",
     "gratisPreco": "R$ 0",
     "gratisDesc": "Para alunos que querem começar",
@@ -1064,7 +1064,7 @@
     "badge": "100% gratuito",
     "titulo": "Sem mensalidade.",
     "tituloDestaque": "Sem pegadinha.",
-    "descricao": "Academia, professor e aluno: R$ 0. Sempre. O OssTrack é completamente gratuito.",
+    "descricao": "Academia, professor e aluno: R$ 0. O OssTrack é completamente gratuito.",
     "card1Icon": "🥋",
     "card1Title": "Treino Ilimitado",
     "card1Desc": "Registre quantos treinos quiser. Sem limite, sem trava, sem frescura.",
