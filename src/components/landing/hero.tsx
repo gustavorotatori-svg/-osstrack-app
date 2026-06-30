@@ -20,32 +20,39 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
     <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden bg-[#0a0a0a]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
 
-      {/* Abstract geometric orbs instead of belts */}
+      {/* Jiu-Jitsu belts background — alternating from top and bottom */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        {[0, 1, 2, 3, 4].map((i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: 120 + i * 80,
-              height: 120 + i * 80,
-              top: `${10 + i * 8}%`,
-              left: `${20 + i * 12}%`,
-              background: `radial-gradient(circle, rgba(212,168,71,${0.04 - i * 0.005}), transparent)`,
-              opacity: 0.4,
-            }}
-            animate={{
-              x: [0, 30 - i * 5, 0],
-              y: [0, -20 + i * 3, 0],
-              scale: [1, 1.05 + i * 0.02, 1],
-            }}
-            transition={{
-              duration: 6 + i * 1.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+        {[
+          { color: "var(--belt-branca)", label: "branca" },
+          { color: "var(--belt-azul)", label: "azul" },
+          { color: "var(--belt-roxa)", label: "roxa" },
+          { color: "var(--belt-marrom)", label: "marrom" },
+          { color: "var(--belt-preta)", label: "preta" },
+          { color: "var(--belt-coral)", label: "coral" },
+          { color: "var(--belt-vermelha)", label: "vermelha" },
+        ].map((belt, i) => {
+          const fromTop = i % 2 === 0
+          const verticalPos = 8 + i * 12
+          return (
+            <motion.div
+              key={belt.label}
+              className="absolute left-0 right-0 h-[12vh]"
+              style={{
+                top: fromTop ? `${verticalPos}%` : undefined,
+                bottom: !fromTop ? `${100 - verticalPos - 12}%` : undefined,
+                background: `linear-gradient(90deg, transparent 0%, ${belt.color}15 15%, ${belt.color}22 50%, ${belt.color}15 85%, transparent 100%)`,
+                opacity: 0,
+              }}
+              initial={{ y: fromTop ? "-120%" : "120%" }}
+              animate={mounted ? { y: "0%", opacity: 1 } : {}}
+              transition={{
+                duration: 1.2,
+                delay: 0.15 * i,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+            />
+          )
+        })}
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
