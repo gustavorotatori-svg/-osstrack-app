@@ -32,6 +32,11 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
         ].map((belt, i) => {
           const fromTop = i % 2 === 0
           const posStyle = fromTop ? { top: `${2 + (i / 2) * 32}%` } : { bottom: `${2 + ((i - 1) / 2) * 32}%` }
+          return (
+            <motion.div
+              key={belt.label}
+              className="absolute left-0 right-0 h-[13vh]"
+              style={{ opacity: 0, ...posStyle, background: belt.bg }}
               initial={{ y: fromTop ? "-100%" : "100%", opacity: 0 }}
               animate={{ y: "0%", opacity: 1 }}
               transition={{
