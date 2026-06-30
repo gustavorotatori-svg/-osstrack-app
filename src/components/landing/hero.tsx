@@ -23,28 +23,15 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
       {/* Jiu-Jitsu belts background — 8 faixas reais animando de cima e de baixo */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
         {[
-          { bg: "linear-gradient(90deg, transparent 0%, #e5e5e522 10%, #e5e5e544 50%, #e5e5e522 90%, transparent 100%)", label: "branca", striped: false },
-          { bg: "linear-gradient(90deg, transparent 0%, #3b82f622 10%, #3b82f644 50%, #3b82f622 90%, transparent 100%)", label: "azul", striped: false },
-          { bg: "linear-gradient(90deg, transparent 0%, #9333ea22 10%, #9333ea44 50%, #9333ea22 90%, transparent 100%)", label: "roxa", striped: false },
-          { bg: "linear-gradient(90deg, transparent 0%, #92400e22 10%, #92400e44 50%, #92400e22 90%, transparent 100%)", label: "marrom", striped: false },
-          { bg: "linear-gradient(90deg, transparent 0%, #1a1a1a33 10%, #1a1a1a55 50%, #1a1a1a33 90%, transparent 100%)", label: "preta", striped: false },
-          { bg: "repeating-linear-gradient(90deg, #dc262644 0, #dc2626aa 10px, #1a1a1abb 10px, #1a1a1a66 20px)", label: "coral", striped: true },
-          { bg: "repeating-linear-gradient(90deg, #dc262644 0, #dc2626aa 10px, #e5e5e5bb 10px, #e5e5e566 20px)", label: "vermelha-branca", striped: true },
-          { bg: "linear-gradient(90deg, transparent 0%, #dc262622 10%, #dc262644 50%, #dc262622 90%, transparent 100%)", label: "vermelha", striped: false },
+          { bg: "linear-gradient(90deg, transparent 0%, #e5e5e522 10%, #e5e5e544 50%, #e5e5e522 90%, transparent 100%)", label: "branca" },
+          { bg: "linear-gradient(90deg, transparent 0%, #3b82f622 10%, #3b82f644 50%, #3b82f622 90%, transparent 100%)", label: "azul" },
+          { bg: "linear-gradient(90deg, transparent 0%, #9333ea22 10%, #9333ea44 50%, #9333ea22 90%, transparent 100%)", label: "roxa" },
+          { bg: "linear-gradient(90deg, transparent 0%, #92400e22 10%, #92400e44 50%, #92400e22 90%, transparent 100%)", label: "marrom" },
+          { bg: "linear-gradient(90deg, transparent 0%, #1a1a1a33 10%, #1a1a1a55 50%, #1a1a1a33 90%, transparent 100%)", label: "preta" },
+          { bg: "linear-gradient(90deg, transparent 0%, #dc262622 10%, #dc262644 50%, #dc262622 90%, transparent 100%)", label: "vermelha" },
         ].map((belt, i) => {
           const fromTop = i % 2 === 0
-          const posStyle = fromTop ? { top: `${2 + (i / 2) * 24}%` } : { bottom: `${2 + ((i - 1) / 2) * 24}%` }
-          return (
-            <motion.div
-              key={belt.label}
-              className="absolute left-0 right-0 h-[13vh]"
-              style={{
-                opacity: 0,
-                background: belt.bg,
-                maskImage: belt.striped ? "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)" : undefined,
-                WebkitMaskImage: belt.striped ? "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)" : undefined,
-                ...posStyle,
-              }}
+          const posStyle = fromTop ? { top: `${2 + (i / 2) * 32}%` } : { bottom: `${2 + ((i - 1) / 2) * 32}%` }
               initial={{ y: fromTop ? "-100%" : "100%", opacity: 0 }}
               animate={{ y: "0%", opacity: 1 }}
               transition={{
