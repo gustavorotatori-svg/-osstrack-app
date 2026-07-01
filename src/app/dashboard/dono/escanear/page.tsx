@@ -61,17 +61,17 @@ export default function DonoEscanearPage() {
         <div className="glass-card p-5 text-center">
           <div className="text-3xl mb-2">📷</div>
           <h3 className="font-bold text-lg">{t("title")}</h3>
-          <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
         <CameraScanner onScan={handleScan} onError={(e) => { setStatus("error"); setMsg(e); toast.error(e) }} />
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[var(--dark-border)]" />
+            <div className="w-full border-t border-[var(--border)]" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[var(--dark-bg)] px-3 text-[var(--white-muted)]">{t("ouCole")}</span>
+            <span className="bg-[var(--bg)] px-3 text-[var(--text-secondary)]">{t("ouCole")}</span>
           </div>
         </div>
 
@@ -106,7 +106,7 @@ export default function DonoEscanearPage() {
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-center animate-scale-in">
             <div className="text-2xl mb-1">✅</div>
             <p className="font-bold text-emerald-500">{t("presencaConfirmada")}</p>
-            {alunoNome && <p className="text-xs text-[var(--white-muted)] mt-1">{alunoNome} · {horario}</p>}
+            {alunoNome && <p className="text-xs text-[var(--text-secondary)] mt-1">{alunoNome} · {horario}</p>}
           </div>
         )}
       </div>

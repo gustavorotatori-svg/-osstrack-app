@@ -26,6 +26,30 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
     setActive(false)
   }, [])
 
+  function scanFrame() {
+    if (!scanningRef.current || !videoRef.current || !canvasRef.current) return
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    if (video.readyState !== video.HAVE_ENOUGH_DATA) {
+      requestAnimationFrame(scanFrame)
+      return
+    }
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext("2d")
+    if (!ctx) { requestAnimationFrame(scanFrame); return }
+    ctx.drawImage(video, 0, 0)
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" })
+    if (code) {
+      scanningRef.current = false
+      stopCamera()
+      onScan(code.data)
+      return
+    }
+    requestAnimationFrame(scanFrame)
+  }
+
   const startCamera = useCallback(async () => {
     setLoading(true)
     scanningRef.current = true
@@ -50,30 +74,6 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
       onError?.(msg)
     }
   }, [facingMode, onError])
-
-  function scanFrame() {
-    if (!scanningRef.current || !videoRef.current || !canvasRef.current) return
-    const video = videoRef.current
-    const canvas = canvasRef.current
-    if (video.readyState !== video.HAVE_ENOUGH_DATA) {
-      requestAnimationFrame(scanFrame)
-      return
-    }
-    canvas.width = video.videoWidth
-    canvas.height = video.videoHeight
-    const ctx = canvas.getContext("2d")
-    if (!ctx) { requestAnimationFrame(scanFrame); return }
-    ctx.drawImage(video, 0, 0)
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-    const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" })
-    if (code) {
-      scanningRef.current = false
-      stopCamera()
-      onScan(code.data)
-      return
-    }
-    requestAnimationFrame(scanFrame)
-  }
 
   useEffect(() => {
     return () => { scanningRef.current = false; if (streamRef.current) { streamRef.current.getTracks().forEach((t) => t.stop()) } }

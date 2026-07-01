@@ -111,27 +111,27 @@ export default function DespesasPage() {
         {showForm && (
           <form onSubmit={criarDespesa} className="glass-card p-4 space-y-3">
             <div>
-              <label className="text-[10px] font-semibold text-[var(--white-muted)] block mb-1">{t("descricao")}</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("descricao")}</label>
               <input className="input-field" value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} placeholder={t("descricaoPlaceholder")} required />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[10px] font-semibold text-[var(--white-muted)] block mb-1">{t("valor")}</label>
+                <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("valor")}</label>
                 <input type="number" step="0.01" className="input-field" value={form.valor} onChange={e => setForm(f => ({ ...f, valor: e.target.value }))} placeholder="0,00" required />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-[var(--white-muted)] block mb-1">{t("categoria")}</label>
+                <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("categoria")}</label>
                 <select className="input-field" value={form.categoria} onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}>
                   {categorias.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
             </div>
             <div>
-              <label className="text-[10px] font-semibold text-[var(--white-muted)] block mb-1">{t("dataVencimento")}</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("dataVencimento")}</label>
               <input type="date" className="input-field" value={form.dataVencimento} onChange={e => setForm(f => ({ ...f, dataVencimento: e.target.value }))} required />
             </div>
             <div>
-              <label className="text-[10px] font-semibold text-[var(--white-muted)] block mb-1">{t("observacao")}</label>
+              <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("observacao")}</label>
               <input className="input-field" value={form.observacao} onChange={e => setForm(f => ({ ...f, observacao: e.target.value }))} placeholder={t("obsPlaceholder")} />
             </div>
             <button type="submit" disabled={saving}
@@ -142,10 +142,10 @@ export default function DespesasPage() {
           </form>
         )}
 
-        <div className="flex gap-1 bg-[var(--dark-border)] rounded-lg p-1 overflow-x-auto">
+        <div className="flex gap-1 bg-[var(--border)] rounded-lg p-1 overflow-x-auto">
           {["todas", "pendente", "pago", "cancelado"].map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-md text-[10px] font-semibold whitespace-nowrap ${filter === s ? "bg-red-500 text-white" : "text-[var(--white-muted)]"}`}>
+              className={`px-3 py-1.5 rounded-md text-[10px] font-semibold whitespace-nowrap ${filter === s ? "bg-red-500 text-white" : "text-[var(--text-secondary)]"}`}>
               {t(s)} {s === "todas" && `(${despesas.length})`}
             </button>
           ))}
@@ -153,16 +153,16 @@ export default function DespesasPage() {
 
         {filter === "todas" && totalFiltrado > 0 && (
           <div className="glass-card p-3 flex items-center justify-between">
-            <span className="text-xs text-[var(--white-muted)]">{t("totalFiltrado")}</span>
+            <span className="text-xs text-[var(--text-secondary)]">{t("totalFiltrado")}</span>
             <span className="text-lg font-extrabold text-red-400">R$ {(totalFiltrado / 100).toFixed(2)}</span>
           </div>
         )}
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--dark-border)] rounded-xl" />)}</div>
+          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
         ) : filtradas.length === 0 ? (
           <div className="glass-card p-6 text-center">
-            <p className="text-sm text-[var(--white-muted)]">{t("nenhumaDespesa")}</p>
+            <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaDespesa")}</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -171,12 +171,12 @@ export default function DespesasPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <p className="font-bold text-sm">{d.descricao}</p>
-                    <p className="text-[10px] text-[var(--white-muted)]">{categorias.find(c => c.value === d.categoria)?.label || d.categoria}</p>
-                    <p className="text-[10px] text-[var(--gray)]">
+                    <p className="text-[10px] text-[var(--text-secondary)]">{categorias.find(c => c.value === d.categoria)?.label || d.categoria}</p>
+                    <p className="text-[10px] text-[var(--text-muted)]">
                       {t("vencimento")}: {new Date(d.dataVencimento).toLocaleDateString()}
                       {d.dataPagamento && ` | ${t("pagoEm")}: ${new Date(d.dataPagamento).toLocaleDateString()}`}
                     </p>
-                    {d.observacao && <p className="text-[9px] text-[var(--gray)] mt-0.5">{d.observacao}</p>}
+                    {d.observacao && <p className="text-[9px] text-[var(--text-muted)] mt-0.5">{d.observacao}</p>}
                   </div>
                   <div className="text-right shrink-0 ml-3">
                     <p className="text-lg font-extrabold text-red-400">-R$ {(d.valor / 100).toFixed(2)}</p>

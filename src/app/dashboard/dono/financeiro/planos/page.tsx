@@ -77,31 +77,31 @@ export default function PlanosPage() {
         {showForm && (
           <form onSubmit={salvar} className="glass-card p-4 space-y-3">
             <div>
-              <label className="text-[11px] text-[var(--white-muted)]">{t("nome")}</label>
+              <label className="text-[11px] text-[var(--text-secondary)]">{t("nome")}</label>
               <input value={form.nome} onChange={e => setForm({...form, nome: e.target.value})} required
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1" />
             </div>
             <div>
-              <label className="text-[11px] text-[var(--white-muted)]">{t("valor")}</label>
+              <label className="text-[11px] text-[var(--text-secondary)]">{t("valor")}</label>
               <input type="number" step="0.01" min="0" value={form.valor} onChange={e => setForm({...form, valor: e.target.value})} required
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1" />
             </div>
             <div>
-              <label className="text-[11px] text-[var(--white-muted)]">{t("taxaMatricula")}</label>
+              <label className="text-[11px] text-[var(--text-secondary)]">{t("taxaMatricula")}</label>
               <input type="number" step="0.01" min="0" value={form.taxaMatricula} onChange={e => setForm({...form, taxaMatricula: e.target.value})}
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1" />
             </div>
             <div>
-              <label className="text-[11px] text-[var(--white-muted)]">{t("periodo")}</label>
+              <label className="text-[11px] text-[var(--text-secondary)]">{t("periodo")}</label>
               <select value={form.periodo} onChange={e => setForm({...form, periodo: e.target.value})}
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1">
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1">
                 {periodos.map(p => <option key={p} value={p}>{t(p)}</option>)}
               </select>
             </div>
             <div>
-              <label className="text-[11px] text-[var(--white-muted)]">{t("descricao")}</label>
+              <label className="text-[11px] text-[var(--text-secondary)]">{t("descricao")}</label>
               <textarea value={form.descricao} onChange={e => setForm({...form, descricao: e.target.value})} rows={2}
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--dark-border)] text-white text-sm mt-1" />
+                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1" />
             </div>
             <button type="submit" disabled={saving}
               className="w-full py-3 rounded-xl font-bold text-sm btn-gold disabled:opacity-50">
@@ -111,10 +111,10 @@ export default function PlanosPage() {
         )}
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--dark-border)] rounded-xl" />)}</div>
+          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
         ) : planos.length === 0 ? (
           <div className="glass-card p-6 text-center">
-            <p className="text-sm text-[var(--white-muted)]">{t("nenhumPlano")}</p>
+            <p className="text-sm text-[var(--text-secondary)]">{t("nenhumPlano")}</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -123,12 +123,12 @@ export default function PlanosPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-bold text-sm">{p.nome}</p>
-                    <p className="text-xs text-[var(--white-muted)]">{t(p.periodo)}</p>
-                    {p.descricao && <p className="text-[10px] text-[var(--gray)] mt-1">{p.descricao}</p>}
+                    <p className="text-xs text-[var(--text-secondary)]">{t(p.periodo)}</p>
+                    {p.descricao && <p className="text-[10px] text-[var(--text-muted)] mt-1">{p.descricao}</p>}
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(p.valor / 100).toFixed(2)}</p>
-                    {p.taxaMatricula > 0 && <p className="text-[10px] text-[var(--white-muted)]">+ R$ {(p.taxaMatricula / 100).toFixed(2)} {t("matricula")}</p>}
+                    {p.taxaMatricula > 0 && <p className="text-[10px] text-[var(--text-secondary)]">+ R$ {(p.taxaMatricula / 100).toFixed(2)} {t("matricula")}</p>}
                     <div className="flex gap-1 mt-1 justify-end">
                       <button onClick={() => startEdit(p)}
                         className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)]">✏️</button>
