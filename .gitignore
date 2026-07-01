@@ -18,3 +18,4 @@ screenshot-*
 vercel-*
 *.png
 cookie*
+!cookie-consent*
