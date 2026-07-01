@@ -398,21 +398,21 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 ) : (
                   <>
                     <div className="grid grid-cols-4 gap-2 mb-4">
-                      <div className="stat">
-                        <div className="stat-value text-2xl"><AnimatedCounter value={prospectStats.stats.total} /></div>
-                        <div className="stat-label">Total</div>
+                      <div className="stat-glass">
+                        <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.total} /></div>
+                        <div className="stat-glass-label">Total</div>
                       </div>
-                      <div className="stat">
-                        <div className="stat-value text-2xl text-emerald-500"><AnimatedCounter value={prospectStats.stats.usados} /></div>
-                        <div className="stat-label">Convertidos</div>
+                      <div className="stat-glass">
+                        <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.usados} /></div>
+                        <div className="stat-glass-label">Convertidos</div>
                       </div>
-                      <div className="stat">
-                        <div className="stat-value text-2xl text-yellow-500"><AnimatedCounter value={prospectStats.stats.pendentes} /></div>
-                        <div className="stat-label">Pendentes</div>
+                      <div className="stat-glass">
+                        <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.pendentes} /></div>
+                        <div className="stat-glass-label">Pendentes</div>
                       </div>
-                      <div className="stat">
-                        <div className="stat-value text-2xl text-blue-500">{prospectStats.stats.conversao}%</div>
-                        <div className="stat-label">Conversão</div>
+                      <div className="stat-glass">
+                        <div className="stat-glass-value">{prospectStats.stats.conversao}%</div>
+                        <div className="stat-glass-label">Conversão</div>
                       </div>
                     </div>
 
@@ -471,7 +471,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 <div className="flex items-center justify-between mb-3">
                   <div className="section-header mb-0">{t("configRanking")}</div>
                 </div>
-                <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--surface)] border border-[var(--border)]">
+                <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-[var(--bg-surface)] border border-[var(--border)]">
                   <div>
                     <div className="text-sm font-semibold">{t("visivelAlunos")}</div>
                     <div className="text-xs text-[var(--text-secondary)]">{t("descRanking")}</div>

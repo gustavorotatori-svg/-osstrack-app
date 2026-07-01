@@ -180,7 +180,7 @@ export default function DonoAgendaPage() {
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("turma")}
                   </label>
                   <select
@@ -198,7 +198,7 @@ export default function DonoAgendaPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("professor")}
                   </label>
                   <select
@@ -218,7 +218,7 @@ export default function DonoAgendaPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("dia")}
                   </label>
                   <select
@@ -234,7 +234,7 @@ export default function DonoAgendaPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("local")}
                   </label>
                   <input
@@ -247,7 +247,7 @@ export default function DonoAgendaPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("inicio")}
                   </label>
                   <input
@@ -259,7 +259,7 @@ export default function DonoAgendaPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("fim")}
                   </label>
                   <input
@@ -272,7 +272,7 @@ export default function DonoAgendaPage() {
                 </div>
               </div>
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("maxAlunos")}
                 </label>
                 <input
@@ -290,15 +290,15 @@ export default function DonoAgendaPage() {
 
           {loading ? (
             <div className="glass-card p-8 space-y-4">
-              <div className="h-5 w-48 rounded bg-[var(--border-subtle)] mx-auto animate-pulse" />
-              <div className="h-3 w-64 rounded bg-[var(--border-subtle)] mx-auto animate-pulse" />
+              <div className="h-5 w-48 rounded bg-[var(--bg-card)] mx-auto animate-pulse" />
+              <div className="h-3 w-64 rounded bg-[var(--bg-card)] mx-auto animate-pulse" />
               <div className="grid grid-cols-7 gap-2 mt-4">
                 {Array.from({ length: 7 }).map((_, i) => (
                   <div key={i} className="space-y-2">
-                    <div className="h-3 w-full rounded bg-[var(--border-subtle)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--border-subtle)] animate-pulse" />
+                    <div className="h-3 w-full rounded bg-[var(--bg-card)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
+                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
                   </div>
                 ))}
               </div>

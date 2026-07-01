@@ -15,15 +15,6 @@ export function usePushNotifications() {
   const [subscribed, setSubscribed] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-      setPermission("unavailable")
-      return
-    }
-    setPermission(Notification.permission)
-    checkSubscription()
-  }, [])
-
   async function checkSubscription() {
     try {
       const reg = await navigator.serviceWorker.ready
@@ -33,6 +24,15 @@ export function usePushNotifications() {
       setSubscribed(false)
     }
   }
+
+  useEffect(() => {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+      setPermission("unavailable")
+      return
+    }
+    setPermission(Notification.permission)
+    checkSubscription()
+  }, [])
 
   const subscribe = useCallback(async () => {
     if (permission === "unavailable" || permission === "denied") return false

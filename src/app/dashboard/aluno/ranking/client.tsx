@@ -90,7 +90,7 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestre, v
             {["Todas", ...belts].map((b) => (
               <button key={b} onClick={() => setBeltFilter(b)}
                 className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                  beltFilter === b ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                   beltFilter === b ? "bg-[var(--gold)] text-black shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
                 }`}
               >
                 {b === "Todas" ? <><ClipboardIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("todas")}</> : `${getBeltEmoji(b)} ${b}`}
@@ -101,21 +101,21 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestre, v
           <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button onClick={() => setCategoriaFilter("geral")}
               className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                categoriaFilter === "geral" ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                categoriaFilter === "geral" ? "bg-[var(--gold)] text-black shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
               }`}>
               <ClipboardIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("geral")}
             </button>
             {["adulto", "master", "infantil"].map((cat) => (
               <button key={cat} onClick={() => setCategoriaFilter(cat)}
                 className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize ${
-                  categoriaFilter === cat ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                  categoriaFilter === cat ? "bg-[var(--gold)] text-black shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
                 }`}>
                 {cat === "adulto" ? <><DumbbellIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("adulto")}</> : cat === "master" ? <><DumbbellIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("master")}</> : <><UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("infantil")}</>}
               </button>
             ))}
             <button onClick={() => setPeriodoFilter(periodoFilter === "mes" ? "total" : "mes")}
               className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                periodoFilter === "mes" ? "bg-[var(--red)] text-white shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
+                periodoFilter === "mes" ? "bg-[var(--gold)] text-black shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
               }`}>
               {periodoFilter === "mes" ? <><CalendarIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("esteMes")}</> : <><CalendarIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("total")}</>}
             </button>

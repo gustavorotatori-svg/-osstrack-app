@@ -41,11 +41,16 @@ export function BadgeCard({
   const showProgress = !desbloqueada && progressoMax > 1
 
   return (
-    <div className={`relative group rounded-2xl p-3 text-center transition-all duration-300 cursor-default
+    <div className={`relative group rounded-2xl p-3 text-center transition-all duration-300 cursor-default overflow-hidden
       ${desbloqueada
         ? `bg-gradient-to-br ${nc} ${rc.glow} hover:scale-105`
         : `${rc.bg} border ${rc.border} opacity-70 hover:opacity-90`}
     `}>
+      <div className={`absolute top-0 left-0 right-0 h-0.5 ${
+        raridade === "raro" ? "bg-blue-500" :
+        raridade === "epico" ? "bg-purple-500" :
+        raridade === "lendario" ? "bg-[var(--gold)]" : "bg-white/10"
+      }`} />
       <div className={`text-3xl mb-1 transition-transform duration-300 ${desbloqueada ? "animate-float" : "grayscale"}`}>
         {desbloqueada ? icone : (iconeBloqueado || <LockIcon className="w-6 h-6" />)}
       </div>
@@ -54,9 +59,17 @@ export function BadgeCard({
         {nome}
       </div>
 
-      {desbloqueada && raridade !== "comum" && (
-        <div className="text-[8px] uppercase tracking-wider text-white/60 font-semibold">{t(rc.tkey)}</div>
-      )}
+      <div className="text-[8px] uppercase tracking-wider font-semibold flex items-center justify-center gap-1">
+        {raridade === "lendario" && <SparklesIcon className="w-2.5 h-2.5" />}
+        <span className={
+          raridade === "comum" ? "text-white/40" :
+          raridade === "raro" ? "text-blue-400" :
+          raridade === "epico" ? "text-purple-400" :
+          raridade === "lendario" ? "text-[var(--gold)]" : "text-white/40"
+        }>
+          {t(rc.tkey)}
+        </span>
+      </div>
 
       {showProgress && (
         <div className="mt-2">
@@ -69,12 +82,6 @@ export function BadgeCard({
           <div className="text-[8px] text-[var(--gray)] mt-0.5">
             {progresso}/{progressoMax}
           </div>
-        </div>
-      )}
-
-      {!desbloqueada && progressoMax <= 1 && (
-        <div className="text-[8px] text-[var(--gray)] mt-1">
-          {raridade === "lendario" ? <><SparklesIcon className="w-2.5 h-2.5 inline -mt-0.5 mr-0.5" />{t(rc.tkey)}</> : t(rc.tkey)}
         </div>
       )}
 

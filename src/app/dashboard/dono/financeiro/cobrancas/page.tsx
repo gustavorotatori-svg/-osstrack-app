@@ -54,20 +54,20 @@ export default function CobrancasPage() {
       <div className="max-w-5xl mx-auto space-y-4">
         <h3 className="font-bold text-lg">{t("cobrancasTitle")}</h3>
 
-        <div className="flex gap-1 bg-[var(--dark-border)] rounded-lg p-1 overflow-x-auto">
+        <div className="flex gap-1 bg-[var(--border)] rounded-lg p-1 overflow-x-auto">
           {["todas", "pendente", "pago", "atrasado", "cancelado"].map(s => (
             <button key={s} onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-md text-[10px] font-semibold whitespace-nowrap ${filter === s ? "bg-[var(--gold)] text-black" : "text-[var(--white-muted)]"}`}>
+              className={`px-3 py-1.5 rounded-md text-[10px] font-semibold whitespace-nowrap ${filter === s ? "bg-[var(--gold)] text-black" : "text-[var(--text-secondary)]"}`}>
               {t(s)}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--dark-border)] rounded-xl" />)}</div>
+          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
         ) : filtradas.length === 0 ? (
           <div className="glass-card p-6 text-center">
-            <p className="text-sm text-[var(--white-muted)]">{t("nenhumaCobranca")}</p>
+            <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaCobranca")}</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -76,12 +76,12 @@ export default function CobrancasPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-bold text-sm">{c.aluno.nome}</p>
-                    <p className="text-[10px] text-[var(--white-muted)]">{c.contrato?.plano?.nome}</p>
-                    <p className="text-[10px] text-[var(--gray)]">
+                    <p className="text-[10px] text-[var(--text-secondary)]">{c.contrato?.plano?.nome}</p>
+                    <p className="text-[10px] text-[var(--text-muted)]">
                       {t("vencimento")}: {new Date(c.dataVencimento).toLocaleDateString()}
                       {c.dataPagamento && ` | ${t("pagoEm")}: ${new Date(c.dataPagamento).toLocaleDateString()}`}
                     </p>
-                    {c.observacao && <p className="text-[9px] text-[var(--gray)] mt-0.5">{c.observacao}</p>}
+                    {c.observacao && <p className="text-[9px] text-[var(--text-muted)] mt-0.5">{c.observacao}</p>}
                   </div>
                   <div className="text-right">
                     <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(c.valor / 100).toFixed(2)}</p>
@@ -91,7 +91,7 @@ export default function CobrancasPage() {
                     {c.status === "pendente" && (
                       <div className="flex gap-1 mt-1 justify-end">
                         <select onChange={e => { if (e.target.value) pagarCobranca(c.id, e.target.value); e.target.value = "" }}
-                          className="text-[9px] px-1 py-0.5 rounded bg-black border border-[var(--dark-border)] text-white">
+                          className="text-[9px] px-1 py-0.5 rounded bg-black border border-[var(--border)] text-white">
                           <option value="">{t("registrarPagamento")}</option>
                           {metodos.map(m => <option key={m} value={m}>{t(m)}</option>)}
                         </select>

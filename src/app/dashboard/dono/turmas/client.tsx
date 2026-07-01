@@ -214,34 +214,34 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
               <h4 className="font-bold text-sm">{editingId ? tr("editarTurma") : tr("novaTurma")}</h4>
 
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("nome")}</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{tr("nome")}</label>
                 <input value={nome} onChange={(e) => setNome(e.target.value)}
                   className="input-field w-full text-sm mt-1" placeholder={tr("placeholderNome")} required />
               </div>
 
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("descricao")}</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{tr("descricao")}</label>
                 <input value={descricao} onChange={(e) => setDescricao(e.target.value)}
                   className="input-field w-full text-sm mt-1" placeholder={tr("placeholderDesc")} />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("categoria")}</label>
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{tr("categoria")}</label>
                   <select value={categoria} onChange={(e) => setCategoria(e.target.value)}
                     className="input-field w-full text-sm mt-1">
                     {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold">{tr("maxAlunos")}</label>
+                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{tr("maxAlunos")}</label>
                   <input type="number" value={maxAlunos} onChange={(e) => setMaxAlunos(Number(e.target.value))}
                     className="input-field w-full text-sm mt-1" />
                 </div>
               </div>
 
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold mb-2 block">Cor</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold mb-2 block">Cor</label>
                 <div className="flex gap-2 flex-wrap">
                   {CORES.map((c) => (
                     <button key={c.value} type="button" onClick={() => setCor(c.value)}
@@ -252,7 +252,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
               </div>
 
               <div>
-                <label className="text-[10px] text-[var(--white-muted)] uppercase tracking-wide font-semibold mb-2 block">Ícone</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold mb-2 block">Ícone</label>
                 <div className="flex gap-2 flex-wrap">
                   {ICONES.map((ic) => (
                     <button key={ic} type="button" onClick={() => setIcone(ic)}
@@ -269,7 +269,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                   {saving ? tr("salvando") : editingId ? tr("atualizar") : tr("criarTurma")}
                 </button>
                 <button type="button" onClick={() => { setShowForm(false); resetForm() }}
-                  className="px-4 py-2.5 text-sm text-[var(--white-muted)] border border-[var(--dark-border)] rounded-xl">
+                  className="px-4 py-2.5 text-sm text-[var(--text-secondary)] border border-[var(--border)] rounded-xl">
                   {tr("cancelar")}
                 </button>
               </div>
@@ -277,12 +277,12 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
           )}
 
           {loading ? (
-            <div className="text-center py-20 text-[var(--white-muted)] text-sm">{tr("carregando")}</div>
+            <div className="text-center py-20 text-[var(--text-secondary)] text-sm">{tr("carregando")}</div>
           ) : turmas.length === 0 ? (
             <div className="glass-card text-center py-12">
               <ClipboardIcon className="w-10 h-10 mb-3 opacity-30 mx-auto" />
               <div className="text-base font-bold">{tr("nenhumaTurma")}</div>
-              <div className="text-sm text-[var(--white-muted)] mt-1">{tr("descEmpty")}</div>
+              <div className="text-sm text-[var(--text-secondary)] mt-1">{tr("descEmpty")}</div>
             </div>
           ) : (
             <div className="grid-modern">
@@ -295,29 +295,29 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-base font-bold truncate">{t.nome}</div>
-                      {t.descricao && <div className="text-xs text-[var(--white-muted)] truncate">{t.descricao}</div>}
+                      {t.descricao && <div className="text-xs text-[var(--text-secondary)] truncate">{t.descricao}</div>}
                     </div>
                     <div className="flex gap-1">
                       <button onClick={() => openEdit(t)}
-                        className="w-8 h-8 rounded-lg bg-[var(--dark-border)] flex items-center justify-center text-xs hover:border-[var(--gold)] border border-transparent transition-all">
+                        className="w-8 h-8 rounded-lg bg-[var(--border)] flex items-center justify-center text-xs hover:border-[var(--gold)] border border-transparent transition-all">
                         <PencilIcon className="w-3.5 h-3.5" />
                       </button>
                       <button onClick={() => handleDelete(t.id)}
-                        className="w-8 h-8 rounded-lg bg-[var(--dark-border)] flex items-center justify-center text-xs hover:border-red-500 border border-transparent transition-all">
+                        className="w-8 h-8 rounded-lg bg-[var(--border)] flex items-center justify-center text-xs hover:border-red-500 border border-transparent transition-all">
                         <Trash2Icon className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
-                  <div className="flex gap-3 text-xs text-[var(--white-muted)]">
+                  <div className="flex gap-3 text-xs text-[var(--text-secondary)]">
                     <span><UsersIcon className="w-3 h-3 inline -mt-0.5 mr-0.5" /> {t._count.alunos} {tr("alunos")}</span>
                     <span><CalendarIcon className="w-3 h-3 inline -mt-0.5 mr-0.5" /> {t._count.horarios} {tr("horarios")}</span>
                     <span className={`capitalize ${t.categoria === "infantil" ? "text-yellow-400" : t.categoria === "iniciante" ? "text-emerald-400" : "text-[var(--gold)]"}`}>
                       {t.categoria}
                     </span>
                   </div>
-                  <div className="flex gap-2 mt-3 pt-3 border-t border-[var(--dark-border)]">
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-[var(--border)]">
                     <button onClick={() => openAlunosPanel(t.id)}
-                      className="flex-1 py-2 rounded-xl text-xs font-semibold bg-[var(--dark-border)] hover:bg-[rgba(201,168,76,0.1)] hover:text-[var(--gold)] transition-all">
+                      className="flex-1 py-2 rounded-xl text-xs font-semibold bg-[var(--border)] hover:bg-[rgba(201,168,76,0.1)] hover:text-[var(--gold)] transition-all">
                       <UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" /> {tr("gerenciarAlunos")}
                     </button>
                     <button onClick={() => compartilharTurma(t)}
@@ -328,14 +328,14 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
 
                   {/* Student management panel */}
                   {alunosPanel === t.id && (
-                    <div className="mt-3 pt-3 border-t border-[var(--dark-border)] space-y-3">
+                    <div className="mt-3 pt-3 border-t border-[var(--border)] space-y-3">
                       <h4 className="text-sm font-bold"><UsersIcon className="w-4 h-4 inline -mt-0.5 mr-1" />{tr("alunosNaTurma")}</h4>
                       {loadingAlunos ? (
-                        <p className="text-xs text-[var(--white-muted)] text-center py-4">{tr("carregando")}</p>
+                        <p className="text-xs text-[var(--text-secondary)] text-center py-4">{tr("carregando")}</p>
                       ) : (
                         <>
                           {alunosNaTurma.length === 0 ? (
-                            <p className="text-xs text-[var(--white-muted)] text-center py-3">{tr("nenhumAluno")}</p>
+                            <p className="text-xs text-[var(--text-secondary)] text-center py-3">{tr("nenhumAluno")}</p>
                           ) : (
                             <div className="space-y-1 max-h-40 overflow-y-auto">
                               {alunosNaTurma.map((a) => (
@@ -357,11 +357,11 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
 
                           <h4 className="text-sm font-bold mt-2"><ClipboardIcon className="w-4 h-4 inline -mt-0.5 mr-1" />{tr("adicionarAlunos")}</h4>
                           {todosAlunos.length === 0 ? (
-                            <p className="text-xs text-[var(--white-muted)] text-center py-3">{tr("nenhumDisponivel")}</p>
+                            <p className="text-xs text-[var(--text-secondary)] text-center py-3">{tr("nenhumDisponivel")}</p>
                           ) : (
                             <div className="space-y-1 max-h-40 overflow-y-auto">
                               {todosAlunos.filter((a) => !alunosNaTurma.find((na) => na.id === a.id)).map((a) => (
-                                <div key={a.id} className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--dark-border)] transition-all cursor-pointer"
+                                <div key={a.id} className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--border)] transition-all cursor-pointer"
                                   onClick={() => adicionarAluno(t.id, a.id)}>
                                   <div className="flex items-center gap-2">
                                     <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${getBeltColor(a.faixa)}`}>

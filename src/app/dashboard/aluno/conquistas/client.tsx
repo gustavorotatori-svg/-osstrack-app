@@ -129,14 +129,14 @@ export function AchievementsClient({ conquistas }: Props) {
           <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             <button onClick={() => setCatFilter("todas")}
               className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                catFilter === "todas" ? "bg-[var(--red)] text-white shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
+                catFilter === "todas" ? "bg-[var(--gold)] text-black shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
               }`}>
               <ClipboardIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("todas")}
             </button>
             {Object.entries(categorias).map(([key, val]) => (
               <button key={key} onClick={() => setCatFilter(key)}
                 className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize ${
-                  catFilter === key ? "bg-[var(--red)] text-white shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
+                  catFilter === key ? "bg-[var(--gold)] text-black shadow-md" : "bg-black/20 border border-[var(--border)] text-[var(--text-secondary)]"
                 }`}>
                 <span className="inline-flex items-center gap-1">{val.icon} {val.label}</span>
               </button>

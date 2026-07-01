@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test"
+import { test, expect, type Page, type ConsoleMessage } from "@playwright/test"
 
 const URL = "http://localhost:3000"
 
@@ -10,7 +10,7 @@ interface ErrorLog {
 
 const allErrors: ErrorLog[] = []
 
-async function login(page, email: string, password: string) {
+async function login(page: Page, email: string, password: string) {
   await page.goto(`${URL}/login`)
   await page.fill('input[type="email"]', email)
   await page.fill('input[type="password"]', password)
@@ -18,12 +18,12 @@ async function login(page, email: string, password: string) {
   await page.waitForURL(/\/dashboard/, { timeout: 15000 })
 }
 
-async function checkPage(page, url: string, role: string, desc: string) {
+async function checkPage(page: Page, url: string, role: string, desc: string) {
   const errors: string[] = []
-  page.on("console", (msg) => {
+  page.on("console", (msg: ConsoleMessage) => {
     if (msg.type() === "error") errors.push(`console.error: ${msg.text()}`)
   })
-  page.on("pageerror", (err) => errors.push(`pageerror: ${err.message}`))
+  page.on("pageerror", (err: Error) => errors.push(`pageerror: ${err.message}`))
 
   const resp = await page.goto(url, { waitUntil: "networkidle", timeout: 20000 })
   const status = resp?.status() ?? 0

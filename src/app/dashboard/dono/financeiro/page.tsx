@@ -90,14 +90,14 @@ export default function FinanceiroPage() {
         <div className="glass-card-gold p-5 text-center">
           <CreditCardIcon className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />
           <h2 className="text-lg font-extrabold">{t("title")}</h2>
-          <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           {stats.map(s => (
             <div key={s.label} className="glass-card p-4 text-center">
               <div className={`text-2xl font-extrabold ${s.color}`}>{s.value}</div>
-              <div className="text-[10px] text-[var(--white-muted)] mt-1">{s.label}</div>
+              <div className="text-[10px] text-[var(--text-secondary)] mt-1">{s.label}</div>
             </div>
           ))}
         </div>
@@ -141,13 +141,13 @@ export default function FinanceiroPage() {
           </div>
           <div className="space-y-2">
             {data?.ultimasCobrancas?.length === 0 && (
-              <p className="text-xs text-[var(--white-muted)] text-center py-4">{t("nenhumaCobranca")}</p>
+              <p className="text-xs text-[var(--text-secondary)] text-center py-4">{t("nenhumaCobranca")}</p>
             )}
             {data?.ultimasCobrancas?.map((c: any) => (
-              <div key={c.id} className="flex items-center justify-between py-2 border-b border-[var(--dark-border)] last:border-0">
+              <div key={c.id} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
                 <div>
                   <p className="text-sm font-medium">{c.aluno.nome}</p>
-                  <p className="text-[10px] text-[var(--white-muted)]">{c.contrato?.plano?.nome} - {new Date(c.dataVencimento).toLocaleDateString()}</p>
+                  <p className="text-[10px] text-[var(--text-secondary)]">{c.contrato?.plano?.nome} - {new Date(c.dataVencimento).toLocaleDateString()}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-bold">R$ {(c.valor / 100).toFixed(2)}</p>
@@ -173,10 +173,10 @@ export default function FinanceiroPage() {
             </div>
             <div className="space-y-2">
               {data?.ultimasDespesas?.map((d: any) => (
-                <div key={d.id} className="flex items-center justify-between py-2 border-b border-[var(--dark-border)] last:border-0">
+                <div key={d.id} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
                   <div>
                     <p className="text-sm font-medium">{d.descricao}</p>
-                    <p className="text-[10px] text-[var(--white-muted)]">{d.categoria} - {new Date(d.dataVencimento).toLocaleDateString()}</p>
+                    <p className="text-[10px] text-[var(--text-secondary)]">{d.categoria} - {new Date(d.dataVencimento).toLocaleDateString()}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-red-400">-R$ {(d.valor / 100).toFixed(2)}</p>
