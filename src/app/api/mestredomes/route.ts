@@ -5,7 +5,6 @@ import prisma from "@/lib/prisma"
 
 export async function POST(req: NextRequest) {
   try {
-    // Allow Vercel cron, custom cron trigger, or authenticated admin
     const isVercelCron = req.headers.get("x-vercel-cron") === "1"
     const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
 
@@ -15,14 +14,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
       }
     }
+
+    const now = new Date()
+    const mes = isVercelCron || isCronWithSecret
+      ? now.getMonth() // mês anterior (0-indexed)
+      : now.getMonth() + 1
+    const ano = mes === 0 ? now.getFullYear() - 1 : now.getFullYear()
+    const mesAlvo = mes === 0 ? 12 : mes
+
+    const startOfMonth = new Date(ano, mesAlvo - 1, 1)
+    const endOfMonth = new Date(ano, mesAlvo, 0)
+
     const academias = await prisma.academia.findMany()
-
     const results = []
-    for (const academia of academias) {
-      const now = new Date()
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
 
+    for (const academia of academias) {
       const ranking = await prisma.presenca.groupBy({
         by: ["alunoId"],
         where: {
@@ -42,9 +48,9 @@ export async function POST(req: NextRequest) {
 
       const top = ranking[0]
       await prisma.mestreDoMes.upsert({
-        where: { academiaId_mes_ano: { academiaId: academia.id, mes: now.getMonth() + 1, ano: now.getFullYear() } },
+        where: { academiaId_mes_ano: { academiaId: academia.id, mes: mesAlvo, ano } },
         update: { alunoId: top.alunoId, totalAulas: top._count },
-        create: { academiaId: academia.id, alunoId: top.alunoId, mes: now.getMonth() + 1, ano: now.getFullYear(), totalAulas: top._count },
+        create: { academiaId: academia.id, alunoId: top.alunoId, mes: mesAlvo, ano, totalAulas: top._count },
       })
 
       const aluno = await prisma.usuario.findUnique({ where: { id: top.alunoId } })
