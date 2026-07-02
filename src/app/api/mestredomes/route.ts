@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 
+const CATEGORIAS = ["adulto", "master", "infantil"]
+
 export async function POST(req: NextRequest) {
   try {
     const isVercelCron = req.headers.get("x-vercel-cron") === "1"
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const now = new Date()
     const mes = isVercelCron || isCronWithSecret
-      ? now.getMonth() // mês anterior (0-indexed)
+      ? now.getMonth()
       : now.getMonth() + 1
     const ano = mes === 0 ? now.getFullYear() - 1 : now.getFullYear()
     const mesAlvo = mes === 0 ? 12 : mes
@@ -29,37 +31,43 @@ export async function POST(req: NextRequest) {
     const results = []
 
     for (const academia of academias) {
-      const ranking = await prisma.presenca.groupBy({
-        by: ["alunoId"],
-        where: {
-          status: "confirmed",
-          data: { gte: startOfMonth, lte: endOfMonth },
-          aluno: { academiaId: academia.id },
-        },
-        _count: true,
-        orderBy: { _count: { alunoId: "desc" } },
-        take: 1,
-      })
+      const resultadosAcademia: Record<string, unknown> = { academia: academia.nome }
 
-      if (ranking.length === 0) {
-        results.push({ academia: academia.nome, message: "Nenhum aluno com presenças este mês" })
-        continue
+      for (const categoria of CATEGORIAS) {
+        const ranking = await prisma.presenca.groupBy({
+          by: ["alunoId"],
+          where: {
+            status: "confirmed",
+            data: { gte: startOfMonth, lte: endOfMonth },
+            aluno: { academiaId: academia.id, categoria },
+          },
+          _count: true,
+          orderBy: { _count: { alunoId: "desc" } },
+          take: 1,
+        })
+
+        if (ranking.length === 0) {
+          resultadosAcademia[categoria] = "Nenhum aluno com presenças"
+          continue
+        }
+
+        const top = ranking[0]
+        await prisma.mestreDoMes.upsert({
+          where: { academiaId_mes_ano_categoria: { academiaId: academia.id, mes: mesAlvo, ano, categoria } },
+          update: { alunoId: top.alunoId, totalAulas: top._count },
+          create: { academiaId: academia.id, alunoId: top.alunoId, mes: mesAlvo, ano, categoria, totalAulas: top._count },
+        })
+
+        const aluno = await prisma.usuario.findUnique({ where: { id: top.alunoId }, select: { nome: true } })
+        resultadosAcademia[categoria] = { mestre: aluno?.nome, aulas: top._count }
       }
 
-      const top = ranking[0]
-      await prisma.mestreDoMes.upsert({
-        where: { academiaId_mes_ano: { academiaId: academia.id, mes: mesAlvo, ano } },
-        update: { alunoId: top.alunoId, totalAulas: top._count },
-        create: { academiaId: academia.id, alunoId: top.alunoId, mes: mesAlvo, ano, totalAulas: top._count },
-      })
-
-      const aluno = await prisma.usuario.findUnique({ where: { id: top.alunoId } })
-      results.push({ academia: academia.nome, mestre: aluno?.nome, aulas: top._count })
+      results.push(resultadosAcademia)
     }
 
-    return NextResponse.json({ message: "Mestre do Mês calculado!", results })
+    return NextResponse.json({ message: "Mestres do Mês calculados!", results })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: "Erro ao calcular Mestre do Mês" }, { status: 500 })
+    return NextResponse.json({ error: "Erro ao calcular Mestres do Mês" }, { status: 500 })
   }
 }

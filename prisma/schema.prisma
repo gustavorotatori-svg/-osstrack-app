@@ -239,10 +239,11 @@ model MestreDoMes {
   aluno     Usuario  @relation(fields: [alunoId], references: [id])
   mes       Int
   ano       Int
+  categoria String   @default("adulto")
   totalAulas Int
   createdAt DateTime @default(now())
 
-  @@unique([academiaId, mes, ano])
+  @@unique([academiaId, mes, ano, categoria])
 }
 
 model MetaSemanal {

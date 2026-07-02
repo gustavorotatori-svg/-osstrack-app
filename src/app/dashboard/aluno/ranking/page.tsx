@@ -43,17 +43,31 @@ export default async function RankingPage() {
   const belts = [...new Set(ranking.map((a) => a.faixa))].sort((a, b) => beltOrder.indexOf(a) - beltOrder.indexOf(b))
 
   const now = new Date()
-  const mestre = await prisma.mestreDoMes.findFirst({
-    where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear() },
-    include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
-  })
+  const CATEGORIAS = ["adulto", "master", "infantil"]
+  const mestres: Record<string, { nome: string; faixa: string; grau: number; avatar: string | null; totalAulas: number; categoria: string } | null> = {}
+  for (const cat of CATEGORIAS) {
+    let m = await prisma.mestreDoMes.findFirst({
+      where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear(), categoria: cat },
+      include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
+    })
+    if (!m) {
+      m = await prisma.mestreDoMes.findFirst({
+        where: { academiaId: session.user.academiaId, categoria: cat },
+        orderBy: [{ ano: "desc" }, { mes: "desc" }],
+        include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
+      })
+    }
+    mestres[cat] = m
+      ? { nome: m.aluno.nome, faixa: m.aluno.faixa, grau: m.aluno.grau, avatar: m.aluno.avatar, totalAulas: m.totalAulas, categoria: m.categoria }
+      : null
+  }
 
   return (
     <RankingClient
       initialRanking={ranking}
       alunoId={session.user.id}
       belts={belts}
-      initialMestre={mestre ? { nome: mestre.aluno.nome, faixa: mestre.aluno.faixa, grau: mestre.aluno.grau, avatar: mestre.aluno.avatar, totalAulas: mestre.totalAulas } : null}
+      initialMestres={mestres}
       visivel={academia?.rankingVisivel ?? true}
     />
   )

@@ -11,6 +11,8 @@ import { MestreDoMesCard } from "@/components/gamification/mestre-do-mes-card"
 import { DailyMissions } from "@/components/gamification/daily-missions"
 import { GamificationGuide } from "@/components/gamification/gamification-guide"
 import { MetaSemanalCard } from "@/components/gamification/meta-semanal-card"
+import { BirthdaysCard } from "@/components/gamification/birthdays-card"
+import { LevelUpCelebration } from "@/components/gamification/level-up-celebration"
 import { Search, X } from "lucide-react"
 import { ConviteSection } from "@/components/convites/convite-section"
 import { useT } from "@/lib/use-t"
@@ -360,6 +362,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                 )}
               </div>
 
+              {/* Aniversariantes */}
+              <BirthdaysCard />
+
               {/* Conquistas preview */}
               {conquistas.length > 0 && (
                 <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-roxa)"} as React.CSSProperties}>
@@ -453,6 +458,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
         </div>
       </PageTransition>
       <GamificationGuide />
+      <LevelUpCelebration currentLevel={getGamificationLevel(pontos).level} pontos={pontos} />
     </DashboardShell>
   )
 }

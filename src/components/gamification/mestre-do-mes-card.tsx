@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { CrownIcon } from "@/components/ui/icons"
 import { useRouter } from "next/navigation"
+import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 
 type MestreData = {
   nome: string
@@ -14,47 +15,71 @@ type MestreData = {
   ano: number
 } | null
 
+const CATEGORIAS = ["adulto", "master", "infantil"]
+const CATEGORIA_LABELS: Record<string, string> = { adulto: "🥋 Adulto", master: "🏆 Master", infantil: "⭐ Infantil" }
+const CATEGORIA_COLORS: Record<string, string> = { adulto: "#60a5fa", master: "#a855f7", infantil: "#f97316" }
+
 export function MestreDoMesCard() {
   const t = useT("gamification")
   const router = useRouter()
-  const [mestre, setMestre] = useState<MestreData>(null)
+  const [mestres, setMestres] = useState<Record<string, MestreData>>({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch("/api/mestredomes/meu")
       .then((r) => r.json())
-      .then((d) => { setMestre(d.mestre); setLoading(false) })
+      .then((d) => { setMestres(d.mestres || {}); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
 
   if (loading) return null
 
-  const nomeMes = Array.from({ length: 12 }, (_, i) => t(`mestreDoMes.meses.${i}`))
+  const hasAny = Object.values(mestres).some((m) => m !== null)
 
   return (
-    <div className="tech-card text-center relative overflow-hidden">
-      <div className="absolute top-[-30px] right-[-30px] w-32 h-32 bg-[var(--gold)]/5 rounded-full blur-3xl" />
-      <div className="relative p-5">
-        <CrownIcon className="w-8 h-8 mx-auto mb-1 text-[var(--gold)]" />
-        <h3 className="font-bold text-base tracking-tight">{t("mestreDoMes.title")}</h3>
-        {mestre ? (
-          <>
-            <p className="text-2xl font-extrabold text-[var(--gold)] mt-2">{mestre.nome}</p>
-            <p className="text-xs text-[var(--text-secondary)]">{mestre.faixa} · {mestre.totalAulas} aulas</p>
-            <p className="text-[10px] text-[var(--text-muted)] mt-1">{nomeMes[mestre.mes - 1]} de {mestre.ano}</p>
-          </>
-        ) : (
-          <p className="text-sm text-[var(--text-secondary)] mt-2">{t("mestreDoMes.semMestre")}</p>
-        )}
-
-        <div className="mt-4 pt-4 border-t border-[rgba(255,255,255,0.05)]">
-          <button
-            onClick={() => router.push("/dashboard/aluno/ranking")}
-            className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline"
-          >
-            Ver ranking completo →
-          </button>
-        </div>
+    <div className="glass-card-accent p-5" style={{"--accent-color": "var(--gold)"} as React.CSSProperties}>
+      <div className="flex items-center gap-2 mb-4">
+        <CrownIcon className="w-5 h-5 text-[var(--gold)]" />
+        <span className="section-header mb-0">{t("mestreDoMes.title")}</span>
+      </div>
+      <div className="grid grid-cols-3 gap-2.5">
+        {CATEGORIAS.map((cat) => {
+          const m = mestres[cat]
+          return (
+            <div
+              key={cat}
+              className="relative rounded-xl p-3.5 text-center overflow-hidden border border-[rgba(255,255,255,0.03)]"
+              style={{ background: `rgba(255,255,255,0.02)` }}
+            >
+              <div
+                className="absolute top-0 left-0 w-full h-[2px] opacity-60"
+                style={{ background: CATEGORIA_COLORS[cat] }}
+              />
+              <div className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: CATEGORIA_COLORS[cat] }}>
+                {CATEGORIA_LABELS[cat]}
+              </div>
+              {m ? (
+                <>
+                  <p className="text-sm font-extrabold truncate text-[var(--gold)]">{m.nome}</p>
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold mt-1 ${getBeltColor(m.faixa)}`}>
+                    {getBeltEmoji(m.faixa)} {m.faixa}
+                  </span>
+                  <p className="text-[10px] text-[var(--text-secondary)] mt-1">{t("mestreDoMes.aulas").replace("{n}", String(m.totalAulas))}</p>
+                </>
+              ) : (
+                <p className="text-xs text-[var(--text-muted)]">{t("mestreDoMes.nenhumMestre")}</p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      <div className="mt-4 pt-3 border-t border-[rgba(255,255,255,0.05)] text-center">
+        <button
+          onClick={() => router.push("/dashboard/aluno/ranking")}
+          className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline"
+        >
+          Ver ranking completo →
+        </button>
       </div>
     </div>
   )
