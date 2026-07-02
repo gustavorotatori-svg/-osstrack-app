@@ -15,10 +15,18 @@ export async function GET() {
   const mes = now.getMonth() + 1
   const ano = now.getFullYear()
 
-  const mestre = await prisma.mestreDoMes.findFirst({
+  let mestre = await prisma.mestreDoMes.findFirst({
     where: { academiaId: session.user.academiaId, mes, ano },
     include: { aluno: { select: { nome: true, faixa: true, avatar: true } } },
   })
+
+  if (!mestre) {
+    mestre = await prisma.mestreDoMes.findFirst({
+      where: { academiaId: session.user.academiaId },
+      orderBy: [{ ano: "desc" }, { mes: "desc" }],
+      include: { aluno: { select: { nome: true, faixa: true, avatar: true } } },
+    })
+  }
 
   if (!mestre) {
     return NextResponse.json({ mestre: null })

@@ -5,6 +5,10 @@
     {
       "path": "/api/aniversario/notificar",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/mestredomes",
+      "schedule": "0 0 1 * *"
     }
   ]
 }
