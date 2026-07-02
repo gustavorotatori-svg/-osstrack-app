@@ -101,16 +101,28 @@ export async function GET(request: Request) {
     .sort((a, b) => b.totalAulas - a.totalAulas)
     .map((a, i) => ({ ...a, posicao: i + 1 }))
 
-  const mestreDoMes = await prisma.mestreDoMes.findFirst({
-    where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear() },
-    include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
-  })
+  const CATEGORIAS = ["adulto", "master", "infantil"]
+  const mestres: Record<string, unknown> = {}
+  for (const cat of CATEGORIAS) {
+    let m = await prisma.mestreDoMes.findFirst({
+      where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear(), categoria: cat },
+      include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
+    })
+    if (!m) {
+      m = await prisma.mestreDoMes.findFirst({
+        where: { academiaId: session.user.academiaId, categoria: cat },
+        orderBy: [{ ano: "desc" }, { mes: "desc" }],
+        include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
+      })
+    }
+    mestres[cat] = m
+      ? { nome: m.aluno.nome, faixa: m.aluno.faixa, grau: m.aluno.grau, avatar: m.aluno.avatar, totalAulas: m.totalAulas, categoria: m.categoria }
+      : null
+  }
 
   return NextResponse.json({
     ranking,
-    mestre: mestreDoMes
-      ? { nome: mestreDoMes.aluno.nome, faixa: mestreDoMes.aluno.faixa, grau: mestreDoMes.aluno.grau, avatar: mestreDoMes.aluno.avatar, totalAulas: mestreDoMes.totalAulas }
-      : null,
+    mestres,
     visivel: academia.rankingVisivel,
   })
   } catch (error) {

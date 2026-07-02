@@ -14,18 +14,24 @@ type RankingItem = {
   id: string; nome: string; faixa: string; grau: number; avatar: string | null; categoria: string; totalAulas: number; posicao: number; nivelDisciplina: string | null
 }
 
+type MestreInfo = { nome: string; faixa: string; grau: number; avatar: string | null; totalAulas: number; categoria: string } | null
+
 type Props = {
   initialRanking: RankingItem[]
   alunoId: string
   belts: string[]
-  initialMestre: { nome: string; faixa: string; grau: number; avatar: string | null; totalAulas: number } | null
+  initialMestres: Record<string, MestreInfo>
   visivel: boolean
 }
 
-export function RankingClient({ initialRanking, alunoId, belts, initialMestre, visivel }: Props) {
+const CATEGORIAS = ["adulto", "master", "infantil"]
+const CATEGORIA_ICONES: Record<string, string> = { adulto: "🥋", master: "🏆", infantil: "⭐" }
+const CATEGORIA_CORES: Record<string, string> = { adulto: "#60a5fa", master: "#a855f7", infantil: "#f97316" }
+
+export function RankingClient({ initialRanking, alunoId, belts, initialMestres, visivel }: Props) {
   const t = useT("aluno.ranking")
   const [ranking, setRanking] = useState<RankingItem[]>(initialRanking)
-  const [mestre, setMestre] = useState(initialMestre)
+  const [mestres, setMestres] = useState(initialMestres)
   const [beltFilter, setBeltFilter] = useState("Todas")
   const [categoriaFilter, setCategoriaFilter] = useState("geral")
   const [periodoFilter, setPeriodoFilter] = useState("total")
@@ -42,7 +48,7 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestre, v
     setFilterError(null)
     fetch(`/api/ranking?${params.toString()}`)
       .then((r) => r.json())
-      .then((d) => { setRanking(d.ranking || []); setMestre(d.mestre); setFilterLoading(false) })
+      .then((d) => { setRanking(d.ranking || []); setMestres(d.mestres || {}); setFilterLoading(false) })
       .catch(() => { setFilterError("Erro ao carregar ranking"); setFilterLoading(false); toast.error("Erro ao carregar ranking") })
   }, [categoriaFilter, beltFilter, periodoFilter])
 
@@ -65,19 +71,32 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestre, v
     <DashboardShell role="aluno">
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
-          {mestre && (
-            <div className="glass-card border border-[var(--gold-dim)] p-5 text-center relative overflow-hidden">
-              <CrownIcon className="absolute top-[-10px] right-[-10px] w-16 h-16 opacity-[0.06]" />
-              <CrownIcon className="w-8 h-8 mb-1 animate-float mx-auto" />
-              <h3 className="font-bold text-sm text-[var(--gold)] uppercase tracking-widest">{t("mestreDoMes")}</h3>
-              <div className="w-12 h-[1px] bg-[var(--gold)]/30 mx-auto my-3" />
-              <p className="text-lg font-extrabold mt-0.5">{mestre.nome}</p>
-              <span className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold mt-2 ${getBeltColor(mestre.faixa)}`}>
-                {getBeltEmoji(mestre.faixa)} {mestre.faixa} · {mestre.grau + 1}º Grau
-              </span>
-              <p className="text-xs text-[var(--text-secondary)] mt-2">{t("aulasNoMes").replace("{n}", String(mestre.totalAulas))}</p>
-            </div>
-          )}
+          {/* Mestres do Mês — 3 categorias */}
+          <div className="grid grid-cols-3 gap-2.5">
+            {CATEGORIAS.map((cat) => {
+              const m = mestres?.[cat]
+              return (
+                <div key={cat} className="glass-card p-4 text-center relative overflow-hidden border border-[rgba(255,255,255,0.03)]">
+                  <CrownIcon className="absolute top-[-8px] right-[-8px] w-12 h-12 opacity-[0.05]" />
+                  <div className="text-xl mb-0.5">{CATEGORIA_ICONES[cat]}</div>
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] mb-1">
+                    {cat === "adulto" ? t("adulto") : cat === "master" ? t("master") : t("infantil")}
+                  </h4>
+                  {m ? (
+                    <>
+                      <p className="text-sm font-extrabold truncate text-[var(--gold)]">{m.nome}</p>
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold mt-1 ${getBeltColor(m.faixa)}`}>
+                        {getBeltEmoji(m.faixa)} {m.faixa}
+                      </span>
+                      <p className="text-[10px] text-[var(--text-secondary)] mt-1">{m.totalAulas} {t("aulas")}</p>
+                    </>
+                  ) : (
+                    <p className="text-xs text-[var(--text-muted)]">{t("semMestre")}</p>
+                  )}
+                </div>
+              )
+            })}
+          </div>
 
           <div className="glass-card text-center p-5">
             <AwardIcon className="w-8 h-8 mb-2 mx-auto" />
@@ -166,7 +185,7 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestre, v
                     <Avatar name={a.nome} faixa={a.faixa} size={32} />
                     <div className="flex-1 min-w-0">
                       <div className="text-sm font-semibold truncate">
-                        {mestre && mestre.nome === a.nome && <CrownIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-0.5" />}
+                        {CATEGORIAS.some((cat) => mestres?.[cat]?.nome === a.nome) && <CrownIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-0.5" />}
                         {isMe && <span className="mr-0.5 text-[var(--gold)]">›</span>}
                         {a.nome}
                         {getNivelInfo(a.nivelDisciplina) && (
