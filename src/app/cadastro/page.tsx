@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
+import { toast } from "sonner"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
@@ -247,7 +248,7 @@ export default function Cadastro() {
       if (!res.ok) { setError(data.error || t("errors.criacao")); setLoading(false); return }
 
       const result = await signIn("credentials", { email: form.email, password: form.senha, redirect: false })
-      if (result?.error) { router.push("/login"); return }
+      if (result?.error) { toast.error("Conta criada! Faça login para continuar."); router.push("/login"); return }
 
       const ref = searchParams.get("ref")
       if (ref === "ebook") { router.push("/ebook/conteudo"); return }

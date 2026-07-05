@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 import { registerSchema } from "@/lib/validation"
+import { notificarUsuario } from "@/lib/notificar"
 
 export async function POST(request: Request) {
   try {
@@ -215,14 +216,16 @@ export async function POST(request: Request) {
       },
     })
 
-    await prisma.notificacao.create({
-      data: {
-        usuarioId: usuario.id,
-        tipo: "boas_vindas",
-        titulo: "Bem-vindo ao OssTrack!",
-        descricao: "Sua jornada no Jiu-Jitsu começa aqui. Faça check-in na sua academia e acompanhe sua evolução.",
-        link: "/dashboard/aluno",
-      },
+    await notificarUsuario({
+      usuarioId: usuario.id,
+      tipo: "boas_vindas",
+      titulo: "Bem-vindo ao OssTrack!",
+      descricao: "Sua jornada no Jiu-Jitsu comeca aqui. Faca check-in na sua academia e acompanhe sua evolucao.",
+      link: "/dashboard/aluno",
+    }).catch(() => {})
+
+    await prisma.streak.create({
+      data: { usuarioId: usuario.id, currentStreak: 3, bestStreak: 3, lastCheckinDate: new Date() },
     })
 
     return NextResponse.json({ redirect: "/dashboard/aluno" })

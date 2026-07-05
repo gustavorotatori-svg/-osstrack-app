@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { notificarUsuario } from "@/lib/notificar"
 
 export async function POST(request: Request) {
   try {
@@ -35,15 +36,13 @@ export async function POST(request: Request) {
       },
     })
 
-    await prisma.notificacao.create({
-      data: {
-        usuarioId: aluno.id,
-        tipo: "presenca",
-        titulo: "Presença registrada!",
-        descricao: `Sua presença de hoje (${horario}) foi registrada por ${session.user.name}`,
-        link: "/dashboard/aluno",
-      },
-    })
+    await notificarUsuario({
+      usuarioId: aluno.id,
+      tipo: "presenca",
+      titulo: "Presenca registrada!",
+      descricao: `Sua presenca de hoje (${horario}) foi registrada por ${session.user.name}`,
+      link: "/dashboard/aluno",
+    }).catch(() => {})
 
     return NextResponse.json({ success: true, id: presenca.id })
   } catch (error) {

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { awardXp } from "@/lib/gamification"
+import { notificarUsuario } from "@/lib/notificar"
 
 export async function POST() {
   try {
@@ -122,15 +123,13 @@ export async function POST() {
         await prisma.alunoConquista.create({
           data: { alunoId: session.user.id, conquistaId: c.id, progresso: c.condicao },
         })
-        await prisma.notificacao.create({
-          data: {
-            usuarioId: session.user.id,
-            tipo: "conquista",
-            titulo: `🏅 Nova Conquista: ${c.nome}`,
-            descricao: c.descricao,
-            link: "/dashboard/aluno/conquistas",
-          },
-        })
+        await notificarUsuario({
+          usuarioId: session.user.id,
+          tipo: "conquista",
+          titulo: `Nova Conquista: ${c.nome}`,
+          descricao: c.descricao,
+          link: "/dashboard/aluno/conquistas",
+        }).catch(() => {})
         await awardXp(session.user.id, 50)
         novas.push(c.nome)
       } else if (jaTem && progresso > (desbloqueadasMap.get(c.id)?.progresso || 0)) {

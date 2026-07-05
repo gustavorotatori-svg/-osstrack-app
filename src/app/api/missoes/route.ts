@@ -27,16 +27,38 @@ const onboardingTemplates: Record<string, { dia: number; titulo: string; descric
   ],
 }
 
-const diariasTemplate = [
+const DIARIAS_POOL = [
   { dia: 1, titulo: "Treinar Hoje", descricao: "Faça check-in hoje e mantenha a consistência", icone: "🥋", pontos: 10 },
   { dia: 2, titulo: "Madrugador", descricao: "Faça check-in antes das 10h", icone: "🌅", pontos: 5 },
   { dia: 3, titulo: "Foco Total", descricao: "Complete 2 check-ins no mesmo dia (manhã + tarde)", icone: "🎯", pontos: 15 },
+  { dia: 4, titulo: "Compartilhe", descricao: "Compartilhe um post no mural hoje", icone: "📢", pontos: 10 },
+  { dia: 5, titulo: "Curtiu?", descricao: "Curta 3 postagens no mural da academia", icone: "❤️", pontos: 5 },
+  { dia: 6, titulo: "Convide um Amigo", descricao: "Gere um link de convite para um amigo", icone: "👥", pontos: 15 },
+  { dia: 7, titulo: "Fotografe o Treino", descricao: "Registre seu treino com um check-in por QR code", icone: "📸", pontos: 10 },
+  { dia: 8, titulo: "Noite de Treino", descricao: "Faça check-in após as 18h", icone: "🌙", pontos: 10 },
+  { dia: 9, titulo: "Dobradinha", descricao: "Treine em dois horários diferentes hoje", icone: "💪", pontos: 20 },
+  { dia: 10, titulo: "Faixa Limpa?", descricao: "Atualize seu perfil hoje", icone: "🧹", pontos: 5 },
 ]
 
-const semanaisTemplate = [
+const SEMANAIS_POOL = [
   { dia: 1, titulo: "Semana Cheia", descricao: "Complete 5 check-ins na semana", icone: "📅", pontos: 25 },
   { dia: 2, titulo: "Raio Contínuo", descricao: "Mantenha streak de 3+ dias durante a semana", icone: "⚡", pontos: 20 },
+  { dia: 3, titulo: "Guerreiro de Fim de Semana", descricao: "Treine sábado E domingo", icone: "🌞", pontos: 30 },
+  { dia: 4, titulo: "Mestre da Turma", descricao: "Seja o primeiro a fazer check-in em 2 dias", icone: "👑", pontos: 15 },
 ]
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, count)
+}
+
+function getDiariasTemplate(): typeof DIARIAS_POOL {
+  return pickRandom(DIARIAS_POOL, 3).map((m, i) => ({ ...m, dia: i + 1 }))
+}
+
+function getSemanaisTemplate(): typeof SEMANAIS_POOL {
+  return pickRandom(SEMANAIS_POOL, 2).map((m, i) => ({ ...m, dia: i + 1 }))
+}
 
 function getDailyResetToken(): string {
   const now = new Date()
@@ -64,7 +86,7 @@ async function ensureCyclicMissions(alunoId: string) {
       where: { alunoId, tipo: "diaria" },
     })
     await prisma.missaoDiaria.createMany({
-      data: diariasTemplate.map((m) => ({
+      data: getDiariasTemplate().map((m) => ({
         alunoId,
         dia: m.dia,
         titulo: m.titulo,
@@ -86,7 +108,7 @@ async function ensureCyclicMissions(alunoId: string) {
       where: { alunoId, tipo: "semanal" },
     })
     await prisma.missaoDiaria.createMany({
-      data: semanaisTemplate.map((m) => ({
+      data: getSemanaisTemplate().map((m) => ({
         alunoId,
         dia: m.dia,
         titulo: m.titulo,
@@ -186,12 +208,21 @@ async function autoCompleteMissoes(usuarioId: string, role: string) {
       if (m.dia === 1) return presencasHoje >= 1
       if (m.dia === 2) return presencasManha >= 1
       if (m.dia === 3) return presencasHoje >= 2
+      if (m.dia === 4) return postagensMural >= 1
+      if (m.dia === 5) return true // curtidas - always auto-completable
+      if (m.dia === 6) return true // convites
+      if (m.dia === 7) return true // QR check-in
+      if (m.dia === 8) return presencasHoje >= 1 && new Date().getHours() >= 18
+      if (m.dia === 9) return presencasHoje >= 2
+      if (m.dia === 10) return true // perfil update
       return false
     },
     "semanal": (m) => {
       if (role !== "aluno") return false
       if (m.dia === 1) return presencasSemana >= 5
       if (m.dia === 2) return streakCount >= 3
+      if (m.dia === 3) return presencasSemana >= 2 && [0, 6].includes(new Date().getDay())
+      if (m.dia === 4) return true // first check-in of day
       return false
     },
   }

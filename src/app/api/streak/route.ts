@@ -80,6 +80,13 @@ export async function POST() {
       if (streak.streakFreeze > 0 && !streak.freezeUsado) {
         novoStreak = streak.currentStreak + 1
         usouFreeze = true
+        await notificarUsuario({
+          usuarioId: session.user.id,
+          tipo: "alerta",
+          titulo: "Freeze usado!",
+          descricao: "Seu freeze de streak foi usado. Nao perca outro dia ou seu streak sera resetado!",
+          link: "/dashboard/aluno",
+        }).catch(() => {})
       } else {
         novoStreak = 1
       }
