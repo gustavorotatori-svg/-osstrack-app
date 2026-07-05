@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma"
 import { haversineDistance } from "@/lib/geo"
 import { handleApiError } from "@/lib/api-error"
 import { presencaSchema } from "@/lib/validation"
+import { notificarUsuario } from "@/lib/notificar"
 
 export async function POST(request: Request) {
   try {
@@ -51,6 +52,24 @@ export async function POST(request: Request) {
         observacao: `${latitude},${longitude}`,
       },
     })
+
+    // Notify professor + dono that aluno checked in
+    const professores = await prisma.usuario.findMany({
+      where: {
+        academiaId: session.user.academiaId,
+        role: { in: ["professor", "dono"] },
+      },
+      select: { id: true, role: true },
+    })
+    for (const p of professores) {
+      await notificarUsuario({
+        usuarioId: p.id,
+        tipo: "presenca",
+        titulo: "Check-in recebido",
+        descricao: `${session.user.name} fez check-in na academia`,
+        link: `/dashboard/${p.role === "dono" ? "dono" : "professor"}/presencas`,
+      }).catch(() => {})
+    }
 
     return NextResponse.json({ success: true, id: presenca.id, academia: academia?.nome || null })
   } catch (error) {

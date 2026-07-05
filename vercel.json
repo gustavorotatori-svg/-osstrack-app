@@ -9,6 +9,14 @@
     {
       "path": "/api/mestredomes",
       "schedule": "0 0 1 * *"
+    },
+    {
+      "path": "/api/cron/reengagement",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/lembrete-checkin",
+      "schedule": "0 18 * * *"
     }
   ]
 }

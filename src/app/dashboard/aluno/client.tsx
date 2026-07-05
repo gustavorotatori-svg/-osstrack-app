@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Calendar, Flame, Medal, Share2, BarChart3, Target, ArrowUpRight, Users, UserPlus, Zap, Trophy, Sword, ChevronRight, TrendingUp } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
@@ -21,6 +21,8 @@ import { useRouter } from "next/navigation"
 import { triggerOssTransition } from "@/components/ui/oss-transition"
 import { getNivelInfo } from "@/lib/disciplina"
 import { AttendanceHeatmap } from "@/components/ui/attendance-heatmap"
+import { InteractiveTour } from "@/components/onboarding/interactive-tour"
+import { StreakSalvage } from "@/components/gamification/streak-salvage"
 
 type Props = {
   aluno: {
@@ -132,9 +134,18 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
   const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
   const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [showTour, setShowTour] = useState(false)
+
+  useEffect(() => {
+    const done = typeof window !== "undefined" && localStorage.getItem("oss_tour_done")
+    if (!done && !aluno.academia && ultimasPresencas.length === 0) {
+      setShowTour(true)
+    }
+  }, [])
 
   return (
     <DashboardShell role="aluno">
+      {showTour && <InteractiveTour onFinish={() => setShowTour(false)} />}
       <PageTransition>
         <div className="max-w-4xl mx-auto">
 
@@ -319,6 +330,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               {/* Missions + Mestre do Mês */}
               <MestreDoMesCard />
               <MetaSemanalCard />
+              <StreakSalvage currentStreak={streak} pontos={pontos} />
               <DailyMissions />
 
               {/* XP Level detail */}

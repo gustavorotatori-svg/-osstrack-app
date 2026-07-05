@@ -34,11 +34,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   const [prospectStats, setProspectStats] = useState<{ stats: { total: number; usados: number; pendentes: number; expirados: number; conversao: number }; porTipo: { tipo: string; total: number }[]; ultimos: { id: string; tipo: string; codigo: string; usado: boolean; createdAt: string; expiresAt: string | null }[] } | null>(null)
   const [aniversariantes, setAniversariantes] = useState<{ id: string; nome: string; faixa: string; avatar: string | null; dia: number }[]>([])
   const [inativos, setInativos] = useState<{ id: string; nome: string; faixa: string; grau: number; avatar: string | null; ultimaPresenca: string | null; diasSemTreinar: number }[]>([])
+  const [retention, setRetention] = useState<{ cohorts: { mes: string; total: number; d1: number; d7: number; d30: number }[]; overall: { d1: number; d7: number; d30: number }; lastCohort: { mes: string; d1: number; d7: number; d30: number } | null } | null>(null)
 
   useEffect(() => {
     fetch("/api/prospectos").then((r) => r.json()).then(setProspectStats).catch(() => {})
     fetch("/api/dashboard/aniversariantes").then((r) => r.json()).then((d) => setAniversariantes(d.aniversariantes || [])).catch(() => {})
     fetch("/api/dashboard/inativos?dias=7").then((r) => r.json()).then((d) => setInativos(d.inativos || [])).catch(() => {})
+    fetch("/api/dashboard/retention").then((r) => r.json()).then(setRetention).catch(() => {})
   }, [])
 
   const [rankingVisivel, setRankingVisivel] = useState(academia.rankingVisivel)
@@ -260,6 +262,76 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                       )
                     })}
                   </div>
+                )}
+              </div>
+
+              {/* Retention Metrics */}
+              <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-vermelha)"} as React.CSSProperties}>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="section-header mb-0">Retenção por Coorte</div>
+                  {retention?.lastCohort && (
+                    <span className="badge font-mono">
+                      D1 {retention.lastCohort.d1}% · D7 {retention.lastCohort.d7}% · D30 {retention.lastCohort.d30}%
+                    </span>
+                  )}
+                </div>
+                {!retention ? (
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
+                ) : retention.cohorts.length === 0 ? (
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Nenhuma coorte disponível</p>
+                ) : (
+                  <>
+                    <div className="overflow-x-auto pb-2">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="text-[var(--text-muted)]">
+                            <th className="text-left py-2 pr-3 font-semibold">Mês</th>
+                            <th className="text-right px-2 py-2 font-semibold">Alunos</th>
+                            <th className="text-right px-2 py-2 font-semibold">D1</th>
+                            <th className="text-right px-2 py-2 font-semibold">D7</th>
+                            <th className="text-right px-2 py-2 font-semibold">D30</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {retention.cohorts.map((c) => (
+                            <tr key={c.mes} className="border-t border-[rgba(255,255,255,0.03)]">
+                              <td className="py-2.5 pr-3 font-semibold">{c.mes}</td>
+                              <td className="text-right px-2 py-2.5 text-[var(--text-secondary)]">{c.total}</td>
+                              <td className="text-right px-2 py-2.5">
+                                <span style={{ color: c.d1 >= 50 ? "#22c55e" : c.d1 >= 30 ? "#eab308" : "#ef4444" }}>
+                                  {c.d1}%
+                                </span>
+                              </td>
+                              <td className="text-right px-2 py-2.5">
+                                <span style={{ color: c.d7 >= 30 ? "#22c55e" : c.d7 >= 15 ? "#eab308" : "#ef4444" }}>
+                                  {c.d7}%
+                                </span>
+                              </td>
+                              <td className="text-right px-2 py-2.5">
+                                <span style={{ color: c.d30 >= 20 ? "#22c55e" : c.d30 >= 10 ? "#eab308" : "#ef4444" }}>
+                                  {c.d30}%
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="flex gap-3 mt-3 pt-3 border-t border-[rgba(255,255,255,0.05)]">
+                      <div className="flex-1 text-center">
+                        <div className="text-lg font-black">{retention.overall.d1}%</div>
+                        <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D1</div>
+                      </div>
+                      <div className="flex-1 text-center">
+                        <div className="text-lg font-black">{retention.overall.d7}%</div>
+                        <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D7</div>
+                      </div>
+                      <div className="flex-1 text-center">
+                        <div className="text-lg font-black">{retention.overall.d30}%</div>
+                        <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D30</div>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
 

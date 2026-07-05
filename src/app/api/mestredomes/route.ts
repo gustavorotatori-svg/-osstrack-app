@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { notificarUsuario } from "@/lib/notificar"
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 
@@ -58,7 +59,16 @@ export async function POST(req: NextRequest) {
           create: { academiaId: academia.id, alunoId: top.alunoId, mes: mesAlvo, ano, categoria, totalAulas: top._count },
         })
 
-        const aluno = await prisma.usuario.findUnique({ where: { id: top.alunoId }, select: { nome: true } })
+        const aluno = await prisma.usuario.findUnique({ where: { id: top.alunoId }, select: { id: true, nome: true } })
+        if (aluno) {
+          await notificarUsuario({
+            usuarioId: aluno.id,
+            tipo: "conquista",
+            titulo: "Mestre do Mes!",
+            descricao: `Voce foi o aluno com mais presencas em ${categoria} este mes! Parabens!`,
+            link: "/dashboard/aluno/ranking",
+          }).catch(() => {})
+        }
         resultadosAcademia[categoria] = { mestre: aluno?.nome, aulas: top._count }
       }
 

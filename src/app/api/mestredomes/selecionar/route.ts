@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { notificarUsuario } from "@/lib/notificar"
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 
@@ -43,8 +44,16 @@ export async function PUT(req: Request) {
 
     const mestre = await prisma.mestreDoMes.findFirst({
       where: { academiaId: session.user.academiaId, mes, ano, categoria },
-      include: { aluno: { select: { nome: true, faixa: true, avatar: true } } },
+      include: { aluno: { select: { id: true, nome: true, faixa: true, avatar: true } } },
     })
+
+    await notificarUsuario({
+      usuarioId: mestre!.aluno.id,
+      tipo: "conquista",
+      titulo: `Mestre do Mes - ${categoria}`,
+      descricao: `Parabens! Voce foi selecionado como Mestre do Mes (${categoria})! Continue assim!`,
+      link: "/dashboard/aluno/ranking",
+    }).catch(() => {})
 
     return NextResponse.json({
       mestre: {

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { notificarUsuario } from "@/lib/notificar"
 
 export async function GET(request: Request) {
   try {
@@ -61,15 +62,13 @@ export async function POST(request: Request) {
     })
 
     if (postagem.alunoId !== session.user.id) {
-      await prisma.notificacao.create({
-        data: {
-          usuarioId: postagem.alunoId,
-          tipo: "comentario",
-          titulo: "Novo comentário",
-          descricao: `${session.user.name} comentou na sua publicação`,
-          link: "/dashboard/aluno/mural",
-        },
-      })
+      await notificarUsuario({
+        usuarioId: postagem.alunoId,
+        tipo: "comentario",
+        titulo: "Novo comentario",
+        descricao: `${session.user.name} comentou na sua publicacao`,
+        link: "/dashboard/aluno/mural",
+      }).catch(() => {})
     }
 
     return NextResponse.json(comentario)

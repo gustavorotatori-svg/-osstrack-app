@@ -34,6 +34,7 @@ model Academia {
   horariosAula    HorarioAula[]
   agendamentos    Agendamento[]
   convites        Convite[]
+  checkinCodigos  CheckinCodigo[]
   rankingVisivel  Boolean  @default(true)
   planosMensalidade PlanoMensalidade[]
   contratos         Contrato[]
@@ -56,6 +57,8 @@ model Usuario {
   academiaId String?
   academia   Academia? @relation(fields: [academiaId], references: [id])
   professorId String?
+  emailVerificationToken String?
+  emailVerified DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -445,6 +448,19 @@ model Lead {
   telefone    String?
   baixouEbook Boolean  @default(true)
   createdAt   DateTime @default(now())
+}
+
+model CheckinCodigo {
+  id        String   @id @default(cuid())
+  academiaId String
+  academia  Academia @relation(fields: [academiaId], references: [id])
+  criadoPor String
+  codigo    String
+  turma     String?
+  usado     Boolean  @default(false)
+  usadoPor  String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model RateLimitAttempt {
