@@ -16,6 +16,8 @@ import { BackToTop } from "@/components/landing/back-to-top"
 import { MobileCta } from "@/components/landing/mobile-cta"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
 
+export const dynamic = "force-dynamic"
+
 export default async function Home() {
   const trintaDiasAtras = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
   const [totalAcademias, totalAlunos, alunosAtivos30d] = await Promise.all([
