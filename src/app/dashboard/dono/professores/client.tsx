@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
 import { Search, X, Trash2, UserPlus } from "lucide-react"
+import { getBeltColor } from "@/lib/utils"
 
 type ProfessorData = {
   id: string
@@ -34,17 +35,6 @@ export function ProfessoresClient() {
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
-
-  function getBeltColor(faixa: string) {
-    const cores: Record<string, string> = {
-      Branca: "bg-white/10 text-white",
-      Azul: "bg-blue-600/30 text-blue-300",
-      Roxa: "bg-purple-600/30 text-purple-300",
-      Marrom: "bg-amber-800/40 text-amber-200",
-      Preta: "bg-gray-900/60 text-gray-100",
-    }
-    return cores[faixa] || "bg-white/10 text-white"
-  }
 
   async function handleRemover(id: string, nome: string) {
     if (!confirm(`Remover ${nome} da academia? Ele perderá acesso às turmas e dados da academia.`)) return

@@ -5,8 +5,20 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json()
+    const { email, recaptchaToken } = await request.json()
     if (!email) return NextResponse.json({ error: "Email é obrigatório" }, { status: 400 })
+
+    if (process.env.RECAPTCHA_SECRET_KEY) {
+      if (!recaptchaToken) {
+        return NextResponse.json({ error: "reCAPTCHA é obrigatório" }, { status: 400 })
+      }
+      const params = new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: recaptchaToken })
+      const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", { method: "POST", body: params })
+      const verifyData = await verifyRes.json()
+      if (!verifyData.success || (verifyData.score && verifyData.score < 0.5)) {
+        return NextResponse.json({ error: "Falha na verificação de segurança. Tente novamente." }, { status: 400 })
+      }
+    }
 
     // Rate limit by IP and email
     const ip = getClientIp(request)
