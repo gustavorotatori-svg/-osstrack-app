@@ -12,6 +12,11 @@ const locales = [
   { code: "sv", label: "SV" },
   { code: "ja", label: "JP" },
   { code: "ar", label: "AR" },
+  { code: "zh", label: "ZH" },
+  { code: "hi", label: "HI" },
+  { code: "it", label: "IT" },
+  { code: "ru", label: "RU" },
+  { code: "ko", label: "KO" },
 ] as const
 
 export function LocaleSwitcher() {

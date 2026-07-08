@@ -7,10 +7,15 @@ import nl from "../../messages/nl.json"
 import sv from "../../messages/sv.json"
 import ja from "../../messages/ja.json"
 import ar from "../../messages/ar.json"
+import zh from "../../messages/zh.json"
+import hi from "../../messages/hi.json"
+import it from "../../messages/it.json"
+import ru from "../../messages/ru.json"
+import ko from "../../messages/ko.json"
 
-const allMessages: Record<string, any> = { pt, en, es, fr, de, nl, sv, ja, ar }
+const allMessages: Record<string, any> = { pt, en, es, fr, de, nl, sv, ja, ar, zh, hi, it, ru, ko }
 
-export type Locale = "pt" | "en" | "es" | "fr" | "de" | "nl" | "sv" | "ja" | "ar"
+export type Locale = "pt" | "en" | "es" | "fr" | "de" | "nl" | "sv" | "ja" | "ar" | "zh" | "hi" | "it" | "ru" | "ko"
 
 export function getMessages(locale: Locale) {
   return allMessages[locale] || allMessages["pt"]
@@ -44,6 +49,11 @@ export const localeLabels: Record<Locale, string> = {
   sv: "SV",
   ja: "JP",
   ar: "AR",
+  zh: "ZH",
+  hi: "HI",
+  it: "IT",
+  ru: "RU",
+  ko: "KO",
 }
 
 export const localeNames: Record<Locale, string> = {
@@ -56,4 +66,9 @@ export const localeNames: Record<Locale, string> = {
   sv: "Svenska",
   ja: "日本語",
   ar: "العربية",
+  zh: "中文",
+  hi: "हिन्दी",
+  it: "Italiano",
+  ru: "Русский",
+  ko: "한국어",
 }

@@ -41,7 +41,7 @@ export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true)
     const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
-    if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar"].includes(storedLocale)) {
+    if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
       setLocaleState(storedLocale)
     }
   }, [])
@@ -54,7 +54,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     localStorage.setItem("osstrack_locale", locale)
-    document.documentElement.lang = locale === "ar" ? "ar" : "pt"
+    document.documentElement.lang = locale
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr"
   }, [locale])
 
