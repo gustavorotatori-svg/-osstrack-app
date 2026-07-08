@@ -6,6 +6,7 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
 import { PencilIcon, Trash2Icon, ClipboardIcon, UsersIcon, CalendarIcon, SmartphoneIcon, XIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
+import { getBeltColor } from "@/lib/utils"
 
 type Turma = {
   id: string
@@ -177,15 +178,6 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
     } catch {
       toast.error(tr("erroRemover"))
     }
-  }
-
-  function getBeltColor(faixa: string): string {
-    const colors: Record<string, string> = {
-      Branca: "bg-gray-100 text-gray-800", Azul: "bg-blue-600 text-white",
-      Roxa: "bg-purple-600 text-white", Marrom: "bg-amber-700 text-white",
-      Preta: "bg-gray-900 text-white",
-    }
-    return colors[faixa] || "bg-gray-100 text-gray-800"
   }
 
   function compartilharTurma(t: Turma) {

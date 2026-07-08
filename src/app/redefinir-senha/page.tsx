@@ -25,10 +25,29 @@ export default function RedefinirSenha() {
     if (senha.length < 8) { setError("Senha deve ter no mínimo 8 caracteres"); setLoading(false); return }
 
     try {
+      let recaptchaToken = ""
+      if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
+        try {
+          const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+          if (!(window as any).grecaptcha?.ready) {
+            await new Promise<void>((resolve, reject) => {
+              const script = document.createElement("script")
+              script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+              script.onload = () => { (window as any).grecaptcha.ready(() => resolve()) }
+              script.onerror = () => reject(new Error("Failed to load reCAPTCHA"))
+              document.head.appendChild(script)
+            })
+          } else {
+            await new Promise<void>((resolve) => (window as any).grecaptcha.ready(resolve))
+          }
+          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "redefinir_senha" })
+        } catch { console.warn("[redefinir-senha] reCAPTCHA error") }
+      }
+
       const res = await fetch("/api/auth/redefinir-senha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, senha }),
+        body: JSON.stringify({ token, senha, recaptchaToken: recaptchaToken || undefined }),
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error); return }

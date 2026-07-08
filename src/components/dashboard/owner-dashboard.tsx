@@ -82,11 +82,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
       { label: "Presenças", icon: ClipboardList, href: `/dashboard/${prefix}/presencas`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
       { label: "Graduações", icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
     ]
-    if (role === "dono" || role === "professor") {
+    base.push(
+      { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
+      { label: "Agenda", icon: Calendar, href: `/dashboard/${role}/agenda`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
+    )
+    if (role === "dono") {
       base.push(
-        { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
         { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
-        { label: "Agenda", icon: Calendar, href: "/dashboard/dono/agenda", color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
         { label: "Config", icon: Settings, href: "/dashboard/dono/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
       )
     }

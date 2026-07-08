@@ -167,30 +167,30 @@ export default function Cadastro() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setLoading(true)
     setError("")
 
-    // -- Step validation --
+    // -- Step validation (no loading for instant transitions) --
     if (step === 1) {
-      if (!form.nome.trim()) { setError("Informe seu nome"); setLoading(false); return }
-      if (!form.email.trim()) { setError("Informe seu email"); setLoading(false); return }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("E-mail inválido"); setLoading(false); return }
-      if (form.senha.length < 8) { setError("A senha deve ter no mínimo 8 caracteres"); setLoading(false); return }
-      if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); setLoading(false); return }
-      if (!form.role) { setError("Selecione um tipo de conta"); setLoading(false); return }
-      avancarStep(); setLoading(false); return
+      if (!form.nome.trim()) { setError("Informe seu nome"); return }
+      if (!form.email.trim()) { setError("Informe seu email"); return }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("E-mail inválido"); return }
+      if (form.senha.length < 8) { setError("A senha deve ter no mínimo 8 caracteres"); return }
+      if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); return }
+      if (!form.role) { setError("Selecione um tipo de conta"); return }
+      avancarStep(); return
     }
 
     if (step === 2) {
       if (form.role === "dono" && !form.academiaNome.trim()) {
-        setError("Informe o nome da academia"); setLoading(false); return
+        setError("Informe o nome da academia"); return
       }
       if (!form.consentimentoTermos || !form.consentimentoLGPD) {
         setError("Você precisa aceitar os Termos de Uso e a Política de Privacidade")
-        setLoading(false)
         return
       }
     }
+
+    setLoading(true)
 
     // -- Submit --
     try {
