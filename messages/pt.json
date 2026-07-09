@@ -899,6 +899,84 @@
     "streak": "Streak",
     "conquistas": "Conquistas"
   },
+  "ossinho": {
+    "title": "Oi, sou o Ossinho!",
+    "subtitle": "Vou te ajudar nos primeiros passos por aqui.",
+    "skip": "Pular dica",
+    "gotIt": "Entendi!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Bem-vindo ao tatame digital!",
+          "desc": "Aqui você acompanha sua jornada no Jiu-Jitsu. Faça check-in, evolua nas faixas e desbloqueie conquistas. Bora treinar?"
+        },
+        "checkin": {
+          "title": "Hora do Check-in!",
+          "desc": "Chegou na academia? Toque no botão grande e registre sua presença. O GPS confirma que você está no local certo."
+        },
+        "evolucao": {
+          "title": "Sua Jornada nas Faixas",
+          "desc": "Cada aula te aproxima do próximo grau. Veja quantas faltam e acompanhe seu progresso até a próxima faixa."
+        },
+        "conquistas": {
+          "title": "Desbloqueie Conquistas!",
+          "desc": "Streaks, medalhas e badges. Treine com consistência e colecione todas. Cada conquista é um marco na sua história."
+        },
+        "mural": {
+          "title": "Mural da Academia",
+          "desc": "Veja o que a galera está postando. Comente, curta e compartilhe a evolução dos seus amigos."
+        },
+        "ranking": {
+          "title": "Ranking da Academia",
+          "desc": "Veja sua posição entre os alunos. Quanto mais treina, mais sobe. O topo é seu!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Bem-vindo, Professor!",
+          "desc": "Aqui você confirma presenças, gerencia alunos e organiza suas turmas. Tudo na palma da mão."
+        },
+        "presencas": {
+          "title": "Confirme Presenças",
+          "desc": "Veja quem fez check-in e confirme as presenças. Você também pode adicionar manualmente."
+        },
+        "alunos": {
+          "title": "Seus Alunos",
+          "desc": "Acompanhe o progresso de cada aluno. Veja quem está próximo de graduar e promova com um clique."
+        },
+        "turmas": {
+          "title": "Suas Turmas",
+          "desc": "Organize os horários das suas aulas. Crie turmas, defina horários e gerencie alunos."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Bem-vindo, Mestre!",
+          "desc": "Aqui você gerencia sua academia completa: alunos, professores, finanças e relatórios."
+        },
+        "alunosDono": {
+          "title": "Todos os Alunos",
+          "desc": "Veja a lista completa de alunos da sua academia. Filtre, busque e acompanhe o progresso de cada um."
+        },
+        "graduacoes": {
+          "title": "Regras de Graduação",
+          "desc": "Defina os critérios de evolução de cada faixa. Aulas por grau, exames ou por tempo — você escolhe."
+        },
+        "relatorios": {
+          "title": "Relatórios da Academia",
+          "desc": "Acompanhe frequência, retenção e engajamento dos seus alunos. Dados que ajudam a crescer."
+        },
+        "financeiro": {
+          "title": "Financeiro",
+          "desc": "Controle mensalidades, despesas e fluxo de caixa. Planos, contratos e cobranças em um só lugar."
+        },
+        "config": {
+          "title": "Configurações",
+          "desc": "Ajuste nome, WhatsApp, raio de check-in e gere links de convite para professores e alunos."
+        }
+      }
+    }
+  },
   "onboarding": {
     "pularTour": "Pular tour",
     "passosIntro": "Vamos te mostrar os principais recursos em {n} passos.",

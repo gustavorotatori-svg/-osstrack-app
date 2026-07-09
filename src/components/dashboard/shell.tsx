@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { OnboardingTour } from "@/components/onboarding/tour"
+import { Ossinho } from "@/components/onboarding/ossinho"
 import { PwaInstallStep } from "@/components/onboarding/pwa-install-step"
 import { useTheme } from "@/components/layout/providers"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
@@ -402,6 +403,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       <InstallPrompt />
       <OssTransition />
+      <Ossinho role={role} pathname={pathname} />
 
       {/* MOBILE BOTTOM NAV */}
       <nav aria-label="Navegação móvel" className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--bg)]/95 border-t border-[var(--border)] flex items-center justify-around px-1 pt-1 pb-[max(8px,env(safe-area-inset-bottom))] safe-area-bottom">
