@@ -5,6 +5,49 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { X } from "lucide-react"
 
+function OssinhoIcon({ size = 48 }: { size?: number }) {
+  const s = size
+  return (
+    <svg width={s} height={s} viewBox="0 0 48 48" fill="none">
+      {/* shadow */}
+      <ellipse cx="24" cy="45" rx="10" ry="2.5" fill="rgba(0,0,0,0.15)" />
+      {/* feet */}
+      <ellipse cx="17" cy="41" rx="5" ry="3.5" fill="#6B21A8" />
+      <ellipse cx="31" cy="41" rx="5" ry="3.5" fill="#6B21A8" />
+      {/* bottom ball */}
+      <circle cx="24" cy="35" r="10" fill="#9333EA" />
+      {/* gi bottom skirt */}
+      <path d="M15 31c0 3 3 6 9 6s9-3 9-6" stroke="white" strokeWidth="2.5" fill="white" opacity="0.9" />
+      {/* middle ball (body) */}
+      <circle cx="24" cy="22" r="9" fill="#9333EA" />
+      {/* gi top - V-neck opening */}
+      <path d="M16 20c0-2 2-6 8-6s8 4 8 6" stroke="white" strokeWidth="2.5" fill="white" opacity="0.9" />
+      <path d="M24 16L20 22" stroke="#9333EA" strokeWidth="1.2" />
+      <path d="M24 16L28 22" stroke="#9333EA" strokeWidth="1.2" />
+      {/* belt */}
+      <rect x="15" y="23.5" width="18" height="3" rx="1.5" fill="#C9A84C" />
+      {/* collar/lapels */}
+      <path d="M20 20L18 16" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <path d="M28 20L30 16" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      {/* arms */}
+      <path d="M15 24L9 20" stroke="#9333EA" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M33 24L39 20" stroke="#9333EA" strokeWidth="2.5" strokeLinecap="round" />
+      {/* gi sleeves on arms */}
+      <path d="M15 24L11 21.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
+      <path d="M33 24L37 21.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" opacity="0.9" />
+      {/* head */}
+      <circle cx="24" cy="12" r="7" fill="#9333EA" />
+      {/* headband */}
+      <path d="M17.5 10.5a7 7 0 0 1 13 0" stroke="white" strokeWidth="2" fill="none" opacity="0.7" />
+      {/* eyes */}
+      <circle cx="21.5" cy="11.5" r="1.2" fill="white" />
+      <circle cx="26.5" cy="11.5" r="1.2" fill="white" />
+      {/* smile */}
+      <path d="M21 14.5c1.5 1.5 4.5 1.5 6 0" stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+    </svg>
+  )
+}
+
 type OssinhoTip = {
   id: string
   title: string
@@ -132,8 +175,8 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
                 <X className="w-3 h-3 text-[var(--white-muted)]" />
               </button>
               <div className="flex gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-lg shrink-0 shadow-lg shadow-[var(--gold)]/20">
-                  🥋
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                  <OssinhoIcon size={40} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold text-white mb-1">{tip.title}</h4>
@@ -159,13 +202,13 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, type: "spring", damping: 15 }}
-            className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-2xl shadow-xl shadow-[var(--gold)]/30 cursor-pointer hover:scale-105 transition-transform active:scale-95"
+            className="w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform active:scale-95"
             style={{
               animation: "float 3s ease-in-out infinite",
             }}
             onClick={dismiss}
           >
-            🥋
+            <OssinhoIcon size={48} />
           </motion.div>
           <style jsx>{`
             @keyframes float {
