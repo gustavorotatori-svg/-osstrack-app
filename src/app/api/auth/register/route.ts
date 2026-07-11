@@ -66,69 +66,72 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Dados da academia obrigatórios" }, { status: 400 })
       }
 
-      const novaAcademia = await prisma.academia.create({
-        data: {
-          nome: academiaData.nome,
-          endereco: academiaData.endereco || "",
-          cidade: academiaData.cidade || "",
-          estado: academiaData.estado || "",
-          lat: academiaData.lat || 0,
-          lng: academiaData.lng || 0,
-          raio: academiaData.raio || 200,
-          responsavel: nome,
-          telefone: telefone || "",
-        },
-      })
-
-      const dono = await prisma.usuario.create({
-        data: {
-          nome,
-          email,
-          senha: hashed,
-          telefone: telefone || "",
-          role: "dono",
-          faixa: "Preta",
-          grau: 3,
-          dataNascimento: dataNascimento || null,
-          academiaId: novaAcademia.id,
-          dataInicio: new Date(),
-          aceitouTermos: aceitouTermos || false,
-          aceitouLGPD: aceitouLGPD || false,
-          aceitouMarketing: aceitouMarketing || false,
-          dataAceite: new Date(),
-        },
-      })
-
-      await prisma.notificacao.create({
-        data: {
-          usuarioId: dono.id,
-          tipo: "boas_vindas",
-          titulo: "Academia criada com sucesso!",
-          descricao: "Sua academia já está no ar. Comece convidando professores e configurando as graduações.",
-          link: "/dashboard/dono",
-        },
-      })
-
-      await prisma.graduacao.create({
-        data: {
-          academiaId: novaAcademia.id,
-          categoria: "adulto",
-          faixa: "Branca",
-          graus: 4,
-          aulasPorGrau: 20,
-          aulasProxFx: 100,
-        },
-      })
-
-      // If dono was invited by a professor, link the professor to the academy
-      if (professorId) {
-        await prisma.usuario.update({
-          where: { id: professorId },
-          data: { academiaId: novaAcademia.id },
+      const result = await prisma.$transaction(async (tx) => {
+        const novaAcademia = await tx.academia.create({
+          data: {
+            nome: academiaData.nome,
+            endereco: academiaData.endereco || "",
+            cidade: academiaData.cidade || "",
+            estado: academiaData.estado || "",
+            lat: academiaData.lat || 0,
+            lng: academiaData.lng || 0,
+            raio: academiaData.raio || 200,
+            responsavel: nome,
+            telefone: telefone || "",
+          },
         })
-      }
 
-      return NextResponse.json({ redirect: "/dashboard/dono" })
+        const dono = await tx.usuario.create({
+          data: {
+            nome,
+            email,
+            senha: hashed,
+            telefone: telefone || "",
+            role: "dono",
+            faixa: "Preta",
+            grau: 3,
+            dataNascimento: dataNascimento || null,
+            academiaId: novaAcademia.id,
+            dataInicio: new Date(),
+            aceitouTermos: aceitouTermos || false,
+            aceitouLGPD: aceitouLGPD || false,
+            aceitouMarketing: aceitouMarketing || false,
+            dataAceite: new Date(),
+          },
+        })
+
+        await tx.notificacao.create({
+          data: {
+            usuarioId: dono.id,
+            tipo: "boas_vindas",
+            titulo: "Academia criada com sucesso!",
+            descricao: "Sua academia já está no ar. Comece convidando professores e configurando as graduações.",
+            link: "/dashboard/dono",
+          },
+        })
+
+        await tx.graduacao.create({
+          data: {
+            academiaId: novaAcademia.id,
+            categoria: "adulto",
+            faixa: "Branca",
+            graus: 4,
+            aulasPorGrau: 20,
+            aulasProxFx: 100,
+          },
+        })
+
+        if (professorId) {
+          await tx.usuario.update({
+            where: { id: professorId },
+            data: { academiaId: novaAcademia.id },
+          })
+        }
+
+        return { redirect: "/dashboard/dono" }
+      })
+
+      return NextResponse.json(result)
     }
 
     if (role === "professor") {
@@ -225,7 +228,7 @@ export async function POST(request: Request) {
     }).catch(() => {})
 
     await prisma.streak.create({
-      data: { usuarioId: usuario.id, currentStreak: 3, bestStreak: 3, lastCheckinDate: new Date() },
+      data: { usuarioId: usuario.id, currentStreak: 0, bestStreak: 0 },
     })
 
     return NextResponse.json({ redirect: "/dashboard/aluno" })

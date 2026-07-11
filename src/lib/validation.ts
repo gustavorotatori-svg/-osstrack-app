@@ -91,11 +91,13 @@ export const turmaSchema = z.object({
 
 export const recuperarSenhaSchema = z.object({
   email: emailSchema,
+  recaptchaToken: z.string().optional(),
 })
 
 export const redefinirSenhaSchema = z.object({
   token: z.string().min(1, "Token é obrigatório"),
   senha: senhaSchema,
+  recaptchaToken: z.string().optional(),
 })
 
 export const conviteSchema = z.object({

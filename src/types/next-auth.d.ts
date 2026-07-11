@@ -1,5 +1,5 @@
 import "next-auth"
-import type { UserRole, UserPlano } from "@/lib/auth-types"
+import type { UserRole } from "@/lib/auth-types"
 
 declare module "next-auth" {
   interface User {
