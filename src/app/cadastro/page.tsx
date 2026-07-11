@@ -11,10 +11,10 @@ import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 
 type RoleType = "aluno" | "professor" | "dono"
 
-const ROLE_CARDS: { role: RoleType; icon: string; title: string; desc: string }[] = [
-  { role: "aluno", icon: "🥋", title: "Aluno", desc: "Quero treinar e acompanhar minha evolução no Jiu-Jitsu" },
-  { role: "professor", icon: "👨‍🏫", title: "Professor", desc: "Sou faixa preta ou graduado e quero gerenciar alunos" },
-  { role: "dono", icon: "🏛️", title: "Dono de Academia", desc: "Tenho minha própria academia e quero administrar tudo" },
+const ROLE_CARDS: { role: RoleType; icon: string; title: string; desc: string; color: string }[] = [
+  { role: "aluno", icon: "🥋", title: "Aluno", desc: "Quero treinar e acompanhar minha evolução no Jiu-Jitsu", color: "#3b82f6" },
+  { role: "professor", icon: "👨‍🏫", title: "Professor", desc: "Sou faixa preta ou graduado e quero gerenciar alunos", color: "#9333ea" },
+  { role: "dono", icon: "🏛️", title: "Dono de Academia", desc: "Tenho minha própria academia e quero administrar tudo", color: "#d4a847" },
 ]
 
 function ProgressDots({ current, total, labels }: { current: number; total: number; labels: string[] }) {
@@ -27,16 +27,19 @@ function ProgressDots({ current, total, labels }: { current: number; total: numb
         return (
           <div key={i} className="flex items-center gap-2">
             <div className="flex flex-col items-center">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${
-                isActive ? "bg-[var(--gold)] text-black scale-110 shadow-lg shadow-[var(--gold)]/30" :
-                isDone ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" :
-                "bg-[var(--bg-surface)] text-[var(--text-muted)] border border-[var(--border)]"
-              }`}>
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300"
+                style={{
+                  background: isActive ? "var(--gold)" : isDone ? "rgba(52,211,153,0.2)" : "var(--bg-surface)",
+                  color: isActive ? "#000" : isDone ? "#34d399" : "var(--text-muted)",
+                  borderColor: isDone ? "rgba(52,211,153,0.3)" : "var(--border)",
+                  boxShadow: isActive ? "0 0 12px rgba(212,168,71,0.3)" : "none",
+                }}>
                 {isDone ? "✓" : stepNum}
               </div>
-              <span className={`text-[9px] mt-1 font-semibold uppercase tracking-wider whitespace-nowrap ${
-                isActive ? "text-[var(--gold)]" : isDone ? "text-emerald-400/60" : "text-[var(--text-muted)]"
-              }`}>
+              <span className="text-[9px] mt-1 font-semibold uppercase tracking-wider whitespace-nowrap"
+                style={{
+                  color: isActive ? "var(--gold)" : isDone ? "rgba(52,211,153,0.6)" : "var(--text-muted)",
+                }}>
                 {labels[i] || ""}
               </span>
             </div>
@@ -329,13 +332,14 @@ export default function Cadastro() {
                 const selected = form.role === card.role
                 return (
                   <button key={card.role} type="button" onClick={() => update("role", card.role)}
-                    className={`text-center p-3 rounded-xl border transition-all duration-200 ${
-                      selected
-                        ? "border-[var(--gold)] bg-[rgba(212,168,71,0.06)] shadow-lg shadow-[var(--gold)]/5"
-                        : "border-[var(--border)] bg-[var(--bg-surface)] hover:border-[var(--border-hover)]"
-                    }`}>
+                    className="text-center p-3 rounded-xl border transition-all duration-200"
+                    style={{
+                      borderColor: selected ? card.color : "var(--border)",
+                      background: selected ? `${card.color}10` : "var(--bg-surface)",
+                      boxShadow: selected ? `0 0 20px ${card.color}15` : "none",
+                    }}>
                     <div className="text-xl mb-1">{card.icon}</div>
-                    <div className={`text-[10px] font-bold leading-tight ${selected ? "text-[var(--gold)]" : "text-[var(--text)]"}`}>{card.title}</div>
+                    <div className="text-[10px] font-bold leading-tight" style={{ color: selected ? card.color : "var(--text)" }}>{card.title}</div>
                   </button>
                 )
               })}
@@ -427,8 +431,14 @@ export default function Cadastro() {
                 </>
               )}
               {form.academiaId && (
-                <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
-                  <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia selecionada</p>
+                <div className="rounded-xl px-4 py-3"
+                  style={{
+                    background: `${ROLE_CARDS.find(c => c.role === form.role)?.color}12`,
+                    borderColor: `${ROLE_CARDS.find(c => c.role === form.role)?.color}30`,
+                    border: "1px solid",
+                  }}>
+                  <p className="text-xs font-semibold"
+                    style={{ color: ROLE_CARDS.find(c => c.role === form.role)?.color }}>Academia selecionada</p>
                   <p className="text-sm font-medium">{form.academiaNome}</p>
                 </div>
               )}
