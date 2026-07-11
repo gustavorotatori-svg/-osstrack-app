@@ -2,12 +2,17 @@ import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
+import { redefinirSenhaSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
-    const { token, senha, recaptchaToken } = await request.json()
-    if (!token || !senha) return NextResponse.json({ error: "Token e senha são obrigatórios" }, { status: 400 })
-    if (senha.length < 8) return NextResponse.json({ error: "Senha deve ter no mínimo 8 caracteres" }, { status: 400 })
+    const body = await request.json()
+    const parsed = redefinirSenhaSchema.safeParse(body)
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Dados inválidos"
+      return NextResponse.json({ error: firstError }, { status: 400 })
+    }
+    const { token, senha, recaptchaToken } = parsed.data
 
     if (process.env.RECAPTCHA_SECRET_KEY) {
       if (!recaptchaToken) {

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { perfilUpdateSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -60,7 +61,14 @@ export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { nome, telefone, avatar, dataNascimento } = await request.json()
+    const body = await request.json()
+    const parsed = perfilUpdateSchema.safeParse(body)
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Dados inválidos"
+      return NextResponse.json({ error: firstError }, { status: 400 })
+    }
+
+    const { nome, telefone, avatar, dataNascimento } = parsed.data
 
     const data: Record<string, string | null> = {}
     if (nome !== undefined) data.nome = nome

@@ -2,11 +2,17 @@ import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import crypto from "crypto"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
+import { recuperarSenhaSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
-    const { email, recaptchaToken } = await request.json()
-    if (!email) return NextResponse.json({ error: "Email é obrigatório" }, { status: 400 })
+    const body = await request.json()
+    const parsed = recuperarSenhaSchema.safeParse(body)
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0]?.message || "Dados inválidos"
+      return NextResponse.json({ error: firstError }, { status: 400 })
+    }
+    const { email, recaptchaToken } = parsed.data
 
     if (process.env.RECAPTCHA_SECRET_KEY) {
       if (!recaptchaToken) {
