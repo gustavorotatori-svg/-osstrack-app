@@ -1,11 +1,18 @@
 "use client"
 
 import { SessionProvider } from "next-auth/react"
-import { ReactNode, createContext, useContext, useState, useEffect } from "react"
+import { ReactNode, createContext, useContext, useState, useEffect, useCallback } from "react"
 import { Toaster } from "sonner"
 import type { Locale } from "@/lib/i18n"
 
+type ThemePref = "auto" | "dark" | "light"
 type Theme = "dark" | "light"
+
+function prefToTheme(pref: ThemePref): Theme {
+  if (pref !== "auto") return pref
+  const h = new Date().getHours()
+  return h >= 6 && h < 18 ? "light" : "dark"
+}
 
 const LocaleContext = createContext<{
   locale: Locale
@@ -14,8 +21,9 @@ const LocaleContext = createContext<{
 
 const ThemeContext = createContext<{
   theme: Theme
-  toggleTheme: () => void
-}>({ theme: "dark", toggleTheme: () => {} })
+  themePref: ThemePref
+  cycleTheme: () => void
+}>({ theme: "dark", themePref: "auto", cycleTheme: () => {} })
 
 export function useTheme() {
   return useContext(ThemeContext)
@@ -25,18 +33,27 @@ export function useLocale() {
   return useContext(LocaleContext)
 }
 
-function getInitialTheme(): Theme {
-  if (typeof document !== "undefined") {
-    if (document.documentElement.classList.contains("light")) return "light"
-    if (document.documentElement.classList.contains("dark")) return "dark"
-  }
-  return "dark"
+function getInitialPref(): ThemePref {
+  try {
+    const stored = localStorage.getItem("osstrack_theme_pref") as ThemePref | null
+    if (stored === "dark" || stored === "light") return stored
+  } catch {}
+  return "auto"
 }
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const [pref, setPref] = useState<ThemePref>(getInitialPref)
+  const [theme, setTheme] = useState<Theme>(() => prefToTheme(getInitialPref()))
   const [locale, setLocaleState] = useState<Locale>("pt")
   const [mounted, setMounted] = useState(false)
+
+  // Recompute theme when pref or hour changes
+  const applyTheme = useCallback((p: ThemePref) => {
+    const t = prefToTheme(p)
+    setTheme(t)
+    document.documentElement.classList.toggle("light", t === "light")
+    document.documentElement.classList.toggle("dark", t === "dark")
+  }, [])
 
   useEffect(() => {
     setMounted(true)
@@ -44,13 +61,26 @@ export function Providers({ children }: { children: ReactNode }) {
     if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
       setLocaleState(storedLocale)
     }
+
+    // Auto-switch at hour boundaries when pref is "auto"
+    if (pref === "auto") {
+      const msUntilNextSwitch = () => {
+        const now = new Date()
+        const h = now.getHours()
+        const next = h < 6 ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0)
+                 : h < 18 ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0, 0)
+                 : new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 6, 0, 0, 0)
+        return next.getTime() - now.getTime()
+      }
+      const timeout = setTimeout(() => applyTheme(pref), msUntilNextSwitch())
+      return () => clearTimeout(timeout)
+    }
   }, [])
 
   useEffect(() => {
-    document.documentElement.classList.toggle("light", theme === "light")
-    document.documentElement.classList.toggle("dark", theme === "dark")
-    localStorage.setItem("osstrack_theme", theme)
-  }, [theme])
+    localStorage.setItem("osstrack_theme_pref", pref)
+    applyTheme(pref)
+  }, [pref, applyTheme])
 
   useEffect(() => {
     localStorage.setItem("osstrack_locale", locale)
@@ -62,10 +92,14 @@ export function Providers({ children }: { children: ReactNode }) {
     setLocaleState(l)
   }
 
+  function cycleTheme() {
+    setPref((p) => (p === "dark" ? "light" : p === "light" ? "auto" : "dark"))
+  }
+
   return (
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
-        <ThemeContext.Provider value={{ theme, toggleTheme: () => setTheme((p) => (p === "dark" ? "light" : "dark")) }}>
+        <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
           {mounted ? children : <div className="min-h-screen" style={{ background: theme === "light" ? "#f5f5f0" : "#0a0a0a" }} />}
           <Toaster
             position="top-center"

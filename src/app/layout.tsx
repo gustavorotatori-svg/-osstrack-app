@@ -60,7 +60,7 @@ export default function RootLayout({
       <head>
         <style>{`#skip-to-content{position:absolute;top:-100%;left:8px;z-index:9999;padding:8px 16px;background:var(--gold);color:#000;font-size:14px;font-weight:700;border-radius:0 0 8px 8px;text-decoration:none;transition:top .15s}#skip-to-content:focus{top:0;outline:2px solid var(--gold)}`}</style>
         <script dangerouslySetInnerHTML={{
-          __html: `(function(){try{var t=localStorage.getItem("osstrack_theme");if(!t)t="dark";document.documentElement.className=t}catch(e){document.documentElement.className="dark"}})()`
+          __html: `(function(){try{var p=localStorage.getItem("osstrack_theme_pref")||"auto";var t;if(p!=="auto"){t=p}else{var h=new Date().getHours();t=(h>=6&&h<18)?"light":"dark"}document.documentElement.className=t}catch(e){document.documentElement.className="dark"}})()`
         }} />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
