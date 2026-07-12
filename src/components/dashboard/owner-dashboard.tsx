@@ -104,7 +104,6 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
           {/* Hero */}
           <div className="hero-gradient p-5 md:p-6">
-            <div className="hero-orbs"><div className="hero-orb" /><div className="hero-orb" /></div>
             <div className="relative z-10 flex items-start justify-between">
               <div>
                 <div className="label text-[var(--gold)] mb-1">{role === "dono" ? "DONO" : "PROFESSOR"}</div>

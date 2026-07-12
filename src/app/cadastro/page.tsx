@@ -89,6 +89,8 @@ export default function Cadastro() {
 
   const stepLabels: string[] = ["Cadastro", "Finalizar"]
 
+  const roleColor = ROLE_CARDS.find(c => c.role === form.role)?.color || "var(--gold)"
+
   // URL params
   useEffect(() => {
     const convite = searchParams.get("convite")
@@ -580,20 +582,21 @@ export default function Cadastro() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,71,0.06)_0%,rgba(201,122,46,0.03)_40%,transparent_60%)]" />
+      <div className="w-full max-w-sm relative z-10">
         <button onClick={() => step === 1 ? router.push("/") : voltarStep()}
-          className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors mb-4">
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          {step === 1 ? "Início" : "Voltar"}
+          {step === 1 ? "Voltar ao início" : "Voltar"}
         </button>
 
         <div className="text-center mb-6">
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg"
-            style={{ background: "var(--gold)", color: "#000" }}>
+            style={{ background: roleColor, color: "#000" }}>
             🥋
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: roleColor }}>{t("title")}</h1>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
             {step === 1 ? "Crie sua conta em menos de 1 minuto" : "Finalize seu cadastro"}
           </p>
@@ -601,7 +604,7 @@ export default function Cadastro() {
 
         <ProgressDots current={step} total={TOTAL_STEPS} labels={stepLabels} />
 
-        <form onSubmit={handleSubmit} className="surface p-5 md:p-7 space-y-4">
+        <form onSubmit={handleSubmit} className="glass-card p-5 md:p-7 space-y-4">
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.2 }}>
               {renderStep()}
@@ -615,7 +618,8 @@ export default function Cadastro() {
           <div className="flex gap-3 pt-1">
             {step > 1 && (
               <button type="button" onClick={voltarStep}
-                className="btn btn-ghost flex-1 py-3 text-sm">
+                className="btn flex-1 py-3 text-sm"
+                style={{ background: "var(--bg-surface)", color: "var(--text)", border: "1px solid var(--border)" }}>
                 Voltar
               </button>
             )}

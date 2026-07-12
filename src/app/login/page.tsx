@@ -107,18 +107,28 @@ export default function Login() {
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] transition-all duration-700"
         style={{ background: `radial-gradient(ellipse at center, ${cfg.orb} 0%, transparent 70%)` }}
       />
+      <div
+        className="absolute top-1/4 right-0 w-[300px] h-[300px] opacity-30 animate-breathe"
+        style={{ background: "radial-gradient(ellipse at center, rgba(201,122,46,0.04) 0%, transparent 70%)" }}
+      />
       <div className="w-full max-w-sm relative z-10">
-        <button onClick={() => router.push("/")} className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:opacity-80 transition-colors mb-6">
+        <button onClick={() => router.push("/")} className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          Voltar
+          Voltar ao início
         </button>
 
         <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 shadow-lg transition-all duration-500"
-            style={{ background: cfg.color, color: "#000" }}
-          >
-            {cfg.icon}
+          <div className="relative inline-flex mb-4">
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg transition-all duration-500 relative z-10"
+              style={{ background: cfg.color, color: "#000" }}
+            >
+              {cfg.icon}
+            </div>
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] animate-float"
+              style={{ background: "var(--amber)", color: "#000" }}>
+              🌙
+            </div>
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight transition-colors duration-500" style={{ color: cfg.color }}>
             OssTrack
