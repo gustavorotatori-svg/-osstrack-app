@@ -212,11 +212,6 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
   return (
     <div className="min-h-screen bg-[var(--black-soft)] flex flex-col relative">
-      <div className="ambient-orbs">
-        <div className="ambient-orb ambient-orb-1" />
-        <div className="ambient-orb ambient-orb-2" />
-        <div className="ambient-orb ambient-orb-3" />
-      </div>
 
       {showPwaStep && <PwaInstallStep onComplete={handlePwaComplete} />}
       {showTour && <OnboardingTour role={role} onComplete={completeTour} />}

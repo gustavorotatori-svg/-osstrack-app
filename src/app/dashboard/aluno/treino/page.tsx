@@ -114,7 +114,6 @@ export default function TreinoPage() {
         <div className="max-w-5xl mx-auto space-y-4">
 
           <div className="hero-gradient p-5 md:p-6">
-            <div className="hero-orbs"><div className="hero-orb" /><div className="hero-orb" /></div>
             <div className="relative z-10 flex items-start justify-between">
               <div>
                 <span className="label" style={{ color: "var(--gold)" }}>Diário de Treino</span>

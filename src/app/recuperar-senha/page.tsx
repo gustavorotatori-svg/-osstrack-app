@@ -61,14 +61,24 @@ export default function RecuperarSenha() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,71,0.06)_0%,rgba(201,122,46,0.03)_40%,transparent_60%)]" />
       <div className="w-full max-w-sm relative z-10">
-        <button onClick={() => router.push("/")} className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors mb-6">
+        <button onClick={() => router.push("/")} className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          Voltar
+          Voltar ao início
         </button>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-extrabold tracking-tight">Recuperar senha</h1>
+          <div className="relative inline-flex mb-4">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg relative z-10"
+              style={{ background: "var(--gold)", color: "#000" }}>
+              🥋
+            </div>
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] animate-float"
+              style={{ background: "var(--amber)", color: "#000" }}>
+              🌙
+            </div>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>OssTrack</h1>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>Digite seu email para receber o link</p>
         </div>
 
