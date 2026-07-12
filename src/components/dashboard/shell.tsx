@@ -335,7 +335,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const isNotif = item.tkey === "notificacoes"
             return (
               <button key={item.href} onClick={() => navigate(item.href)}
-                className={`p-2.5 rounded-xl transition-all relative ${isActive ? "text-[var(--red)] bg-[var(--red-dim)]" : "text-[var(--text-secondary)] hover:text-white hover:bg-white/5"}`}>
+                className={`p-2.5 rounded-xl transition-all relative ${isActive ? "text-[var(--red)] bg-[var(--red-dim)]" : "text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)]"}`}>
                 <Icon active={isActive} />
                 {isNotif && notifCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center shadow-lg">
@@ -345,7 +345,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
               </button>
             )
           })}
-          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="p-2.5 rounded-xl text-[var(--text-secondary)] hover:text-white hover:bg-white/5 text-sm">
+          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="p-2.5 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)] text-sm">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               {showMobileMenu ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>}
             </svg>
