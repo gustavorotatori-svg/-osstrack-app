@@ -9,6 +9,8 @@
   --border-hover: rgba(212,168,71,0.25);
   --gold: #d4a847;
   --gold-light: #f0d078;
+  --gold-dark: #b8943a;
+  --gold-dim: rgba(212,168,71,0.07);
   --gold-gradient: linear-gradient(135deg, #d4a847, #f0d078);
   --red: #e74c3c;
   --red-dim: rgba(231,76,60,0.08);
@@ -26,6 +28,10 @@
   --text-secondary: rgba(255,255,255,0.55);
   --text-muted: rgba(255,255,255,0.3);
   --shadow-gold: 0 4px 24px rgba(212,168,71,0.12);
+  --dark-border: var(--border);
+  --dark-card: var(--bg-card);
+  --black-soft: var(--bg);
+  --white-muted: var(--text-secondary);
   /* Belt colors */
   --belt-branca: #e5e5e5;
   --belt-azul: #3b82f6;
@@ -147,6 +153,60 @@
 .light .xp-container {
   background: #f5f5f0;
   border-color: rgba(0,0,0,0.08);
+}
+.light .progress,
+.light .progress-gold {
+  background: rgba(0,0,0,0.06);
+}
+.light .hero {
+  background: linear-gradient(135deg, rgba(212,168,71,0.06), var(--bg-card), var(--bg-surface));
+}
+.light .stat-block {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+}
+.light .stat-block:hover {
+  background: linear-gradient(135deg, var(--bg-surface), var(--bg-card));
+}
+.light .tech-stat {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+}
+.light .tech-stat:hover {
+  background: linear-gradient(135deg, var(--bg-surface), var(--bg-card));
+}
+.light .xp-bar-track {
+  background: rgba(0,0,0,0.04);
+}
+.light .streak-container {
+  background: rgba(0,0,0,0.02);
+  border-color: rgba(0,0,0,0.04);
+}
+.light .heatmap-cell {
+  background: rgba(0,0,0,0.03);
+}
+.light .event-line {
+  border-bottom-color: rgba(0,0,0,0.03);
+}
+.light .belt-node {
+  border-color: rgba(0,0,0,0.06);
+}
+.light .belt-connector {
+  background: rgba(0,0,0,0.06);
+}
+.light .btn-ghost:hover {
+  background: rgba(0,0,0,0.03);
+}
+.light input.bg-black,
+.light select.bg-black,
+.light textarea.bg-black {
+  background: var(--bg-input);
+  color: var(--text);
+}
+.light .shimmer-text {
+  background: linear-gradient(90deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.2) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body {
