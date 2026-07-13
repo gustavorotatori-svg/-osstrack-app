@@ -22,6 +22,11 @@ export default async function ConvitePage({ params }: { params: Promise<{ codigo
           <Link href="/cadastro" className="btn-gold px-6 py-3 text-sm font-bold inline-block">
             Criar Conta Grátis
           </Link>
+          <div className="mt-4">
+            <Link href="/" className="text-xs font-medium hover:opacity-70 transition-opacity" style={{ color: "var(--text-secondary)" }}>
+              ← Voltar ao início
+            </Link>
+          </div>
         </div>
       </main>
     )
@@ -39,6 +44,11 @@ export default async function ConvitePage({ params }: { params: Promise<{ codigo
           <Link href="/login" className="btn-gold px-6 py-3 text-sm font-bold inline-block">
             Fazer Login
           </Link>
+          <div className="mt-4">
+            <Link href="/" className="text-xs font-medium hover:opacity-70 transition-opacity" style={{ color: "var(--text-secondary)" }}>
+              ← Voltar ao início
+            </Link>
+          </div>
         </div>
       </main>
     )
@@ -56,6 +66,11 @@ export default async function ConvitePage({ params }: { params: Promise<{ codigo
           <Link href="/cadastro" className="btn-gold px-6 py-3 text-sm font-bold inline-block">
             Criar Conta Grátis
           </Link>
+          <div className="mt-4">
+            <Link href="/" className="text-xs font-medium hover:opacity-70 transition-opacity" style={{ color: "var(--text-secondary)" }}>
+              ← Voltar ao início
+            </Link>
+          </div>
         </div>
       </main>
     )

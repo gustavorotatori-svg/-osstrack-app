@@ -27,8 +27,8 @@
   --pink: #ec4899;
   --pink-dim: rgba(236,72,153,0.08);
   --text: #ffffff;
-  --text-secondary: rgba(255,255,255,0.55);
-  --text-muted: rgba(255,255,255,0.3);
+  --text-secondary: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.6);
   --shadow-gold: 0 4px 24px rgba(212,168,71,0.12);
   --dark-border: var(--border);
   --dark-card: var(--bg-card);
@@ -69,7 +69,7 @@
   --pink-dim: rgba(236,72,153,0.08);
   --text: #111111;
   --text-secondary: #555555;
-  --text-muted: #999999;
+  --text-muted: #777777;
   --shadow-gold: 0 4px 24px rgba(184,148,58,0.12);
   --black-soft: #f5f5f0;
   --white-muted: #555555;

@@ -16,7 +16,10 @@ export default function EbookPage() {
   }, [router])
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6" style={{ background: "var(--bg)" }}>
+    <main className="min-h-screen flex items-center justify-center p-6 relative" style={{ background: "var(--bg)" }}>
+      <Link href="/" className="absolute top-6 left-6 inline-flex items-center gap-1.5 text-xs font-medium hover:opacity-70 transition-opacity" style={{ color: "var(--text-secondary)" }}>
+        <ArrowLeft className="w-3.5 h-3.5" /> Voltar
+      </Link>
       <div className="glass-card p-8 max-w-sm w-full text-center">
         <div className="w-14 h-14 rounded-2xl bg-[rgba(212,168,71,0.12)] flex items-center justify-center mx-auto mb-4">
           <BookOpen className="w-7 h-7" style={{ color: "var(--gold)" }} />

@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/landing/footer"
 import { AjudaClient } from "./client"
 import { enviarContato } from "./actions"
 import { HelpIcon, MailIcon } from "@/components/ui/icons"
+import { ArrowLeft } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Ajuda — OssTrack",
@@ -51,6 +53,9 @@ export default function AjudaPage() {
       <Navbar />
       <div className="pt-28 pb-20 px-5">
         <div className="max-w-3xl mx-auto">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-xs font-medium mb-6 hover:opacity-70 transition-opacity" style={{ color: "var(--text-secondary)" }}>
+            <ArrowLeft className="w-3.5 h-3.5" /> Voltar ao início
+          </Link>
           <div className="text-center mb-12">
             <div className="w-14 h-14 gradient-gold rounded-2xl flex items-center justify-center mx-auto mb-4"><HelpIcon className="w-6 h-6 text-black" /></div>
             <h1 className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight mb-3">Ajuda</h1>
