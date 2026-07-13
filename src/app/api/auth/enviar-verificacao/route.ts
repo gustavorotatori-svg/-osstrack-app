@@ -5,11 +5,18 @@ import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { sendEmail } from "@/lib/email"
 import crypto from "crypto"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 export async function POST() {
   try {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+
+    // Rate limit para evitar spam
+    const ipCheck = await checkRateLimit(`email_verify:${session.user.id}`, "enviar-verificacao")
+    if (!ipCheck.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas. Tente novamente em 1 minuto." }, { status: 429 })
+    }
 
     const token = crypto.randomBytes(32).toString("hex")
 

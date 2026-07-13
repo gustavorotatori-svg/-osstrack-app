@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import bcrypt from "bcryptjs"
-import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
+import { checkRateLimit, resetRateLimit, getClientIp } from "@/lib/rate-limit"
 import { redefinirSenhaSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
@@ -43,6 +43,10 @@ export async function POST(request: Request) {
       where: { id: user.id },
       data: { senha: senhaHash, resetToken: null, resetTokenExpires: null },
     })
+
+    // Reset rate limits após redefinição bem-sucedida
+    await resetRateLimit(`ip:${ip}`, "redefinir-senha").catch(() => {})
+    await resetRateLimit(`email:${user.email}`, "redefinir-senha").catch(() => {})
 
     return NextResponse.json({ ok: true })
   } catch {

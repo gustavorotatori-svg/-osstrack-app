@@ -5,6 +5,16 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 import { registerSchema } from "@/lib/validation"
 import { notificarUsuario } from "@/lib/notificar"
 
+async function marcarConviteUsado(codigoConvite?: string) {
+  if (!codigoConvite) return
+  try {
+    const convite = await prisma.convite.findUnique({ where: { codigo: codigoConvite } })
+    if (convite && !convite.usado && (!convite.expiresAt || convite.expiresAt > new Date())) {
+      await prisma.convite.update({ where: { id: convite.id }, data: { usado: true } })
+    }
+  } catch {} // non-critical
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
@@ -14,12 +24,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: firstError }, { status: 400 })
     }
     const {
-      nome, email, telefone, senha, role, dataNascimento, recaptchaToken,
+      nome, email: rawEmail, telefone, senha, role, dataNascimento, recaptchaToken,
       academia: academiaData, codigoConvite, professorId,
       faixa, grau, academiaId: acId,
       aceitouTermos, aceitouLGPD, aceitouMarketing,
       endereco, cidade, estado, lat, lng, raio,
     } = parsed.data
+
+    const email = rawEmail.toLowerCase().trim()
 
     // Rate limit by IP
     const ip = getClientIp(request)
@@ -53,13 +65,6 @@ export async function POST(request: Request) {
     }
 
     const hashed = await bcrypt.hash(senha, 10)
-
-    if (codigoConvite) {
-      const convite = await prisma.convite.findUnique({ where: { codigo: codigoConvite } })
-      if (convite && !convite.usado && (!convite.expiresAt || convite.expiresAt > new Date())) {
-        await prisma.convite.update({ where: { id: convite.id }, data: { usado: true } })
-      }
-    }
 
     if (role === "dono") {
       if (!academiaData?.nome) {
@@ -128,6 +133,14 @@ export async function POST(request: Request) {
           })
         }
 
+        // Marca convite DENTRO da transação
+        if (codigoConvite) {
+          const convite = await tx.convite.findUnique({ where: { codigo: codigoConvite } })
+          if (convite && !convite.usado && (!convite.expiresAt || convite.expiresAt > new Date())) {
+            await tx.convite.update({ where: { id: convite.id }, data: { usado: true } })
+          }
+        }
+
         return { redirect: "/dashboard/dono" }
       })
 
@@ -135,66 +148,72 @@ export async function POST(request: Request) {
     }
 
     if (role === "professor") {
-      let academiaId = acId || null
+      // Usa transação para evitar academia órfã se a criação do usuário falhar
+      const result = await prisma.$transaction(async (tx) => {
+        let academiaId = acId || null
 
-      // Professor sem academia → cria uma automaticamente
-      if (!academiaId) {
-        const novaAcademia = await prisma.academia.create({
+        if (!academiaId) {
+          const novaAcademia = await tx.academia.create({
+            data: {
+              nome: `Academia do ${nome.split(" ")[0]}`,
+              endereco: endereco || "",
+              cidade: cidade || "",
+              estado: estado || "",
+              lat: lat || 0,
+              lng: lng || 0,
+              raio: raio || 200,
+              responsavel: nome,
+              telefone: telefone || "",
+            },
+          })
+          academiaId = novaAcademia.id
+
+          await tx.graduacao.create({
+            data: {
+              academiaId: novaAcademia.id,
+              categoria: "adulto",
+              faixa: "Branca",
+              graus: 4,
+              aulasPorGrau: 20,
+              aulasProxFx: 100,
+            },
+          })
+        }
+
+        const professor = await tx.usuario.create({
           data: {
-            nome: `Academia do ${nome.split(" ")[0]}`,
-            endereco: endereco || "",
-            cidade: cidade || "",
-            estado: estado || "",
-            lat: lat || 0,
-            lng: lng || 0,
-            raio: raio || 200,
-            responsavel: nome,
+            nome,
+            email,
+            senha: hashed,
             telefone: telefone || "",
+            role: "professor",
+            faixa: faixa || "Preta",
+            grau: grau ?? 3,
+            dataNascimento: dataNascimento || null,
+            academiaId,
+            dataInicio: new Date(),
+            aceitouTermos: aceitouTermos || false,
+            aceitouLGPD: aceitouLGPD || false,
+            aceitouMarketing: aceitouMarketing || false,
+            dataAceite: new Date(),
           },
         })
-        academiaId = novaAcademia.id
 
-        // Cria graduação padrão
-        await prisma.graduacao.create({
+        await tx.notificacao.create({
           data: {
-            academiaId: novaAcademia.id,
-            categoria: "adulto",
-            faixa: "Branca",
-            graus: 4,
-            aulasPorGrau: 20,
-            aulasProxFx: 100,
+            usuarioId: professor.id,
+            tipo: "boas_vindas",
+            titulo: "Bem-vindo, professor!",
+            descricao: "Sua conta foi criada. Crie sua primeira turma e comece a gerenciar seus alunos.",
+            link: "/dashboard/professor",
           },
         })
-      }
 
-      const professor = await prisma.usuario.create({
-        data: {
-          nome,
-          email,
-          senha: hashed,
-          telefone: telefone || "",
-          role: "professor",
-          faixa: faixa || "Preta",
-          grau: grau ?? 3,
-          dataNascimento: dataNascimento || null,
-          academiaId,
-          dataInicio: new Date(),
-          aceitouTermos: aceitouTermos || false,
-          aceitouLGPD: aceitouLGPD || false,
-          aceitouMarketing: aceitouMarketing || false,
-          dataAceite: new Date(),
-        },
+        return { academiaId }
       })
 
-      await prisma.notificacao.create({
-        data: {
-          usuarioId: professor.id,
-          tipo: "boas_vindas",
-          titulo: "Bem-vindo, professor!",
-          descricao: "Sua conta foi criada. Crie sua primeira turma e comece a gerenciar seus alunos.",
-          link: "/dashboard/professor",
-        },
-      })
+      // Marca convite após criação confirmada (fora da transaction por ser não-crítico)
+      if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
       return NextResponse.json({ redirect: "/dashboard/professor" })
     }
@@ -230,6 +249,9 @@ export async function POST(request: Request) {
     await prisma.streak.create({
       data: { usuarioId: usuario.id, currentStreak: 0, bestStreak: 0 },
     })
+
+    // Marca convite após criação confirmada
+    if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
     return NextResponse.json({ redirect: "/dashboard/aluno" })
   } catch (error: any) {

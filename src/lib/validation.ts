@@ -42,6 +42,7 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   email: emailSchema,
   senha: z.string().min(1, "Senha é obrigatória"),
+  recaptchaToken: z.string().optional(),
 })
 
 export const presencaSchema = z.object({
