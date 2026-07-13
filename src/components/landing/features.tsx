@@ -76,9 +76,8 @@ export function Features() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight mb-16 max-w-xl leading-tight"
+          className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight mb-16 max-w-xl leading-tight text-[var(--gold)]"
         >
-          <span className="text-[var(--gold)]">/</span>{" "}
           {t("titulo")}
         </motion.h2>
 

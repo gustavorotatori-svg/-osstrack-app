@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
+import Link from "next/link"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { OnboardingTour } from "@/components/onboarding/tour"
@@ -218,7 +219,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       {/* DESKTOP SIDEBAR */}
       <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--bg)] border-r border-[var(--border)] flex-col">
-        <div className="flex items-center gap-3 px-5 h-16 border-b border-[var(--border)]">
+        <Link href="/" className="flex items-center gap-3 px-5 h-16 border-b border-[var(--border)] hover:opacity-80 transition-opacity">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--gold)" }}>
             <DumbbellIcon className="w-4.5 h-4.5 text-black" />
           </div>
@@ -226,7 +227,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             <span className="font-extrabold text-base" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
             <span className="block text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
           </div>
-        </div>
+        </Link>
 
         <div className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5 scrollbar-none">
           {items.map((item) => {
@@ -314,7 +315,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       {/* MOBILE HEADER */}
       <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--bg)]/95 sticky top-0 z-50 border-b border-[var(--border)]/50 pt-[env(safe-area-inset-top)]" style={{ height: "calc(3.5rem + env(safe-area-inset-top))" }}>
-        <div className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--gold)", color: "#000" }}>
             <DumbbellIcon className="w-4 h-4" />
           </div>
@@ -322,7 +323,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             <span className="font-extrabold text-sm" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
             <span className="block text-[9px] font-bold uppercase tracking-[0.1em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
           </div>
-        </div>
+        </Link>
         <div className="flex items-center gap-0.5">
           {topItems.map((item) => {
             const isActive = pathname === item.href
