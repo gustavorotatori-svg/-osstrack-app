@@ -41,11 +41,11 @@ function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string
         <div className="relative p-6 md:p-7">
           <div className="flex items-center gap-3 mb-0">
             <span className="text-3xl">{c.icon}</span>
-            <h3 className="text-base font-extrabold">{t(c.titleKey)}</h3>
+            <h3 className="text-base font-extrabold text-white">{t(c.titleKey)}</h3>
           </div>
 
           <motion.p
-            className="text-xs text-[var(--text-secondary)] leading-relaxed overflow-hidden"
+            className="text-xs text-white/70 leading-relaxed overflow-hidden"
             initial={{ height: 0, opacity: 0, marginTop: 0 }}
             animate={expanded ? { height: "auto", opacity: 1, marginTop: 12 } : { height: 0, opacity: 0, marginTop: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
@@ -76,7 +76,7 @@ export function Features() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
-          className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight mb-16 max-w-xl leading-tight text-[var(--gold)]"
+          className="text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-tight mb-16 max-w-xl leading-tight gradient-gold-text"
         >
           {t("titulo")}
         </motion.h2>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { Hero } from "@/components/landing/hero"
 import { Features } from "@/components/landing/features"
@@ -17,6 +18,17 @@ import { MobileCta } from "@/components/landing/mobile-cta"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: "OssTrack — Plataforma de Gestão para Academias de Jiu-Jitsu",
+  description:
+    "Transforme sua academia de Jiu-Jitsu com check-in por geolocalização, progressão automática de faixas, streaks, conquistas e relatórios. Grátis para professores e alunos.",
+  openGraph: {
+    title: "OssTrack — Plataforma de Gestão para Academias de Jiu-Jitsu",
+    description:
+      "Transforme sua academia de Jiu-Jitsu com check-in por geolocalização, progressão automática de faixas, streaks e conquistas. Grátis para professores e alunos.",
+  },
+}
 
 export default async function Home() {
   const trintaDiasAtras = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)

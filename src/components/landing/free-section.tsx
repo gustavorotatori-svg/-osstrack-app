@@ -108,16 +108,16 @@ export function FreeSection() {
               <div
                 className="flex items-center gap-2.5 px-5 py-3 rounded-full border transition-all duration-300 hover:-translate-y-1"
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  borderColor: "rgba(255,255,255,0.06)",
+                  background: "var(--bg-surface)",
+                  borderColor: "var(--border)",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = accentColors[i]
                   e.currentTarget.style.background = `${accentColors[i]}12`
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"
-                  e.currentTarget.style.background = "rgba(255,255,255,0.03)"
+                  e.currentTarget.style.borderColor = "var(--border)"
+                  e.currentTarget.style.background = "var(--bg-surface)"
                 }}
               >
                 <span className="text-lg">{b.icon}</span>

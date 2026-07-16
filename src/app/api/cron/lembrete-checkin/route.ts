@@ -5,8 +5,13 @@ import { notificarUsuario } from "@/lib/notificar"
 
 export const maxDuration = 60
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const isVercelCron = req.headers.get("x-vercel-cron")
+    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
+    if (!isVercelCron && !isCronWithSecret) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    }
     const hoje = new Date()
     hoje.setHours(0, 0, 0, 0)
     const amanha = new Date(hoje.getTime() + 24 * 60 * 60 * 1000)
