@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Recuperar Senha — OssTrack",
   description: "Recupere o acesso à sua conta OssTrack. Enviaremos um link de redefinição de senha para seu e-mail cadastrado.",
+  robots: { index: false, follow: false },
 }
 
 export default function RecuperarSenhaLayout({ children }: { children: React.ReactNode }) {

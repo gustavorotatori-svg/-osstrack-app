@@ -90,7 +90,8 @@ export default function Login() {
       }
 
       const ref = searchParams.get("ref")
-      router.push(ref === "ebook" ? "/ebook/conteudo" : "/dashboard")
+      const callbackUrl = searchParams.get("callbackUrl")
+      router.push(callbackUrl || (ref === "ebook" ? "/ebook/conteudo" : "/dashboard"))
     } catch {
       setError(t("erroConexao"))
       setLoading(false)

@@ -7,8 +7,10 @@ import type { UserRole } from "./auth-types"
 
 function getSecret(): string {
   if (process.env.NEXTAUTH_SECRET) return process.env.NEXTAUTH_SECRET
-  const stable = "osstrack-" + process.env.VERCEL_URL + "-production-secret"
-  return crypto.createHash("sha256").update(stable).digest("hex")
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("NEXTAUTH_SECRET é obrigatório em produção")
+  }
+  return crypto.randomBytes(32).toString("hex")
 }
 
 export const authOptions: NextAuthOptions = {
