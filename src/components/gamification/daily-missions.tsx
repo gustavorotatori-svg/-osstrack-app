@@ -20,13 +20,13 @@ export function DailyMissions() {
   const [missions, setMissions] = useState<Mission[]>([])
 
   useEffect(() => {
-    fetch("/api/missoes").then(r => r.json()).then(data => setMissions(data.missoes ?? [])).catch(() => {})
+    fetch("/api/missoes").then(r => r.json()).then(data => setMissions(data.missoes ?? [])).catch((e) => console.error("missoes", e))
   }, [])
 
   if (missions.length === 0) return null
 
   return (
-    <div className="tech-card p-5">
+    <div className="card p-5">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-[var(--gold)]" />

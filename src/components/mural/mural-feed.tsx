@@ -40,12 +40,12 @@ export default function MuralFeed({ role }: { role: string }) {
   const [treinandoAgora, setTreinandoAgora] = useState<{ nome: string; faixa: string }[]>([])
 
   useEffect(() => {
-    fetch("/api/mural").then((r) => r.json()).then(setPostagens).catch(() => {})
-    fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch(() => {})
+    fetch("/api/mural").then((r) => r.json()).then(setPostagens).catch((e) => console.error("mural", e))
+    fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch((e) => console.error("treino", e))
 
     const id = setInterval(() => {
-      fetch("/api/mural").then((r) => r.json()).then(setPostagens).catch(() => {})
-      fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch(() => {})
+      fetch("/api/mural").then((r) => r.json()).then(setPostagens).catch((e) => console.error("mural poll", e))
+      fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch((e) => console.error("treino poll", e))
     }, 15000)
     return () => clearInterval(id)
   }, [])

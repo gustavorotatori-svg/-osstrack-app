@@ -40,7 +40,7 @@ export function AlunosClient() {
       .then((d) => {
         setAlunos(d.alunos || [])
       })
-      .catch(() => {})
+      .catch((e) => console.error("alunos", e))
       .finally(() => setLoading(false))
   }, [])
 

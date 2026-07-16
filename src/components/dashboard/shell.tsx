@@ -190,7 +190,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
     fetch("/api/notificacoes")
       .then((r) => r.json())
       .then((data) => setNotifCount(data.filter((n: { lida: boolean }) => !n.lida).length))
-      .catch(() => {})
+      .catch((e) => console.error("notificações", e))
   }, [pathname])
 
   async function completeTour() {

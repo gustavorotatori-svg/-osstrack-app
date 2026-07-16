@@ -240,8 +240,8 @@ export function ScreenshotDemo() {
                 </div>
               </div>
 
-              {/* Mestre do Mês — tech-card (mesma classe do componente real) */}
-              <div className="tech-card text-center relative overflow-hidden">
+              {/* Mestre do Mês — card (mesma classe do componente real) */}
+              <div className="card text-center relative overflow-hidden">
                 <div className="absolute top-[-30px] right-[-30px] w-32 h-32 bg-[var(--gold)]/5 rounded-full blur-3xl" />
                 <div className="relative p-5">
                   <CrownIcon className="w-8 h-8 mx-auto mb-1 text-[var(--gold)]" />
@@ -283,8 +283,8 @@ export function ScreenshotDemo() {
                 </div>
               </div>
 
-              {/* Daily Missions — tech-card (mesma classe do componente real) */}
-              <div className="tech-card p-5">
+              {/* Daily Missions — card (mesma classe do componente real) */}
+              <div className="card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Target className="w-4 h-4 text-[var(--gold)]" />

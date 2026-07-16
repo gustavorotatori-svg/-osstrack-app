@@ -32,7 +32,7 @@ export function ProfessoresClient() {
     fetch("/api/professores/vinculados")
       .then((r) => r.json())
       .then((d) => setProfessores(d.professores || []))
-      .catch(() => {})
+      .catch((e) => console.error("professores", e))
       .finally(() => setLoading(false))
   }, [])
 
