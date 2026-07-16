@@ -9,7 +9,7 @@ export function MetaSemanalCard() {
   const [meta, setMeta] = useState<{ aulasFeitas: number; aulasAlvo: number; concluida: boolean } | null>(null)
 
   useEffect(() => {
-    fetch("/api/metasemanal").then(r => r.json()).then(setMeta).catch(() => {})
+    fetch("/api/metasemanal").then(r => r.json()).then(setMeta).catch((e) => console.error("meta semanal", e))
   }, [])
 
   if (!meta) return null

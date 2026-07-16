@@ -37,10 +37,10 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   const [retention, setRetention] = useState<{ cohorts: { mes: string; total: number; d1: number; d7: number; d30: number }[]; overall: { d1: number; d7: number; d30: number }; lastCohort: { mes: string; d1: number; d7: number; d30: number } | null } | null>(null)
 
   useEffect(() => {
-    fetch("/api/prospectos").then((r) => r.json()).then(setProspectStats).catch(() => {})
-    fetch("/api/dashboard/aniversariantes").then((r) => r.json()).then((d) => setAniversariantes(d.aniversariantes || [])).catch(() => {})
-    fetch("/api/dashboard/inativos?dias=7").then((r) => r.json()).then((d) => setInativos(d.inativos || [])).catch(() => {})
-    fetch("/api/dashboard/retention").then((r) => r.json()).then(setRetention).catch(() => {})
+    fetch("/api/prospectos").then((r) => r.json()).then(setProspectStats).catch((e) => console.error("prospectos", e))
+    fetch("/api/dashboard/aniversariantes").then((r) => r.json()).then((d) => setAniversariantes(d.aniversariantes || [])).catch((e) => console.error("aniversariantes", e))
+    fetch("/api/dashboard/inativos?dias=7").then((r) => r.json()).then((d) => setInativos(d.inativos || [])).catch((e) => console.error("inativos", e))
+    fetch("/api/dashboard/retention").then((r) => r.json()).then(setRetention).catch((e) => console.error("retention", e))
   }, [])
 
   const [rankingVisivel, setRankingVisivel] = useState(academia.rankingVisivel)

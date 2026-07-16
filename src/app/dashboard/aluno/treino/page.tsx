@@ -56,7 +56,7 @@ export default function TreinoPage() {
   const [startedAt, setStartedAt] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch(() => {})
+    fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch((e) => console.error("treino page", e))
     const saved = localStorage.getItem("osstrack_historico_treino")
     if (saved) setHistorico(JSON.parse(saved))
   }, [])

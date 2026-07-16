@@ -291,7 +291,7 @@ export default function CompartilharPage() {
           </div>
 
           {/* Preview */}
-          <div className="tech-card overflow-hidden">
+          <div className="card overflow-hidden">
             {/* Card preview */}
             <div className="bg-gradient-to-br from-black via-[#1a0a0a] to-black p-6 text-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(201,168,76,0.15),transparent_60%)]" />

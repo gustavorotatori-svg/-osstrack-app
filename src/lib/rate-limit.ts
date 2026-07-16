@@ -6,7 +6,7 @@ const LIMITS: Record<string, number> = {
   login: 5,
   register: 3,
   "recuperar-senha": 3,
-  "redefinir-senha": 5,
+  "redefinir-senha": 3,
   "enviar-verificacao": 3,
 }
 
