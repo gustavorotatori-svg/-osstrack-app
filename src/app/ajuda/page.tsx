@@ -91,7 +91,7 @@ const faqItems = [
   },
   {
     q: "Como entrar em contato com o suporte?",
-    r: "Use o formulário 'Fale Conosco' abaixo, envie um e-mail para suporte@osstrack.app ou mande uma mensagem no WhatsApp: (48) 99631-0359."
+    r: "Use o formulário 'Fale Conosco' abaixo, envie um e-mail para suporte@osstrack.app ou mande uma mensagem no WhatsApp: (11) 94222-1028."
   },
 ]
 

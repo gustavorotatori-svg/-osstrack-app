@@ -50,7 +50,7 @@ export function InteractiveTour({ onFinish }: { onFinish: () => void }) {
   function handleAction() {
     router.push(current.href)
     if (isLast) {
-      try { localStorage.setItem("oss_tour_done", "true") } catch {}
+      try { localStorage.setItem("oss_tour_done", "true"); localStorage.setItem("osstrack_tour_aluno", "true") } catch {}
       onFinish()
     } else {
       setStep(step + 1)
@@ -58,7 +58,7 @@ export function InteractiveTour({ onFinish }: { onFinish: () => void }) {
   }
 
   function skip() {
-    try { localStorage.setItem("oss_tour_done", "true") } catch {}
+    try { localStorage.setItem("oss_tour_done", "true"); localStorage.setItem("osstrack_tour_aluno", "true") } catch {}
     onFinish()
   }
 
