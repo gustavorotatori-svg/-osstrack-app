@@ -49,11 +49,11 @@ export function EbookSection() {
                 <h3 className="text-xl font-extrabold leading-tight mb-3 text-white">
                   Como engajar seus<br />alunos no Jiu-Jitsu
                 </h3>
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                <p className="text-xs leading-relaxed text-white/70">
                   e criar uma comunidade de ferro
                 </p>
 
-                <div className="mt-6 flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
+                <div className="mt-6 flex items-center gap-2 text-[10px] text-white/60">
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
                   <span>Leitura de 10 minutos</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />

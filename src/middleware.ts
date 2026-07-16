@@ -6,15 +6,19 @@ export async function middleware(req: NextRequest) {
 
   const publicPaths = [
     "/", "/login", "/cadastro", "/convite",
-    "/ajuda", "/lgpd",
+    "/ajuda", "/lgpd", "/termos",
     "/api/auth", "/ebook",
+    "/recuperar-senha", "/redefinir-senha",
+    "/sitemap.xml", "/robots.txt",
+    "/manifest.webmanifest", "/screenshot",
   ]
   if (
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
     pathname.startsWith("/images") ||
-    pathname.startsWith("/og.svg")
+    pathname.startsWith("/og.svg") ||
+    pathname === "/apple-touch-icon.png"
   ) {
     return NextResponse.next()
   }

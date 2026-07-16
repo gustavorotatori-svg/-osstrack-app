@@ -29,11 +29,11 @@ export function Footer() {
               style={{ background: "rgba(212,168,71,0.1)", color: "var(--gold)", border: "1px solid rgba(212,168,71,0.2)" }}>
               100% gratuito
             </span>
-            <h3 className="text-xl md:text-2xl font-extrabold tracking-tight mb-2">
+            <h3 className="text-xl md:text-2xl font-extrabold tracking-tight mb-2 text-white">
               Pronto para transformar sua academia?
             </h3>
-            <p className="text-sm mb-5 max-w-md mx-auto" style={{ color: "var(--text-secondary)" }}>
-              Junte-se a centenas de academias que já usam o OssTrack. Gratuito. Sem limites. Sem pegadinha.
+            <p className="text-sm mb-5 max-w-md mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
+               Junte-se a centenas de academias que já usam o OssTrack. Gratuito. Sem limites. Sem pegadinha.
             </p>
             <Link
               href="/cadastro"
