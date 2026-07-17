@@ -187,11 +187,11 @@ export function TreinoTimer() {
       <div className="flex gap-3">
         {fase !== "concluido" && (
           running ? (
-            <button onClick={parar} className="w-14 h-14 rounded-full bg-red-600/80 text-white flex items-center justify-center text-lg hover:bg-red-600 transition-all active:scale-90">
+            <button onClick={parar} className="w-14 h-14 rounded-full bg-red-600/80 text-white flex items-center justify-center text-lg hover:bg-red-600 transition-all active:scale-[0.97]">
               ⏸
             </button>
           ) : (
-            <button onClick={iniciar} className="w-14 h-14 rounded-full gradient-gold text-black flex items-center justify-center text-lg hover:scale-110 transition-all active:scale-90 shadow-lg">
+            <button onClick={iniciar} className="w-14 h-14 rounded-full gradient-gold text-black flex items-center justify-center text-lg hover:scale-110 transition-all active:scale-[0.97] shadow-lg">
               ▶
             </button>
           )

@@ -70,13 +70,18 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="OssTrack" />
+        <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#f5f5f0" media="(prefers-color-scheme: light)" />
+        <link rel="mask-icon" href="/icon-192.svg" color="#d4a847" />
       </head>
       <body className="antialiased">
         <a id="skip-to-content" href="#main-content">Ir para o conteúdo</a>
+        <div id="main-content">
         <Providers>
           {children}
           <CookieConsent />
         </Providers>
+        </div>
       </body>
     </html>
   )

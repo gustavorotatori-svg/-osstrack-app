@@ -90,7 +90,7 @@ export function Footer() {
                 const Icon = s.icon
                 return (
                   <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-xl bg-[var(--dark-card)] border border-[var(--dark-border)] flex items-center justify-center text-sm hover:border-[var(--gold)] hover:bg-[rgba(201,168,76,0.08)] transition-all active:scale-90"
+                    className="w-9 h-9 rounded-xl bg-[var(--dark-card)] border border-[var(--dark-border)] flex items-center justify-center text-sm hover:border-[var(--gold)] hover:bg-[rgba(201,168,76,0.08)] transition-all active:scale-[0.97]"
                     title={s.label}>
                     <Icon className="w-4 h-4 text-[var(--white-muted)]" />
                   </a>

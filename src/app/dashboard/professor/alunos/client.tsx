@@ -103,12 +103,12 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
             {/* Filtro por faixa */}
             <div className="flex gap-1.5 overflow-x-auto scrollbar-none mb-3">
               <button onClick={() => setFiltroFaixa("todas")}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === "todas" ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
+                className={`px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all active:scale-95 min-h-[36px] ${filtroFaixa === "todas" ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                 {t("todas")}
               </button>
               {beltList.map(f => (
                 <button key={f} onClick={() => setFiltroFaixa(f)}
-                  className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold whitespace-nowrap transition-all active:scale-95 ${filtroFaixa === f ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all active:scale-95 min-h-[36px] ${filtroFaixa === f ? "bg-[var(--gold)] text-black" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                   {getBeltEmoji(f)} {f}
                 </button>
               ))}
@@ -119,7 +119,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
               <span className="text-[10px] text-[var(--text-muted)] font-semibold uppercase tracking-wider">{t("ordenar")}</span>
               {(["nome", "faixa", "grau"] as const).map((s) => (
                 <button key={s} onClick={() => setSort(s)}
-                  className={`px-3 py-1 rounded-lg text-[10px] font-semibold transition-all active:scale-95 ${sort === s ? "bg-[var(--red)] text-white" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold transition-all active:scale-95 min-h-[36px] ${sort === s ? "bg-[var(--red)] text-white" : "bg-[var(--border)] text-[var(--text-secondary)]"}`}>
                   {s === "nome" ? "A-Z" : s === "faixa" ? <>🥋 {t("faixa")}</> : <>🎓 {t("grau")}</>}
                 </button>
               ))}
@@ -142,9 +142,9 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                     <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
                     <div className="flex flex-wrap gap-1.5 mt-3 justify-center">
                       <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }}
-                        className="btn btn-primary px-2.5 py-1.5 text-[10px] active:scale-90">{t("promover")}</button>
+                        className="btn btn-primary px-3 py-2 text-xs active:scale-[0.97] min-h-[36px]">{t("promover")}</button>
                       <button onClick={() => convidarWhatsApp(a.id, a.nome)}
-                        className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 active:scale-90">📲 {t("convidar")}</button>
+                        className="px-3 py-2 rounded-lg text-xs font-semibold bg-green-600/15 text-green-400 border border-green-600/25 hover:bg-green-600/25 active:scale-[0.97] min-h-[36px]">📲 {t("convidar")}</button>
                       <WhatsAppButton acao="promocao" alunoId={a.id} alunoNome={a.nome} size="sm" variant="emerald" />
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                   const novoGrau = aluno.faixa !== novaFaixa ? 0 : Math.min(aluno.grau + 1, 4)
                   promover(showPromote, novaFaixa, novoGrau)
                 }} disabled={promovendoAgora}
-                  className="w-full py-3 rounded-xl btn btn-primary text-sm font-bold disabled:opacity-50 active:scale-[0.98]">
+                  className="w-full py-3 rounded-xl btn btn-primary text-sm font-bold disabled:opacity-50 active:scale-[0.97]">
                   {promovendoAgora ? <>{t("promovendo")}</> : <>{t("confirmarPromocao")}</>}
                 </button>
               </div>

@@ -291,12 +291,12 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                     </div>
                     <div className="flex gap-1">
                       <button onClick={() => openEdit(t)}
-                        className="w-8 h-8 rounded-lg bg-[var(--border)] flex items-center justify-center text-xs hover:border-[var(--gold)] border border-transparent transition-all">
-                        <PencilIcon className="w-3.5 h-3.5" />
+                        className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-[var(--gold)] border border-transparent transition-all">
+                        <PencilIcon className="w-4 h-4" />
                       </button>
                       <button onClick={() => handleDelete(t.id)}
-                        className="w-8 h-8 rounded-lg bg-[var(--border)] flex items-center justify-center text-xs hover:border-red-500 border border-transparent transition-all">
-                        <Trash2Icon className="w-3.5 h-3.5" />
+                        className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-red-500 border border-transparent transition-all">
+                        <Trash2Icon className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -309,11 +309,11 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                   </div>
                   <div className="flex gap-2 mt-3 pt-3 border-t border-[var(--border)]">
                     <button onClick={() => openAlunosPanel(t.id)}
-                      className="flex-1 py-2 rounded-xl text-xs font-semibold bg-[var(--border)] hover:bg-[rgba(201,168,76,0.1)] hover:text-[var(--gold)] transition-all">
+                      className="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-[var(--border)] hover:bg-[rgba(201,168,76,0.1)] hover:text-[var(--gold)] transition-all min-h-[44px]">
                       <UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" /> {tr("gerenciarAlunos")}
                     </button>
                     <button onClick={() => compartilharTurma(t)}
-                      className="flex-1 py-2 rounded-xl text-xs font-semibold bg-green-600/15 text-green-400 hover:bg-green-600/25 transition-all">
+                      className="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-green-600/15 text-green-400 hover:bg-green-600/25 transition-all min-h-[44px]">
                       <SmartphoneIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" /> {tr("convidar")}
                     </button>
                   </div>
@@ -339,8 +339,8 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                                     <span className="text-sm font-medium">{a.nome}</span>
                                   </div>
                                   <button onClick={() => removerAluno(t.id, a.id)}
-                                    className="text-xs text-red-400 hover:text-red-300 transition-colors">
-                                    <XIcon className="w-3 h-3" />
+                                    className="text-xs text-red-400 hover:text-red-300 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center">
+                                    <XIcon className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               ))}

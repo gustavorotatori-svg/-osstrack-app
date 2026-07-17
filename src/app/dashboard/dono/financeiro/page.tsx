@@ -93,7 +93,7 @@ export default function FinanceiroPage() {
           <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
           {stats.map(s => (
             <div key={s.label} className="glass-card p-4 text-center">
               <div className={`text-2xl font-extrabold ${s.color}`}>{s.value}</div>

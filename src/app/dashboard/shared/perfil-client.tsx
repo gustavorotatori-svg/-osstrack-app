@@ -115,7 +115,7 @@ export default function PerfilClient({ role }: { role: string }) {
                 URL.revokeObjectURL(url)
               } catch { alert(t("erroExportar")) }
             }}
-              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-[var(--bg-input)] active:scale-[0.98]"
+              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-[var(--bg-input)] active:scale-[0.97]"
               style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
               <Download className="w-4 h-4" /> {t("exportarDados")}
             </button>
@@ -127,7 +127,7 @@ export default function PerfilClient({ role }: { role: string }) {
                 }).catch(() => alert(t("erroExcluir")))
               }
             }}
-              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 active:scale-[0.98]"
+              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 active:scale-[0.97]"
               style={{ border: "1px solid rgba(239,68,68,0.3)", color: "var(--red, #ef4444)" }}>
               <Trash2 className="w-4 h-4" /> {t("excluirConta")}
             </button>
@@ -155,7 +155,7 @@ export default function PerfilClient({ role }: { role: string }) {
 
           {!editando ? (
             <button onClick={() => setEditando(true)}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
+              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
               style={{ background: "var(--gold)", color: "#000" }}>
               <Pencil className="w-4 h-4 inline mr-2" />{t("editarPerfil")}
             </button>
@@ -201,7 +201,7 @@ export default function PerfilClient({ role }: { role: string }) {
               </div>
 
               <div className="flex gap-3 pt-1">
-                <button onClick={salvar} disabled={saving} className="flex-1 py-3 rounded-xl text-sm font-bold disabled:opacity-50 transition-all active:scale-[0.98]"
+                <button onClick={salvar} disabled={saving} className="flex-1 py-3 rounded-xl text-sm font-bold disabled:opacity-50 transition-all active:scale-[0.97]"
                   style={{ background: "var(--gold)", color: "#000" }}>
                   <Save className="w-4 h-4 inline mr-2" />{saving ? t("salvando") : t("salvar")}
                 </button>

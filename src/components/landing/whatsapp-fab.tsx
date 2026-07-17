@@ -10,7 +10,7 @@ export function WhatsAppFab() {
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-[#25d366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] flex items-center justify-center text-white text-2xl hover:scale-110 hover:shadow-[0_8px_30px_rgba(37,211,102,0.5)] transition-all duration-300 active:scale-90 animate-float-up"
+      className="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-[#25d366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] flex items-center justify-center text-white text-2xl hover:scale-110 hover:shadow-[0_8px_30px_rgba(37,211,102,0.5)] transition-all duration-300 active:scale-[0.97] animate-float-up"
       style={{ "--dur": "3s" } as any}
       title="Fale conosco no WhatsApp"
       aria-label="Fale conosco no WhatsApp"

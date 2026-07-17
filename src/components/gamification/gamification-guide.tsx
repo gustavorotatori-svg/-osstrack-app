@@ -40,7 +40,7 @@ export function GamificationGuide() {
     <>
       <button
         onClick={() => { setOpen(true); setStep(0) }}
-        className="fixed bottom-24 right-4 z-40 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-90"
+        className="fixed bottom-24 right-4 z-40 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-[0.97]"
         style={{ background: "var(--gold)", color: "#000" }}
         title="Como funciona a gamificação"
       >
@@ -65,7 +65,7 @@ export function GamificationGuide() {
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="section-header mb-0">🎮 Como funciona</span>
-                <button onClick={() => setOpen(false)} aria-label="Fechar guia"><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
+                <button onClick={() => setOpen(false)} aria-label="Fechar guia" className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
               </div>
 
               <div className="space-y-5 min-h-[200px]">
@@ -94,7 +94,7 @@ export function GamificationGuide() {
                   {steps.map((_, i) => (
                     <button key={i} onClick={() => setStep(i)}
                       aria-label={`Passo ${i + 1} de ${steps.length}`}
-                      className={`w-2 h-2 rounded-full transition-all ${i === step ? "w-5" : ""}`}
+                      className={`w-3 h-3 rounded-full transition-all ${i === step ? "w-6" : ""}`}
                       style={{ background: i === step ? "var(--gold)" : "var(--border)" }}
                     />
                   ))}

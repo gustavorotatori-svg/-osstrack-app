@@ -28,7 +28,7 @@ export function LocaleSwitcher() {
         <button
           key={l.code}
           onClick={() => setLocale(l.code as any)}
-          className={`text-[11px] font-semibold px-2 py-1 rounded-lg transition-all ${
+          className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-all min-h-[32px] ${
             locale === l.code
               ? "text-[var(--gold)] bg-[rgba(201,168,76,0.1)]"
               : "text-[var(--gray)] hover:text-[var(--white-muted)]"

@@ -29,7 +29,7 @@ export function CookieConsent() {
         </div>
         <button
           onClick={accept}
-          className="px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all active:scale-[0.98]"
+          className="px-6 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all active:scale-[0.97]"
           style={{ background: "var(--gold)", color: "#000" }}
         >
           Aceitar

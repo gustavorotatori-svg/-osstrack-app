@@ -170,9 +170,9 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             <div className="relative bg-[var(--dark-card)] border border-[var(--gold)]/20 rounded-2xl p-4 shadow-2xl shadow-black/40">
               <button
                 onClick={dismiss}
-                className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[var(--dark-border)] border border-[var(--gold)]/20 flex items-center justify-center hover:bg-[var(--gold)]/20 transition-colors"
+                className="absolute -top-2.5 -right-2.5 w-9 h-9 rounded-full bg-[var(--dark-border)] border border-[var(--gold)]/20 flex items-center justify-center hover:bg-[var(--gold)]/20 transition-colors"
               >
-                <X className="w-3 h-3 text-[var(--white-muted)]" />
+                <X className="w-4 h-4 text-[var(--white-muted)]" />
               </button>
               <div className="flex gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
@@ -184,12 +184,12 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
                 </div>
               </div>
               <div className="flex items-center justify-between mt-3 pt-3 border-t border-[var(--dark-border)]">
-                <button onClick={dismiss} className="text-[11px] text-[var(--white-muted)] hover:text-white transition-colors">
+                <button onClick={dismiss} className="text-xs px-3 py-2 text-[var(--white-muted)] hover:text-white transition-colors min-h-[44px]">
                   {tBase("skip")}
                 </button>
                 <button
                   onClick={dismiss}
-                  className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-[var(--gold)] text-black hover:brightness-110 transition-all"
+                  className="text-xs font-bold px-4 py-2 rounded-lg bg-[var(--gold)] text-black hover:brightness-110 transition-all min-h-[44px]"
                 >
                   {tBase("gotIt")}
                 </button>

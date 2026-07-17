@@ -273,28 +273,28 @@ export default function Cadastro() {
           <div className="space-y-3">
             <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Seus dados</p>
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
-              <input type="text" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
+              <label htmlFor="cad-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
+              <input id="cad-nome" type="text" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
             </div>
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
-              <input type="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
+              <label htmlFor="cad-email" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
+              <input id="cad-email" type="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
-                <input type="tel" className="input" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
+                <label htmlFor="cad-tel" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
+                <input id="cad-tel" type="tel" className="input" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
               </div>
               <div>
                 <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.dataNascimentoLabel")}</label>
                 <input type="date" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
+                <label htmlFor="cad-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
                 <div className="relative">
-                  <input type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
+                  <input id="cad-senha" type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showPassword ? (
@@ -306,9 +306,9 @@ export default function Cadastro() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
+                <label htmlFor="cad-confirmar-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
                 <div className="relative">
-                  <input type={showConfirmPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
+                  <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showConfirmPassword ? (
@@ -329,7 +329,7 @@ export default function Cadastro() {
 
           <div className="space-y-2">
             <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Tipo de conta</p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {ROLE_CARDS.map((card) => {
                 const selected = form.role === card.role
                 return (
@@ -363,7 +363,7 @@ export default function Cadastro() {
                 <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
                 <input type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
                   <input type="text" className="input" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
@@ -397,7 +397,7 @@ export default function Cadastro() {
           {form.role === "professor" && (
             <div className="space-y-3">
               <p className="text-xs text-[var(--text-secondary)] text-center">Informe sua graduação e vínculo</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
                   <select className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
@@ -492,7 +492,7 @@ export default function Cadastro() {
                 </div>
               )}
               <div className="h-px bg-[var(--border)]" />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
                   <select className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>

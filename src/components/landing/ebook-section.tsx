@@ -97,7 +97,7 @@ export function EbookSection() {
               Um ebook prático com estratégias reais de engajamento, retenção e construção de comunidade para sua academia de Jiu-Jitsu. Baseado em experiências de academias que usam o OssTrack.
             </p>
 
-            <div className="grid grid-cols-2 gap-3 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {benefits.map((b) => (
                 <div key={b.title} className="glass-card p-4 text-left">
                   <b.icon className="w-4 h-4 mb-2" style={{ color: "var(--gold)" }} />

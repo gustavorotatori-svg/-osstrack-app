@@ -163,11 +163,11 @@ export function PresencasClient({
                     ) : (
                       <div className="flex gap-1.5 shrink-0">
                         <button onClick={() => confirmar(p.id, "confirmed")} disabled={confirmando === p.id}
-                          className="w-9 h-9 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-emerald-600/30 active:scale-90 disabled:opacity-50">
+                          className="w-9 h-9 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-emerald-600/30 active:scale-[0.97] disabled:opacity-50">
                           <Check className="w-4 h-4" />
                         </button>
                         <button onClick={() => confirmar(p.id, "rejected")} disabled={confirmando === p.id}
-                          className="w-9 h-9 rounded-xl bg-red-700/20 hover:bg-red-700 text-red-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-red-700/30 active:scale-90 disabled:opacity-50">
+                          className="w-9 h-9 rounded-xl bg-red-700/20 hover:bg-red-700 text-red-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-red-700/30 active:scale-[0.97] disabled:opacity-50">
                           <X className="w-4 h-4" />
                         </button>
                       </div>
@@ -212,7 +212,7 @@ export function PresencasClient({
                   <div className="max-h-48 overflow-y-auto space-y-0.5 rounded-xl" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
                     {filteredAlunos.map((a) => (
                       <button key={a.id} onClick={() => setSelectedAluno(a)}
-                        className="w-full flex items-center gap-3 px-3 py-2 text-xs hover:bg-[rgba(255,255,255,0.03)] transition-all text-left">
+                        className="w-full flex items-center gap-3 px-3 py-2.5 text-xs hover:bg-[rgba(255,255,255,0.03)] transition-all text-left min-h-[44px]">
                         <Avatar name={a.nome} faixa={a.faixa} size={28} />
                         <span className="font-semibold">{a.nome}</span>
                         <span className="text-[var(--text-muted)]">{a.faixa}</span>
@@ -228,7 +228,7 @@ export function PresencasClient({
                       <div className="text-sm font-semibold">{selectedAluno.nome}</div>
                       <div className="text-xs text-[var(--text-secondary)]">{selectedAluno.faixa}</div>
                     </div>
-                    <button onClick={() => { setSelectedAluno(null); setSearchTerm("") }} className="ml-auto">
+                    <button onClick={() => { setSelectedAluno(null); setSearchTerm("") }} className="ml-auto p-2 min-h-[36px] min-w-[36px] flex items-center justify-center">
                       <X className="w-4 h-4 text-[var(--text-muted)]" />
                     </button>
                   </div>

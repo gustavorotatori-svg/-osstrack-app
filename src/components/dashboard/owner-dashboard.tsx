@@ -470,7 +470,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                   <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
                 ) : (
                   <>
-                    <div className="grid grid-cols-4 gap-2 mb-4">
+                    <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 mb-4">
                       <div className="stat-glass">
                         <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.total} /></div>
                         <div className="stat-glass-label">Total</div>

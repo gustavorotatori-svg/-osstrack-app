@@ -97,7 +97,7 @@ function AutoScrollCarousel() {
       {[...testimonialsData, ...testimonialsData].map((t, i) => (
         <div
           key={`${t.name}-${i}`}
-          className="min-w-[340px] max-w-[380px] shrink-0 bg-[var(--bg-card)] border border-[var(--dark-border)] rounded-2xl p-7 transition-all duration-300 hover:border-[rgba(201,168,76,0.2)] hover:-translate-y-1"
+          className="min-w-[280px] sm:min-w-[340px] max-w-[380px] shrink-0 bg-[var(--bg-card)] border border-[var(--dark-border)] rounded-2xl p-5 sm:p-7 transition-all duration-300 hover:border-[rgba(201,168,76,0.2)] hover:-translate-y-1"
         >
           <div className="flex gap-0.5 mb-4">
             {[1, 2, 3, 4, 5].map((s) => (
@@ -142,8 +142,8 @@ export function Testimonials() {
   return (
     <section id="depoimentos" className="py-24 px-5 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(201,168,76,0.02)] to-transparent" />
-      <div className="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-gradient-to-r from-[var(--bg)] to-transparent" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none bg-gradient-to-l from-[var(--bg)] to-transparent" />
+      <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-16 z-10 pointer-events-none bg-gradient-to-r from-[var(--bg)] to-transparent" />
+      <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-16 z-10 pointer-events-none bg-gradient-to-l from-[var(--bg)] to-transparent" />
 
       <div className="relative">
         <motion.div

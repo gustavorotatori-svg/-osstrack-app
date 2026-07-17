@@ -32,7 +32,7 @@ export function HowItWorks() {
             <div className="relative">
               <div className="absolute -inset-10 bg-gradient-radial from-[rgba(201,168,76,0.06)] to-transparent rounded-full blur-3xl" />
 
-              <div className="relative w-[280px] h-[580px] rounded-[2.75rem] border-2 border-[rgba(201,168,76,0.15)] bg-[#0d0d0d] p-3 shadow-[0_0_80px_rgba(201,168,76,0.06)]">
+              <div className="relative w-[240px] sm:w-[280px] h-[500px] sm:h-[580px] rounded-[2rem] sm:rounded-[2.75rem] border-2 border-[rgba(201,168,76,0.15)] bg-[#0d0d0d] p-2 sm:p-3 shadow-[0_0_80px_rgba(201,168,76,0.06)]">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-[#0d0d0d] rounded-b-2xl z-10 flex items-center justify-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
                   <div className="w-16 h-1.5 rounded-full bg-[#1a1a1a]" />

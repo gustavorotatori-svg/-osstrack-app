@@ -27,7 +27,7 @@ export function AmbientSoundToggle() {
   return (
     <button
       onClick={toggle}
-      className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full border border-[var(--dark-border)] bg-[var(--dark-card)]/80 backdrop-blur-sm flex items-center justify-center text-sm hover:border-[var(--gold)] transition-all active:scale-90"
+      className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full border border-[var(--dark-border)] bg-[var(--dark-card)]/80 backdrop-blur-sm flex items-center justify-center text-sm hover:border-[var(--gold)] transition-all active:scale-[0.97]"
       title={on ? "Desligar som ambiente" : "Som ambiente de tatame"}
     >
       {on ? <Volume2Icon className="w-4 h-4" /> : <VolumeXIcon className="w-4 h-4" />}

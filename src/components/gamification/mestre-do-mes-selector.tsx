@@ -120,7 +120,7 @@ export function MestreDoMesSelector() {
           <button
             onClick={openSelector}
             disabled={saving}
-            className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20 hover:bg-[var(--gold)]/20 transition-all active:scale-[0.98]"
+            className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20 hover:bg-[var(--gold)]/20 transition-all active:scale-[0.97]"
           >
             Gerenciar Alunos do Mês
           </button>
@@ -136,7 +136,7 @@ export function MestreDoMesSelector() {
           >
             <div className="flex items-center justify-between mb-3">
               <h4 className="font-bold text-sm">Selecionar Aluno do Mês</h4>
-              <button onClick={() => setOpen(false)} className="p-1.5 rounded-lg hover:bg-[var(--surface)] transition-colors">
+              <button onClick={() => setOpen(false)} className="p-2.5 rounded-lg hover:bg-[var(--surface)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
                 <XIcon className="w-4 h-4" />
               </button>
             </div>
