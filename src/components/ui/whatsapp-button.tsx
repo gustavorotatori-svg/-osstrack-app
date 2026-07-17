@@ -60,7 +60,7 @@ export function WhatsAppButton({
   }
 
   const sizes = {
-    sm: "text-[10px] px-3 py-1.5 rounded-lg",
+    sm: "text-xs px-3 py-2 rounded-lg min-h-[44px]",
     md: "text-xs px-4 py-2 rounded-xl",
   }
 

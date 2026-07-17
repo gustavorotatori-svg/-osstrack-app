@@ -146,7 +146,7 @@ export default function Login() {
                 key={key}
                 type="button"
                 onClick={() => setRole(key)}
-                className="flex-1 py-2.5 text-[11px] font-bold uppercase tracking-wider transition-all duration-300 relative"
+                className="flex-1 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 relative"
                 style={{
                   background: role === key ? `${c.color}15` : "transparent",
                   color: role === key ? c.color : "var(--text-muted)",
@@ -165,8 +165,9 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("email")}</label>
+            <label htmlFor="login-email" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("email")}</label>
             <input
+              id="login-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -176,9 +177,10 @@ export default function Login() {
             />
           </div>
           <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("senha")}</label>
+            <label htmlFor="login-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("senha")}</label>
             <div className="relative">
               <input
+                id="login-senha"
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -189,8 +191,9 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors p-1"
                 style={{ color: "var(--text-muted)" }}
+                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
               >
                 {showPassword ? (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -216,7 +219,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl text-sm font-bold transition-all duration-300 active:scale-[0.98] disabled:opacity-50"
+            className="w-full py-3.5 rounded-xl text-sm font-bold transition-all duration-300 active:scale-[0.97] disabled:opacity-50"
             style={{ background: cfg.color, color: "#000" }}
           >
             {loading ? t("entrando") : t("entrar")}

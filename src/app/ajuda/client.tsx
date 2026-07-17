@@ -15,7 +15,7 @@ export function AjudaClient({ items }: { items: FaqItem[] }) {
           <div key={i} className="glass-card overflow-hidden transition-all duration-300">
             <button
               onClick={() => setOpenIdx(isOpen ? null : i)}
-              className="w-full flex items-center justify-between p-4 md:p-5 text-left active:scale-[0.99] transition-transform"
+              className="w-full flex items-center justify-between p-4 md:p-5 text-left active:scale-[0.97] transition-transform"
             >
               <span className="text-sm font-semibold pr-4">{item.q}</span>
               <span className={`shrink-0 text-[var(--gold)] transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}>

@@ -146,7 +146,7 @@ export default function TreinoPage() {
           </div>
 
           {!showTimer && (
-            <button onClick={iniciarTreino} className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+            <button onClick={iniciarTreino} className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.97]"
               style={{ background: "linear-gradient(135deg, var(--gold), #e8c84a)", color: "#000", boxShadow: "0 4px 20px rgba(212,168,71,0.25)" }}>
               <Play className="w-5 h-5" /> Iniciar Treino
             </button>

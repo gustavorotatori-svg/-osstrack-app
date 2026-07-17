@@ -184,7 +184,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
               {canAutoInstall && !installed && (
                 <button
                   onClick={handleInstall}
-                  className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98]"
+                  className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
                   style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
                 >
                   Instalar Agora
@@ -193,7 +193,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
 
               <button
                 onClick={handleNext}
-                className={`w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] ${
+                className={`w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] ${
                   !installed && canAutoInstall
                     ? "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
                     : "btn"
@@ -244,7 +244,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
               <button
                 onClick={handleSubscribe}
                 disabled={push.loading}
-                className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.98] disabled:opacity-50"
+                className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] disabled:opacity-50"
                 style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
               >
                 {push.loading ? "Ativando..." : "Ativar Notificações"}
@@ -252,7 +252,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
 
               <button
                 onClick={handleSkip}
-                className="w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
+                className="w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
               >
                 Agora não
               </button>

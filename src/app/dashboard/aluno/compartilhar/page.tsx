@@ -329,11 +329,11 @@ export default function CompartilharPage() {
           {/* Download buttons */}
           <div className="grid grid-cols-2 gap-3">
             <button onClick={() => generateImage(false)} disabled={generating}
-              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[var(--gold)] to-[#e8c84a] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-[0.98]">
+              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-[var(--gold)] to-[#e8c84a] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-[0.97]">
 <Download className="w-4 h-4" /> {tc("card600")}
             </button>
             <button onClick={() => generateImage(true)} disabled={generating}
-              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm border border-[var(--gold)]/30 text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all active:scale-[0.98]">
+              className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm border border-[var(--gold)]/30 text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all active:scale-[0.97]">
 <Image className="w-4 h-4" /> {tc("stories")}
             </button>
           </div>

@@ -1,7 +1,7 @@
 "use client"
 
 export function Skeleton({ className = "" }: { className?: string }) {
-  return <div className={`animate-shimmer rounded-lg ${className}`} />
+  return <div className={`belt-loading rounded-lg ${className}`} />
 }
 
 export function CardSkeleton() {

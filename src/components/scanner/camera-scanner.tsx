@@ -136,14 +136,14 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
 
           <button
             onClick={stopCamera}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white"
+            className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white text-lg"
           >
             ✕
           </button>
 
           <button
             onClick={toggleCamera}
-            className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white"
+            className="absolute top-3 left-3 w-11 h-11 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white"
             title="Virar câmera"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

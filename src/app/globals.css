@@ -616,14 +616,21 @@ body {
   min-height: 44px;
   text-decoration: none;
 }
-*:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-.btn:active { transform: scale(0.96); }
+.btn:active { transform: scale(0.97); }
 
 .btn-primary, .btn-gold {
-  @apply btn;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  min-height: 44px;
+  text-decoration: none;
   background: var(--gold-gradient);
   color: #0a0a0a;
   border: none;
@@ -633,7 +640,18 @@ body {
 }
 
 .btn-ghost {
-  @apply btn;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  min-height: 44px;
+  text-decoration: none;
   background: transparent;
   color: var(--text-secondary);
   border: 1px solid var(--border);
@@ -1192,6 +1210,80 @@ body {
   box-shadow: 0 0 8px rgba(34,197,94,0.1);
 }
 
+/* =================================================================
+   OSSTRACK SENSORY SIGNATURE — "GROUNDED FLOW"
+   =================================================================
+   Every interaction follows BJJ rhythm: grounded foundation,
+   flowing transition, gold highlight. An experienced user can
+   identify OssTrack by feel alone in under 2 seconds.
+   =================================================================
+   Easing    | ease-ground (settle)  | ease-flow (smooth)
+            | ease-snap (celebrate)
+   Press     | uniform scale[0.97] / 150ms on ALL interactive elements
+   Belt      | gold shimmer loading
+   Ceremony  | radial gold burst on achievements
+   ================================================================= */
+
+:root {
+  --ease-ground: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-flow: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-snap: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-snap: 120ms;
+  --duration-tap: 150ms;
+  --duration-flow: 200ms;
+  --duration-lift: 300ms;
+  --duration-enter: 500ms;
+  --duration-ceremony: 800ms;
+}
+
+/* ---- Universal Press Feedback ---- */
+.press-flow {
+  transition: transform var(--duration-tap) var(--ease-ground),
+              box-shadow var(--duration-tap) var(--ease-ground);
+}
+.press-flow:active {
+  transform: scale(0.97);
+}
+
+/* ---- Belt Loading Skeleton ---- */
+@keyframes belt-loading {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.belt-loading {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212,168,71,0.04) 25%,
+    rgba(212,168,71,0.12) 50%,
+    rgba(212,168,71,0.04) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: belt-loading 1.8s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* ---- Ceremony Pulse (achievements, level-up) ---- */
+@keyframes ceremony-pulse {
+  0% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
+  50% { transform: scale(1.1); opacity: 1; filter: brightness(1.2); }
+  100% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
+}
+.ceremony-pulse {
+  animation: ceremony-pulse 1.2s var(--ease-ground) 3;
+}
+
+/* ---- Grounded Entrance (page/section appear) ---- */
+@keyframes ground-enter {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.ground-enter {
+  animation: ground-enter var(--duration-enter) var(--ease-ground);
+}
+
+/* ----------------------------------------------------------------- */
 /* ===== MISC ===== */
 .gradient-divider {
   height: 1px;

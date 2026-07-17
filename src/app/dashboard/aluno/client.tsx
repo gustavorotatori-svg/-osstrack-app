@@ -187,7 +187,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           </div>
 
           {/* STATS ROW — 4 compact visual cards */}
-          <div className="grid grid-cols-4 gap-2.5 mb-6 enter-stagger">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 enter-stagger">
             <div className="stat-glass px-3 py-3.5 text-center" title="Aulas com check-in confirmado neste mês">
               <div className="text-lg font-black" style={{ color: "#60a5fa" }}><AnimatedCounter value={aulasEsteMes} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("aulasEsteMes")}</div>
@@ -401,7 +401,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               )}
 
               {/* Quick actions */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
                 {quickActions.map((action) => {
                   const Icon = action.icon
                   return (

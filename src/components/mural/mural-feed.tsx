@@ -178,7 +178,7 @@ export default function MuralFeed({ role }: { role: string }) {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => toggleCurtida(item.id)}
-                        className={`text-[10px] font-semibold transition-all micro-press flex items-center gap-1 ${
+                        className={`text-xs font-semibold transition-all micro-press flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px] ${
                           item.curtido ? "text-red-400" : "text-[var(--text-muted)] hover:text-red-400"
                         }`}
                       >
@@ -189,7 +189,7 @@ export default function MuralFeed({ role }: { role: string }) {
                       </button>
                       <button
                         onClick={() => setComentariosAbertos((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
-                        className="text-[10px] text-[var(--red)] hover:text-[var(--red)] transition-colors font-semibold flex items-center gap-1"
+                        className="text-xs text-[var(--red)] hover:text-[var(--red)] transition-colors font-semibold flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px]"
                       >
                         💬 {item.comentarios.length}
                       </button>

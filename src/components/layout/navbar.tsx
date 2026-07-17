@@ -54,7 +54,7 @@ export function Navbar() {
           {session ? (
             <Link
               href={`/dashboard/${session.user.role}`}
-              className="btn-gold px-4 py-1.5 text-sm ml-2"
+              className="btn-gold px-4 py-2 text-sm ml-2"
             >
               {t("dashboard")}
             </Link>
@@ -62,18 +62,18 @@ export function Navbar() {
             <div className="flex items-center gap-2 ml-2">
               <Link
                 href="/login"
-                className="px-3.5 py-1.5 rounded-xl font-semibold text-sm text-white/80 hover:text-white transition-colors"
+                className="px-3.5 py-2 rounded-xl font-semibold text-sm text-white/80 hover:text-white transition-colors"
               >
                 {t("entrar")}
               </Link>
-              <Link href="/cadastro" className="btn-gold px-4 py-1.5 text-sm">
+              <Link href="/cadastro" className="btn-gold px-4 py-2 text-sm">
                 {t("cadastro")}
               </Link>
             </div>
           )}
           {!isStandalone && (canInstall || isIOS) && (
             <button onClick={install}
-              className="ml-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all active:scale-95 whitespace-nowrap"
+              className="ml-2 px-3 py-2 rounded-xl text-xs font-semibold transition-all active:scale-95 whitespace-nowrap"
               style={{ border: "1px solid rgba(212,168,71,0.2)", color: "var(--gold)", background: "rgba(212,168,71,0.06)" }}
             >
               + Instalar
@@ -87,7 +87,7 @@ export function Navbar() {
         <div className="flex items-center md:hidden gap-1">
           {!isStandalone && (canInstall || isIOS) && (
             <button onClick={install}
-              className="px-2.5 py-1.5 rounded-lg text-[10px] font-semibold transition-all active:scale-95"
+              className="px-3 py-2 rounded-lg text-xs font-semibold transition-all active:scale-95"
               style={{ border: "1px solid rgba(212,168,71,0.2)", color: "var(--gold)", background: "rgba(212,168,71,0.06)" }}
             >
               + App
@@ -96,12 +96,12 @@ export function Navbar() {
           {session ? (
             <Link
               href={`/dashboard/${session.user.role}`}
-              className="btn-gold px-3 py-1.5 text-xs"
+              className="btn-gold px-3 py-2 text-xs"
             >
               {t("dashboard")}
             </Link>
           ) : (
-            <Link href="/cadastro" className="btn-gold px-3 py-1.5 text-xs">
+            <Link href="/cadastro" className="btn-gold px-3 py-2 text-xs">
               {t("cadastro")}
             </Link>
           )}

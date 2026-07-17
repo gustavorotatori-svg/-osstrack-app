@@ -103,8 +103,8 @@ export function AlunosClient() {
                 className="input-field w-full text-sm pl-9"
               />
               {busca && (
-                <button onClick={() => setBusca("")} className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <X className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label="Limpar busca">
+                  <X className="w-4 h-4 text-[var(--text-muted)]" />
                 </button>
               )}
             </div>

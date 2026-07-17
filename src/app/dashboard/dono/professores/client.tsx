@@ -76,8 +76,8 @@ export function ProfessoresClient() {
               className="input-field w-full text-sm pl-9"
             />
             {busca && (
-              <button onClick={() => setBusca("")} className="absolute right-3 top-1/2 -translate-y-1/2">
-                <X className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+              <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label="Limpar busca">
+                <X className="w-4 h-4 text-[var(--text-muted)]" />
               </button>
             )}
           </div>
@@ -124,7 +124,7 @@ export function ProfessoresClient() {
                     <button
                       onClick={() => handleRemover(p.id, p.nome)}
                       disabled={removendo === p.id}
-                      className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                      className="text-red-400 hover:text-red-300 p-2.5 rounded-lg hover:bg-white/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="Remover professor"
                     >
                       <Trash2 className="w-4 h-4" />

@@ -250,7 +250,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const Icon = item.icon
             const isNotif = item.tkey === "notificacoes"
             return (
-              <button key={item.href} onClick={() => router.push(item.href)}
+              <button key={item.href} onClick={() => router.push(item.href)} aria-label={t(item.tkey)}
                 className={`sidebar-nav-item w-full ${isActive ? "active" : ""}`}>
                 <div className="relative">
                   <Icon active={isActive} />
@@ -277,7 +277,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
                 <ExternalIcon />
               </a>
             ) : (
-              <button key={t(link.tkey)} onClick={() => navigate(link.href)}
+              <button key={t(link.tkey)} onClick={() => navigate(link.href)} aria-label={t(link.tkey)}
                 className="min-h-[44px] w-full flex items-center gap-3 px-4 py-3 text-xs text-[var(--text-secondary)] hover:text-[var(--text)]">
                 <Icon active={false} />
                 <span>{t(link.tkey)}</span>
@@ -330,7 +330,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
             const Icon = item.icon
             const isNotif = item.tkey === "notificacoes"
             return (
-              <button key={item.href} onClick={() => navigate(item.href)}
+              <button key={item.href} onClick={() => navigate(item.href)} aria-label={t(item.tkey)}
                 className={`p-2.5 rounded-xl transition-all relative ${isActive ? "text-[var(--red)] bg-[var(--red-dim)]" : "text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)]"}`}>
                 <Icon active={isActive} />
                 {isNotif && notifCount > 0 && (
@@ -341,7 +341,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
               </button>
             )
           })}
-          <button onClick={() => setShowMobileMenu(!showMobileMenu)} className="p-2.5 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)] text-sm">
+          <button onClick={() => setShowMobileMenu(!showMobileMenu)} aria-label={showMobileMenu ? "Fechar menu" : "Menu"} className="p-2.5 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)] text-sm">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               {showMobileMenu ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></> : <><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></>}
             </svg>
@@ -396,7 +396,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       {/* MAIN CONTENT */}
       <main id="main-content" className="flex-1 w-full md:ml-60 relative z-10">
-        <div className="px-4 py-4 pb-[calc(8rem+env(safe-area-inset-bottom))] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:px-6 lg:px-8 dashboard-content">
+        <div className="px-4 py-4 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:px-6 lg:px-8 dashboard-content">
           <PullToRefresh>
             {children}
           </PullToRefresh>
@@ -414,9 +414,9 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
           const Icon = item.icon
           return (
             <button key={item.href} onClick={() => navigate(item.href)}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1.5 min-w-[56px] transition-all ${isActive ? "text-[var(--gold)]" : "text-[var(--text-secondary)]"}`}>
+              className={`flex flex-col items-center gap-0.5 px-2 py-2 min-w-[64px] min-h-[48px] transition-all ${isActive ? "text-[var(--gold)]" : "text-[var(--text-secondary)]"}`}>
               <div className={isActive ? "scale-110 transition-transform" : ""}><Icon active={isActive} /></div>
-              <span className={`text-[9px] font-bold uppercase tracking-[0.04em] ${isActive ? "text-[var(--gold)]" : "text-[var(--text-secondary)]"}`}>{t(item.tkey)}</span>
+              <span className={`text-[10px] font-bold uppercase tracking-[0.04em] ${isActive ? "text-[var(--gold)]" : "text-[var(--text-secondary)]"}`}>{t(item.tkey)}</span>
             </button>
           )
         })}

@@ -142,19 +142,19 @@ export default function ContratosPage() {
                     <div className="flex gap-1 mt-1 justify-end">
                       {c.status === "ativo" && (
                         <button onClick={() => alterarStatus(c.id, "inadimplente")}
-                          className="text-[9px] px-2 py-0.5 rounded bg-red-900/30 text-red-400">
+                          className="text-[10px] px-2.5 py-1 rounded bg-red-900/30 text-red-400">
                           {t("marcarInadimplente")}
                         </button>
                       )}
                       {(c.status === "ativo" || c.status === "inadimplente") && (
                         <button onClick={() => alterarStatus(c.id, "cancelado")}
-                          className="text-[9px] px-2 py-0.5 rounded bg-gray-900/30 text-gray-400">
+                          className="text-[10px] px-2.5 py-1 rounded bg-gray-900/30 text-gray-400">
                           {t("cancelar")}
                         </button>
                       )}
                       {(c.status === "cancelado" || c.status === "encerrado") && (
                         <button onClick={() => alterarStatus(c.id, "ativo")}
-                          className="text-[9px] px-2 py-0.5 rounded bg-green-900/30 text-green-400">
+                          className="text-[10px] px-2.5 py-1 rounded bg-green-900/30 text-green-400">
                           {t("reativar")}
                         </button>
                       )}
@@ -164,7 +164,7 @@ export default function ContratosPage() {
                         if (r.ok) { load(); toast.success("Contrato excluído") }
                         else { const err = await r.json().catch(() => ({})); toast.error(err.error || "Erro ao excluir") }
                       }}
-                        className="text-[9px] px-2 py-0.5 rounded bg-red-900/20 text-red-400/70 hover:text-red-400">🗑️</button>
+                        className="text-xs px-3 py-1.5 rounded bg-red-900/20 text-red-400/70 hover:text-red-400 min-h-[36px]">🗑️</button>
                     </div>
                   </div>
                 </div>
