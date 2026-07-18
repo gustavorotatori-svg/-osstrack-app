@@ -9,13 +9,14 @@
   },
   "hero": {
     "titulo1": "Sua jornada no",
-    "titulo2": "começa aqui.",
+    "titulo2": "Gestão completa e gratuita para sua academia de Jiu-Jitsu.",
     "cta": "Começar Grátis",
     "login": "Fazer Login",
     "badge": "",
     "statsAcademias": "Academias",
     "statsAlunos": "Alunos ativos",
-    "statsRetencao": "Retenção"
+    "statsRetencao": "Retenção",
+    "subtitle": "Check-in por GPS, evolução por faixa, ranking, mural, financeiro e muito mais. Tudo grátis."
   },
   "frases": [
     "Toda faixa preta foi uma faixa branca que nunca desistiu.",

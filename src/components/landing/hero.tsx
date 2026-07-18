@@ -57,11 +57,14 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
         </h1>
 
         {/* Tagline */}
-        <p className={`text-lg md:text-xl gradient-gold-text max-w-xl mx-auto leading-relaxed font-black tracking-wide transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          The Jiu Jitsu Revolution &mdash; {t("titulo2")}
+        <p className={`text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          {t("titulo2")}
+        </p>
+        <p className={`text-xs md:text-sm text-white/40 max-w-md mx-auto mt-2 leading-relaxed transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          {t("subtitle")}
         </p>
 
-        <div className="mb-12 mt-10" />
+        <div className="mb-8 mt-8" />
 
         {/* CTAs */}
         <div className={`flex items-center justify-center gap-4 flex-wrap transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
@@ -71,6 +74,14 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
           <Link href="/login"
             className="px-9 py-4 rounded-xl font-bold text-base border border-[var(--dark-border)] text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300">
             {t("login")}
+          </Link>
+        </div>
+
+        <div className={`mt-4 transition-all duration-700 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <Link href="/screenshot/demo"
+            className="text-xs text-white/30 hover:text-[var(--gold)] transition-colors inline-flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Ver demonstração
           </Link>
         </div>
 
