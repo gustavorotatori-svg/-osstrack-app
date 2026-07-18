@@ -282,16 +282,6 @@ export default function Cadastro() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label htmlFor="cad-tel" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.telefoneLabel")}</label>
-                <input id="cad-tel" type="tel" className="input" placeholder={t("step1.telefonePlaceholder")} required value={form.telefone} onChange={(e) => update("telefone", e.target.value)} />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.dataNascimentoLabel")}</label>
-                <input type="date" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
                 <label htmlFor="cad-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
                 <div className="relative">
                   <input id="cad-senha" type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />

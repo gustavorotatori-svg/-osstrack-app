@@ -9,13 +9,14 @@
   },
   "hero": {
     "titulo1": "Your journey on the",
-    "titulo2": "starts here.",
+    "titulo2": "Complete and free management for your Jiu-Jitsu academy.",
     "cta": "Start Free",
     "login": "Sign In",
     "badge": "The Jiu-Jitsu logbook",
     "statsAcademias": "Academies",
     "statsAlunos": "Active students",
-    "statsRetencao": "Retention"
+    "statsRetencao": "Retention",
+    "subtitle": "GPS check-in, belt tracking, ranking, wall, finances and more. All free."
   },
   "frases": [
     "Every black belt was once a white belt who never gave up.",

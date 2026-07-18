@@ -110,13 +110,40 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 <h1 className="hero-title">{academia.nome}</h1>
                 <p className="hero-sub">{academia.responsavel}</p>
               </div>
-              <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
-                <TrendingUp className="w-3.5 h-3.5" />
-                <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
-                <span className="text-emerald-400/60">vs mês anterior</span>
-              </div>
+              {stats.totalAlunos > 0 && (
+                <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
+                  <span className="text-emerald-400/60">vs mês anterior</span>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* First-action welcome for new users */}
+          {stats.totalAlunos === 0 && (
+            <div className="bg-gradient-to-r from-[var(--gold)]/10 to-amber-600/5 border border-[var(--gold)]/20 rounded-2xl p-6 text-center space-y-4">
+              <div className="text-4xl">🥋</div>
+              <h2 className="text-lg font-black" style={{ color: "var(--gold)" }}>
+                Bem-vindo ao OssTrack!
+              </h2>
+              <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+                Sua academia está cadastrada. O próximo passo é criar sua primeira turma e convidar seus alunos.
+              </p>
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role === "dono" ? "dono" : "professor"}/turmas`) }}
+                  className="btn-gold px-6 py-3 text-sm font-bold inline-flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4" />
+                  Criar primeira turma
+                </button>
+                <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role}/config`) }}
+                  className="px-6 py-3 rounded-xl text-sm font-bold border border-[var(--border)] text-[var(--text)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all inline-flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  Configurar academia
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Quick Actions */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2 enter-stagger">
