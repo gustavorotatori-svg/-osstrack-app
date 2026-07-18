@@ -51,6 +51,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       ...(data.cor && { cor: data.cor }),
       ...(data.icone && { icone: data.icone }),
       ...(data.categoria && { categoria: data.categoria }),
+      ...(data.modalidade && { modalidade: data.modalidade }),
       ...(data.maxAlunos && { maxAlunos: data.maxAlunos }),
     },
   })

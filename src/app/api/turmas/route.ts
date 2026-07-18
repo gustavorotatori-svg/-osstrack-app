@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 
-  const { nome, descricao, cor, icone, categoria, maxAlunos } = await request.json()
+  const { nome, descricao, cor, icone, categoria, modalidade, maxAlunos } = await request.json()
   if (!nome) return NextResponse.json({ error: "Nome obrigatório" }, { status: 400 })
 
   const turma = await prisma.turma.create({
@@ -44,6 +44,7 @@ export async function POST(request: Request) {
       cor: cor || "#C9A84C",
       icone: icone || "🥋",
       categoria: categoria || "adulto",
+      modalidade: modalidade || "kimono",
       maxAlunos: maxAlunos || 30,
       horario: "",
       dias: "",

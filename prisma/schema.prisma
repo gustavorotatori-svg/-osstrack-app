@@ -154,6 +154,7 @@ model Turma {
   cor         String   @default("#C9A84C")
   icone       String   @default("🥋")
   categoria   String   @default("adulto")
+  modalidade  String   @default("kimono")
   horario     String
   dias        String
   maxAlunos   Int      @default(30)

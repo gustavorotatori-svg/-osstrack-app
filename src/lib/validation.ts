@@ -85,6 +85,7 @@ export const turmaSchema = z.object({
   cor: z.string().max(9).optional().default("#C9A84C"),
   icone: z.string().max(10).optional().default("🥋"),
   categoria: z.string().max(20).optional().default("adulto"),
+  modalidade: z.enum(["kimono", "nogi"]).optional().default("kimono"),
   horario: z.string().min(1, "Horário é obrigatório").max(5),
   dias: z.string().min(1, "Dias é obrigatório").max(100),
   maxAlunos: z.coerce.number().int().min(1).max(500).optional().default(30),
