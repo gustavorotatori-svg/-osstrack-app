@@ -17,4 +17,5 @@ jobs:
           cache: "npm"
       - run: npm ci --ignore-scripts
       - run: npx prisma generate
+      - run: echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
       - run: npm run build
