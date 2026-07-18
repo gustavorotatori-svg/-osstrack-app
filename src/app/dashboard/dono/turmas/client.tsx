@@ -15,6 +15,7 @@ type Turma = {
   cor: string
   icone: string
   categoria: string
+  modalidade: string
   maxAlunos: number
   _count: { alunos: number; horarios: number }
 }
@@ -22,6 +23,7 @@ type Turma = {
 type AlunoItem = { id: string; nome: string; faixa: string; grau: number }
 
 const CATEGORIAS = ["adulto", "infantil", "iniciante"]
+const MODALIDADES = ["kimono", "nogi"]
 const CORES = [
   { label: "Dourado", value: "#C9A84C" },
   { label: "Vermelho", value: "#8B0000" },
@@ -45,6 +47,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
   const [cor, setCor] = useState("#C9A84C")
   const [icone, setIcone] = useState("🥋")
   const [categoria, setCategoria] = useState("adulto")
+  const [modalidade, setModalidade] = useState("kimono")
   const [maxAlunos, setMaxAlunos] = useState(30)
   const [saving, setSaving] = useState(false)
 
@@ -70,6 +73,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
     setCor("#C9A84C")
     setIcone("🥋")
     setCategoria("adulto")
+    setModalidade("kimono")
     setMaxAlunos(30)
     setEditingId(null)
   }
@@ -80,6 +84,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
     setCor(t.cor)
     setIcone(t.icone)
     setCategoria(t.categoria)
+    setModalidade(t.modalidade)
     setMaxAlunos(t.maxAlunos)
     setEditingId(t.id)
     setShowForm(true)
@@ -94,7 +99,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
         const res = await fetch(`/api/turmas/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nome, descricao, cor, icone, categoria, maxAlunos }),
+          body: JSON.stringify({ nome, descricao, cor, icone, categoria, modalidade, maxAlunos }),
         })
         if (!res.ok) throw new Error()
         toast.success(tr("turmaAtualizada"))
@@ -102,7 +107,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
         const res = await fetch("/api/turmas", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nome, descricao, cor, icone, categoria, maxAlunos }),
+          body: JSON.stringify({ nome, descricao, cor, icone, categoria, modalidade, maxAlunos }),
         })
         if (!res.ok) throw new Error()
         toast.success(tr("turmaCriada"))
@@ -233,6 +238,20 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
               </div>
 
               <div>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold mb-2 block">Modalidade</label>
+                <div className="flex gap-2">
+                  {MODALIDADES.map((m) => (
+                    <button key={m} type="button" onClick={() => setModalidade(m)}
+                      className={`flex-1 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${modalidade === m
+                        ? "bg-[var(--gold)] text-black shadow-lg"
+                        : "bg-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text)]"}`}>
+                      {m === "kimono" ? "🥋 Kimono" : "👕 Nogi"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
                 <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold mb-2 block">Cor</label>
                 <div className="flex gap-2 flex-wrap">
                   {CORES.map((c) => (
@@ -305,6 +324,9 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
                     <span><CalendarIcon className="w-3 h-3 inline -mt-0.5 mr-0.5" /> {t._count.horarios} {tr("horarios")}</span>
                     <span className={`capitalize ${t.categoria === "infantil" ? "text-yellow-400" : t.categoria === "iniciante" ? "text-emerald-400" : "text-[var(--gold)]"}`}>
                       {t.categoria}
+                    </span>
+                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${t.modalidade === "nogi" ? "text-orange-400 bg-orange-500/10" : "text-[var(--gold)] bg-[var(--gold-dim)]"}`}>
+                      {t.modalidade === "nogi" ? "👕 Nogi" : "🥋 Kimono"}
                     </span>
                   </div>
                   <div className="flex gap-2 mt-3 pt-3 border-t border-[var(--border)]">
