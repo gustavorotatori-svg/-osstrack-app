@@ -16,6 +16,9 @@ export async function GET() {
   const mesAtual = now.getMonth()
   const anoAtual = now.getFullYear()
 
+  const nowMonth = new Date(anoAtual, mesAtual, 1)
+  const nextMonth = new Date(anoAtual, mesAtual + 1, 1)
+
   const [
     totalPlanos,
     contratosAtivos,
@@ -29,6 +32,7 @@ export async function GET() {
     despesasMes,
     despesasPagasMes,
     ultimasDespesas,
+    wellhubCheckinsMes,
   ] = await Promise.all([
     prisma.planoMensalidade.count({ where: { academiaId, ativo: true } }),
 
@@ -133,6 +137,14 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
       take: 10,
     }),
+
+    prisma.presenca.count({
+      where: {
+        aluno: { academiaId },
+        origem: "wellhub",
+        data: { gte: nowMonth, lt: nextMonth },
+      },
+    }),
   ])
 
   const receitaTotal = receitaMes._sum.valor || 0
@@ -157,6 +169,7 @@ export async function GET() {
     inadimplentesList: inadimplentes,
     ultimasCobrancas,
     ultimasDespesas,
+    wellhubCheckinsMes,
     taxaAdimplencia: totalCobrancasMes > 0
       ? Math.round((cobrancasPagasMes / totalCobrancasMes) * 100)
       : 0,

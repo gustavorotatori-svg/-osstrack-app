@@ -12,12 +12,20 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { alunoId, origem } = await request.json()
+    const academia = await prisma.academia.findUnique({
+      where: { id: session.user.academiaId },
+      select: { wellhubAtivo: true },
+    })
+    if (!academia?.wellhubAtivo) {
+      return NextResponse.json({ error: "Wellhub não está ativo nesta academia" }, { status: 400 })
+    }
+
+    const { alunoId } = await request.json()
     if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
 
     const aluno = await prisma.usuario.findUnique({
       where: { id: alunoId },
-      select: { id: true, academiaId: true },
+      select: { id: true, academiaId: true, nome: true },
     })
     if (!aluno || aluno.academiaId !== session.user.academiaId) {
       return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
@@ -33,19 +41,19 @@ export async function POST(request: Request) {
         horario,
         status: "confirmed",
         confirmadoPor: session.user.id,
-        origem: origem || "app",
+        origem: "wellhub",
       },
     })
 
     await notificarUsuario({
       usuarioId: aluno.id,
       tipo: "presenca",
-      titulo: "Presenca registrada!",
-      descricao: `Sua presenca de hoje (${horario}) foi registrada por ${session.user.name}`,
+      titulo: "Check-in Wellhub!",
+      descricao: `Seu check-in via Wellhub foi registrado (${horario})`,
       link: "/dashboard/aluno",
     }).catch(() => {})
 
-    return NextResponse.json({ success: true, id: presenca.id })
+    return NextResponse.json({ success: true, id: presenca.id, alunoNome: aluno.nome, horario })
   } catch (error) {
     return handleApiError(error)
   }

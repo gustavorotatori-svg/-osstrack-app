@@ -82,6 +82,7 @@ export default function FinanceiroPage() {
     { label: t("inadimplentes"), value: data?.inadimplentes || 0, color: "text-red-400" },
     { label: t("contratosAtivos"), value: data?.contratosAtivos || 0, color: "text-[var(--gold)]" },
     { label: t("planosAtivos"), value: data?.totalPlanos || 0, color: "text-[var(--gold)]" },
+    ...(data?.wellhubCheckinsMes > 0 ? [{ label: "Check-ins Wellhub (mês)", value: data.wellhubCheckinsMes, color: "text-emerald-400" }] : []),
   ]
 
   return (

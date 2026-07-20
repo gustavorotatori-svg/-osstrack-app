@@ -36,6 +36,7 @@ model Academia {
   convites        Convite[]
   checkinCodigos  CheckinCodigo[]
   rankingVisivel  Boolean  @default(true)
+  wellhubAtivo    Boolean  @default(false)
   planosMensalidade PlanoMensalidade[]
   contratos         Contrato[]
   cobrancas         Cobranca[]
@@ -188,6 +189,7 @@ model Presenca {
   turma       String?
   observacao  String?
   confirmadoPor String?
+  origem      String   @default("app")
   createdAt   DateTime @default(now())
 }
 
