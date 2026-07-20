@@ -1,11 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { CameraScanner } from "@/components/scanner/camera-scanner"
 import { useT } from "@/lib/use-t"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
+
+type AlunoResumo = {
+  id: string
+  nome: string
+  faixa: string
+  grau: number
+}
 
 export default function DonoEscanearPage() {
   const t = useT("dono.escanear")
@@ -17,39 +24,117 @@ export default function DonoEscanearPage() {
   const [modo, setModo] = useState<"normal" | "wellhub">("normal")
   const [wellhubAtivo, setWellhubAtivo] = useState(false)
 
-  useState(() => {
+  // association flow state
+  const [associateWellhubId, setAssociateWellhubId] = useState("")
+  const [alunosList, setAlunosList] = useState<AlunoResumo[]>([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searching, setSearching] = useState(false)
+  const [associating, setAssociating] = useState(false)
+
+  useEffect(() => {
     fetch("/api/academia").then(r => r.json()).then(d => setWellhubAtivo(d.wellhubAtivo || false)).catch(() => {})
-  })
+  }, [])
 
   async function confirmarPresenca(alunoId?: string) {
     const id = alunoId || input.trim()
     if (!id) return
     setStatus("loading")
+    setMsg("")
     try {
       const endpoint = modo === "wellhub" ? "/api/presenca/wellhub" : "/api/presenca/confirm"
+      const body = modo === "wellhub" ? { wellhubId: id } : { userId: id }
+
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(modo === "wellhub" ? { alunoId: id } : { userId: id }),
+        body: JSON.stringify(body),
       })
+
       if (res.ok) {
         const data = await res.json()
         setStatus("ok")
         setAlunoNome(data.alunoNome)
         setHorario(data.horario)
         setMsg(`${modo === "wellhub" ? "Check-in Wellhub: " : t("presencaConfirmada")} ${data.alunoNome} ${data.horario}`)
-      } else {
-        const err = await res.json()
-        setStatus("error")
-        setMsg(err.error || t("alunoNaoEncontrado"))
-        toast.error(err.error || t("alunoNaoEncontrado"))
+        setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
+        return
       }
+
+      const err = await res.json()
+
+      if (err.error === "WELLHUB_ID_NOT_ASSOCIATED") {
+        setAssociateWellhubId(err.wellhubId || id)
+        setSearchTerm("")
+        setAlunosList([])
+        setStatus("idle")
+        setMsg("")
+        toast.info("Check-in validado no Wellhub! Associe a um aluno.")
+        return
+      }
+
+      setStatus("error")
+      setMsg(err.error || t("alunoNaoEncontrado"))
+      toast.error(err.error || t("alunoNaoEncontrado"))
+      setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
     } catch {
       setStatus("error")
       setMsg(t("erroConfirmar"))
       toast.error(t("erroConfirmar"))
+      setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
     }
-    setTimeout(() => { setStatus("idle"); setInput(""); setAlunoNome("") }, 4000)
+  }
+
+  async function buscarAlunos() {
+    if (!searchTerm.trim()) return
+    setSearching(true)
+    try {
+      const res = await fetch(`/api/dashboard/dono/alunos?busca=${encodeURIComponent(searchTerm)}`)
+      if (res.ok) {
+        const data = await res.json()
+        setAlunosList(data.alunos || [])
+      }
+    } catch { } finally {
+      setSearching(false)
+    }
+  }
+
+  async function associarEConfirmar(alunoId: string, alunoNome: string) {
+    if (!associateWellhubId) return
+    setAssociating(true)
+    try {
+      const res = await fetch("/api/usuarios/wellhub", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ alunoId, wellhubId: associateWellhubId }),
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        toast.error(err.error || "Erro ao associar")
+        return
+      }
+
+      const presencaRes = await fetch("/api/presenca/wellhub", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ wellhubId: associateWellhubId, skipValidation: true }),
+      })
+
+      if (presencaRes.ok) {
+        const data = await presencaRes.json()
+        setStatus("ok")
+        setAlunoNome(alunoNome)
+        setHorario(data.horario)
+        setMsg(`Check-in Wellhub registrado: ${alunoNome} ${data.horario}`)
+      } else {
+        toast.success(`Wellhub ID associado a ${alunoNome}! Faça o check-in novamente.`)
+      }
+      setAssociateWellhubId("")
+      setAlunosList([])
+    } catch {
+      toast.error("Erro ao associar Wellhub ID")
+    } finally {
+      setAssociating(false)
+    }
   }
 
   function handleScan(data: string) {
@@ -110,13 +195,61 @@ export default function DonoEscanearPage() {
             <div className="h-12 w-full glass-card rounded-lg" />
             <div className="h-12 w-full glass-card rounded-xl" />
           </div>
+        ) : associateWellhubId ? (
+          <div className="glass-card p-4 space-y-3">
+            <div className="flex items-center gap-2 text-emerald-400 text-xs font-semibold">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+              Check-in validado no Wellhub! ID: {associateWellhubId}
+            </div>
+            <p className="text-xs text-[var(--text-secondary)]">Busque o aluno para associar este Wellhub ID:</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                className="input-field flex-1 text-sm"
+                placeholder="Nome do aluno..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && buscarAlunos()}
+              />
+              <button
+                type="button"
+                onClick={buscarAlunos}
+                disabled={searching || !searchTerm.trim()}
+                className="btn btn-primary px-4 py-2 rounded-lg text-xs font-semibold disabled:opacity-50"
+              >
+                {searching ? "..." : "Buscar"}
+              </button>
+            </div>
+            {searching && <p className="text-xs text-[var(--text-muted)]">Buscando...</p>}
+            {alunosList.length > 0 && (
+              <div className="max-h-48 overflow-y-auto space-y-1">
+                {alunosList.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => associarEConfirmar(a.id, a.nome)}
+                    disabled={associating}
+                    className="w-full flex items-center justify-between p-3 rounded-lg text-sm hover:bg-white/5 transition-all disabled:opacity-50"
+                    style={{ border: "1px solid var(--border)" }}
+                  >
+                    <span className="font-semibold">{a.nome}</span>
+                    <span className="text-[10px] text-[var(--text-muted)]">{a.faixa} · {a.grau + 1}º</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {!searching && searchTerm && alunosList.length === 0 && (
+              <p className="text-xs text-[var(--text-muted)]">Nenhum aluno encontrado</p>
+            )}
+          </div>
         ) : (
           <div className="glass-card p-4">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="input-field w-full text-sm"
-              placeholder={modo === "wellhub" ? "ID do aluno (Wellhub)..." : t("placeholder")}
+              placeholder={modo === "wellhub" ? "ID do Wellhub (gympass_id)..." : t("placeholder")}
+              onKeyDown={(e) => e.key === "Enter" && confirmarPresenca()}
             />
             <button
               onClick={() => confirmarPresenca()}

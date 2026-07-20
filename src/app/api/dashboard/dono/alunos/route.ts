@@ -4,15 +4,22 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session || !["dono", "professor"].includes(session.user.role)) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
+    const { searchParams } = new URL(request.url)
+    const busca = searchParams.get("busca")?.trim()
+
     const alunos = await prisma.usuario.findMany({
-      where: { academiaId: session.user.academiaId, role: "aluno" },
+      where: {
+        academiaId: session.user.academiaId,
+        role: "aluno",
+        ...(busca ? { nome: { contains: busca, mode: "insensitive" } } : {}),
+      },
       select: {
         id: true,
         nome: true,
