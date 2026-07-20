@@ -146,8 +146,7 @@ export default function TreinoPage() {
           </div>
 
           {!showTimer && (
-            <button onClick={iniciarTreino} className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.97]"
-              style={{ background: "linear-gradient(135deg, var(--gold), #e8c84a)", color: "#000", boxShadow: "0 4px 20px rgba(212,168,71,0.25)" }}>
+            <button onClick={iniciarTreino} className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.97] btn-gold">
               <Play className="w-5 h-5" /> Iniciar Treino
             </button>
           )}
@@ -198,7 +197,7 @@ export default function TreinoPage() {
                       <input type="text" placeholder="reps" value={repeticoes} onChange={e => setRepeticoes(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                       <input type="text" placeholder="carga" value={carga} onChange={e => setCarga(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                     </div>
-                    <button onClick={addExercicio} className="text-xs font-bold px-3 py-1.5 rounded-lg" style={{ background: "var(--gold)", color: "#000" }}>
+                    <button onClick={addExercicio} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-gold">
                       <Check className="w-3.5 h-3.5" />
                     </button>
                   </div>

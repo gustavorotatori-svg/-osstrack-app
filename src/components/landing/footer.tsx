@@ -21,7 +21,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto">
         {/* CTA */}
         <div className="relative mb-14 overflow-hidden rounded-2xl p-8 md:p-10 text-center"
-          style={{ background: "linear-gradient(160deg, rgba(212,168,71,0.08) 0%, rgba(10,10,10,0.9) 50%, rgba(212,168,71,0.05) 100%)", border: "1px solid rgba(212,168,71,0.15)" }}>
+          style={{ background: "linear-gradient(160deg, var(--gold-dim) 0%, var(--bg) 50%, var(--gold-dim) 100%)", border: "1px solid var(--border)" }}>
           <div className="absolute top-[-80px] right-[-80px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
           <div className="absolute bottom-[-60px] left-[-60px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
           <div className="relative">
@@ -29,10 +29,10 @@ export function Footer() {
               style={{ background: "rgba(212,168,71,0.1)", color: "var(--gold)", border: "1px solid rgba(212,168,71,0.2)" }}>
               100% gratuito
             </span>
-            <h3 className="text-xl md:text-2xl font-extrabold tracking-tight mb-2 text-white">
+            <h3 className="text-xl md:text-2xl font-extrabold tracking-tight mb-2" style={{ color: "var(--text)" }}>
               Pronto para transformar sua academia?
             </h3>
-            <p className="text-sm mb-5 max-w-md mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
+            <p className="text-sm mb-5 max-w-md mx-auto" style={{ color: "var(--text-secondary)" }}>
                Junte-se a centenas de academias que já usam o OssTrack. Gratuito. Sem limites. Sem pegadinha.
             </p>
             <Link

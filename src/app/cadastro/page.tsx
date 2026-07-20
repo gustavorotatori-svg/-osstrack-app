@@ -614,8 +614,7 @@ export default function Cadastro() {
               </button>
             )}
             <button type="submit" disabled={loading}
-              className={`btn flex-1 py-3 text-sm ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-              style={loading ? { background: "var(--border)", color: "var(--text-muted)" } : { background: "var(--gold)", color: "#000", fontWeight: 700 }}>
+              className={`btn flex-1 py-3 text-sm ${loading ? "opacity-50 cursor-not-allowed bg-[var(--border)] text-[var(--text-muted)]" : "btn-gold"}`}>
               {loading ? "Criando conta..." : step === 1 ? "Próximo" : "Criar Conta Grátis"}
             </button>
           </div>

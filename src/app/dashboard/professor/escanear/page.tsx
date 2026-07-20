@@ -254,7 +254,7 @@ export default function EscanearPage() {
                 status === "ok" ? "bg-emerald-600 text-white"
                 : status === "error" ? "bg-red-600 text-white"
                 : modo === "wellhub" ? "bg-emerald-600 text-white hover:bg-emerald-500"
-                : "btn btn-primary"
+                : "btn-gold"
               }`}
             >
               {status === "ok" ? msg : status === "error" ? msg : modo === "wellhub" ? "Check-in Wellhub" : t("confirmar")}

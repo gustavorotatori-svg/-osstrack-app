@@ -241,13 +241,11 @@ export function PresencasClient({
 
               <div className="flex gap-2 mt-5">
                 <button onClick={adicionarManual} disabled={!selectedAluno || salvandoManual}
-                  className="flex-1 py-3 rounded-xl text-sm font-bold active:scale-[0.97] disabled:opacity-50"
-                  style={{ background: "var(--gold)", color: "#000" }}>
+                  className="flex-1 py-3 rounded-xl text-sm font-bold active:scale-[0.97] disabled:opacity-50 btn-gold">
                   {salvandoManual ? "Registrando..." : t("confirmar")}
                 </button>
                 <button onClick={() => { setShowManual(false); setSelectedAluno(null); setSearchTerm("") }}
-                  className="flex-1 py-3 rounded-xl text-sm font-bold active:scale-[0.97]"
-                  style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
+                  className="flex-1 py-3 rounded-xl text-sm font-bold active:scale-[0.97] btn-ghost">
                   {t("cancelar")}
                 </button>
               </div>

@@ -23,7 +23,7 @@ export default function EbookConteudo() {
         <div className="text-center space-y-3">
           <div className="text-4xl">🔒</div>
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Crie uma conta gratuita para acessar o ebook.</p>
-          <Link href="/cadastro?ref=ebook" className="inline-block px-6 py-3 rounded-xl text-sm font-bold" style={{ background: "var(--gold)", color: "#000" }}>
+          <Link href="/cadastro?ref=ebook" className="inline-block px-6 py-3 rounded-xl text-sm font-bold btn-gold">
             Criar Conta Grátis
           </Link>
         </div>

@@ -126,8 +126,7 @@ export default function FinanceiroPage() {
             {gerando ? t("gerando") : t("gerarCobrancas")}
           </button>
           <button onClick={async () => { await triggerOssTransition(); router.push("/dashboard/dono/financeiro/despesas") }}
-            className="flex-1 py-3.5 rounded-xl font-bold text-sm"
-            style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#ef4444" }}>
+            className="flex-1 py-3.5 rounded-xl font-bold text-sm btn-danger">
             <TrendingDown className="w-4 h-4 inline mr-1.5" />{t("verDespesas")}
           </button>
         </div>

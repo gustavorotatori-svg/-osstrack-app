@@ -22,7 +22,7 @@ export function MobileCta() {
         show ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="bg-[rgba(10,10,10,0.95)] backdrop-blur-2xl border-t border-[rgba(212,168,71,0.15)] px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
+      <div className="px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]" style={{ background: "color-mix(in srgb, var(--bg) 95%, transparent)", borderTop: "1px solid var(--border)" }}>
         <Link
           href="/cadastro"
           className="btn-gold w-full py-3.5 text-center block font-bold text-sm"

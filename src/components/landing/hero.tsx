@@ -17,8 +17,8 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden bg-[#0a0a0a]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,71,0.06)_0%,transparent_60%)]" />
+    <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden" style={{ background: "var(--bg)" }}>
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, var(--gold-dim) 0%, transparent 60%)" }} />
 
       {/* Jiu-Jitsu belts background — 8 faixas reais animando de cima e de baixo */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
@@ -52,15 +52,15 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         {/* OssTrack */}
         <h1 className={`text-[clamp(4rem,15vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <span className="text-white">Oss</span>
+          <span style={{ color: "var(--text)" }}>Oss</span>
           <span className="gradient-gold-text">Track</span>
         </h1>
 
         {/* Tagline */}
-        <p className={`text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        <p className={`text-base md:text-lg max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
           {t("titulo2")}
         </p>
-        <p className={`text-xs md:text-sm text-white/40 max-w-md mx-auto mt-2 leading-relaxed transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        <p className={`text-xs md:text-sm max-w-md mx-auto mt-2 leading-relaxed transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-muted)" }}>
           {t("subtitle")}
         </p>
 
@@ -72,14 +72,14 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
             {t("cta")}
           </Link>
           <Link href="/login"
-            className="px-9 py-4 rounded-xl font-bold text-base border border-[var(--dark-border)] text-white hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300">
+            className="px-9 py-4 rounded-xl font-bold text-base border border-[var(--dark-border)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300" style={{ color: "var(--text-secondary)" }}>
             {t("login")}
           </Link>
         </div>
 
         <div className={`mt-4 transition-all duration-700 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
           <Link href="/screenshot/demo"
-            className="text-xs text-white/30 hover:text-[var(--gold)] transition-colors inline-flex items-center gap-1.5">
+            className="text-xs hover:text-[var(--gold)] transition-colors inline-flex items-center gap-1.5" style={{ color: "var(--text-muted)" }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             Ver demonstração
           </Link>
@@ -95,8 +95,8 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
             ].map((stat, i) => (
               <div key={stat.label} className="text-center relative">
                 <div className="text-3xl md:text-4xl font-black gradient-gold-text">{stat.value}</div>
-                <div className="text-xs text-white/60 mt-1.5 tracking-wide uppercase font-semibold">{stat.label}</div>
-                {i < 2 && <div className="hidden md:block absolute top-1/2 -translate-y-1/2 w-px h-8 bg-white/10" style={{ left: "calc(100% + 2.5rem)" }} />}
+                <div className="text-xs mt-1.5 tracking-wide uppercase font-semibold" style={{ color: "var(--text-secondary)" }}>{stat.label}</div>
+                {i < 2 && <div className="hidden md:block absolute top-1/2 -translate-y-1/2 w-px h-8" style={{ left: "calc(100% + 2.5rem)", background: "var(--border)" }} />}
               </div>
             ))}
           </div>

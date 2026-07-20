@@ -104,8 +104,7 @@ export default function RecuperarSenha() {
 
           {!token && (
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
-              style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}>
+              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
               {loading ? "Enviando..." : "Enviar link"}
             </button>
           )}

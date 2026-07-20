@@ -179,7 +179,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="text-right">
-                  <div className="text-2xl font-black" style={{ color: streak >= 3 ? "#f97316" : "var(--gold)" }}>{streak}</div>
+                  <div className="text-2xl font-black" style={{ color: streak >= 3 ? "var(--orange)" : "var(--gold)" }}>{streak}</div>
                   <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">streak</div>
                 </div>
               </div>
@@ -189,15 +189,15 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {/* STATS ROW — 4 compact visual cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 enter-stagger">
             <div className="stat-glass px-3 py-3.5 text-center" title="Aulas com check-in confirmado neste mês">
-              <div className="text-lg font-black" style={{ color: "#60a5fa" }}><AnimatedCounter value={aulasEsteMes} /></div>
+              <div className="text-lg font-black" style={{ color: "var(--blue)" }}><AnimatedCounter value={aulasEsteMes} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("aulasEsteMes")}</div>
             </div>
             <div className="stat-glass px-3 py-3.5 text-center" title="Total de aulas desde o primeiro check-in">
-              <div className="text-lg font-black" style={{ color: "#a855f7" }}><AnimatedCounter value={totalAulas} /></div>
+              <div className="text-lg font-black" style={{ color: "var(--purple)" }}><AnimatedCounter value={totalAulas} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("totalAulas")}</div>
             </div>
             <div className="stat-glass px-3 py-3.5 text-center" title="Dias consecutivos com check-in. Não perca sua sequência!">
-              <div className="text-lg font-black" style={{ color: streak >= 3 ? "#f97316" : "#22c55e" }}><AnimatedCounter value={streak} /></div>
+              <div className="text-lg font-black" style={{ color: streak >= 3 ? "var(--orange)" : "var(--green)" }}><AnimatedCounter value={streak} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("streak")}</div>
             </div>
             <div className="stat-glass px-3 py-3.5 text-center" title="Percentual da meta semanal de 8 aulas">
@@ -218,7 +218,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                   </div>
                   <span className="text-[10px] text-[var(--text-muted)]">{pontos.toLocaleString()} / {gl.next.toLocaleString()} XP</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
+                <div className="h-1.5 rounded-full bg-[var(--bg-surface)] overflow-hidden">
                   <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${gl.progress}%` }} />
                 </div>
                 <div className="flex items-center justify-between mt-1.5">
@@ -239,7 +239,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {!aluno.academia && !bannerDismissed && (
             <div className="mb-4 p-4 rounded-2xl border border-[rgba(212,168,71,0.1)] relative" style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.06) 0%, rgba(212,168,71,0.02) 100%)" }}>
               <button onClick={() => setBannerDismissed(true)}
-                className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-white hover:bg-[rgba(255,255,255,0.06)] transition-all">
+                className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-white hover:bg-[var(--bg-surface)] transition-all">
                 <X className="w-3.5 h-3.5" />
               </button>
               <div className="flex items-start gap-3">
@@ -259,7 +259,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           )}
 
           {/* SECTION TABS */}
-          <div className="flex gap-1 mb-5 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
+          <div className="flex gap-1 mb-5 p-1 rounded-xl" style={{ background: "var(--bg-surface)" }}>
             {[
               { key: "jornada", label: "Jornada", icon: "🥋" },
               { key: "atividade", label: "Atividade", icon: "🔥" },
@@ -303,7 +303,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                   })}
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl" style={{ background: "rgba(255,255,255,0.02)" }}>
+                  <div className="flex items-center gap-3 p-3.5 rounded-xl" style={{ background: "var(--bg-surface)" }}>
                     <ProgressRing progress={progressoGrau * 100} size={64} strokeWidth={6} />
                     <div className="min-w-0">
                       <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("progressoFaixa")}</div>
@@ -311,7 +311,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                       <div className="text-[11px] text-[var(--text-secondary)]">{grau + 1}/{maxGraus} graus</div>
                     </div>
                   </div>
-                  <div className="p-3.5 rounded-xl flex flex-col justify-center" style={{ background: "rgba(255,255,255,0.02)" }}>
+                  <div className="p-3.5 rounded-xl flex flex-col justify-center" style={{ background: "var(--bg-surface)" }}>
                     <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("proximaFaixa")}</div>
                     <div className="font-black text-lg mt-1">
                       {graduacao?.aulasProxFx ? (
@@ -349,7 +349,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                       <span className="w-1 h-1 rounded-full bg-[var(--text-muted)]" />
                       <span className="text-[var(--text-secondary)]">{levelInfo.next.toLocaleString()} XP p/ próximo</span>
                     </div>
-                    <div className="mt-2 h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
+                    <div className="mt-2 h-1.5 rounded-full bg-[var(--bg-surface)] overflow-hidden">
                       <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${levelInfo.progress}%` }} />
                     </div>
                   </div>
