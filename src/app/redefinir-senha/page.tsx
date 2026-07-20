@@ -85,8 +85,7 @@ export default function RedefinirSenha() {
         </Link>
         <div className="text-center mb-8">
           <div className="relative inline-flex mb-4">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg relative z-10"
-              style={{ background: "var(--gold)", color: "#000" }}>
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg relative z-10 btn-gold">
               🥋
             </div>
             <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-[10px] animate-float"
@@ -102,8 +101,7 @@ export default function RedefinirSenha() {
           <div className="glass-card p-7 text-center space-y-4">
             <p className="text-emerald-500 font-semibold">Senha redefinida com sucesso!</p>
             <Link href="/login"
-              className="block w-full py-3.5 rounded-xl text-sm font-bold"
-              style={{ background: "var(--gold)", color: "#000" }}>
+              className="block w-full py-3.5 rounded-xl text-sm font-bold btn-gold">
               Fazer login
             </Link>
           </div>
@@ -135,8 +133,7 @@ export default function RedefinirSenha() {
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
-              style={{ background: "var(--gold)", color: "#000" }}>
+              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
               {loading ? "Redefinindo..." : "Redefinir senha"}
             </button>
           </form>

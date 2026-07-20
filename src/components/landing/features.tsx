@@ -5,13 +5,13 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 
 const cards = [
-  { icon: "📍", titleKey: "checkin", descKey: "checkinDesc", bg: "linear-gradient(135deg, #0f172a, #020617)", accent: "#3b82f6", radius: "24px 8px 24px 8px", floatY: [0, -6, 0], dur: 4 },
-  { icon: "📈", titleKey: "evolucao", descKey: "evolucaoDesc", bg: "linear-gradient(135deg, #1a1a2e, #16213e)", accent: "#6366f1", radius: "8px 24px 8px 24px", floatY: [0, 8, 0], dur: 5 },
-  { icon: "🏆", titleKey: "gamificacao", descKey: "gamificacaoDesc", bg: "linear-gradient(135deg, #1c1917, #292524)", accent: "#d4a847", radius: "24px 24px 8px 8px", floatY: [0, -4, 0], dur: 3.5 },
-  { icon: "🎯", titleKey: "metas", descKey: "metasDesc", bg: "linear-gradient(135deg, #0f172a, #020617)", accent: "#06b6d4", radius: "8px 8px 24px 24px", floatY: [0, 6, 0], dur: 6 },
-  { icon: "📱", titleKey: "whatsapp", descKey: "whatsappDesc", bg: "linear-gradient(135deg, #1a1a1a, #262626)", accent: "#22c55e", radius: "20px 4px 20px 4px", floatY: [0, -8, 0], dur: 4.5 },
-  { icon: "🥋", titleKey: "graduacao", descKey: "graduacaoDesc", bg: "linear-gradient(135deg, #7f1d1d, #450a0a)", accent: "#ef4444", radius: "4px 20px 4px 20px", floatY: [0, 5, 0], dur: 5.5 },
-  { icon: "🟢", titleKey: "wellhub", descKey: "wellhubDesc", bg: "linear-gradient(135deg, #064e3b, #022c22)", accent: "#10b981", radius: "16px 16px 16px 16px", floatY: [0, -5, 0], dur: 4.2 },
+  { icon: "📍", titleKey: "checkin", descKey: "checkinDesc", accent: "#3b82f6", radius: "24px 8px 24px 8px", floatY: [0, -6, 0], dur: 4 },
+  { icon: "📈", titleKey: "evolucao", descKey: "evolucaoDesc", accent: "#6366f1", radius: "8px 24px 8px 24px", floatY: [0, 8, 0], dur: 5 },
+  { icon: "🏆", titleKey: "gamificacao", descKey: "gamificacaoDesc", accent: "#d4a847", radius: "24px 24px 8px 8px", floatY: [0, -4, 0], dur: 3.5 },
+  { icon: "🎯", titleKey: "metas", descKey: "metasDesc", accent: "#06b6d4", radius: "8px 8px 24px 24px", floatY: [0, 6, 0], dur: 6 },
+  { icon: "📱", titleKey: "whatsapp", descKey: "whatsappDesc", accent: "#22c55e", radius: "20px 4px 20px 4px", floatY: [0, -8, 0], dur: 4.5 },
+  { icon: "🥋", titleKey: "graduacao", descKey: "graduacaoDesc", accent: "#ef4444", radius: "4px 20px 4px 20px", floatY: [0, 5, 0], dur: 5.5 },
+  { icon: "🟢", titleKey: "wellhub", descKey: "wellhubDesc", accent: "#10b981", radius: "16px 16px 16px 16px", floatY: [0, -5, 0], dur: 4.2 },
 ]
 
 function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string) => string }) {
@@ -25,9 +25,8 @@ function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string
       transition={{ duration: 0.5, delay: i * 0.08 }}
     >
       <motion.div
-        className="relative overflow-hidden h-full border cursor-pointer"
+        className="relative overflow-hidden h-full border cursor-pointer bg-[var(--bg-surface)]"
         style={{
-          background: c.bg,
           borderColor: c.accent + "40",
           borderRadius: c.radius,
         }}
@@ -42,7 +41,7 @@ function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string
         <div className="relative p-6 md:p-7">
           <div className="flex items-center gap-3 mb-0">
             <span className="text-3xl">{c.icon}</span>
-            <h3 className="text-base font-extrabold text-white">{t(c.titleKey)}</h3>
+            <h3 className="text-base font-extrabold" style={{ color: "var(--text)" }}>{t(c.titleKey)}</h3>
           </div>
 
           <motion.p

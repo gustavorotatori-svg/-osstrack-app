@@ -78,8 +78,13 @@ export default function PerfilClient({ role }: { role: string }) {
   if (!data) {
     return (
       <DashboardShell role={role}>
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-4 border-[var(--gold)] border-t-transparent rounded-full animate-spin" />
+        <div className="max-w-lg mx-auto space-y-5 animate-fade-in">
+          <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-6 space-y-4 text-center">
+            <div className="belt-loading rounded-full w-20 h-20 mx-auto" />
+            <div className="belt-loading rounded-lg h-6 w-32 mx-auto" />
+            <div className="belt-loading rounded-lg h-4 w-48 mx-auto" />
+          </div>
+          <div className="belt-loading rounded-lg h-10 w-full" />
         </div>
       </DashboardShell>
     )
@@ -127,8 +132,7 @@ export default function PerfilClient({ role }: { role: string }) {
                 }).catch(() => alert(t("erroExcluir")))
               }
             }}
-              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 active:scale-[0.97]"
-              style={{ border: "1px solid rgba(239,68,68,0.3)", color: "var(--red, #ef4444)" }}>
+              className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 active:scale-[0.97] btn-danger">
               <Trash2 className="w-4 h-4" /> {t("excluirConta")}
             </button>
           </div>
@@ -155,8 +159,7 @@ export default function PerfilClient({ role }: { role: string }) {
 
           {!editando ? (
             <button onClick={() => setEditando(true)}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
-              style={{ background: "var(--gold)", color: "#000" }}>
+              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
               <Pencil className="w-4 h-4 inline mr-2" />{t("editarPerfil")}
             </button>
           ) : (
@@ -201,13 +204,11 @@ export default function PerfilClient({ role }: { role: string }) {
               </div>
 
               <div className="flex gap-3 pt-1">
-                <button onClick={salvar} disabled={saving} className="flex-1 py-3 rounded-xl text-sm font-bold disabled:opacity-50 transition-all active:scale-[0.97]"
-                  style={{ background: "var(--gold)", color: "#000" }}>
+                <button onClick={salvar} disabled={saving} className="flex-1 py-3 rounded-xl text-sm font-bold disabled:opacity-50 transition-all active:scale-[0.97] btn-gold">
                   <Save className="w-4 h-4 inline mr-2" />{saving ? t("salvando") : t("salvar")}
                 </button>
                 <button onClick={() => { setEditando(false); setAvatarUrl(data.avatar || "") }}
-                  className="flex-1 py-3 rounded-xl text-sm font-medium transition-all"
-                  style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
+                  className="flex-1 py-3 rounded-xl text-sm font-medium transition-all btn-ghost">
                   <X className="w-4 h-4 inline mr-2" />{t("cancelar")}
                 </button>
               </div>

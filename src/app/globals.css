@@ -212,6 +212,12 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+.light .badge-gold { color: #111; }
+.light .belt-node.active { color: #111; }
+.light .level-badge span { color: #111; }
+.light .live-dot { background: #16a34a; }
+.light .streak-hot .streak-count { color: #ea580c; }
+.light .streak-on-fire .streak-count { color: #dc2626; }
 
 body {
   background: var(--bg);
@@ -660,6 +666,29 @@ body {
   color: var(--text);
   border-color: var(--border-hover);
   background: rgba(255,255,255,0.03);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  min-height: 44px;
+  text-decoration: none;
+  background: rgba(239,68,68,0.12);
+  color: var(--red);
+  border: 1px solid rgba(239,68,68,0.3);
+}
+.btn-danger:hover {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
 }
 
 /* ===== INPUTS ===== */

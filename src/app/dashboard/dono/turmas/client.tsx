@@ -288,7 +288,15 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
           )}
 
           {loading ? (
-            <div className="text-center py-20 text-[var(--text-secondary)] text-sm">{tr("carregando")}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-5 space-y-3">
+                  <div className="belt-loading rounded-lg h-5 w-3/4" />
+                  <div className="belt-loading rounded-lg h-3 w-1/2" />
+                  <div className="belt-loading rounded-lg h-20 w-full" />
+                </div>
+              ))}
+            </div>
           ) : turmas.length === 0 ? (
             <div className="glass-card text-center py-12">
               <ClipboardIcon className="w-10 h-10 mb-3 opacity-30 mx-auto" />

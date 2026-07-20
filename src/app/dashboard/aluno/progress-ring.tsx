@@ -13,7 +13,7 @@ export function ProgressRing({
 
   return (
     <svg width={size} height={size} className="transform -rotate-90 shrink-0">
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--bg-surface)" strokeWidth={strokeWidth} />
       <circle
         cx={size / 2}
         cy={size / 2}

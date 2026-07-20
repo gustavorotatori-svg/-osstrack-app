@@ -101,8 +101,7 @@ export default function DespesasPage() {
             <TrendingDown className="w-5 h-5 text-red-400" /> {t("despesasTitle")}
           </h3>
           <button onClick={() => setShowForm(!showForm)}
-            className="px-3 py-1.5 rounded-lg text-xs font-bold"
-            style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#ef4444" }}>
+            className="px-3 py-1.5 rounded-lg text-xs font-bold btn-danger">
             {showForm ? <X className="w-3.5 h-3.5 inline" /> : <Plus className="w-3.5 h-3.5 inline" />}
             {showForm ? t("fechar") : t("novaDespesa")}
           </button>
@@ -135,8 +134,7 @@ export default function DespesasPage() {
               <input className="input-field" value={form.observacao} onChange={e => setForm(f => ({ ...f, observacao: e.target.value }))} placeholder={t("obsPlaceholder")} />
             </div>
             <button type="submit" disabled={saving}
-              className="w-full py-3 rounded-xl font-bold text-sm disabled:opacity-50"
-              style={{ background: "#ef4444", color: "#fff" }}>
+              className="w-full py-3 rounded-xl font-bold text-sm disabled:opacity-50 btn-danger">
               {saving ? t("salvando") : t("criarDespesa")}
             </button>
           </form>
