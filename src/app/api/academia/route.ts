@@ -29,7 +29,7 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json()
-    const { nome, whatsapp, pixKey, raio, horarioInicio, horarioFim, wellhubAtivo } = body
+    const { nome, whatsapp, pixKey, raio, horarioInicio, horarioFim, wellhubAtivo, wellhubToken, wellhubGymId } = body
 
     const academia = await prisma.academia.update({
       where: { id: session.user.academiaId },
@@ -41,6 +41,8 @@ export async function PUT(request: Request) {
         ...(horarioInicio !== undefined && { horarioInicio }),
         ...(horarioFim !== undefined && { horarioFim }),
         ...(wellhubAtivo !== undefined && { wellhubAtivo }),
+        ...(wellhubToken !== undefined && { wellhubToken }),
+        ...(wellhubGymId !== undefined && { wellhubGymId }),
       },
     })
 

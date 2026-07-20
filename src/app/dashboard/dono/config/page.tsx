@@ -86,6 +86,8 @@ export default function ConfigPage() {
     horarioInicio: "06:00",
     horarioFim: "22:00",
     wellhubAtivo: false,
+    wellhubToken: "",
+    wellhubGymId: "",
   })
 
   useEffect(() => {
@@ -104,6 +106,8 @@ export default function ConfigPage() {
             horarioInicio: data.horarioInicio || "06:00",
             horarioFim: data.horarioFim || "22:00",
             wellhubAtivo: data.wellhubAtivo || false,
+            wellhubToken: data.wellhubToken || "",
+            wellhubGymId: data.wellhubGymId || "",
           })
         }
       })
@@ -248,10 +252,32 @@ export default function ConfigPage() {
                 </button>
               </label>
               {form.wellhubAtivo && (
-                <p className="text-[9px] text-emerald-400 mt-1.5 flex items-center gap-1">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                  Check-ins Wellhub serão registrados separadamente para relatórios
-                </p>
+                <div className="mt-3 space-y-3">
+                  <p className="text-[9px] text-emerald-400 flex items-center gap-1">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    Check-ins validados em tempo real com a API oficial do Wellhub
+                  </p>
+                  <div>
+                    <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">Wellhub Auth Token</label>
+                    <input
+                      type="password"
+                      className="input-field text-sm"
+                      placeholder="Bearer token fornecido pelo Wellhub"
+                      value={form.wellhubToken}
+                      onChange={(e) => setForm((p) => ({ ...p, wellhubToken: e.target.value }))}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">Wellhub Gym ID (X-Gym-Id)</label>
+                    <input
+                      type="text"
+                      className="input-field text-sm"
+                      placeholder="ID da sua academia no Wellhub"
+                      value={form.wellhubGymId}
+                      onChange={(e) => setForm((p) => ({ ...p, wellhubGymId: e.target.value }))}
+                    />
+                  </div>
+                </div>
               )}
             </div>
 

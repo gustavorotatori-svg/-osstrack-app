@@ -37,6 +37,8 @@ model Academia {
   checkinCodigos  CheckinCodigo[]
   rankingVisivel  Boolean  @default(true)
   wellhubAtivo    Boolean  @default(false)
+  wellhubToken    String?
+  wellhubGymId    String?
   planosMensalidade PlanoMensalidade[]
   contratos         Contrato[]
   cobrancas         Cobranca[]
@@ -92,8 +94,9 @@ model Usuario {
    dataNascimento  String?
    nivelDisciplina String?
    pushSubscriptions PushSubscription[]
-   premiumSubscription PremiumSubscription?
- }
+    premiumSubscription PremiumSubscription?
+    wellhubId       String?
+  }
 
 model PlanoMensalidade {
   id         String   @id @default(cuid())
