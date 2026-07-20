@@ -16,7 +16,7 @@
     "statsAcademias": "Academias",
     "statsAlunos": "Alunos ativos",
     "statsRetencao": "Retenção",
-    "subtitle": "Check-in por GPS, evolução por faixa, ranking, mural, financeiro e muito mais. Tudo grátis."
+    "subtitle": "Check-in por GPS, Wellhub, evolução por faixa, ranking, mural, financeiro e muito mais. Tudo grátis."
   },
   "frases": [
     "Toda faixa preta foi uma faixa branca que nunca desistiu.",
@@ -40,7 +40,9 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Links diretos para WhatsApp. Compartilhe check-ins, convites e resultados com um clique.",
     "graduacao": "Regras de Graduação",
-    "graduacaoDesc": "Regras claras, critérios justos e promoção automática. Adeus, planilha do Excel."
+    "graduacaoDesc": "Regras claras, critérios justos e promoção automática. Adeus, planilha do Excel.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Integração com Wellhub para check-in de alunos parceiros. Registro separado para relatórios financeiros."
   },
   "comoFunciona": {
     "badge": "Como funciona",

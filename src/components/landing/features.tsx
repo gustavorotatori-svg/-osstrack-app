@@ -11,6 +11,7 @@ const cards = [
   { icon: "🎯", titleKey: "metas", descKey: "metasDesc", bg: "linear-gradient(135deg, #0f172a, #020617)", accent: "#06b6d4", radius: "8px 8px 24px 24px", floatY: [0, 6, 0], dur: 6 },
   { icon: "📱", titleKey: "whatsapp", descKey: "whatsappDesc", bg: "linear-gradient(135deg, #1a1a1a, #262626)", accent: "#22c55e", radius: "20px 4px 20px 4px", floatY: [0, -8, 0], dur: 4.5 },
   { icon: "🥋", titleKey: "graduacao", descKey: "graduacaoDesc", bg: "linear-gradient(135deg, #7f1d1d, #450a0a)", accent: "#ef4444", radius: "4px 20px 4px 20px", floatY: [0, 5, 0], dur: 5.5 },
+  { icon: "🟢", titleKey: "wellhub", descKey: "wellhubDesc", bg: "linear-gradient(135deg, #064e3b, #022c22)", accent: "#10b981", radius: "16px 16px 16px 16px", floatY: [0, -5, 0], dur: 4.2 },
 ]
 
 function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string) => string }) {
