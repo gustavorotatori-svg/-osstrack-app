@@ -16,7 +16,7 @@
     "statsAcademias": "Academies",
     "statsAlunos": "Active students",
     "statsRetencao": "Retention",
-    "subtitle": "GPS check-in, belt tracking, ranking, wall, finances and more. All free."
+    "subtitle": "GPS check-in, Wellhub, belt tracking, ranking, wall, finances and more. All free."
   },
   "frases": [
     "Every black belt was once a white belt who never gave up.",
@@ -40,7 +40,9 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Direct WhatsApp links. Share check-ins, invites and results with one click.",
     "graduacao": "Graduation Rules",
-    "graduacaoDesc": "Clear rules, fair criteria and automatic promotions. Goodbye, Excel spreadsheet."
+    "graduacaoDesc": "Clear rules, fair criteria and automatic promotions. Goodbye, Excel spreadsheet.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Wellhub integration for partner student check-ins. Separate tracking for financial reports."
   },
   "comoFunciona": {
     "badge": "How it works",
