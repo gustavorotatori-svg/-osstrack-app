@@ -85,6 +85,7 @@ export default function ConfigPage() {
     raio: 200,
     horarioInicio: "06:00",
     horarioFim: "22:00",
+    wellhubAtivo: false,
   })
 
   useEffect(() => {
@@ -102,6 +103,7 @@ export default function ConfigPage() {
             raio: data.raio || 200,
             horarioInicio: data.horarioInicio || "06:00",
             horarioFim: data.horarioFim || "22:00",
+            wellhubAtivo: data.wellhubAtivo || false,
           })
         }
       })
@@ -221,6 +223,36 @@ export default function ConfigPage() {
                 <input type="time" className="input-field" value={form.horarioInicio} onChange={(e) => setForm((p) => ({ ...p, horarioInicio: e.target.value }))} />
                 <input type="time" className="input-field" value={form.horarioFim} onChange={(e) => setForm((p) => ({ ...p, horarioFim: e.target.value }))} />
               </div>
+            </div>
+
+            <div className="h-px bg-[var(--border)]" />
+
+            <div>
+              <label className="flex items-center justify-between cursor-pointer">
+                <div>
+                  <p className="text-xs font-semibold text-[var(--text-secondary)]">Wellhub (Gympass)</p>
+                  <p className="text-[9px] text-[var(--text-muted)] mt-0.5">Aceitar check-in de alunos via Wellhub</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setForm((p) => ({ ...p, wellhubAtivo: !p.wellhubAtivo }))}
+                  className={`relative w-11 h-6 rounded-full transition-all duration-200 ${
+                    form.wellhubAtivo ? "bg-[var(--gold)]" : "bg-[var(--border)]"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-all duration-200 shadow ${
+                      form.wellhubAtivo ? "translate-x-5" : ""
+                    }`}
+                  />
+                </button>
+              </label>
+              {form.wellhubAtivo && (
+                <p className="text-[9px] text-emerald-400 mt-1.5 flex items-center gap-1">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Check-ins Wellhub serão registrados separadamente para relatórios
+                </p>
+              )}
             </div>
 
             <button

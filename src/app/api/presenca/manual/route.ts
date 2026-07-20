@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { alunoId } = await request.json()
+    const { alunoId, origem } = await request.json()
     if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
 
     const aluno = await prisma.usuario.findUnique({
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         horario,
         status: "confirmed",
         confirmadoPor: session.user.id,
+        origem: origem || "app",
       },
     })
 
