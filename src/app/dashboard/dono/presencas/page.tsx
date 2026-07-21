@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { PresencasClient } from "../../professor/presencas/client"
+import { BackButton } from "@/components/ui/back-button"
 
 export default async function DonoPresencasPage() {
   const session = await getServerSession(authOptions)
@@ -26,17 +27,20 @@ export default async function DonoPresencasPage() {
   })
 
   return (
-    <PresencasClient
-      role="dono"
-      presencasHoje={presencasHoje.map((p) => ({
-        id: p.id,
-        aluno: { id: p.aluno.id, nome: p.aluno.nome, faixa: p.aluno.faixa },
-        data: p.data.toISOString(),
-        horario: p.horario,
-        status: p.status,
-        turma: p.turma || "",
-      }))}
-      todosAlunos={alunos}
-    />
+    <>
+      <BackButton href="/dashboard/dono" />
+      <PresencasClient
+        role="dono"
+        presencasHoje={presencasHoje.map((p) => ({
+          id: p.id,
+          aluno: { id: p.aluno.id, nome: p.aluno.nome, faixa: p.aluno.faixa },
+          data: p.data.toISOString(),
+          horario: p.horario,
+          status: p.status,
+          turma: p.turma || "",
+        }))}
+        todosAlunos={alunos}
+      />
+    </>
   )
 }

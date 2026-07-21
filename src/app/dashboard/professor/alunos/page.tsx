@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { AlunosClient } from "./client"
+import { BackButton } from "@/components/ui/back-button"
 
 export default async function ProfessorAlunosPage() {
   const session = await getServerSession(authOptions)
@@ -17,8 +18,11 @@ export default async function ProfessorAlunosPage() {
   })
 
   return (
-    <AlunosClient
-      alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
-    />
+    <>
+      <BackButton href="/dashboard/professor" />
+      <AlunosClient
+        alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
+      />
+    </>
   )
 }

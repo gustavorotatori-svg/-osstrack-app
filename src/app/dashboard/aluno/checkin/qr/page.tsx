@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import QRCode from "qrcode"
 import { toast } from "sonner"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function AlunoQRPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -29,6 +30,7 @@ export default function AlunoQRPage() {
 
   return (
     <DashboardShell role="aluno">
+      <BackButton href="/dashboard/aluno/checkin" />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-5 text-center">

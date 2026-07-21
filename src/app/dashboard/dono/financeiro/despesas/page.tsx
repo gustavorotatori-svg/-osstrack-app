@@ -6,6 +6,7 @@ import { useT } from "@/lib/use-t"
 import { toast } from "sonner"
 import { TrendingDown, Plus, X } from "lucide-react"
 import { CardSkeleton } from "@/components/ui/skeleton"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function DespesasPage() {
   const t = useT("dono.financeiro")
@@ -96,6 +97,7 @@ export default function DespesasPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono/financeiro" />
       <div className="max-w-5xl mx-auto space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="font-bold text-lg flex items-center gap-2">

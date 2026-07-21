@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { TreinoTimer } from "@/components/treino/treino-timer"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 import { Play, Check, Clock, History, Dumbbell, Target, ChevronDown, ChevronUp, Flame, BarChart3 } from "lucide-react"
 
 type Exercise = {
@@ -110,6 +111,7 @@ export default function TreinoPage() {
 
   return (
     <DashboardShell role="aluno">
+      <BackButton href="/dashboard/aluno" />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
 

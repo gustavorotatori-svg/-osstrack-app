@@ -1,5 +1,11 @@
+import { BackButton } from "@/components/ui/back-button"
 import PerfilClient from "../../shared/perfil-client"
 
 export default function PerfilPage() {
-  return <PerfilClient role="aluno" />
+  return (
+    <>
+      <BackButton href="/dashboard/aluno" />
+      <PerfilClient role="aluno" />
+    </>
+  )
 }

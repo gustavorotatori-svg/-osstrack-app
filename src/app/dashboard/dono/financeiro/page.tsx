@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { CreditCardIcon, TrendingDown, TrendingUp, ArrowRight } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts"
 import { CardSkeleton } from "@/components/ui/skeleton"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function FinanceiroPage() {
   const t = useT("dono.financeiro")
@@ -63,6 +64,7 @@ export default function FinanceiroPage() {
   if (loading) {
     return (
       <DashboardShell role="dono">
+        <BackButton href="/dashboard/dono" />
         <div className="max-w-5xl mx-auto space-y-4 animate-fade-in">
           <CardSkeleton />
           <div className="grid grid-cols-2 gap-3">
@@ -92,6 +94,7 @@ export default function FinanceiroPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono" />
       <div className="max-w-5xl mx-auto space-y-4">
         <div className="glass-card-gold p-5 text-center">
           <CreditCardIcon className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />

@@ -9,6 +9,7 @@ import { playCheckinSound, playStreakSound, playCelebrationSound } from "@/lib/s
 import { useT } from "@/lib/use-t"
 import { FlameIcon, TargetIcon, CheckIcon, XIcon, Share2Icon } from "@/components/ui/icons"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 import { toast } from "sonner"
 
 function Confetti() {
@@ -189,6 +190,7 @@ export default function CheckinPage() {
   if (loading) {
     return (
       <DashboardShell role="aluno">
+        <BackButton href="/dashboard/aluno" />
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="bg-[var(--dark-card)] border border-[var(--dark-border)] rounded-2xl p-6 text-center space-y-4">
             <Skeleton className="h-4 w-32 mx-auto" />
@@ -219,6 +221,7 @@ export default function CheckinPage() {
 
   return (
     <DashboardShell role="aluno">
+      <BackButton href="/dashboard/aluno" />
       {showConfetti && <Confetti />}
       <CelebrationOverlay show={showCelebration} message={celebrationMsg} submessage={`${t("continueAssim")} 🥋`} />
       <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("metaSemanalConcluida")}`} submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />

@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { BackButton } from "@/components/ui/back-button"
 import { RankingClient } from "./client"
 
 export default async function RankingPage() {
@@ -63,12 +64,15 @@ export default async function RankingPage() {
   }
 
   return (
-    <RankingClient
+    <>
+      <BackButton href="/dashboard/aluno" />
+      <RankingClient
       initialRanking={ranking}
       alunoId={session.user.id}
       belts={belts}
       initialMestres={mestres}
       visivel={academia?.rankingVisivel ?? true}
     />
+    </>
   )
 }

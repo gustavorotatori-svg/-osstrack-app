@@ -9,6 +9,7 @@ import { getBeltEmoji } from "@/lib/utils"
 import { Share2, Copy, Download, Image } from "lucide-react"
 import { toast } from "sonner"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function CompartilharPage() {
   const t = useT("aluno.compartilhar")
@@ -249,6 +250,7 @@ export default function CompartilharPage() {
   if (loading) {
     return (
       <DashboardShell role="aluno">
+        <BackButton href="/dashboard/aluno" />
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-6 text-center space-y-4">
             <div className="h-4 w-32 glass-card rounded-lg mx-auto" />
@@ -276,6 +278,7 @@ export default function CompartilharPage() {
 
   return (
     <DashboardShell role="aluno">
+      <BackButton href="/dashboard/aluno" />
       <PageTransition>
         <div className="animate-fade-in max-w-5xl mx-auto space-y-4">
 
