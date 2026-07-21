@@ -52,6 +52,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "tipo e conteudo são obrigatórios" }, { status: 400 })
     }
 
+    if (typeof tipo !== "string" || typeof conteudo !== "string" || conteudo.length > 2000) {
+      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
+    }
+
     const postagem = await prisma.postagemMural.create({
       data: {
         academiaId: session.user.academiaId,

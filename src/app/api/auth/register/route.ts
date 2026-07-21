@@ -61,7 +61,8 @@ export async function POST(request: Request) {
 
     const existing = await prisma.usuario.findUnique({ where: { email } })
     if (existing) {
-      return NextResponse.json({ error: "Este e-mail já está cadastrado" }, { status: 409 })
+      // Return generic success to prevent user enumeration
+      return NextResponse.json({ success: true, message: "Conta criada com sucesso" })
     }
 
     const hashed = await bcrypt.hash(senha, 10)

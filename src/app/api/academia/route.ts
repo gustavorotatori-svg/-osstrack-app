@@ -31,19 +31,25 @@ export async function PUT(request: Request) {
     const body = await request.json()
     const { nome, whatsapp, pixKey, raio, horarioInicio, horarioFim, wellhubAtivo, wellhubToken, wellhubGymId } = body
 
+    // Validate input types
+    const data: Record<string, unknown> = {}
+    if (nome !== undefined && typeof nome === "string" && nome.length > 0 && nome.length <= 120) data.nome = nome
+    if (whatsapp !== undefined && (whatsapp === null || (typeof whatsapp === "string" && whatsapp.length <= 20))) data.whatsapp = whatsapp
+    if (pixKey !== undefined && (pixKey === null || (typeof pixKey === "string" && pixKey.length <= 100))) data.pixKey = pixKey
+    if (raio !== undefined && typeof raio === "number" && raio >= 50 && raio <= 5000) data.raio = raio
+    if (horarioInicio !== undefined && (horarioInicio === null || (typeof horarioInicio === "string" && horarioInicio.length <= 5))) data.horarioInicio = horarioInicio
+    if (horarioFim !== undefined && (horarioFim === null || (typeof horarioFim === "string" && horarioFim.length <= 5))) data.horarioFim = horarioFim
+    if (wellhubAtivo !== undefined && typeof wellhubAtivo === "boolean") data.wellhubAtivo = wellhubAtivo
+    if (wellhubToken !== undefined && (wellhubToken === null || (typeof wellhubToken === "string" && wellhubToken.length <= 500))) data.wellhubToken = wellhubToken
+    if (wellhubGymId !== undefined && (wellhubGymId === null || (typeof wellhubGymId === "string" && wellhubGymId.length <= 50))) data.wellhubGymId = wellhubGymId
+
+    if (Object.keys(data).length === 0) {
+      return NextResponse.json({ error: "Nenhum dado válido para atualizar" }, { status: 400 })
+    }
+
     const academia = await prisma.academia.update({
       where: { id: session.user.academiaId },
-      data: {
-        ...(nome !== undefined && { nome }),
-        ...(whatsapp !== undefined && { whatsapp }),
-        ...(pixKey !== undefined && { pixKey }),
-        ...(raio !== undefined && { raio }),
-        ...(horarioInicio !== undefined && { horarioInicio }),
-        ...(horarioFim !== undefined && { horarioFim }),
-        ...(wellhubAtivo !== undefined && { wellhubAtivo }),
-        ...(wellhubToken !== undefined && { wellhubToken }),
-        ...(wellhubGymId !== undefined && { wellhubGymId }),
-      },
+      data,
     })
 
     return NextResponse.json(academia)

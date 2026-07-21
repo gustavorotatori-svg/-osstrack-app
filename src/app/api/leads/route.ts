@@ -3,14 +3,31 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { z } from "zod"
+import { checkRateLimit } from "@/lib/rate-limit"
+
+const leadSchema = z.object({
+  nome: z.string().min(1, "Nome obrigatório").max(120),
+  email: z.string().email("E-mail inválido").max(255),
+  academia: z.string().max(120).optional(),
+  telefone: z.string().max(20).optional(),
+})
 
 export async function POST(req: Request) {
   try {
-    const { nome, email, academia, telefone } = await req.json()
-
-    if (!nome || !email) {
-      return NextResponse.json({ error: "Nome e email são obrigatórios" }, { status: 400 })
+    const ip = req.headers.get("x-forwarded-for")?.split(",")?.[0]?.trim() || "127.0.0.1"
+    const rateCheck = await checkRateLimit(`ip:${ip}`, "leads")
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas. Tente novamente em 1 minuto." }, { status: 429 })
     }
+
+    const body = await req.json()
+    const parsed = leadSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
+    }
+
+    const { nome, email, academia, telefone } = parsed.data
 
     const lead = await prisma.lead.create({
       data: { nome, email, academia, telefone },

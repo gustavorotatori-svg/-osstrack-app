@@ -36,6 +36,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "descricao, valor e dataVencimento são obrigatórios" }, { status: 400 })
     }
 
+    if (typeof descricao !== "string" || descricao.length > 200 || typeof valor !== "number" || valor < 0 || valor > 10000000) {
+      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
+    }
+
     const despesa = await prisma.despesa.create({
       data: {
         academiaId: session.user.academiaId,
