@@ -108,13 +108,13 @@ export default function FinanceiroPage() {
             <h3 className="font-bold text-sm mb-3">Receita vs Despesa</h3>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={chartData} barCategoryGap="20%">
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="name" tick={{ fontSize: 10, fill: "rgba(255,255,255,0.4)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 10, fill: "rgba(255,255,255,0.4)" }} axisLine={false} tickLine={false} tickFormatter={(v: any) => `R$${(Number(v)/100).toFixed(0)}`} />
-                <Tooltip contentStyle={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8, fontSize: 12 }} formatter={(value: any) => `R$ ${(Number(value)/100).toFixed(2)}`} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: "var(--text-muted)" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: "var(--text-muted)" }} axisLine={false} tickLine={false} tickFormatter={(v: any) => `R$${(Number(v)/100).toFixed(0)}`} />
+                <Tooltip contentStyle={{ background: "var(--bg-surface)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--text)" }} formatter={(value: any) => `R$ ${(Number(value)/100).toFixed(2)}`} />
                 <Legend wrapperStyle={{ fontSize: 10 }} />
-                <Bar dataKey="receita" name="Receita" fill="#22c55e" radius={[4,4,0,0]} />
-                <Bar dataKey="despesa" name="Despesa" fill="#ef4444" radius={[4,4,0,0]} />
+                <Bar dataKey="receita" name="Receita" fill="var(--green)" radius={[4,4,0,0]} />
+                <Bar dataKey="despesa" name="Despesa" fill="var(--red)" radius={[4,4,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

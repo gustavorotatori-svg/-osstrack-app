@@ -100,14 +100,14 @@ export function Providers({ children }: { children: ReactNode }) {
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
-          {mounted ? children : <div className="min-h-screen" style={{ background: theme === "light" ? "#f5f5f0" : "#0a0a0a" }} />}
+          {mounted ? children : <div className="min-h-screen" style={{ background: "var(--bg)" }} />}
           <Toaster
             position="top-center"
             toastOptions={{
               style: {
-                background: theme === "light" ? '#fff' : '#111',
-                border: theme === "light" ? '1px solid #e0e0e0' : '1px solid #1e1e1e',
-                color: theme === "light" ? '#1a1a1a' : '#fff',
+                background: "var(--bg-surface)",
+                border: "1px solid var(--border)",
+                color: "var(--text)",
                 borderRadius: '12px',
               },
             }}
