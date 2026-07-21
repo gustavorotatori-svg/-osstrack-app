@@ -6,7 +6,13 @@ import prisma from "./prisma"
 import type { UserRole } from "./auth-types"
 
 function getSecret(): string {
-  if (process.env.NEXTAUTH_SECRET) return process.env.NEXTAUTH_SECRET
+  const secret = process.env.NEXTAUTH_SECRET
+  if (secret) {
+    if (secret.length < 32) {
+      console.error("[SECURITY] NEXTAUTH_SECRET should be at least 32 characters for cryptographic strength")
+    }
+    return secret
+  }
   if (process.env.NODE_ENV === "production") {
     throw new Error("NEXTAUTH_SECRET é obrigatório em produção")
   }
@@ -106,5 +112,38 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // 7 days (reduced from 30-day default)
+  },
+  jwt: {
+    maxAge: 7 * 24 * 60 * 60,
+  },
+  cookies: {
+    sessionToken: {
+      name: "__Secure-next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+    callbackUrl: {
+      name: "__Secure-next-auth.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+    csrfToken: {
+      name: "__Host-next-auth.csrf-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
 }

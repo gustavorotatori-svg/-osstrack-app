@@ -17,6 +17,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Dados de inscrição incompletos" }, { status: 400 })
     }
 
+    if (typeof endpoint !== "string" || typeof p256dh !== "string" || typeof auth !== "string" || endpoint.length > 500 || p256dh.length > 500 || auth.length > 500) {
+      return NextResponse.json({ error: "Dados de inscrição inválidos" }, { status: 400 })
+    }
+
     const existing = await prisma.pushSubscription.findUnique({
       where: { endpoint },
     })

@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   const { nome, descricao, cor, icone, categoria, modalidade, maxAlunos } = await request.json()
-  if (!nome) return NextResponse.json({ error: "Nome obrigatório" }, { status: 400 })
+  if (!nome || typeof nome !== "string" || nome.length > 100) return NextResponse.json({ error: "Nome obrigatório" }, { status: 400 })
 
   const turma = await prisma.turma.create({
     data: {

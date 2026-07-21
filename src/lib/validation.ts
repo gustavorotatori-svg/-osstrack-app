@@ -4,7 +4,13 @@ export const ROLES = ["aluno", "professor", "dono"] as const
 
 export const emailSchema = z.string().email("E-mail inválido").max(255)
 
-export const senhaSchema = z.string().min(8, "A senha deve ter no mínimo 8 caracteres").max(128)
+export const senhaSchema = z
+  .string()
+  .min(8, "A senha deve ter no mínimo 8 caracteres")
+  .max(128)
+  .regex(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula")
+  .regex(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
+  .regex(/[0-9]/, "A senha deve conter pelo menos um número")
 
 export const registerSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório").max(120),
@@ -105,4 +111,22 @@ export const redefinirSenhaSchema = z.object({
 export const conviteSchema = z.object({
   tipo: z.enum(["professor", "aluno", "amigo", "academia"]),
   email: emailSchema.optional(),
+})
+
+export const muralPostSchema = z.object({
+  tipo: z.enum(["geral", "treino", "conquista", "evento"]),
+  conteudo: z.string().min(1, "Conteúdo obrigatório").max(2000),
+})
+
+export const despesaSchema = z.object({
+  descricao: z.string().min(1, "Descrição obrigatória").max(200),
+  valor: z.coerce.number().min(1, "Valor obrigatório").max(10000000),
+  categoria: z.string().max(50).optional(),
+  dataVencimento: z.string().min(1, "Data de vencimento obrigatória"),
+  observacao: z.string().max(500).optional(),
+})
+
+export const whatsappSchema = z.object({
+  alunoId: z.string().min(1),
+  mensagem: z.string().max(500).optional(),
 })
