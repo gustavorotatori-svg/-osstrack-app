@@ -22,7 +22,7 @@ export default function DashboardRedirect() {
   }, [session, status, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
       <div className="flex flex-col items-center gap-3">
         <div className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center text-lg text-black animate-pulse">
           🥋

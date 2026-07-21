@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { toast } from "sonner"
+import { CardSkeleton } from "@/components/ui/skeleton"
 
 export default function CobrancasPage() {
   const t = useT("dono.financeiro")
@@ -64,7 +65,7 @@ export default function CobrancasPage() {
         </div>
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
+          <div className="space-y-2">{[1,2,3].map(i => <CardSkeleton key={i} />)}</div>
         ) : filtradas.length === 0 ? (
           <div className="glass-card p-6 text-center">
             <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaCobranca")}</p>
@@ -91,7 +92,7 @@ export default function CobrancasPage() {
                     {c.status === "pendente" && (
                       <div className="flex gap-1 mt-1 justify-end">
                         <select onChange={e => { if (e.target.value) pagarCobranca(c.id, e.target.value); e.target.value = "" }}
-                          className="text-[9px] px-1 py-0.5 rounded bg-black border border-[var(--border)] text-white">
+                          className="text-[9px] px-1 py-0.5 rounded input-field">
                           <option value="">{t("registrarPagamento")}</option>
                           {metodos.map(m => <option key={m} value={m}>{t(m)}</option>)}
                         </select>

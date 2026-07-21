@@ -22,7 +22,7 @@ export function MobileMenu() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden p-2 rounded-xl text-[var(--white-muted)] hover:text-white hover:bg-white/5 transition-all"
+        className="md:hidden p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text)] hover:bg-[var(--bg-surface)] transition-all"
         aria-label="Menu"
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

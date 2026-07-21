@@ -34,7 +34,7 @@ export function Navbar() {
           <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shrink-0 shadow-lg shadow-[var(--gold)]/10">
             <DumbbellIcon className="w-5 h-5 text-black" />
           </span>
-          <span className="hidden sm:inline text-white">OssTrack</span>
+          <span className={`hidden sm:inline transition-colors ${scrolled ? "text-white" : "text-[var(--text)]"}`}>OssTrack</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
@@ -46,7 +46,7 @@ export function Navbar() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm text-white/80 hover:text-white transition-colors"
+              className={`text-sm transition-colors ${scrolled ? "text-white/80 hover:text-white" : "text-[var(--text-secondary)] hover:text-[var(--text)]"}`}
             >
               {l.label}
             </Link>
@@ -62,7 +62,7 @@ export function Navbar() {
             <div className="flex items-center gap-2 ml-2">
               <Link
                 href="/login"
-                className="px-3.5 py-2 rounded-xl font-semibold text-sm text-white/80 hover:text-white transition-colors"
+                className={`px-3.5 py-2 rounded-xl font-semibold text-sm transition-colors ${scrolled ? "text-white/80 hover:text-white" : "text-[var(--text-secondary)] hover:text-[var(--text)]"}`}
               >
                 {t("entrar")}
               </Link>

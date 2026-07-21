@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { toast } from "sonner"
+import { CardSkeleton } from "@/components/ui/skeleton"
 
 export default function ContratosPage() {
   const t = useT("dono.financeiro")
@@ -86,7 +87,7 @@ export default function ContratosPage() {
             <div>
               <label className="text-[11px] text-[var(--text-secondary)]">{t("aluno")}</label>
               <select value={form.alunoId} onChange={e => setForm({...form, alunoId: e.target.value})} required
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1">
+                className="w-full input-field px-3 py-2.5 mt-1">
                 <option value="">{t("selecioneAluno")}</option>
                 {alunos.map((a: any) => (
                   <option key={a.id} value={a.id}>{a.nome} - {a.faixa}</option>
@@ -99,7 +100,7 @@ export default function ContratosPage() {
                 const plano = planos.find(p => p.id === e.target.value)
                 setForm({...form, planoId: e.target.value, valor: plano ? (plano.valor / 100).toFixed(2) : "" })
               }} required
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1">
+                className="w-full input-field px-3 py-2.5 mt-1">
                 <option value="">{t("selecionePlano")}</option>
                 {planos.filter(p => p.ativo).map((p: any) => (
                   <option key={p.id} value={p.id}>{p.nome} - R$ {(p.valor / 100).toFixed(2)}</option>
@@ -109,7 +110,7 @@ export default function ContratosPage() {
             <div>
               <label className="text-[11px] text-[var(--text-secondary)]">{t("valorContrato")}</label>
               <input type="number" step="0.01" min="0" value={form.valor} onChange={e => setForm({...form, valor: e.target.value})} required
-                className="w-full px-3 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm mt-1" />
+                className="w-full input-field px-3 py-2.5 mt-1" />
             </div>
             <button type="submit" disabled={saving}
               className="w-full py-3 rounded-xl font-bold text-sm btn-gold disabled:opacity-50">
@@ -119,7 +120,7 @@ export default function ContratosPage() {
         )}
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
+          <div className="space-y-2">{[1,2,3].map(i => <CardSkeleton key={i} />)}</div>
         ) : contratos.length === 0 ? (
           <div className="glass-card p-6 text-center">
             <p className="text-sm text-[var(--text-secondary)]">{t("nenhumContrato")}</p>

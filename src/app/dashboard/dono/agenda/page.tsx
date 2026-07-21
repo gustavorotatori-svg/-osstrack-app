@@ -6,6 +6,7 @@ import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 import { CalendarIcon, XIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
+import { CardSkeleton } from "@/components/ui/skeleton"
 import { PageTransition } from "@/components/ui/page-transition"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
@@ -289,17 +290,11 @@ export default function DonoAgendaPage() {
           )}
 
           {loading ? (
-            <div className="glass-card p-8 space-y-4">
-              <div className="h-5 w-48 rounded bg-[var(--bg-card)] mx-auto animate-pulse" />
-              <div className="h-3 w-64 rounded bg-[var(--bg-card)] mx-auto animate-pulse" />
-              <div className="grid grid-cols-7 gap-2 mt-4">
-                {Array.from({ length: 7 }).map((_, i) => (
-                  <div key={i} className="space-y-2">
-                    <div className="h-3 w-full rounded bg-[var(--bg-card)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
-                    <div className="h-20 rounded bg-[var(--bg-card)] animate-pulse" />
-                  </div>
+            <div className="glass-card p-4 sm:p-6 space-y-4">
+              <CardSkeleton />
+              <div className="grid grid-cols-7 gap-2">
+                {Array.from({ length: 14 }).map((_, i) => (
+                  <CardSkeleton key={i} />
                 ))}
               </div>
             </div>

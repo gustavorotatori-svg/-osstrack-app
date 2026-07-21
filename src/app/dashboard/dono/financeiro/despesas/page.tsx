@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { toast } from "sonner"
 import { TrendingDown, Plus, X } from "lucide-react"
+import { CardSkeleton } from "@/components/ui/skeleton"
 
 export default function DespesasPage() {
   const t = useT("dono.financeiro")
@@ -157,7 +158,7 @@ export default function DespesasPage() {
         )}
 
         {loading ? (
-          <div className="animate-pulse space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--border)] rounded-xl" />)}</div>
+          <div className="space-y-2">{[1,2,3].map(i => <CardSkeleton key={i} />)}</div>
         ) : filtradas.length === 0 ? (
           <div className="glass-card p-6 text-center">
             <p className="text-sm text-[var(--text-secondary)]">{t("nenhumaDespesa")}</p>
