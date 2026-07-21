@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 
 function ConviteCard({ tipo, label, state, setState }: {
   tipo: string
@@ -131,6 +132,7 @@ export default function ConfigPage() {
   if (loading) {
     return (
       <DashboardShell role="dono">
+        <BackButton href="/dashboard/dono" />
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-6 space-y-4">
             <div className="h-6 w-48 glass-card rounded-lg" />
@@ -154,6 +156,7 @@ export default function ConfigPage() {
   if (error) {
     return (
       <DashboardShell role="dono">
+        <BackButton href="/dashboard/dono" />
         <div className="max-w-5xl mx-auto">
           <div className="glass-card p-12 text-center">
             <p className="text-red-400 font-semibold">{error}</p>
@@ -172,6 +175,7 @@ export default function ConfigPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono" />
       <PageTransition>
         <div className="max-w-5xl mx-auto animate-fade-in space-y-4">
           <form onSubmit={salvar} className="glass-card p-6 space-y-4">

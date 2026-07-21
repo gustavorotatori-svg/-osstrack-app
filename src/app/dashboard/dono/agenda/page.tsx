@@ -8,6 +8,7 @@ import { CalendarIcon, XIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { PageTransition } from "@/components/ui/page-transition"
+import { BackButton } from "@/components/ui/back-button"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 const diaNomes = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
@@ -149,6 +150,7 @@ export default function DonoAgendaPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono" />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="text-center">

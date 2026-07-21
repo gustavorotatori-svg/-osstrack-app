@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import prisma from "@/lib/prisma"
+import Link from "next/link"
 
 const beltIcons: Record<string, string> = {
   Branca: "⬜", Azul: "🟦", Roxa: "🟪", Marrom: "🟫", Preta: "⬛",
@@ -39,6 +40,10 @@ export default async function CompartilharRegrasPage({ params }: { params: Promi
       </div>
 
       <main className="relative z-10 max-w-lg mx-auto px-4 py-8">
+        <Link href="/" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--white-muted)] hover:text-white transition-colors mb-6">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+          Voltar
+        </Link>
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-3">
             <div className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center text-sm text-black font-bold animate-float">

@@ -6,6 +6,7 @@ import { CameraScanner } from "@/components/scanner/camera-scanner"
 import { useT } from "@/lib/use-t"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
+import { BackButton } from "@/components/ui/back-button"
 
 type AlunoResumo = {
   id: string
@@ -145,6 +146,7 @@ export default function EscanearPage() {
 
   return (
     <DashboardShell role="professor">
+      <BackButton href="/dashboard/professor" />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
         <div className="text-center py-4">

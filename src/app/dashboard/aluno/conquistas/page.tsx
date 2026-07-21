@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { BackButton } from "@/components/ui/back-button"
 import { AchievementsClient } from "./client"
 
 export default async function ConquistasPage() {
@@ -15,7 +16,9 @@ export default async function ConquistasPage() {
   const desbloqueadasMap = new Map(desbloqueadas.map((ac) => [ac.conquistaId, ac]))
 
   return (
-    <AchievementsClient
+    <>
+      <BackButton href="/dashboard/aluno" />
+      <AchievementsClient
       conquistas={todas.map((c) => {
         const ac = desbloqueadasMap.get(c.id)
         return {
@@ -25,5 +28,6 @@ export default async function ConquistasPage() {
         }
       })}
     />
+    </>
   )
 }

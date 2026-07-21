@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { useT } from "@/lib/use-t"
 import { TrendingUp, Users, Calendar, Activity, BarChart3 } from "lucide-react"
+import { BackButton } from "@/components/ui/back-button"
 
 type RelatoriosData = {
   presencasHoje: number
@@ -39,6 +40,7 @@ export default function RelatoriosPage() {
   if (loading) {
     return (
       <DashboardShell role="dono">
+        <BackButton href="/dashboard/dono" />
         <PageTransition>
           <div className="max-w-5xl mx-auto space-y-6">
             <div className="flex items-center gap-4 py-4">
@@ -77,6 +79,7 @@ export default function RelatoriosPage() {
   if (error) {
     return (
       <DashboardShell role="dono">
+        <BackButton href="/dashboard/dono" />
         <PageTransition>
           <div className="max-w-5xl mx-auto space-y-6">
             <div className="flex items-center gap-4 py-4">
@@ -116,6 +119,7 @@ export default function RelatoriosPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono" />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-6">
           {/* Header */}

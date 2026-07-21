@@ -6,6 +6,7 @@ import { CameraScanner } from "@/components/scanner/camera-scanner"
 import { useT } from "@/lib/use-t"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
+import { BackButton } from "@/components/ui/back-button"
 
 type AlunoResumo = {
   id: string
@@ -148,6 +149,7 @@ export default function DonoEscanearPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono" />
       <PageTransition>
       <div className="space-y-4">
         <div className="glass-card p-5 text-center">

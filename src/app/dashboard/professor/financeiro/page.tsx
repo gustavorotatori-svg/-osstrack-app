@@ -2,11 +2,12 @@
 
 import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
-import Link from "next/link"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function ProfessorFinanceiroPage() {
   return (
     <DashboardShell role="professor">
+      <BackButton href="/dashboard/professor" />
       <PageTransition>
         <div className="max-w-5xl mx-auto">
           <div className="glass-card p-12 text-center">
@@ -15,12 +16,6 @@ export default function ProfessorFinanceiroPage() {
             <p className="text-sm text-[var(--text-secondary)] mb-6">
               O gerenciamento financeiro está disponível no dashboard do dono da academia.
             </p>
-            <Link
-              href="/dashboard/professor"
-              className="btn-gold px-6 py-2.5 text-sm font-bold inline-flex items-center gap-2"
-            >
-              Voltar ao início
-            </Link>
           </div>
         </div>
       </PageTransition>

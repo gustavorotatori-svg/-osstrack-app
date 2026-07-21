@@ -7,6 +7,7 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function AlunoAgendaPage() {
   const t = useT("aluno.agenda")
@@ -68,6 +69,7 @@ export default function AlunoAgendaPage() {
 
   return (
     <DashboardShell role="aluno">
+      <BackButton href="/dashboard/aluno" />
       <PageTransition>
       <div className="space-y-4">
         <div className="flex items-center justify-between">

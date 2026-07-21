@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
+import { BackButton } from "@/components/ui/back-button"
 
 export default function ContratosPage() {
   const t = useT("dono.financeiro")
@@ -73,6 +74,7 @@ export default function ContratosPage() {
 
   return (
     <DashboardShell role="dono">
+      <BackButton href="/dashboard/dono/financeiro" />
       <div className="max-w-5xl mx-auto space-y-4">
         <div className="text-center">
           <h3 className="font-bold text-lg">{t("contratosTitle")}</h3>

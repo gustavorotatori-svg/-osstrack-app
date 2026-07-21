@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
+import { BackButton } from "@/components/ui/back-button"
 import { EvolutionClient } from "./client"
 
 export default async function EvolucaoPage() {
@@ -53,12 +54,15 @@ export default async function EvolucaoPage() {
   })
 
   return (
-    <EvolutionClient
+    <>
+      <BackButton href="/dashboard/aluno" />
+      <EvolutionClient
       aluno={{ nome: aluno.nome, faixa: aluno.faixa, grau: aluno.grau, totalAulas, dataInicio: aluno.dataInicio?.toISOString() || "" }}
       graduacoes={graduacoes.map((g) => ({
         faixa: g.faixa, graus: g.graus, aulasPorGrau: g.aulasPorGrau, aulasProxFx: g.aulasProxFx,
       }))}
       presencasMensais={presencasMensais}
     />
+    </>
   )
 }
