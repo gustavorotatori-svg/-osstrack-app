@@ -131,9 +131,9 @@ export function ProfessoresClient() {
                     </button>
                   </div>
                   <div className="flex gap-4 mt-3 pt-3 border-t border-white/5 text-xs text-[var(--text-secondary)]">
-                    <span><strong className="text-white">{p.totalAlunos}</strong> alunos</span>
-                    <span><strong className="text-white">{p.totalTurmas}</strong> turmas</span>
-                    <span><strong className="text-white">{p.totalPresencas}</strong> presenças</span>
+                    <span><strong className="text-[var(--text)]">{p.totalAlunos}</strong> alunos</span>
+                    <span><strong className="text-[var(--text)]">{p.totalTurmas}</strong> turmas</span>
+                    <span><strong className="text-[var(--text)]">{p.totalPresencas}</strong> presenças</span>
                   </div>
                 </div>
               ))}

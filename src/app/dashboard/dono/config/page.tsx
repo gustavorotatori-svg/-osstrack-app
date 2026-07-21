@@ -20,7 +20,7 @@ function ConviteCard({ tipo, label, state, setState }: {
           type="text"
           value={state.gerando ? t("gerando") : state.link || "osstrack.app"}
           readOnly
-          className="flex-1 px-4 py-2.5 rounded-lg bg-black border border-[var(--border)] text-white text-sm"
+          className="flex-1 input-field px-4 py-2.5"
         />
         <button
           type="button"

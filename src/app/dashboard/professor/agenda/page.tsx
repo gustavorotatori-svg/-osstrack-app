@@ -6,6 +6,7 @@ import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
 import { CalendarIcon, XIcon, ClipboardIcon, DumbbellIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
+import { CardSkeleton } from "@/components/ui/skeleton"
 import { PageTransition } from "@/components/ui/page-transition"
 
 const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
@@ -231,18 +232,11 @@ export default function ProfessorAgendaPage() {
 
         {loading ? (
           <div className="glass-card p-4 space-y-3">
-            <div className="grid grid-cols-7 gap-2 mb-2">
-              {Array.from({ length: 7 }).map((_, i) => (
-                <div key={i} className="h-4 bg-white/10 rounded animate-pulse" />
+            <div className="grid grid-cols-7 gap-2">
+              {Array.from({ length: 35 }).map((_, i) => (
+                <CardSkeleton key={i} />
               ))}
             </div>
-            {Array.from({ length: 5 }).map((_, r) => (
-              <div key={r} className="grid grid-cols-7 gap-2">
-                {Array.from({ length: 7 }).map((_, c) => (
-                  <div key={c} className="h-12 bg-white/10 rounded animate-pulse" />
-                ))}
-              </div>
-            ))}
           </div>
         ) : (
           <WeeklyGrid

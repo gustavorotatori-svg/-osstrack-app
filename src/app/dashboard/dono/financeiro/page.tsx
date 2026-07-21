@@ -8,6 +8,7 @@ import { triggerOssTransition } from "@/components/ui/oss-transition"
 import { toast } from "sonner"
 import { CreditCardIcon, TrendingDown, TrendingUp, ArrowRight } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts"
+import { CardSkeleton } from "@/components/ui/skeleton"
 
 export default function FinanceiroPage() {
   const t = useT("dono.financeiro")
@@ -62,8 +63,12 @@ export default function FinanceiroPage() {
   if (loading) {
     return (
       <DashboardShell role="dono">
-        <div className="max-w-5xl mx-auto animate-pulse space-y-4">
-          {[1,2,3,4].map(i => <div key={i} className="h-20 bg-[var(--border)] rounded-xl" />)}
+        <div className="max-w-5xl mx-auto space-y-4 animate-fade-in">
+          <CardSkeleton />
+          <div className="grid grid-cols-2 gap-3">
+            {[1,2,3,4].map(i => <CardSkeleton key={i} />)}
+          </div>
+          <CardSkeleton />
         </div>
       </DashboardShell>
     )

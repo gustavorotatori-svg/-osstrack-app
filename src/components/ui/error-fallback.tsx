@@ -15,7 +15,7 @@ export function ErrorFallback({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] px-5">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg)] px-5">
       <div className="max-w-md text-center">
         <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
           <AlertTriangleIcon className="w-6 h-6 text-red-400" />

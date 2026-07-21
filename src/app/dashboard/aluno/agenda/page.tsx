@@ -6,6 +6,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { WeeklyGrid, type HorarioData } from "@/components/agenda/weekly-grid"
 import { toast } from "sonner"
+import { CardSkeleton } from "@/components/ui/skeleton"
 
 export default function AlunoAgendaPage() {
   const t = useT("aluno.agenda")
@@ -81,10 +82,7 @@ export default function AlunoAgendaPage() {
         {loading ? (
           <div className="grid grid-cols-7 gap-2">
             {Array.from({ length: 7 }).map((_, i) => (
-              <div key={i} className="glass-card p-3 animate-pulse">
-                <div className="h-3 w-8 bg-[var(--border)] rounded mb-2" />
-                <div className="h-8 w-full bg-[var(--border)] rounded" />
-              </div>
+              <CardSkeleton key={i} />
             ))}
           </div>
         ) : (
