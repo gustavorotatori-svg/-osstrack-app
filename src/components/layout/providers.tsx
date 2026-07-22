@@ -5,14 +5,8 @@ import { ReactNode, createContext, useContext, useState, useEffect, useCallback 
 import { Toaster } from "sonner"
 import type { Locale } from "@/lib/i18n"
 
-type ThemePref = "auto" | "dark" | "light"
+type ThemePref = "dark" | "light"
 type Theme = "dark" | "light"
-
-function prefToTheme(pref: ThemePref): Theme {
-  if (pref !== "auto") return pref
-  const h = new Date().getHours()
-  return h >= 6 && h < 18 ? "light" : "dark"
-}
 
 const LocaleContext = createContext<{
   locale: Locale
@@ -23,7 +17,7 @@ const ThemeContext = createContext<{
   theme: Theme
   themePref: ThemePref
   cycleTheme: () => void
-}>({ theme: "dark", themePref: "auto", cycleTheme: () => {} })
+}>({ theme: "dark", themePref: "dark", cycleTheme: () => {} })
 
 export function useTheme() {
   return useContext(ThemeContext)
@@ -35,21 +29,19 @@ export function useLocale() {
 
 function getInitialPref(): ThemePref {
   try {
-    const stored = localStorage.getItem("osstrack_theme_pref") as ThemePref | null
-    if (stored === "dark" || stored === "light") return stored
+    const stored = localStorage.getItem("osstrack_theme_pref")
+    if (stored === "light") return "light"
   } catch {}
-  return "auto"
+  return "dark"
 }
 
 export function Providers({ children }: { children: ReactNode }) {
   const [pref, setPref] = useState<ThemePref>(getInitialPref)
-  const [theme, setTheme] = useState<Theme>(() => prefToTheme(getInitialPref()))
+  const [theme, setTheme] = useState<Theme>(() => getInitialPref())
   const [locale, setLocaleState] = useState<Locale>("pt")
   const [mounted, setMounted] = useState(false)
 
-  // Recompute theme when pref or hour changes
-  const applyTheme = useCallback((p: ThemePref) => {
-    const t = prefToTheme(p)
+  const applyTheme = useCallback((t: Theme) => {
     setTheme(t)
     document.documentElement.classList.toggle("light", t === "light")
     document.documentElement.classList.toggle("dark", t === "dark")
@@ -60,20 +52,6 @@ export function Providers({ children }: { children: ReactNode }) {
     const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
     if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
       setLocaleState(storedLocale)
-    }
-
-    // Auto-switch at hour boundaries when pref is "auto"
-    if (pref === "auto") {
-      const msUntilNextSwitch = () => {
-        const now = new Date()
-        const h = now.getHours()
-        const next = h < 6 ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0, 0)
-                 : h < 18 ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0, 0)
-                 : new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 6, 0, 0, 0)
-        return next.getTime() - now.getTime()
-      }
-      const timeout = setTimeout(() => applyTheme(pref), msUntilNextSwitch())
-      return () => clearTimeout(timeout)
     }
   }, [])
 
@@ -93,7 +71,7 @@ export function Providers({ children }: { children: ReactNode }) {
   }
 
   function cycleTheme() {
-    setPref((p) => (p === "dark" ? "light" : p === "light" ? "auto" : "dark"))
+    setPref((p) => (p === "dark" ? "light" : "dark"))
   }
 
   return (
