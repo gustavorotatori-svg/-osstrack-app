@@ -66,7 +66,7 @@ export function ProfileNav() {
               style={{ flex: "1 1 280px", minWidth: 0 }}
             >
               <Link
-                href="/cadastro"
+                href={`/cadastro?role=${p.slug}`}
                 className="group block relative overflow-hidden h-full"
                 style={{ borderRadius: cardRadius[i] }}
               >
