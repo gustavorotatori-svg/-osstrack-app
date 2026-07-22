@@ -17,34 +17,41 @@ import { BackToTop } from "@/components/landing/back-to-top"
 import { MobileCta } from "@/components/landing/mobile-cta"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "OssTrack — Plataforma de Gestão para Academias de Jiu-Jitsu",
+  title: "OssTrack — Gestão de Academias de Jiu-Jitsu",
   description:
-    "Transforme sua academia de Jiu-Jitsu com check-in por geolocalização, progressão automática de faixas, streaks, conquistas e relatórios. Grátis para professores e alunos.",
+    "Plataforma gratuita para academias de Jiu-Jitsu: check-in, progressão de faixas, streaks, gamificação e relatórios. Comece agora.",
   openGraph: {
-    title: "OssTrack — Plataforma de Gestão para Academias de Jiu-Jitsu",
+    title: "OssTrack — Gestão de Academias de Jiu-Jitsu",
     description:
-      "Transforme sua academia de Jiu-Jitsu com check-in por geolocalização, progressão automática de faixas, streaks e conquistas. Grátis para professores e alunos.",
+      "Plataforma gratuita para academias de Jiu-Jitsu: check-in, progressão de faixas, streaks e gamificação.",
   },
 }
 
 export default async function Home() {
-  const trintaDiasAtras = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-  const [totalAcademias, totalAlunos, alunosAtivos30d] = await Promise.all([
-    prisma.academia.count(),
-    prisma.usuario.count({ where: { role: "aluno" } }),
-    prisma.presenca.findMany({
-      where: { createdAt: { gte: trintaDiasAtras }, status: "confirmed" },
-      select: { alunoId: true },
-      distinct: ["alunoId"],
-    }).then((r) => r.length),
-  ])
-  const retencao = totalAlunos > 0 ? Math.round((alunosAtivos30d / totalAlunos) * 100) : 0
+  let totalAcademias = 0, totalAlunos = 0, retencao = 0
+  try {
+    const trintaDiasAtras = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    const [academias, alunos, alunosAtivos30d] = await Promise.all([
+      prisma.academia.count(),
+      prisma.usuario.count({ where: { role: "aluno" } }),
+      prisma.presenca.findMany({
+        where: { createdAt: { gte: trintaDiasAtras }, status: "confirmed" },
+        select: { alunoId: true },
+        distinct: ["alunoId"],
+      }).then((r) => r.length),
+    ])
+    totalAcademias = academias
+    totalAlunos = alunos
+    retencao = totalAlunos > 0 ? Math.round((alunosAtivos30d / totalAlunos) * 100) : 0
+  } catch {
+    // fallback: stats will show 0 during build or DB outages
+  }
 
   return (
-    <main className="tatame-bg overflow-x-hidden">
+    <main id="main-content" className="tatame-bg overflow-x-hidden">
       <Navbar />
       <Hero stats={{ academias: totalAcademias, alunos: totalAlunos, retencao }} />
       <Features />

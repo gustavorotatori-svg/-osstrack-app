@@ -2,7 +2,7 @@
 
 import { useT } from "@/lib/use-t"
 import { motion } from "framer-motion"
-import { useState } from "react"
+
 
 const cards = [
   { icon: "📍", titleKey: "checkin", descKey: "checkinDesc", accent: "#3b82f6", radius: "24px 8px 24px 8px", floatY: [0, -6, 0], dur: 4 },
@@ -15,8 +15,6 @@ const cards = [
 ]
 
 function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string) => string }) {
-  const [expanded, setExpanded] = useState(false)
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -25,33 +23,25 @@ function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string
       transition={{ duration: 0.5, delay: i * 0.08 }}
     >
       <motion.div
-        className="relative overflow-hidden h-full border cursor-pointer bg-[var(--bg-surface)]"
+        className="relative overflow-hidden h-full border bg-[var(--bg-surface)]"
         style={{
           borderColor: c.accent + "40",
           borderRadius: c.radius,
         }}
         animate={{ y: c.floatY }}
         transition={{ duration: c.dur, repeat: Infinity, ease: "easeInOut" }}
-        onMouseEnter={() => setExpanded(true)}
-        onMouseLeave={() => setExpanded(false)}
-        onClick={() => setExpanded((p) => !p)}
       >
         <div className="absolute top-0 left-4 right-4 h-0.5 rounded-full opacity-50" style={{ background: c.accent }} />
 
         <div className="relative p-6 md:p-7">
-          <div className="flex items-center gap-3 mb-0">
+          <div className="flex items-center gap-3 mb-3">
             <span className="text-3xl">{c.icon}</span>
             <h3 className="text-base font-extrabold" style={{ color: "var(--text)" }}>{t(c.titleKey)}</h3>
           </div>
 
-          <motion.p
-            className="text-xs text-white/70 leading-relaxed overflow-hidden"
-            initial={{ height: 0, opacity: 0, marginTop: 0 }}
-            animate={expanded ? { height: "auto", opacity: 1, marginTop: 12 } : { height: 0, opacity: 0, marginTop: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          >
+          <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
             {t(c.descKey)}
-          </motion.p>
+          </p>
         </div>
 
         <div

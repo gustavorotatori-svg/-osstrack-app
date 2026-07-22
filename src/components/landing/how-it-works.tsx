@@ -4,7 +4,12 @@ import { useT } from "@/lib/use-t"
 import { motion } from "framer-motion"
 import { useState } from "react"
 import { SmartphoneIcon, TrendingIcon, AwardIcon } from "@/components/ui/icons"
-import { ScreenshotDemo } from "@/app/screenshot/demo/client"
+import dynamic from "next/dynamic"
+
+const ScreenshotDemo = dynamic(
+  () => import("@/app/screenshot/demo/client").then((m) => m.ScreenshotDemo),
+  { ssr: false, loading: () => <div className="w-full h-full belt-loading rounded-[2rem]" /> }
+)
 
 export function HowItWorks() {
   const t = useT("comoFunciona")

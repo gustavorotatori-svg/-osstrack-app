@@ -115,7 +115,7 @@ export function EbookSection() {
               Baixar Ebook Grátis
             </Link>
 
-            <p className="mt-3 text-[11px] text-[var(--text-muted)]">Crie sua conta gratuita e baixe agora.</p>
+            <p className="mt-3 text-[11px] text-[var(--text-muted)]">Crie sua conta gratuita para acessar.</p>
           </motion.div>
         </div>
       </div>
