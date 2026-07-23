@@ -43,6 +43,8 @@ model Academia {
   contratos         Contrato[]
   cobrancas         Cobranca[]
   despesas          Despesa[]
+  competicoes       Competicao[]
+  familias          Familia[]
 }
 
 model Usuario {
@@ -94,8 +96,10 @@ model Usuario {
    dataNascimento  String?
    nivelDisciplina String?
    pushSubscriptions PushSubscription[]
-    premiumSubscription PremiumSubscription?
-    wellhubId       String?
+     premiumSubscription PremiumSubscription?
+     wellhubId       String?
+     participacoesCompeticao ParticipacaoCompeticao[]
+     familiaMembros  FamiliaMembro[]
   }
 
 model PlanoMensalidade {
@@ -479,4 +483,54 @@ model RateLimitAttempt {
 
   @@unique([identifier, endpoint])
   @@index([identifier, endpoint, windowStart])
+}
+
+model Competicao {
+  id          String   @id @default(cuid())
+  academiaId  String
+  academia    Academia @relation(fields: [academiaId], references: [id])
+  nome        String
+  data        DateTime
+  local       String?
+  faixa       String?  // "todas" ou faixa específica
+  categoria   String?  // "adulto", "infantil", "todas"
+  observacoes String?
+  createdAt   DateTime @default(now())
+
+  participacoes ParticipacaoCompeticao[]
+}
+
+model ParticipacaoCompeticao {
+  id            String    @id @default(cuid())
+  competicaoId  String
+  competicao    Competicao @relation(fields: [competicaoId], references: [id])
+  alunoId       String
+  aluno         Usuario   @relation(fields: [alunoId], references: [id])
+  posicao       String?   // "ouro", "prata", "bronze", "participou"
+  categoria     String?   // "peso", "faixa", "idade"
+  observacao     String?
+  createdAt     DateTime  @default(now())
+
+  @@unique([competicaoId, alunoId])
+}
+
+model Familia {
+  id        String   @id @default(cuid())
+  academiaId String
+  academia   Academia @relation(fields: [academiaId], references: [id])
+  nome       String
+  desconto   Int      @default(10) // percentual
+  createdAt  DateTime @default(now())
+
+  membros FamiliaMembro[]
+}
+
+model FamiliaMembro {
+  id       String  @id @default(cuid())
+  familiaId String
+  familia  Familia @relation(fields: [familiaId], references: [id])
+  alunoId  String
+  aluno    Usuario @relation(fields: [alunoId], references: [id])
+
+  @@unique([familiaId, alunoId])
 }
