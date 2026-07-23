@@ -126,6 +126,8 @@
     "alunos": "Students",
     "turmas": "Classes",
     "graduacoes": "Graduations",
+    "competicoes": "Competitions",
+    "alertaEvasao": "Churn Alert",
     "relatorios": "Reports",
     "financeiro": "Financial",
     "config": "Settings",
