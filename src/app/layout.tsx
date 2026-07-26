@@ -14,7 +14,7 @@ const jsonLd = {
   "@type": "SoftwareApplication",
   name: "OssTrack",
   applicationCategory: "LifestyleApplication",
-  operatingSystem: "Web, iOS, Android",
+  operatingSystem: "Web",
   description,
   url,
   offers: {

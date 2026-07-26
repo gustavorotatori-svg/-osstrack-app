@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma"
 import crypto from "crypto"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 import { recuperarSenhaSchema } from "@/lib/validation"
+import { sendEmail, renderEmailLayout } from "@/lib/email"
 
 export async function POST(request: Request) {
   try {
@@ -52,9 +53,19 @@ export async function POST(request: Request) {
       data: { resetToken: token, resetTokenExpires: expires },
     })
 
-    // Retorna URL em vez do token bruto para evitar vazamento no JS frontend
-    const resetUrl = `${new URL(request.url).origin}/redefinir-senha?token=${token}`
-    return NextResponse.json({ success: true, resetUrl, message: "Link gerado! Clique abaixo para redefinir." })
+    // Send email with reset link (never expose token in API response)
+    const resetUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/redefinir-senha?token=${token}`
+    sendEmail({
+      to: email,
+      subject: "Recupere sua senha — OssTrack",
+      html: renderEmailLayout(
+        "Recuperação de senha",
+        `Você solicitou a redefinição da sua senha. Clique no botão abaixo para criar uma nova senha. O link expira em 1 hora.`,
+        { label: "Redefinir senha", url: resetUrl }
+      ),
+    }).catch(() => {})
+
+    return NextResponse.json({ success: true, message: "Se o email existir, você receberá um link de recuperação." })
   } catch {
     return NextResponse.json({ error: "Erro ao gerar token" }, { status: 500 })
   }

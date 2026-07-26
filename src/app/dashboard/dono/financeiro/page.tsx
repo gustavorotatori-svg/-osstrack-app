@@ -22,20 +22,27 @@ export default function FinanceiroPage() {
   useEffect(() => {
     fetch("/api/financeiro/dashboard").then(r => r.json()).then(d => {
       setData(d); setLoading(false)
-      const months = []
-      const now = new Date()
-      const baseReceita = d?.receitaMes || 0
-      const baseDespesa = d?.despesaMes || 0
-      for (let i = 2; i >= 0; i--) {
-        const m = new Date(now.getFullYear(), now.getMonth() - i, 1)
-        const name = m.toLocaleDateString("pt-BR", { month: "short" })
-        months.push({
-          name,
-          receita: Math.round(baseReceita * (0.85 + Math.random() * 0.3)),
-          despesa: Math.round(baseDespesa * (0.85 + Math.random() * 0.3)),
-        })
+      if (d?.historico?.length > 0) {
+        setChartData(d.historico.map((h: any) => ({
+          name: new Date(h.mes).toLocaleDateString("pt-BR", { month: "short" }),
+          receita: h.receita || 0,
+          despesa: h.despesa || 0,
+        })))
+      } else {
+        const now = new Date()
+        const baseReceita = d?.receitaMes || 0
+        const baseDespesa = d?.despesaMes || 0
+        const months = []
+        for (let i = 2; i >= 0; i--) {
+          const m = new Date(now.getFullYear(), now.getMonth() - i, 1)
+          months.push({
+            name: m.toLocaleDateString("pt-BR", { month: "short" }),
+            receita: i === 0 ? baseReceita : 0,
+            despesa: i === 0 ? baseDespesa : 0,
+          })
+        }
+        setChartData(months)
       }
-      setChartData(months)
     }).catch(() => setLoading(false))
   }, [])
 
