@@ -62,6 +62,7 @@ export default function Cadastro() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [roleChosen, setRoleChosen] = useState(false)
+  const [verificationPending, setVerificationPending] = useState(false)
 
   const [form, setForm] = useState({
     nome: "", email: "", telefone: "", dataNascimento: "", senha: "", confirmarSenha: "",
@@ -180,6 +181,9 @@ export default function Cadastro() {
       if (!form.email.trim()) { setError("Informe seu email"); return }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("E-mail inválido"); return }
       if (form.senha.length < 8) { setError("A senha deve ter no mínimo 8 caracteres"); return }
+      if (!/[A-Z]/.test(form.senha)) { setError("A senha deve conter pelo menos uma letra maiúscula"); return }
+      if (!/[a-z]/.test(form.senha)) { setError("A senha deve conter pelo menos uma letra minúscula"); return }
+      if (!/[0-9]/.test(form.senha)) { setError("A senha deve conter pelo menos um número"); return }
       if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); return }
       if (!form.role) { setError("Selecione um tipo de conta"); return }
       avancarStep(); return
@@ -250,15 +254,15 @@ export default function Cadastro() {
         body: JSON.stringify(body),
       })
       const data = await res.json()
+      if (data.duplicate) {
+        setError("Este e-mail já está cadastrado")
+        setLoading(false)
+        return
+      }
       if (!res.ok) { setError(data.error || t("errors.criacao")); setLoading(false); return }
 
-      const result = await signIn("credentials", { email: form.email, password: form.senha, redirect: false })
-      if (result?.error) { toast.error("Conta criada! Faça login para continuar."); router.push("/login"); return }
-
-      const ref = searchParams.get("ref")
-      if (ref === "ebook") { router.push("/ebook/conteudo"); return }
-      if (form.role === "aluno") { router.push("/dashboard/aluno"); return }
-      router.push(data.redirect || "/dashboard/aluno")
+      setVerificationPending(true)
+      setLoading(false)
     } catch {
       setError(t("errors.conexao"))
       setLoading(false)
@@ -274,17 +278,17 @@ export default function Cadastro() {
             <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Seus dados</p>
             <div>
               <label htmlFor="cad-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
-              <input id="cad-nome" type="text" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
+              <input id="cad-nome" type="text" autoComplete="name" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
             </div>
             <div>
               <label htmlFor="cad-email" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
-              <input id="cad-email" type="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
+              <input id="cad-email" type="email" autoComplete="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label htmlFor="cad-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
                 <div className="relative">
-                  <input id="cad-senha" type={showPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
+                  <input id="cad-senha" type={showPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showPassword ? (
@@ -298,7 +302,7 @@ export default function Cadastro() {
               <div>
                 <label htmlFor="cad-confirmar-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
                 <div className="relative">
-                  <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
+                  <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showConfirmPassword ? (
@@ -322,7 +326,35 @@ export default function Cadastro() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {ROLE_CARDS.map((card) => {
                 const selected = form.role === card.role
-                return (
+  if (verificationPending) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,168,71,0.06)_0%,rgba(201,122,46,0.03)_40%,transparent_60%)]" />
+        <div className="w-full max-w-sm relative z-10">
+          <div className="glass-card p-7 text-center space-y-5">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg btn-gold">📧</div>
+            <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>Verifique seu e-mail</h1>
+            <p className="text-sm text-[var(--text-secondary)]">
+              Enviamos um link de verificação para <strong className="text-[var(--text)]">{form.email}</strong>.
+              Clique no link para ativar sua conta.
+            </p>
+            <p className="text-xs text-[var(--text-muted)]">
+              Não encontrou? Verifique a pasta de spam.
+            </p>
+            <button onClick={() => { setVerificationPending(false); setError("") }}
+              className="w-full py-3 rounded-xl text-sm font-bold btn-gold">
+              Voltar ao cadastro
+            </button>
+            <Link href="/login" className="block text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors">
+              Já verificou? Fazer login
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
                   <button key={card.role} type="button" onClick={() => update("role", card.role)}
                     className="text-center p-3 rounded-xl border transition-all duration-200"
                     style={{
@@ -602,7 +634,7 @@ export default function Cadastro() {
           </AnimatePresence>
 
           {error && (
-            <div className="text-xs text-red-400 bg-[var(--red-dim)] border border-red-500/20 rounded-lg px-3 py-2">{error}</div>
+            <div role="alert" aria-live="assertive" className="text-xs text-red-400 bg-[var(--red-dim)] border border-red-500/20 rounded-lg px-3 py-2">{error}</div>
           )}
 
           <div className="flex gap-3 pt-1">

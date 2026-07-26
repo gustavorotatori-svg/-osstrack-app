@@ -169,6 +169,7 @@ export default function Login() {
             <input
               id="login-email"
               type="email"
+              autoComplete="username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
@@ -182,6 +183,7 @@ export default function Login() {
               <input
                 id="login-senha"
                 type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="input-field w-full pr-10"
@@ -211,7 +213,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <div className="text-sm bg-[var(--red-dim)] border border-red-500/20 rounded-xl px-4 py-2.5" style={{ color: "var(--red)" }}>
+            <div role="alert" aria-live="assertive" className="text-sm bg-[var(--red-dim)] border border-red-500/20 rounded-xl px-4 py-2.5" style={{ color: "var(--red)" }}>
               {error}
             </div>
           )}

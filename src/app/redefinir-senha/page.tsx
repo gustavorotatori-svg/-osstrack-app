@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 
@@ -15,6 +15,15 @@ export default function RedefinirSenha() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
+  const [tokenValid, setTokenValid] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (!token) return
+    fetch(`/api/auth/validar-token-reset?token=${encodeURIComponent(token)}`)
+      .then((r) => r.json())
+      .then((data) => setTokenValid(data.valid === true))
+      .catch(() => setTokenValid(false))
+  }, [token])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -69,6 +78,34 @@ export default function RedefinirSenha() {
           </Link>
           <div className="text-center"><p className="text-[var(--text-secondary)]">Link inválido. Solicite um novo link de recuperação.</p>
             <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">Tentar novamente</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (tokenValid === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="w-full max-w-sm text-center">
+          <div className="w-10 h-10 border-2 border-[var(--gold)] border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-[var(--text-secondary)] mt-3">Validando link...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (tokenValid === false) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="w-full max-w-sm">
+          <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            Voltar ao login
+          </Link>
+          <div className="text-center glass-card p-7">
+            <p className="text-[var(--text-secondary)]">Link expirado ou inválido.</p>
+            <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">Solicitar novo link</Link>
           </div>
         </div>
       </div>

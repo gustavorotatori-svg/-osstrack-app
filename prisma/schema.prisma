@@ -63,6 +63,7 @@ model Usuario {
   academia   Academia? @relation(fields: [academiaId], references: [id])
   professorId String?
   emailVerificationToken String?
+  emailVerificationExpiry DateTime?
   emailVerified DateTime?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

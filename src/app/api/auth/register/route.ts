@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
+import crypto from "crypto"
 import prisma from "@/lib/prisma"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 import { registerSchema } from "@/lib/validation"
 import { notificarUsuario } from "@/lib/notificar"
+import { sendEmail, renderEmailLayout } from "@/lib/email"
 
 async function marcarConviteUsado(codigoConvite?: string) {
   if (!codigoConvite) return
@@ -61,11 +63,12 @@ export async function POST(request: Request) {
 
     const existing = await prisma.usuario.findUnique({ where: { email } })
     if (existing) {
-      // Return generic success to prevent user enumeration
-      return NextResponse.json({ success: true, message: "Conta criada com sucesso" })
+      return NextResponse.json({ duplicate: true })
     }
 
     const hashed = await bcrypt.hash(senha, 10)
+    const emailVerificationToken = crypto.randomBytes(32).toString("hex")
+    const emailVerificationExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h
 
     if (role === "dono") {
       if (!academiaData?.nome) {
@@ -103,6 +106,8 @@ export async function POST(request: Request) {
             aceitouLGPD: aceitouLGPD || false,
             aceitouMarketing: aceitouMarketing || false,
             dataAceite: new Date(),
+            emailVerificationToken,
+            emailVerificationExpiry,
           },
         })
 
@@ -142,10 +147,22 @@ export async function POST(request: Request) {
           }
         }
 
-        return { redirect: "/dashboard/dono" }
+        return { redirect: "/dashboard/dono", userId: dono.id }
       })
 
-      return NextResponse.json(result)
+      // Send verification email (non-blocking)
+      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
+      sendEmail({
+        to: email,
+        subject: "Verifique seu e-mail — OssTrack",
+        html: renderEmailLayout(
+          "Verifique seu e-mail",
+          `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
+          { label: "Verificar e-mail", url: verifyUrl }
+        ),
+      }).catch(() => {})
+
+      return NextResponse.json({ redirect: result.redirect })
     }
 
     if (role === "professor") {
@@ -197,6 +214,8 @@ export async function POST(request: Request) {
             aceitouLGPD: aceitouLGPD || false,
             aceitouMarketing: aceitouMarketing || false,
             dataAceite: new Date(),
+            emailVerificationToken,
+            emailVerificationExpiry,
           },
         })
 
@@ -210,11 +229,23 @@ export async function POST(request: Request) {
           },
         })
 
-        return { academiaId }
+        return { academiaId, userId: professor.id }
       })
 
       // Marca convite após criação confirmada (fora da transaction por ser não-crítico)
       if (codigoConvite) await marcarConviteUsado(codigoConvite)
+
+      // Send verification email (non-blocking)
+      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
+      sendEmail({
+        to: email,
+        subject: "Verifique seu e-mail — OssTrack",
+        html: renderEmailLayout(
+          "Verifique seu e-mail",
+          `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
+          { label: "Verificar e-mail", url: verifyUrl }
+        ),
+      }).catch(() => {})
 
       return NextResponse.json({ redirect: "/dashboard/professor" })
     }
@@ -236,6 +267,8 @@ export async function POST(request: Request) {
         aceitouLGPD: aceitouLGPD || false,
         aceitouMarketing: aceitouMarketing || false,
         dataAceite: new Date(),
+        emailVerificationToken,
+        emailVerificationExpiry,
       },
     })
 
@@ -253,6 +286,18 @@ export async function POST(request: Request) {
 
     // Marca convite após criação confirmada
     if (codigoConvite) await marcarConviteUsado(codigoConvite)
+
+    // Send verification email (non-blocking)
+    const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${usuario.id}`
+    sendEmail({
+      to: email,
+      subject: "Verifique seu e-mail — OssTrack",
+      html: renderEmailLayout(
+        "Verifique seu e-mail",
+        `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
+        { label: "Verificar e-mail", url: verifyUrl }
+      ),
+    }).catch(() => {})
 
     return NextResponse.json({ redirect: "/dashboard/aluno" })
   } catch (error: any) {
