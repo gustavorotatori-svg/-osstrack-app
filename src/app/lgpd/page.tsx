@@ -37,7 +37,7 @@ const sections = [
   },
   {
     title: "7. Retenção de Dados",
-    content: "Mantemos seus dados enquanto sua conta estiver ativa. Após exclusão da conta, os dados são anonimizados ou excluídos em até 90 dias, exceto quando a retenção for exigida por lei."
+    content: "Mantemos seus dados enquanto sua conta estiver ativa. Após exclusão da conta, os dados são anonimizados ou excluídos em até 30 dias, exceto quando a retenção for exigida por lei."
   },
   {
     title: "8. Contato do DPO",

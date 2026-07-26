@@ -60,6 +60,23 @@ export default function Login() {
     setError("")
 
     try {
+      // Pre-check email verification when SMTP is configured
+      try {
+        const verificationRes = await fetch("/api/auth/check-verification", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        })
+        const verificationData = await verificationRes.json()
+        if (verificationData.verified === false) {
+          setError("E-mail não verificado. Verifique sua caixa de entrada ou reenvie o link de verificação.")
+          setLoading(false)
+          return
+        }
+      } catch {
+        // If check fails, proceed with login attempt
+      }
+
       let recaptchaToken = ""
 
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {

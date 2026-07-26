@@ -48,15 +48,25 @@ export function InstallPrompt() {
   const { install, canInstall, isIOS, isStandalone } = useInstall()
   const { permission, subscribed, loading, subscribe, unsubscribe } = usePushNotifications()
   const [showPrompt, setShowPrompt] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
+  const [dismissed, setDismissed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("pwa-install-dismissed") === "true"
+    }
+    return false
+  })
 
   useEffect(() => {
     registerSw()
   }, [])
 
   useEffect(() => {
-    if (canInstall) setShowPrompt(true)
-  }, [canInstall])
+    if (canInstall && !dismissed) setShowPrompt(true)
+  }, [canInstall, dismissed])
+
+  function handleDismiss() {
+    handleDismiss()
+    localStorage.setItem("pwa-install-dismissed", "true")
+  }
 
   if (isStandalone || dismissed) return null
 
@@ -94,7 +104,7 @@ export function InstallPrompt() {
                   Instalar
                 </button>
                 <button
-                  onClick={() => { setShowPrompt(false); setDismissed(true) }}
+                  onClick={() => { setShowPrompt(false); handleDismiss() }}
                   className="py-2 px-3 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
                   Agora não
@@ -117,7 +127,7 @@ export function InstallPrompt() {
                 No Safari, toque em <strong>Compartilhar</strong> <span className="text-[var(--gold)]">↑</span> e depois <strong>"Adicionar à Tela de Início"</strong>
               </p>
               <button
-                onClick={() => setDismissed(true)}
+                onClick={() => handleDismiss()}
                 className="mt-3 py-2 px-4 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
               >
                 Entendi
@@ -147,7 +157,7 @@ export function InstallPrompt() {
                   {loading ? "..." : subscribed ? "Desativar" : "Ativar"}
                 </button>
                 <button
-                  onClick={() => setDismissed(true)}
+                  onClick={() => handleDismiss()}
                   className="py-2 px-3 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
                   {subscribed ? "OK" : "Agora não"}

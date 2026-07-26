@@ -7,8 +7,7 @@ import { useRouter } from "next/navigation"
 export default function RecuperarSenha() {
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
-  const [token, setToken] = useState("")
+  const [sent, setSent] = useState(false)
   const [error, setError] = useState("")
   const router = useRouter()
 
@@ -16,8 +15,6 @@ export default function RecuperarSenha() {
     e.preventDefault()
     setLoading(true)
     setError("")
-    setMessage("")
-    setToken("")
 
     try {
       let recaptchaToken = ""
@@ -46,12 +43,7 @@ export default function RecuperarSenha() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error); return }
-      if (data.resetUrl) {
-        router.push(data.resetUrl)
-        return
-      }
-      setToken(data.token)
-      setMessage("Token gerado com sucesso! Clique no link abaixo para redefinir sua senha.")
+      setSent(true)
     } catch {
       setError("Erro de conexão")
     } finally {
@@ -79,41 +71,51 @@ export default function RecuperarSenha() {
             </div>
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>OssTrack</h1>
-          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>Digite seu email para receber o link</p>
+          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
+            {sent ? "Verifique seu e-mail" : "Digite seu email para receber o link"}
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-card p-7 space-y-4">
-          <div>
-            <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" required />
-          </div>
-
-          {error && (
-            <div className="text-sm text-red-500 bg-[var(--red-dim)] border border-red-500/20 rounded-xl px-4 py-2.5">{error}</div>
-          )}
-
-          {message && token && (
-            <div className="text-sm text-emerald-500 bg-emerald-500/5 border border-emerald-500/20 rounded-xl px-4 py-2.5 space-y-2">
-              <p>{message}</p>
-              <Link href={`/redefinir-senha?token=${token}`}
-                className="block text-center py-2 rounded-lg text-xs font-bold bg-[var(--gold)] text-black hover:brightness-110 transition-all">
-                Redefinir minha senha
-              </Link>
+        <div className="glass-card p-7 space-y-4">
+          {sent ? (
+            <div className="text-center space-y-4">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto" style={{ background: "var(--gold-dim)" }}>
+                📧
+              </div>
+              <p className="text-sm text-[var(--text-secondary)]">
+                Se <strong className="text-[var(--text)]">{email}</strong> estiver cadastrado, você receberá um link para redefinir sua senha.
+              </p>
+              <p className="text-xs text-[var(--text-muted)]">
+                Não encontrou? Verifique a pasta de spam.
+              </p>
+              <button onClick={() => setSent(false)}
+                className="w-full py-3 rounded-xl text-sm font-bold btn-gold">
+                Tentar com outro e-mail
+              </button>
             </div>
-          )}
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Email</label>
+                <input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" required />
+              </div>
 
-          {!token && (
-            <button type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
-              {loading ? "Enviando..." : "Enviar link"}
-            </button>
+              {error && (
+                <div role="alert" aria-live="assertive" className="text-sm text-red-500 bg-[var(--red-dim)] border border-red-500/20 rounded-xl px-4 py-2.5">{error}</div>
+              )}
+
+              <button type="submit" disabled={loading}
+                className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
+                {loading ? "Enviando..." : "Enviar link"}
+              </button>
+            </form>
           )}
 
           <p className="text-center text-xs text-[var(--text-secondary)]">
             Lembrou?{" "}
             <Link href="/login" style={{ color: "var(--gold)" }} className="font-semibold">Fazer login</Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   )
