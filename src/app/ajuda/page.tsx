@@ -25,7 +25,7 @@ const faqSchema = {
     {
       "@type": "Question",
       name: "Quanto custa?",
-      acceptedAnswer: { "@type": "Answer", text: "Academias e professores não pagam nada — é gratuito para sempre. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês." },
+      acceptedAnswer: { "@type": "Answer", text: "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês." },
     },
     {
       "@type": "Question",
@@ -67,7 +67,7 @@ const faqItems = [
   },
   {
     q: "Quanto custa?",
-    r: "Academias e professores não pagam nada — é gratuito para sempre. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês."
+    r: "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês."
   },
   {
     q: "Como funciona o check-in?",
