@@ -16,28 +16,34 @@ export default function CobrancasPage() {
   useEffect(() => { load() }, [])
 
   async function load() {
-    const r = await fetch("/api/financeiro/cobrancas")
-    if (r.ok) setCobrancas(await r.json())
+    try {
+      const r = await fetch("/api/financeiro/cobrancas")
+      if (r.ok) setCobrancas(await r.json())
+    } catch {}
     setLoading(false)
   }
 
   async function pagarCobranca(id: string, metodo: string) {
-    const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "pago", metodo }),
-    })
-    if (r.ok) { load(); toast.success(t("cobrancaPaga")) }
-    else { toast.error(t("erro")) }
+    try {
+      const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "pago", metodo }),
+      })
+      if (r.ok) { load(); toast.success(t("cobrancaPaga")) }
+      else { toast.error(t("erro")) }
+    } catch { toast.error(t("erro")) }
   }
 
   async function cancelarCobranca(id: string) {
-    const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "cancelado" }),
-    })
-    if (r.ok) { load(); toast.success(t("cobrancaCancelada")) }
+    try {
+      const r = await fetch(`/api/financeiro/cobrancas/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelado" }),
+      })
+      if (r.ok) { load(); toast.success(t("cobrancaCancelada")) }
+    } catch { toast.error(t("erro")) }
   }
 
   const filtradas = filter === "todas" ? cobrancas : cobrancas.filter(c => c.status === filter)

@@ -19,8 +19,10 @@ export default function PlanosPage() {
   useEffect(() => { load() }, [])
 
   async function load() {
-    const r = await fetch("/api/financeiro/planos")
-    if (r.ok) { setPlanos(await r.json()) }
+    try {
+      const r = await fetch("/api/financeiro/planos")
+      if (r.ok) { setPlanos(await r.json()) }
+    } catch {}
     setLoading(false)
   }
 
@@ -55,12 +57,14 @@ export default function PlanosPage() {
   }
 
   async function toggleAtivo(id: string, ativo: boolean) {
-    const r = await fetch(`/api/financeiro/planos/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ativo: !ativo }),
-    })
-    if (r.ok) { load(); toast.success(t("planoAtualizado")) }
+    try {
+      const r = await fetch(`/api/financeiro/planos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ativo: !ativo }),
+      })
+      if (r.ok) { load(); toast.success(t("planoAtualizado")) }
+    } catch { toast.error(t("erro")) }
   }
 
   const periodos = ["mensal", "trimestral", "semestral", "anual"]

@@ -20,8 +20,10 @@ export default function DespesasPage() {
   useEffect(() => { load() }, [])
 
   async function load() {
-    const r = await fetch("/api/financeiro/despesas")
-    if (r.ok) setDespesas(await r.json())
+    try {
+      const r = await fetch("/api/financeiro/despesas")
+      if (r.ok) setDespesas(await r.json())
+    } catch {}
     setLoading(false)
   }
 
@@ -29,46 +31,54 @@ export default function DespesasPage() {
     e.preventDefault()
     if (!form.descricao || !form.valor || !form.dataVencimento) { toast.error(t("preenchaCampos")); return }
     setSaving(true)
-    const r = await fetch("/api/financeiro/despesas", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, valor: Math.round(Number(form.valor) * 100) }),
-    })
-    if (r.ok) {
-      toast.success(t("despesaCriada"))
-      setShowForm(false)
-      setForm({ descricao: "", valor: "", categoria: "outras", dataVencimento: "", observacao: "" })
-      load()
-    } else {
-      toast.error(t("erro"))
-    }
+    try {
+      const r = await fetch("/api/financeiro/despesas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, valor: Math.round(Number(form.valor) * 100) }),
+      })
+      if (r.ok) {
+        toast.success(t("despesaCriada"))
+        setShowForm(false)
+        setForm({ descricao: "", valor: "", categoria: "outras", dataVencimento: "", observacao: "" })
+        load()
+      } else {
+        toast.error(t("erro"))
+      }
+    } catch { toast.error(t("erro")) }
     setSaving(false)
   }
 
   async function pagarDespesa(id: string) {
-    const r = await fetch(`/api/financeiro/despesas/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "pago" }),
-    })
-    if (r.ok) { load(); toast.success(t("despesaPaga")) }
-    else { toast.error(t("erro")) }
+    try {
+      const r = await fetch(`/api/financeiro/despesas/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "pago" }),
+      })
+      if (r.ok) { load(); toast.success(t("despesaPaga")) }
+      else { toast.error(t("erro")) }
+    } catch { toast.error(t("erro")) }
   }
 
   async function cancelarDespesa(id: string) {
-    const r = await fetch(`/api/financeiro/despesas/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: "cancelado" }),
-    })
-    if (r.ok) { load(); toast.success(t("despesaCancelada")) }
+    try {
+      const r = await fetch(`/api/financeiro/despesas/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelado" }),
+      })
+      if (r.ok) { load(); toast.success(t("despesaCancelada")) }
+    } catch { toast.error(t("erro")) }
   }
 
   async function excluirDespesa(id: string) {
     if (!window.confirm(t("confirmarExcluir"))) return
-    const r = await fetch(`/api/financeiro/despesas/${id}`, { method: "DELETE" })
-    if (r.ok) { load(); toast.success(t("despesaExcluida")) }
-    else { toast.error(t("erro")) }
+    try {
+      const r = await fetch(`/api/financeiro/despesas/${id}`, { method: "DELETE" })
+      if (r.ok) { load(); toast.success(t("despesaExcluida")) }
+      else { toast.error(t("erro")) }
+    } catch { toast.error(t("erro")) }
   }
 
   const filtradas = filter === "todas" ? despesas : despesas.filter(d => d.status === filter)

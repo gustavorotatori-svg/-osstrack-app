@@ -56,7 +56,7 @@ export default function FinanceiroPage() {
       })
       if (r.ok) {
         const res = await r.json()
-        fetch("/api/financeiro/dashboard").then(r => r.json()).then(setData)
+        fetch("/api/financeiro/dashboard").then(r => r.json()).then(setData).catch(() => {})
         toast.success(res.criadas > 0 ? `${res.criadas} cobranças geradas` : "Nenhuma cobrança nova necessária")
       } else {
         const err = await r.json().catch(() => ({}))

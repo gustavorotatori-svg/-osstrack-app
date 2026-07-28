@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { muralPostSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -46,15 +47,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { tipo, conteudo } = await req.json()
-
-    if (!tipo || !conteudo) {
-      return NextResponse.json({ error: "tipo e conteudo são obrigatórios" }, { status: 400 })
+    const body = await req.json()
+    const parsed = muralPostSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
     }
-
-    if (typeof tipo !== "string" || typeof conteudo !== "string" || conteudo.length > 2000) {
-      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
-    }
+    const { tipo, conteudo } = parsed.data
 
     const postagem = await prisma.postagemMural.create({
       data: {

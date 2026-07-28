@@ -8,14 +8,20 @@ function limparTelefone(tel: string) {
   return tel.replace(/\D/g, "")
 }
 
+const acoesValidas = ["checkin", "lembrete", "promocao"] as const
+
 export async function POST(req: Request) {
   try {
-  const session = await getServerSession(authOptions)
-  if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    const session = await getServerSession(authOptions)
+    if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-  const { acao, alunoId, linkPersonalizado } = await req.json()
+    const { acao, alunoId, linkPersonalizado } = await req.json()
 
-  if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+    if (!alunoId || typeof alunoId !== "string") return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+    if (acao && !acoesValidas.includes(acao)) return NextResponse.json({ error: "Ação inválida" }, { status: 400 })
+    if (linkPersonalizado && typeof linkPersonalizado === "string" && linkPersonalizado.length > 500) {
+      return NextResponse.json({ error: "Mensagem muito longa" }, { status: 400 })
+    }
 
   // Must belong to same academy
   const aluno = await prisma.usuario.findUnique({
