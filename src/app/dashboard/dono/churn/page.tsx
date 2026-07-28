@@ -46,7 +46,7 @@ export default function ChurnPage() {
     fetch("/api/dashboard/churn").then((r) => r.json()).then((d) => {
       setData(d)
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [session])
 
   if (status === "loading" || loading) {

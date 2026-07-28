@@ -31,7 +31,7 @@ export default function ProfessorChurnPage() {
 
   useEffect(() => {
     if (!session) return
-    fetch("/api/dashboard/churn").then((r) => r.json()).then((d) => { setData(d); setLoading(false) })
+    fetch("/api/dashboard/churn").then((r) => r.json()).then((d) => { setData(d); setLoading(false) }).catch(() => setLoading(false))
   }, [session])
 
   if (status === "loading" || loading) {
