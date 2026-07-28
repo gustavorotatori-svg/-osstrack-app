@@ -7,8 +7,8 @@ export async function middleware(req: NextRequest) {
   const publicPaths = [
     "/", "/login", "/cadastro", "/convite",
     "/ajuda", "/lgpd", "/termos",
-    "/api/auth", "/ebook",
-    "/recuperar-senha", "/redefinir-senha",
+    "/api/auth", "/ebook", "/horarios",
+    "/recuperar-senha", "/redefinir-senha", "/email-confirmado",
     "/sitemap.xml", "/robots.txt",
     "/manifest.webmanifest", "/screenshot",
   ]
