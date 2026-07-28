@@ -52,8 +52,8 @@ export const authOptions: NextAuthOptions = {
           if (!recaptchaToken) {
             throw new Error("reCAPTCHA é obrigatório")
           }
-          const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`
-          const verifyRes = await fetch(verifyUrl, { method: "POST" })
+          const params = new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: recaptchaToken })
+          const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", { method: "POST", body: params })
           const verifyData = await verifyRes.json()
           if (!verifyData.success || (verifyData.score && verifyData.score < 0.5)) {
             throw new Error("Falha na verificação de segurança. Tente novamente.")

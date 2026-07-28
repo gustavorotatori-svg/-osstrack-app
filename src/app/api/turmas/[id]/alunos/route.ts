@@ -36,48 +36,56 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 }
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getServerSession(authOptions)
-  if (!session || !["dono", "professor"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || !["dono", "professor"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    }
+
+    const { id } = await params
+    const { alunoId } = await req.json()
+    if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+
+    const turma = await prisma.turma.findUnique({ where: { id } })
+    if (!turma || turma.academiaId !== session.user.academiaId) {
+      return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+    }
+
+    const existing = await prisma.turmaAluno.findUnique({
+      where: { turmaId_alunoId: { turmaId: id, alunoId } },
+    })
+    if (existing) {
+      return NextResponse.json({ error: "Aluno já está nesta turma" }, { status: 409 })
+    }
+
+    await prisma.turmaAluno.create({ data: { turmaId: id, alunoId } })
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    return handleApiError(error)
   }
-
-  const { id } = await params
-  const { alunoId } = await req.json()
-  if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
-
-  const turma = await prisma.turma.findUnique({ where: { id } })
-  if (!turma || turma.academiaId !== session.user.academiaId) {
-    return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
-  }
-
-  const existing = await prisma.turmaAluno.findUnique({
-    where: { turmaId_alunoId: { turmaId: id, alunoId } },
-  })
-  if (existing) {
-    return NextResponse.json({ error: "Aluno já está nesta turma" }, { status: 409 })
-  }
-
-  await prisma.turmaAluno.create({ data: { turmaId: id, alunoId } })
-  return NextResponse.json({ success: true })
 }
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getServerSession(authOptions)
-  if (!session || !["dono", "professor"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session || !["dono", "professor"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    }
+
+    const { id } = await params
+    const { alunoId } = await req.json()
+    if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+
+    const turma = await prisma.turma.findUnique({ where: { id } })
+    if (!turma || turma.academiaId !== session.user.academiaId) {
+      return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+    }
+
+    await prisma.turmaAluno.deleteMany({
+      where: { turmaId: id, alunoId },
+    })
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    return handleApiError(error)
   }
-
-  const { id } = await params
-  const { alunoId } = await req.json()
-  if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
-
-  const turma = await prisma.turma.findUnique({ where: { id } })
-  if (!turma || turma.academiaId !== session.user.academiaId) {
-    return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
-  }
-
-  await prisma.turmaAluno.deleteMany({
-    where: { turmaId: id, alunoId },
-  })
-  return NextResponse.json({ success: true })
 }
