@@ -3,6 +3,12 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import z from "zod"
+
+const notificacaoUpdateSchema = z.object({
+  id: z.string().optional(),
+  todas: z.boolean().optional(),
+})
 
 export async function GET() {
   try {
@@ -26,7 +32,12 @@ export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { id, todas } = await request.json()
+    const body = await request.json()
+    const parsed = notificacaoUpdateSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
+    }
+    const { id, todas } = parsed.data
 
     if (todas) {
       await prisma.notificacao.updateMany({

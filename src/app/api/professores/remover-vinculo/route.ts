@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { vinculoProfessorSchema } from "@/lib/validation"
 
 export async function POST(req: Request) {
   try {
@@ -11,10 +12,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { professorId } = await req.json()
-    if (!professorId) {
+    const body = await req.json()
+    const parsed = vinculoProfessorSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "professorId obrigatório" }, { status: 400 })
     }
+    const { professorId } = parsed.data
 
     const professor = await prisma.usuario.findUnique({ where: { id: professorId } })
     if (!professor || professor.role !== "professor" || professor.academiaId !== session.user.academiaId) {

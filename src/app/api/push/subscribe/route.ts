@@ -3,6 +3,18 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import z from "zod"
+
+const pushSubscribeSchema = z.object({
+  endpoint: z.string().min(1).max(500),
+  p256dh: z.string().min(1).max(500),
+  auth: z.string().min(1).max(500),
+  userAgent: z.string().max(500).optional(),
+})
+
+const pushUnsubscribeSchema = z.object({
+  endpoint: z.string().min(1),
+})
 
 export async function POST(req: Request) {
   try {
@@ -11,15 +23,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { endpoint, p256dh, auth, userAgent } = await req.json()
-
-    if (!endpoint || !p256dh || !auth) {
+    const body = await req.json()
+    const parsed = pushSubscribeSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "Dados de inscrição incompletos" }, { status: 400 })
     }
-
-    if (typeof endpoint !== "string" || typeof p256dh !== "string" || typeof auth !== "string" || endpoint.length > 500 || p256dh.length > 500 || auth.length > 500) {
-      return NextResponse.json({ error: "Dados de inscrição inválidos" }, { status: 400 })
-    }
+    const { endpoint, p256dh, auth, userAgent } = parsed.data
 
     const existing = await prisma.pushSubscription.findUnique({
       where: { endpoint },
@@ -56,10 +65,12 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { endpoint } = await req.json()
-    if (!endpoint) {
+    const body = await req.json()
+    const parsed = pushUnsubscribeSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "endpoint é obrigatório" }, { status: 400 })
     }
+    const { endpoint } = parsed.data
 
     await prisma.pushSubscription.deleteMany({
       where: { endpoint, usuarioId: session.user.id },

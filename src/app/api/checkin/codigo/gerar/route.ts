@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { checkinCodigoGerarSchema } from "@/lib/validation"
 
 function gerarCodigo(): string {
   return String(Math.floor(1000 + Math.random() * 9000))
@@ -18,7 +19,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Apenas dono ou professor" }, { status: 403 })
     }
 
-    const { turma } = await req.json()
+    const body = await req.json()
+    const parsed = checkinCodigoGerarSchema.safeParse(body)
+    const turma = parsed.success ? parsed.data.turma : undefined
     const codigo = gerarCodigo()
 
     await prisma.checkinCodigo.create({

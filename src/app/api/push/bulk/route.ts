@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
+import { pushBulkSchema } from "@/lib/validation"
 
 export async function POST(req: Request) {
   try {
@@ -12,10 +13,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Nao autorizado" }, { status: 401 })
     }
 
-    const { alunoIds, titulo, descricao } = await req.json()
-    if (!alunoIds?.length || !titulo) {
-      return NextResponse.json({ error: "alunoIds e titulo sao obrigatorios" }, { status: 400 })
+    const body = await req.json()
+    const parsed = pushBulkSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "alunoIds e titulo são obrigatórios" }, { status: 400 })
     }
+    const { alunoIds, titulo, descricao } = parsed.data
 
     const alunos = await prisma.usuario.findMany({
       where: {

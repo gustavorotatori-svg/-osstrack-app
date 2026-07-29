@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { planoCreateSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -30,20 +31,20 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { nome, valor, taxaMatricula, descricao, periodo } = body
-
-  if (!nome || valor == null) {
-    return NextResponse.json({ error: "Nome e valor são obrigatórios" }, { status: 400 })
+  const parsed = planoCreateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
   }
+  const { nome, valor, taxaMatricula, descricao, periodo } = parsed.data
 
   const plano = await prisma.planoMensalidade.create({
     data: {
       academiaId: session.user.academiaId,
       nome,
       valor: Math.round(valor * 100),
-      taxaMatricula: taxaMatricula ? Math.round(taxaMatricula * 100) : 0,
+      taxaMatricula: Math.round(taxaMatricula * 100),
       descricao,
-      periodo: periodo || "mensal",
+      periodo,
     },
   })
 

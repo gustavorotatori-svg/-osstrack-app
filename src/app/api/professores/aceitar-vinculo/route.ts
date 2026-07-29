@@ -11,9 +11,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 
-  const { notificacaoId, aceitar } = await req.json()
-  if (!notificacaoId) {
+  const body = await req.json()
+  const { notificacaoId, aceitar } = body
+  if (!notificacaoId || typeof notificacaoId !== "string") {
     return NextResponse.json({ error: "notificacaoId obrigatório" }, { status: 400 })
+  }
+  if (aceitar !== undefined && typeof aceitar !== "boolean") {
+    return NextResponse.json({ error: "aceitar deve ser booleano" }, { status: 400 })
   }
 
   const notificacao = await prisma.notificacao.findUnique({

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
+import { mestreSelecionarSchema } from "@/lib/validation"
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 
@@ -17,13 +18,12 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Apenas dono ou professor podem selecionar" }, { status: 403 })
     }
 
-    const { alunoId, categoria = "adulto" } = await req.json()
-    if (!alunoId) {
-      return NextResponse.json({ error: "alunoId é obrigatório" }, { status: 400 })
+    const body = await req.json()
+    const parsed = mestreSelecionarSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "alunoId é obrigatório" }, { status: 400 })
     }
-    if (!CATEGORIAS.includes(categoria)) {
-      return NextResponse.json({ error: `categoria inválida. Use: ${CATEGORIAS.join(", ")}` }, { status: 400 })
-    }
+    const { alunoId, categoria } = parsed.data
 
     const aluno = await prisma.usuario.findFirst({
       where: { id: alunoId, academiaId: session.user.academiaId, role: "aluno" },

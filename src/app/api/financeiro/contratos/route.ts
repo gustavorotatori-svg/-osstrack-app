@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { contratoCreateSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -34,11 +35,11 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { alunoId, planoId, valor, dataInicio, dataFim } = body
-
-  if (!alunoId || !planoId) {
-    return NextResponse.json({ error: "alunoId e planoId são obrigatórios" }, { status: 400 })
+  const parsed = contratoCreateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
   }
+  const { alunoId, planoId, valor, dataInicio, dataFim } = parsed.data
 
   const aluno = await prisma.usuario.findFirst({
     where: { id: alunoId, academiaId: session.user.academiaId, role: "aluno" },

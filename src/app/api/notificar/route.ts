@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { sendPushToUser } from "@/lib/webpush"
 import { handleApiError } from "@/lib/api-error"
+import { notificarSchema } from "@/lib/validation"
 
 export async function POST(req: Request) {
   try {
@@ -12,11 +13,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { usuarioId, titulo, descricao, tipo, link } = await req.json()
-
-    if (!usuarioId || !titulo || !descricao) {
-      return NextResponse.json({ error: "usuarioId, titulo e descricao são obrigatórios" }, { status: 400 })
+    const body = await req.json()
+    const parsed = notificarSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
     }
+    const { usuarioId, titulo, descricao, tipo, link } = parsed.data
 
     // Must notify only users from the same academy
     const targetUser = await prisma.usuario.findUnique({
@@ -32,14 +34,14 @@ export async function POST(req: Request) {
         usuarioId,
         tipo: tipo || "sistema",
         titulo,
-        descricao,
+        descricao: descricao || "",
         link: link || null,
       },
     })
 
     const pushResult = await sendPushToUser(usuarioId, {
       title: titulo,
-      body: descricao,
+      body: descricao || "",
       url: link || undefined,
     })
 

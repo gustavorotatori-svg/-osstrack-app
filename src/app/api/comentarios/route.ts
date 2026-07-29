@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
+import { comentarioSchema } from "@/lib/validation"
 
 export async function GET(request: Request) {
   try {
@@ -41,10 +42,15 @@ export async function POST(request: Request) {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { postagemId, conteudo } = await request.json()
+    const body = await request.json()
+    const parsed = comentarioSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
+    }
+    const { postagemId, conteudo } = parsed.data
 
-    if (!postagemId || !conteudo?.trim()) {
-      return NextResponse.json({ error: "postagemId e conteudo são obrigatórios" }, { status: 400 })
+    if (!conteudo?.trim()) {
+      return NextResponse.json({ error: "Conteúdo obrigatório" }, { status: 400 })
     }
 
     // Check post belongs to user's academy

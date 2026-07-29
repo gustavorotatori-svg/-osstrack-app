@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json().catch(() => ({}))
-    const force = body.force === true
+    const force = body?.force === true
 
     if (force) {
       await prisma.postagemMural.deleteMany()

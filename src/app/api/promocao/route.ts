@@ -3,13 +3,19 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { promocaoSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
   const session = await getServerSession(authOptions)
   if (!session || !["professor", "dono"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-  const { alunoId, novaFaixa, novoGrau } = await request.json()
+  const body = await request.json()
+  const parsed = promocaoSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
+  }
+  const { alunoId, novaFaixa, novoGrau } = parsed.data
 
   const aluno = await prisma.usuario.findFirst({
     where: { id: alunoId, professorId: session.user.id },

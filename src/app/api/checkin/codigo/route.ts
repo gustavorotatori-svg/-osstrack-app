@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { checkinCodigoSchema } from "@/lib/validation"
 
 export async function POST(req: Request) {
   try {
@@ -11,10 +12,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { codigo } = await req.json()
-    if (!codigo || codigo.length !== 4) {
+    const body = await req.json()
+    const parsed = checkinCodigoSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "Código inválido" }, { status: 400 })
     }
+    const { codigo } = parsed.data
 
     const checkin = await prisma.presenca.findFirst({
       where: {

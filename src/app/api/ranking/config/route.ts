@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { rankingConfigSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -29,7 +30,12 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 
-  const { rankingVisivel } = await request.json()
+  const body = await request.json()
+  const parsed = rankingConfigSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: "rankingVisivel é obrigatório" }, { status: 400 })
+  }
+  const { rankingVisivel } = parsed.data
 
   await prisma.academia.update({
     where: { id: session.user.academiaId },
