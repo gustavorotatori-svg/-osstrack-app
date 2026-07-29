@@ -4,16 +4,19 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import crypto from "crypto"
 import { handleApiError } from "@/lib/api-error"
+import { conviteSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { tipo } = await request.json()
-    if (!tipo || !["professor", "aluno", "amigo", "academia"].includes(tipo)) {
-      return NextResponse.json({ error: "Tipo inválido" }, { status: 400 })
+    const body = await request.json()
+    const parsed = conviteSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Tipo inválido" }, { status: 400 })
     }
+    const { tipo } = parsed.data
 
     // TODO: no future, limitar tipos de convite por role se necessário
 

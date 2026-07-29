@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { turmaUpdateSchema } from "@/lib/validation"
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -35,6 +36,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const data = await request.json()
+  const parsed = turmaUpdateSchema.safeParse(data)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
+  }
+  const cleanData = parsed.data
+  Object.keys(cleanData).forEach((key) => (cleanData as any)[key] === undefined && delete (cleanData as any)[key])
 
   const turma = await prisma.turma.findUnique({ where: { id } })
   if (!turma) return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
@@ -45,15 +52,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
   const updated = await prisma.turma.update({
     where: { id },
-    data: {
-      ...(data.nome && { nome: data.nome }),
-      ...(data.descricao !== undefined && { descricao: data.descricao }),
-      ...(data.cor && { cor: data.cor }),
-      ...(data.icone && { icone: data.icone }),
-      ...(data.categoria && { categoria: data.categoria }),
-      ...(data.modalidade && { modalidade: data.modalidade }),
-      ...(data.maxAlunos && { maxAlunos: data.maxAlunos }),
-    },
+    data: cleanData,
   })
 
   return NextResponse.json(updated)

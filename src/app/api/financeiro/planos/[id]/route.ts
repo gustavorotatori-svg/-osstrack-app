@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { planoUpdateSchema } from "@/lib/validation"
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -13,7 +14,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   }
 
   const body = await req.json()
-  const { nome, valor, taxaMatricula, descricao, periodo, ativo } = body
+  const parsed = planoUpdateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
+  }
+  const { nome, valor, taxaMatricula, descricao, periodo, ativo } = parsed.data
 
   const plano = await prisma.planoMensalidade.findFirst({
     where: { id, academiaId: session.user.academiaId },

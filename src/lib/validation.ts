@@ -83,6 +83,9 @@ export const academiaUpdateSchema = z.object({
   estado: z.string().max(50).optional(),
   telefone: z.string().max(20).optional(),
   logo: z.string().max(500).nullable().optional(),
+  wellhubAtivo: z.boolean().optional(),
+  wellhubToken: z.string().max(500).nullable().optional(),
+  wellhubGymId: z.string().max(50).nullable().optional(),
 })
 
 export const turmaSchema = z.object({
@@ -129,4 +132,199 @@ export const despesaSchema = z.object({
 export const whatsappSchema = z.object({
   alunoId: z.string().min(1),
   mensagem: z.string().max(500).optional(),
+})
+
+export const comentarioSchema = z.object({
+  postagemId: z.string().min(1),
+  conteudo: z.string().min(1).max(1000),
+})
+
+export const promocaoSchema = z.object({
+  alunoId: z.string().min(1),
+  novaFaixa: z.string().max(30),
+  novoGrau: z.coerce.number().int().min(0).max(10),
+})
+
+export const vinculoConviteSchema = z.object({
+  conviteId: z.string().min(1),
+})
+
+export const vinculoProfessorSchema = z.object({
+  professorId: z.string().min(1),
+})
+
+export const vinculoAcademiaSchema = z.object({
+  academiaId: z.string().min(1),
+})
+
+export const wellhubBindSchema = z.object({
+  wellhubId: z.string().min(1).max(100),
+  alunoId: z.string().min(1),
+})
+
+export const presencaManualSchema = z.object({
+  alunoId: z.string().min(1),
+  data: z.string().min(1).optional(),
+  turma: z.string().max(100).optional(),
+  observacao: z.string().max(500).optional(),
+  origem: z.string().max(30).optional().default("app"),
+})
+
+export const presencaWellhubSchema = z.object({
+  wellhubId: z.string().min(1).max(100),
+  turma: z.string().max(100).optional(),
+  skipValidation: z.boolean().optional().default(false),
+})
+
+export const horarioAulaSchema = z.object({
+  turmaId: z.string().min(1),
+  diaSemana: z.coerce.number().int().min(0).max(6),
+  horaInicio: z.string().max(5),
+  horaFim: z.string().max(5),
+  maxAlunos: z.coerce.number().int().min(1).max(500).optional(),
+  local: z.string().max(200).optional(),
+})
+
+export const horarioAulaUpdateSchema = horarioAulaSchema.partial()
+
+export const agendamentoSchema = z.object({
+  horarioId: z.string().min(1),
+  data: z.string().min(1),
+})
+
+export const cobrancaCreateSchema = z.object({
+  contratoId: z.string().min(1),
+  valor: z.coerce.number().min(1).max(10000000),
+  vencimento: z.string().min(1),
+  observacao: z.string().max(500).optional(),
+})
+
+export const cobrancaUpdateSchema = z.object({
+  status: z.enum(["pendente", "pago", "atrasado", "cancelado"]).optional(),
+  metodo: z.string().max(30).optional(),
+  dataPagamento: z.string().optional(),
+})
+
+export const contratoCreateSchema = z.object({
+  alunoId: z.string().min(1),
+  planoId: z.string().min(1),
+  valor: z.coerce.number().min(1).max(10000000),
+  dataInicio: z.string().min(1),
+  dataFim: z.string().optional(),
+  observacao: z.string().max(500).optional(),
+})
+
+export const contratoUpdateSchema = z.object({
+  status: z.enum(["ativo", "cancelado", "encerrado"]).optional(),
+  valor: z.coerce.number().min(1).max(10000000).optional(),
+})
+
+export const planoCreateSchema = z.object({
+  nome: z.string().min(1).max(100),
+  valor: z.coerce.number().min(1).max(10000000),
+  taxaMatricula: z.coerce.number().min(0).max(10000000).optional().default(0),
+  descricao: z.string().max(500).optional(),
+  periodo: z.enum(["mensal", "trimestral", "semestral", "anual"]).optional().default("mensal"),
+})
+
+export const planoUpdateSchema = z.object({
+  nome: z.string().min(1).max(100).optional(),
+  valor: z.coerce.number().min(1).max(10000000).optional(),
+  taxaMatricula: z.coerce.number().min(0).max(10000000).optional(),
+  descricao: z.string().max(500).optional(),
+  periodo: z.enum(["mensal", "trimestral", "semestral", "anual"]).optional(),
+  ativo: z.boolean().optional(),
+})
+
+export const despesaUpdateSchema = z.object({
+  status: z.enum(["pendente", "pago", "cancelado"]).optional(),
+  descricao: z.string().max(200).optional(),
+  valor: z.coerce.number().min(0).max(10000000).optional(),
+  categoria: z.string().max(50).optional(),
+  observacao: z.string().max(500).optional(),
+  dataVencimento: z.string().optional(),
+})
+
+export const graduacaoCreateSchema = z.object({
+  faixa: z.string().min(1).max(30),
+  graus: z.coerce.number().int().min(0).max(10),
+  aulasPorGrau: z.coerce.number().int().min(1).max(1000),
+  aulasProxFx: z.coerce.number().int().min(0).max(10000),
+  categoria: z.string().max(20).optional().default("adulto"),
+})
+
+export const graduacaoUpdateSchema = graduacaoCreateSchema.partial()
+
+export const notificarSchema = z.object({
+  usuarioId: z.string().min(1),
+  titulo: z.string().min(1).max(200),
+  descricao: z.string().max(500).optional(),
+  tipo: z.enum(["boas_vindas", "lembrete", "promocao", "cobranca", "sistema"]).optional().default("sistema"),
+  link: z.string().max(500).optional(),
+})
+
+export const pushSubscribeSchema = z.object({
+  subscription: z.object({
+    endpoint: z.string().min(1),
+    keys: z.object({
+      p256dh: z.string().min(1),
+      auth: z.string().min(1),
+    }),
+  }),
+})
+
+export const pushUnsubscribeSchema = z.object({
+  endpoint: z.string().min(1),
+})
+
+export const pushBulkSchema = z.object({
+  alunoIds: z.array(z.string()).min(1),
+  titulo: z.string().min(1).max(200),
+  descricao: z.string().max(500).optional().default(""),
+  tipo: z.enum(["boas_vindas", "lembrete", "promocao", "cobranca", "sistema"]).optional().default("sistema"),
+  link: z.string().max(500).optional(),
+})
+
+export const rankingConfigSchema = z.object({
+  rankingVisivel: z.boolean(),
+})
+
+export const mestreSelecionarSchema = z.object({
+  alunoId: z.string().min(1),
+  categoria: z.string().max(20).optional().default("adulto"),
+})
+
+export const checkinCodigoSchema = z.object({
+  codigo: z.string().min(1).max(20),
+})
+
+export const checkinCodigoGerarSchema = z.object({
+  turma: z.string().max(100).optional(),
+})
+
+export const turmaUpdateSchema = z.object({
+  nome: z.string().min(1).max(100).optional(),
+  descricao: z.string().max(300).optional(),
+  cor: z.string().max(9).optional(),
+  icone: z.string().max(10).optional(),
+  categoria: z.string().max(20).optional(),
+  modalidade: z.enum(["kimono", "nogi"]).optional(),
+  horario: z.string().max(5).optional(),
+  dias: z.string().max(100).optional(),
+  maxAlunos: z.coerce.number().int().min(1).max(500).optional(),
+})
+
+export const setupSchema = z.object({
+  nome: z.string().min(1).max(120).optional(),
+  email: emailSchema.optional(),
+  senha: senhaSchema.optional(),
+  academia: z.string().max(200).optional(),
+})
+
+export const checkVerificationSchema = z.object({
+  userId: z.string().min(1),
+})
+
+export const missoesUpdateSchema = z.object({
+  id: z.string().min(1),
 })

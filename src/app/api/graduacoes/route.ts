@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { graduacaoCreateSchema, graduacaoUpdateSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -28,23 +29,20 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json()
-  const { faixa, categoria, graus, aulasPorGrau, aulasProxFx, aulasMinimasAno, dataProva, regraTroca } = body
-
-  if (!faixa || graus === undefined || aulasPorGrau === undefined) {
-    return NextResponse.json({ error: "faixa, graus e aulasPorGrau são obrigatórios" }, { status: 400 })
+  const parsed = graduacaoCreateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "faixa, graus e aulasPorGrau são obrigatórios" }, { status: 400 })
   }
+  const { faixa, categoria, graus, aulasPorGrau, aulasProxFx } = parsed.data
 
   const graduacao = await prisma.graduacao.create({
     data: {
       academiaId: session.user.academiaId,
       faixa,
-      categoria: categoria || "adulto",
+      categoria,
       graus,
       aulasPorGrau,
       aulasProxFx: aulasProxFx || null,
-      aulasMinimasAno: aulasMinimasAno || null,
-      dataProva: dataProva ? new Date(dataProva) : null,
-      regraTroca: regraTroca || "graus",
     },
   })
 
@@ -62,21 +60,18 @@ export async function PUT(request: Request) {
   }
 
   const body = await request.json()
-  const { id, faixa, graus, aulasPorGrau, aulasProxFx, aulasMinimasAno, dataProva, regraTroca } = body
+  const parsed = graduacaoUpdateSchema.safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "id é obrigatório" }, { status: 400 })
+  }
+  const { id, ...updateData } = parsed.data as any
 
   if (!id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
+  Object.keys(updateData).forEach((key: string) => updateData[key] === undefined && delete updateData[key])
 
   const graduacao = await prisma.graduacao.update({
     where: { id },
-    data: {
-      ...(faixa !== undefined && { faixa }),
-      ...(graus !== undefined && { graus }),
-      ...(aulasPorGrau !== undefined && { aulasPorGrau }),
-      ...(aulasProxFx !== undefined && { aulasProxFx }),
-      ...(aulasMinimasAno !== undefined && { aulasMinimasAno }),
-      ...(dataProva !== undefined && { dataProva: dataProva ? new Date(dataProva) : null }),
-      ...(regraTroca !== undefined && { regraTroca }),
-    },
+    data: updateData,
   })
 
   return NextResponse.json(graduacao)
@@ -93,8 +88,8 @@ export async function DELETE(request: Request) {
   }
 
   const body = await request.json()
+  if (!body.id || typeof body.id !== "string") return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
   const { id } = body
-  if (!id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
 
   await prisma.graduacao.delete({ where: { id } })
   return NextResponse.json({ success: true })

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { turmaSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -34,8 +35,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
   }
 
-  const { nome, descricao, cor, icone, categoria, modalidade, maxAlunos } = await request.json()
-  if (!nome || typeof nome !== "string" || nome.length > 100) return NextResponse.json({ error: "Nome obrigatório" }, { status: 400 })
+  const body = await request.json()
+  const parsed = turmaSchema.pick({ nome: true, descricao: true, cor: true, icone: true, categoria: true, modalidade: true, maxAlunos: true }).safeParse(body)
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.issues[0]?.message || "Nome obrigatório" }, { status: 400 })
+  }
+  const { nome, descricao, cor, icone, categoria, modalidade, maxAlunos } = parsed.data
 
   const turma = await prisma.turma.create({
     data: {

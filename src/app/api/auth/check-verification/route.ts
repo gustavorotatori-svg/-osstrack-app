@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { emailSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json()
-    if (!email || typeof email !== "string") {
+    const body = await request.json()
+    const parsed = emailSchema.safeParse(body.email)
+    if (!parsed.success) {
       return NextResponse.json({ verified: true })
     }
+    const email = parsed.data
 
     const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
     if (!smtpConfigured) {

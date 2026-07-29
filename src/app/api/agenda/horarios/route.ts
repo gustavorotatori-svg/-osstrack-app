@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { horarioAulaSchema, horarioAulaUpdateSchema } from "@/lib/validation"
 
 export async function GET(req: Request) {
   try {
@@ -36,10 +37,14 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     if (!session || !["dono", "professor"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { turmaId, turmaNome, professorId, diaSemana, horaInicio, horaFim, maxAlunos, local } = await req.json()
-    if (diaSemana === undefined || !horaInicio || !horaFim) {
+    const body = await req.json()
+    const parsed = horarioAulaSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "diaSemana, horaInicio, horaFim obrigatórios" }, { status: 400 })
     }
+    const { turmaId, diaSemana, horaInicio, horaFim, maxAlunos, local } = parsed.data
+    const turmaNome = body.turmaNome
+    let professorId = body.professorId
 
     let finalProfessorId = professorId === "me" ? session.user.id : professorId
     let finalTurmaId = turmaId
@@ -80,7 +85,13 @@ export async function PUT(req: Request) {
     if (!session || !["dono", "professor"].includes(session.user.role)) return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
     const body = await req.json()
-    const { id, turmaId, professorId, diaSemana, horaInicio, horaFim, maxAlunos, local } = body
+    const parsed = horarioAulaUpdateSchema.safeParse(body)
+    if (!parsed.success || !body.id) {
+      return NextResponse.json({ error: "id obrigatório" }, { status: 400 })
+    }
+    const { id, ...updateData } = body
+    Object.keys(updateData).forEach((k) => updateData[k] === undefined && delete updateData[k])
+
     if (!id) return NextResponse.json({ error: "id obrigatório" }, { status: 400 })
 
     const horario = await prisma.horarioAula.findUnique({ where: { id } })
@@ -89,15 +100,7 @@ export async function PUT(req: Request) {
 
     const updated = await prisma.horarioAula.update({
       where: { id },
-      data: {
-        ...(turmaId !== undefined && { turmaId }),
-        ...(professorId !== undefined && { professorId }),
-        ...(diaSemana !== undefined && { diaSemana: Number(diaSemana) }),
-        ...(horaInicio !== undefined && { horaInicio }),
-        ...(horaFim !== undefined && { horaFim }),
-        ...(maxAlunos !== undefined && { maxAlunos }),
-        ...(local !== undefined && { local }),
-      },
+      data: updateData,
     })
 
     return NextResponse.json(updated)

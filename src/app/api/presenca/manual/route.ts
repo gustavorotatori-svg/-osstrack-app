@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
+import { presencaManualSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +13,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { alunoId, origem, data: dataRetroativa } = await request.json()
-    if (!alunoId) return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+    const body = await request.json()
+    const parsed = presencaManualSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: "alunoId obrigatório" }, { status: 400 })
+    }
+    const { alunoId, origem, data: dataRetroativa } = parsed.data
 
     const aluno = await prisma.usuario.findUnique({
       where: { id: alunoId },

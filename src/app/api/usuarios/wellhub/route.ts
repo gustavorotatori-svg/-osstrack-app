@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { wellhubBindSchema } from "@/lib/validation"
 
 export async function POST(request: Request) {
   try {
@@ -11,10 +12,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
-    const { alunoId, wellhubId } = await request.json()
-    if (!alunoId || !wellhubId) {
-      return NextResponse.json({ error: "alunoId e wellhubId obrigatórios" }, { status: 400 })
+    const body = await request.json()
+    const parsed = wellhubBindSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
     }
+    const { alunoId, wellhubId } = parsed.data
 
     const aluno = await prisma.usuario.findUnique({
       where: { id: alunoId },

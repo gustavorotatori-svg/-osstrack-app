@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
+import { presencaWellhubSchema } from "@/lib/validation"
 
 const WELLHUB_API = "https://api.partners.gympass.com/access/v1/validate"
 
@@ -32,10 +33,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Configure o Token e Gym ID do Wellhub nas configurações da academia" }, { status: 400 })
     }
 
-    const { wellhubId, skipValidation } = await request.json()
-    if (!wellhubId) {
+    const body = await request.json()
+    const parsed = presencaWellhubSchema.safeParse(body)
+    if (!parsed.success) {
       return NextResponse.json({ error: "ID do Wellhub (gympass_id) obrigatório" }, { status: 400 })
     }
+    const { wellhubId, skipValidation } = parsed.data
 
     if (!skipValidation) {
       const wellhubRes = await fetch(WELLHUB_API, {
