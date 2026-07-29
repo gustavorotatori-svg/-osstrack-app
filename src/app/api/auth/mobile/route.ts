@@ -40,6 +40,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })
     }
 
+    // Server-side email verification enforcement
+    if (process.env.SMTP_HOST && process.env.SMTP_USER && !user.emailVerified) {
+      return NextResponse.json({ error: "E-mail não verificado. Verifique sua caixa de entrada." }, { status: 403 })
+    }
+
     const role = isUserRole(user.role) ? user.role : "aluno"
 
     const token = await encode({

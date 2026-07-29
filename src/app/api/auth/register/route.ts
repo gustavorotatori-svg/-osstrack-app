@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     const existing = await prisma.usuario.findUnique({ where: { email } })
     if (existing) {
-      return NextResponse.json({ duplicate: true })
+      return NextResponse.json({ duplicate: true }, { status: 409 })
     }
 
     const hashed = await bcrypt.hash(senha, 10)

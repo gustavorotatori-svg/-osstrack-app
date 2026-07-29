@@ -22,7 +22,10 @@ export async function POST() {
 
     await prisma.usuario.update({
       where: { id: session.user.id },
-      data: { emailVerificationToken: token },
+      data: {
+        emailVerificationToken: token,
+        emailVerificationExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      },
     })
 
     const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://osstrack-app.vercel.app"}/api/auth/verificar-email?token=${token}&userId=${session.user.id}`
