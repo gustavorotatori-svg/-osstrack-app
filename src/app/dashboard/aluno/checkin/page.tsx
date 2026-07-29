@@ -49,6 +49,8 @@ export default function CheckinPage() {
   const [celebrationMsg, setCelebrationMsg] = useState("")
   const [showMetaCelebration, setShowMetaCelebration] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [codigoInput, setCodigoInput] = useState("")
+  const [modoCodigo, setModoCodigo] = useState(false)
 
   const fetchMeta = useCallback(async () => {
     try {
@@ -83,18 +85,90 @@ export default function CheckinPage() {
     }
   }, [showConfetti])
 
+  async function afterCheckin() {
+    try {
+      const res = await fetch("/api/metasemanal", { method: "POST" })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.concluida && !metaSemanal.concluida) {
+          setShowMetaCelebration(true)
+          setCelebrationMsg(`🎯 ${t("metaSemanalConcluida")}`)
+          setTimeout(() => setShowMetaCelebration(false), 5000)
+        }
+        setMetaSemanal(data)
+      }
+    } catch {
+      toast.error(t("erroRegistrar") || "Erro ao registrar meta semanal")
+    }
+
+    try {
+      const res = await fetch("/api/streak", { method: "POST" })
+      if (res.ok) {
+        const data = await res.json()
+        const newStreak = data.currentStreak
+        setPrevStreak(streak); setStreak(newStreak)
+        playStreakSound(newStreak)
+        if (newStreak >= 10 && newStreak > prevStreak && (newStreak % 5 === 0 || newStreak % 10 === 0 || newStreak >= 30)) {
+          setCelebrationMsg(newStreak >= 30 ? `🔥 ${t("streakDiasLenda").replace("{n}", String(newStreak))}` : `🔥 ${t("streakDias").replace("{n}", String(newStreak))}`)
+          setShowCelebration(true)
+          setTimeout(() => setShowCelebration(false), 5000)
+        }
+      }
+    } catch {
+      toast.error(t("erroRegistrar") || "Erro ao atualizar streak")
+    }
+
+    try {
+      const res = await fetch("/api/conquistas", { method: "POST" })
+      if (res.ok) {
+        const data = await res.json()
+        if (data?.novas?.length) {
+          setCelebrationMsg(`🏆 ${t("novaConquista").replace("{nome}", data.novas[0])}`)
+          setShowCelebration(true)
+          setTimeout(() => setShowCelebration(false), 5000)
+          playCelebrationSound()
+        }
+      }
+    } catch {
+      toast.error(t("erroRegistrar") || "Erro ao verificar conquistas")
+    }
+
+    try {
+      await fetch("/api/mural", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tipo: "checkin", conteudo: `${t("checkinFeito")} 🥋` }),
+      })
+    } catch {
+      toast.error(t("erroRegistrar") || "Erro ao publicar no mural")
+    }
+
+    try {
+      await fetch("/api/missoes")
+    } catch {
+      toast.error(t("erroRegistrar") || "Erro ao verificar missões")
+    }
+
+    setLocationStatus(t("checkinRegistrado"))
+    setLocationType("success")
+    setTimeout(() => setStatus("done"), 1500)
+  }
+
   async function handleCheckin() {
-    if (!navigator.geolocation) { setLocationStatus(t("geolocalizacaoIndisponivel")); setLocationType("error"); return }
+    if (!navigator.geolocation) {
+      setModoCodigo(true)
+      setLocationStatus(t("geolocalizacaoIndisponivel"))
+      setLocationType("error")
+      return
+    }
+
+    setStatus("pending")
+    setShowConfetti(true)
+    setMotivational(frases[Math.floor(Math.random() * frases.length)])
+    playCheckinSound()
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        setLocationStatus(t("verificandoLocalizacao"))
-        setLocationType("")
-        setStatus("pending")
-        setShowConfetti(true)
-        setMotivational(frases[Math.floor(Math.random() * frases.length)])
-        playCheckinSound()
-
         try {
           const checkinRes = await fetch("/api/presenca", {
             method: "POST",
@@ -115,76 +189,45 @@ export default function CheckinPage() {
           return
         }
 
-        try {
-          const res = await fetch("/api/metasemanal", { method: "POST" })
-          if (res.ok) {
-            const data = await res.json()
-            if (data.concluida && !metaSemanal.concluida) {
-              setShowMetaCelebration(true)
-              setCelebrationMsg(`🎯 ${t("metaSemanalConcluida")}`)
-              setTimeout(() => setShowMetaCelebration(false), 5000)
-            }
-            setMetaSemanal(data)
-          }
-        } catch {
-          toast.error(t("erroRegistrar") || "Erro ao registrar meta semanal")
-        }
-
-        try {
-          const res = await fetch("/api/streak", { method: "POST" })
-          if (res.ok) {
-            const data = await res.json()
-            const newStreak = data.currentStreak
-            setPrevStreak(streak); setStreak(newStreak)
-            playStreakSound(newStreak)
-            if (newStreak >= 10 && newStreak > prevStreak && (newStreak % 5 === 0 || newStreak % 10 === 0 || newStreak >= 30)) {
-              setCelebrationMsg(newStreak >= 30 ? `🔥 ${t("streakDiasLenda").replace("{n}", String(newStreak))}` : `🔥 ${t("streakDias").replace("{n}", String(newStreak))}`)
-              setShowCelebration(true)
-              setTimeout(() => setShowCelebration(false), 5000)
-            }
-          }
-        } catch {
-          toast.error(t("erroRegistrar") || "Erro ao atualizar streak")
-        }
-
-        try {
-          const res = await fetch("/api/conquistas", { method: "POST" })
-          if (res.ok) {
-            const data = await res.json()
-            if (data?.novas?.length) {
-              setCelebrationMsg(`🏆 ${t("novaConquista").replace("{nome}", data.novas[0])}`)
-              setShowCelebration(true)
-              setTimeout(() => setShowCelebration(false), 5000)
-              playCelebrationSound()
-            }
-          }
-        } catch {
-          toast.error(t("erroRegistrar") || "Erro ao verificar conquistas")
-        }
-
-        try {
-          await fetch("/api/mural", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ tipo: "checkin", conteudo: `${t("checkinFeito")} 🥋` }),
-          })
-        } catch {
-          toast.error(t("erroRegistrar") || "Erro ao publicar no mural")
-        }
-
-        try {
-          await fetch("/api/missoes")
-        } catch {
-          toast.error(t("erroRegistrar") || "Erro ao verificar missões")
-        }
-
-        setLocationStatus(t("checkinRegistrado"))
-        setLocationType("success")
-        setTimeout(() => setStatus("done"), 1500)
+        await afterCheckin()
       },
-      () => { setLocationStatus(t("permissaoNegada")); setLocationType("error") },
+      () => {
+        setModoCodigo(true)
+        setLocationStatus(t("permissaoNegada"))
+        setLocationType("error")
+        setStatus("idle"); setShowConfetti(false)
+      },
       { enableHighAccuracy: true, timeout: 10000 }
     )
+  }
+
+  async function handleCodigoCheckin() {
+    if (!codigoInput || codigoInput.length !== 4) return
+    setStatus("pending")
+    setShowConfetti(true)
+    setMotivational(frases[Math.floor(Math.random() * frases.length)])
+    playCheckinSound()
+
+    try {
+      const codigoRes = await fetch("/api/checkin/codigo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo: codigoInput }),
+      })
+      if (!codigoRes.ok) {
+        const errData = await codigoRes.json()
+        setLocationStatus(errData.error || "Código inválido")
+        setLocationType("error")
+        setStatus("idle"); setShowConfetti(false)
+        return
+      }
+
+      await afterCheckin()
+    } catch {
+      setLocationStatus(t("erroConexao"))
+      setLocationType("error")
+      setStatus("idle"); setShowConfetti(false)
+    }
   }
 
   if (loading) {
@@ -283,6 +326,38 @@ export default function CheckinPage() {
                 {locationType === "success" && <CheckIcon className="w-3.5 h-3.5 text-emerald-500" />}
                 {locationType === "error" && <XIcon className="w-3.5 h-3.5 text-red-400" />}
                 <span className={locationType === "success" ? "text-emerald-400" : locationType === "error" ? "text-red-400" : "text-[var(--text-secondary)]"}>{locationStatus}</span>
+              </div>
+            )}
+
+            {modoCodigo && status === "idle" && (
+              <div className="mt-4 space-y-3">
+                <p className="text-xs text-[var(--text-secondary)]">Peça o código de 4 dígitos ao professor ou à recepção</p>
+                <div className="flex items-center justify-center gap-2">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={4}
+                    pattern="[0-9]*"
+                    value={codigoInput}
+                    onChange={(e) => setCodigoInput(e.target.value.replace(/\D/g, "").slice(0, 4))}
+                    placeholder="0000"
+                    className="input-field w-24 text-center text-2xl font-black tracking-[0.3em]"
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleCodigoCheckin}
+                    disabled={codigoInput.length !== 4}
+                    className="btn-gold px-5 py-2.5 rounded-xl text-xs font-bold disabled:opacity-40"
+                  >
+                    {t("fazerCheckin")}
+                  </button>
+                </div>
+                <button
+                  onClick={() => { setModoCodigo(false); setLocationStatus(""); setLocationType("") }}
+                  className="text-xs text-[var(--text-secondary)] hover:text-white transition-colors"
+                >
+                  Tentar GPS novamente
+                </button>
               </div>
             )}
 

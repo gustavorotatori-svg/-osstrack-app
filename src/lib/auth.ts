@@ -70,6 +70,11 @@ export const authOptions: NextAuthOptions = {
         const valid = await bcrypt.compare(credentials.password, user.senha)
         if (!valid) return null
 
+        // Server-side email verification enforcement
+        if (process.env.SMTP_HOST && process.env.SMTP_USER && !user.emailVerified) {
+          throw new Error("E-mail não verificado. Verifique sua caixa de entrada.")
+        }
+
         return {
           id: user.id,
           email: user.email,
