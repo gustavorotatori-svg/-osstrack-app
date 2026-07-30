@@ -204,6 +204,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               <div className="section-header mb-0">{t("presencasPorMes")}</div>
               <span className="label">Últimos 6 meses</span>
             </div>
+            {maxPresencasMes === 0 ? (
+              <div className="text-center py-6">
+                <BarChart3 className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2" />
+                <p className="text-xs text-[var(--text-secondary)]">Nenhuma presença registrada ainda</p>
+                <p className="text-[10px] text-[var(--text-muted)] mt-1">Os dados aparecerão aqui conforme os alunos fizerem check-in</p>
+              </div>
+            ) : (
             <div className="flex items-end gap-2 h-24">
               {presencasMensais.map((p, i) => {
                 const height = Math.max(4, (p.total / maxPresencasMes) * 80)
@@ -220,6 +227,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 )
               })}
             </div>
+            )}
           </div>
 
           {/* Tabs */}
