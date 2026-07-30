@@ -105,6 +105,7 @@ const navItems: Record<string, { href: string; tkey: string; icon: (p: IconProps
     { href: "/dashboard/dono/agenda", tkey: "agenda", icon: CalendarIcon },
     { href: "/dashboard/dono/graduacoes", tkey: "graduacoes", icon: AwardIcon },
     { href: "/dashboard/dono/competicoes", tkey: "competicoes", icon: AwardIcon },
+    { href: "/dashboard/dono/familia", tkey: "familias", icon: UsersIcon },
     { href: "/dashboard/dono/churn", tkey: "alertaEvasao", icon: UsersIcon },
     { href: "/dashboard/dono/professores", tkey: "professores", icon: UsersIcon },
     { href: "/dashboard/dono/config", tkey: "config", icon: SettingsIcon },
