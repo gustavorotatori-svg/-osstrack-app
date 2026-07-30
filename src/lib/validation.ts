@@ -328,3 +328,17 @@ export const checkVerificationSchema = z.object({
 export const missoesUpdateSchema = z.object({
   id: z.string().min(1),
 })
+
+export const familiaSchema = z.object({
+  nome: z.string().min(1, "Nome da família é obrigatório").max(100),
+  desconto: z.coerce.number().int().min(0).max(100).default(10),
+})
+
+export const familiaUpdateSchema = z.object({
+  nome: z.string().min(1).max(100).optional(),
+  desconto: z.coerce.number().int().min(0).max(100).optional(),
+})
+
+export const familiaMembroSchema = z.object({
+  alunoId: z.string().min(1),
+})
