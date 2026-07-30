@@ -365,9 +365,18 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-azul)"} as React.CSSProperties}>
                 <div className="section-header mb-3">{t("presencasRecentes")}</div>
                 {ultimasPresencas.length === 0 ? (
-                  <div className="text-center py-6">
-                    <Calendar className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-1" />
-                    <p className="text-xs text-[var(--text-secondary)]">{t("nenhumaPresenca")}</p>
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 rounded-xl bg-[rgba(212,168,71,0.06)] border border-[rgba(212,168,71,0.08)] flex items-center justify-center mx-auto mb-3">
+                      <Calendar className="w-6 h-6 text-[var(--gold)]" />
+                    </div>
+                    <p className="text-sm font-bold text-[var(--gold)] mb-1">Nenhuma presença ainda</p>
+                    <p className="text-xs text-[var(--text-secondary)] max-w-xs mx-auto">
+                      Vá até a academia e faça seu primeiro check-in — sua localização será validada automaticamente.
+                    </p>
+                    <button onClick={() => router.push("/dashboard/aluno/checkin")}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 mt-4 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
+                      Ir para Check-in
+                    </button>
                   </div>
                 ) : (
                   <AttendanceHeatmap presencas={ultimasPresencas} />
