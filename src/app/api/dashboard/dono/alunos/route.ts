@@ -36,6 +36,11 @@ export async function GET(request: Request) {
           take: 1,
           select: { data: true },
         },
+        familiaMembros: {
+          select: {
+            familia: { select: { id: true, nome: true } },
+          },
+        },
       },
       orderBy: { nome: "asc" },
     })
@@ -53,6 +58,8 @@ export async function GET(request: Request) {
         dataInicio: a.dataInicio?.toISOString() || null,
         ultimaPresenca: a.presencas[0]?.data.toISOString() || null,
         avatar: a.avatar,
+        familiaNome: a.familiaMembros[0]?.familia.nome || null,
+        familiaId: a.familiaMembros[0]?.familia.id || null,
       })),
     })
   } catch (error) {

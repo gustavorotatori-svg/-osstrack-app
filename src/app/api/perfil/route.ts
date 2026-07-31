@@ -12,7 +12,23 @@ export async function GET() {
 
     const usuario = await prisma.usuario.findUnique({
       where: { id: session.user.id },
-      include: { academia: { select: { nome: true } }, streak: true },
+      include: {
+        academia: { select: { nome: true } },
+        streak: true,
+        familiaMembros: {
+          include: {
+            familia: {
+              include: {
+                membros: {
+                  include: {
+                    aluno: { select: { id: true, nome: true, faixa: true, grau: true } },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
     if (!usuario) return NextResponse.json({ error: "Usuário não encontrado" }, { status: 404 })
@@ -33,6 +49,20 @@ export async function GET() {
       },
     })
 
+    const familiaInfo = usuario.familiaMembros[0]
+      ? {
+          id: usuario.familiaMembros[0].familia.id,
+          nome: usuario.familiaMembros[0].familia.nome,
+          desconto: usuario.familiaMembros[0].familia.desconto,
+          membros: usuario.familiaMembros[0].familia.membros.map((m) => ({
+            id: m.aluno.id,
+            nome: m.aluno.nome,
+            faixa: m.aluno.faixa,
+            grau: m.aluno.grau,
+          })),
+        }
+      : null
+
     return NextResponse.json({
       id: usuario.id,
       nome: usuario.nome,
@@ -50,6 +80,7 @@ export async function GET() {
       currentStreak: usuario.streak?.currentStreak || 0,
       bestStreak: usuario.streak?.bestStreak || 0,
       nivelDisciplina: usuario.nivelDisciplina,
+      familia: familiaInfo,
     })
   } catch (error) {
     return handleApiError(error)

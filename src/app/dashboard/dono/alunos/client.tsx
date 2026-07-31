@@ -19,6 +19,8 @@ type AlunoData = {
   dataInicio: string | null
   ultimaPresenca: string | null
   avatar: string | null
+  familiaNome: string | null
+  familiaId: string | null
 }
 
 const FAIXAS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
@@ -153,15 +155,16 @@ export function AlunosClient() {
           ) : (
             <div className="space-y-1">
               <div className="hidden md:grid grid-cols-12 gap-2 px-4 py-2 text-[10px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">
-                <div className="col-span-4 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("nome")}>
+                <div className="col-span-3 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("nome")}>
                   Nome {ordenarPor === "nome" && (ordemAsc ? "▲" : "▼")}
                 </div>
                 <div className="col-span-2 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("faixa")}>
                   Faixa {ordenarPor === "faixa" && (ordemAsc ? "▲" : "▼")}
                 </div>
                 <div className="col-span-1 text-center">Grau</div>
+                <div className="col-span-2">Família</div>
                 <div className="col-span-2">Telefone</div>
-                <div className="col-span-2 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("ultimaPresenca")}>
+                <div className="col-span-1 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("ultimaPresenca")}>
                   Última Aula {ordenarPor === "ultimaPresenca" && (ordemAsc ? "▲" : "▼")}
                 </div>
                 <div className="col-span-1 text-right cursor-pointer select-none flex items-center gap-1 justify-end" onClick={() => toggleOrdem("pontos")}>
@@ -170,14 +173,13 @@ export function AlunosClient() {
               </div>
 
               {filtrados.map((a) => (
-                <a
+                <div
                   key={a.id}
-                  href={`/dashboard/dono/perfil?id=${a.id}`}
-                  className="surface px-4 py-3 flex items-center gap-3 hover:bg-white/[0.03] transition-colors no-underline"
+                  className="surface px-4 py-3 flex items-center gap-3 hover:bg-white/[0.03] transition-colors"
                 >
                   <Avatar name={a.nome} faixa={a.faixa} size={36} />
                   <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-1 md:gap-2 items-center">
-                    <div className="md:col-span-4">
+                    <div className="md:col-span-3">
                       <div className="text-sm font-semibold truncate">{a.nome}</div>
                       <div className="text-[10px] text-[var(--text-muted)] md:hidden">{a.faixa} · {a.categoria}</div>
                     </div>
@@ -190,9 +192,14 @@ export function AlunosClient() {
                       <span className="text-xs text-[var(--text-secondary)]">{'★'.repeat(a.grau)}</span>
                     </div>
                     <div className="hidden md:block md:col-span-2">
-                      <span className="text-xs text-[var(--text-secondary)]">{a.telefone || "—"}</span>
+                      <span className={`text-xs ${a.familiaNome ? "text-[var(--gold)]" : "text-[var(--text-muted)]"}`}>
+                        {a.familiaNome || "—"}
+                      </span>
                     </div>
                     <div className="hidden md:block md:col-span-2">
+                      <span className="text-xs text-[var(--text-secondary)]">{a.telefone || "—"}</span>
+                    </div>
+                    <div className="hidden md:block md:col-span-1">
                       <span className={`text-xs ${getUltimaPresenca(a.ultimaPresenca) === "Nunca" ? "text-red-400" : "text-[var(--text-secondary)]"}`}>
                         {getUltimaPresenca(a.ultimaPresenca)}
                       </span>
@@ -202,7 +209,7 @@ export function AlunosClient() {
                     </div>
                   </div>
                   <ChevronDown className="w-4 h-4 text-[var(--text-muted)] -rotate-90 flex-shrink-0" />
-                </a>
+                </div>
               ))}
             </div>
           )}

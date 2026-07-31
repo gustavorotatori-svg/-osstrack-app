@@ -12,11 +12,15 @@ import { useT } from "@/lib/use-t"
 import { getNivelInfo } from "@/lib/disciplina"
 
 type PerfilData = {
-  nome: string; email: string; telefone: string | null; avatar: string | null
+  id: string; nome: string; email: string; telefone: string | null; avatar: string | null
   faixa: string; grau: number; dataInicio: string | null
   academia: string; totalAulas: number; totalPresencas: number
   thisMonth: number; currentStreak: number; bestStreak: number
   nivelDisciplina: string | null
+  familia: {
+    id: string; nome: string; desconto: number
+    membros: { id: string; nome: string; faixa: string; grau: number }[]
+  } | null
 }
 
 const emojis = ["🥋", "🤼", "👊", "💪", "🔥", "⚡", "🦅", "🐯", "🦁", "🐺", "🛡️", "👑"]
@@ -235,6 +239,41 @@ export default function PerfilClient({ role }: { role: string }) {
                   <div className="stat-glass-label">{t("streakAtual")}</div>
                 </div>
               </div>
+
+              {data.familia && (
+                <div className="glass-card p-5">
+                  <h3 className="font-bold text-sm section-header mb-3">
+                    <span className="inline-flex items-center gap-1.5">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                      </svg>
+                      {data.familia.nome}
+                    </span>
+                  </h3>
+                  <p className="text-xs text-[var(--text-secondary)] mb-3">
+                    Desconto familiar de <span className="text-[var(--gold)] font-bold">{data.familia.desconto}%</span>
+                  </p>
+                  <div className="space-y-1.5">
+                    {data.familia.membros
+                      .filter((m) => m.id !== data.id)
+                      .map((m) => (
+                        <div key={m.id} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--dark-card)]">
+                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${getBeltColor(m.faixa)}`}>
+                            {m.faixa}
+                          </span>
+                          <span className="text-sm">{m.nome}</span>
+                        </div>
+                      ))}
+                    {data.familia.membros.filter((m) => m.id !== data.id).length === 0 && (
+                      <p className="text-xs text-[var(--text-muted)]">Você é o único membro desta família</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="glass-card p-5">
                 <div className="section-header">🔥 Streak</div>
                 <div className="flex items-center justify-between">
