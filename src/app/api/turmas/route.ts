@@ -12,10 +12,6 @@ export async function GET() {
 
   const where: any = { academiaId: session.user.academiaId }
 
-  if (session.user.role === "professor") {
-    where.professorId = session.user.id
-  }
-
   const turmas = await prisma.turma.findMany({
     where,
     include: { _count: { select: { alunos: true, horarios: true } } },

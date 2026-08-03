@@ -19,12 +19,27 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
 
     const membro = await prisma.familiaMembro.findUnique({
       where: { id: membroId },
+      include: {
+        familia: { select: { nome: true } },
+        aluno: { select: { id: true } },
+      },
     })
     if (!membro || membro.familiaId !== id) {
       return NextResponse.json({ error: "Membro não encontrado" }, { status: 404 })
     }
 
     await prisma.familiaMembro.delete({ where: { id: membroId } })
+
+    await prisma.notificacao.create({
+      data: {
+        usuarioId: membro.aluno.id,
+        tipo: "familia",
+        titulo: "Você saiu de uma família",
+        descricao: `Você foi removido da família "${membro.familia.nome}".`,
+        link: "/dashboard/aluno/perfil",
+      },
+    })
+
     return NextResponse.json({ success: true })
   } catch (error) {
     return handleApiError(error)

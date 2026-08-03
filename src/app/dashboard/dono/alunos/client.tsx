@@ -173,9 +173,10 @@ export function AlunosClient() {
               </div>
 
               {filtrados.map((a) => (
-                <div
+                <a
                   key={a.id}
-                  className="surface px-4 py-3 flex items-center gap-3 hover:bg-white/[0.03] transition-colors"
+                  href={`/dashboard/dono/alunos/${a.id}`}
+                  className="surface px-4 py-3 flex items-center gap-3 hover:bg-white/[0.03] transition-colors no-underline"
                 >
                   <Avatar name={a.nome} faixa={a.faixa} size={36} />
                   <div className="flex-1 min-w-0 grid grid-cols-1 md:grid-cols-12 gap-1 md:gap-2 items-center">
@@ -209,7 +210,7 @@ export function AlunosClient() {
                     </div>
                   </div>
                   <ChevronDown className="w-4 h-4 text-[var(--text-muted)] -rotate-90 flex-shrink-0" />
-                </div>
+                </a>
               ))}
             </div>
           )}
