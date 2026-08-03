@@ -25,9 +25,10 @@ type Props = {
   alunos: { id: string; nome: string; faixa: string; grau: number; categoria: string }[]
   presencas: { id: string; aluno: string; data: string; horario: string; status: string }[]
   graduacoes: { faixa: string; graus: number; aulasPorGrau: number; aulasProxFx: number | null }[]
+  familias?: { id: string; nome: string; desconto: number; membros: number }[]
 }
 
-export function OwnerDashboardClient({ role, academia, stats, presencasMensais, alunosPorCategoria, alunos, presencas, graduacoes }: Props) {
+export function OwnerDashboardClient({ role, academia, stats, presencasMensais, alunosPorCategoria, alunos, presencas, graduacoes, familias = [] }: Props) {
   const t = useT("dono.dashboard")
   const router = useRouter()
   const [tab, setTab] = useState<"geral" | "alunos" | "graduacoes" | "ranking" | "prospectos">("geral")
@@ -88,6 +89,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
     )
     if (role === "dono") {
       base.push(
+        { label: "Famílias", icon: Users, href: "/dashboard/dono/familia", color: "from-gold/20 to-gold/5", border: "border-gold/20" },
         { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
         { label: "Config", icon: Settings, href: "/dashboard/dono/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
       )
@@ -276,6 +278,46 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                   </div>
                 )}
               </div>
+
+              {role === "dono" && familias.length > 0 && (
+                <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-dourada)"} as React.CSSProperties}>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="section-header mb-0">👨‍👩‍👧 Famílias</div>
+                    <button onClick={async () => { await triggerOssTransition(); router.push("/dashboard/dono/familia") }}
+                      className="text-xs font-semibold text-[var(--gold)] hover:underline inline-flex items-center gap-1">
+                      Gerenciar <ArrowUpRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-center flex-1">
+                      <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{familias.length}</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">famílias</div>
+                    </div>
+                    <div className="h-10 w-px" style={{ background: "var(--border)" }} />
+                    <div className="text-center flex-1">
+                      <div className="text-lg font-bold text-emerald-400">{familias.reduce((acc, f) => acc + f.membros, 0)}</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">membros</div>
+                    </div>
+                    <div className="h-10 w-px" style={{ background: "var(--border)" }} />
+                    <div className="text-center flex-1">
+                      <div className="text-lg font-bold text-[var(--text)]">
+                        {familias.length > 0 ? Math.round(familias.reduce((acc, f) => acc + f.desconto, 0) / familias.length) : 0}%
+                      </div>
+                      <div className="text-[10px] text-[var(--text-muted)]">desconto médio</div>
+                    </div>
+                  </div>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto">
+                    {familias.slice(0, 6).map((f) => (
+                      <div key={f.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-[var(--dark-card)]">
+                        <span className="text-sm font-medium truncate">{f.nome}</span>
+                        <span className="text-xs text-[var(--text-secondary)] shrink-0 ml-2">
+                          {f.membros} {f.membros === 1 ? "membro" : "membros"} · {f.desconto}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-roxa)"} as React.CSSProperties}>
                 <div className="section-header">{t("alunosPorFaixa")}</div>

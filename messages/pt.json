@@ -349,7 +349,16 @@
         "Não é sobre quantas vezes você cai. É sobre quantas vezes você levanta e volta pro tatame.",
         "Seu maior oponente não está do outro lado do tatame. Está na sua cabeça dizendo amanhã eu vou.",
         "A faixa preta não é um destino. É um jeito de viver."
-      ]
+      ],
+      "aulasEsteMes": "Aulas este Mês",
+      "meta": "Meta",
+      "streak": "Streak",
+      "totalAulas": "Total de Aulas",
+      "progressoFaixa": "Progresso para a Próxima Faixa",
+      "aulasRestantes": "aulas restantes",
+      "compartilharBtn": "Compartilhar",
+      "topo": "Topo",
+      "compartilhar": "Compartilhar"
     }
   },
   "professor": {
@@ -497,6 +506,7 @@
       "geral": "Geral",
       "graduacoes": "Graduações",
       "ranking": "Ranking",
+      "prospectos": "Prospectos",
       "alunosPorCategoria": "Alunos por Categoria",
       "nenhumAluno": "Nenhum aluno cadastrado",
       "alunosPorFaixa": "Alunos por Faixa",

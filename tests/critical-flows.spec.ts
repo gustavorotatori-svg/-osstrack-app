@@ -1,6 +1,5 @@
 import { test, expect, type Page } from "@playwright/test"
-
-const URL = "http://localhost:3000"
+import { URL } from "./constants"
 const EMAIL = `test${Date.now()}@example.com`
 const PASSWORD = "Teste1234"
 
@@ -36,7 +35,7 @@ test.describe("1. Cadastro — fluxo crítico", () => {
     const cta = page.locator("a[href='/cadastro']").first()
     await expect(cta).toBeVisible()
     await cta.click()
-    await page.waitForURL("/cadastro")
+    await page.waitForURL(/\/cadastro$/, { waitUntil: "commit" })
 
     // Cadastro page loaded
     await expect(page.locator("#cad-nome")).toBeVisible()
@@ -168,7 +167,7 @@ test.describe("4. Empty states para novos usuarios", () => {
     const heroCta = page.locator("a[href='/cadastro']").first()
     await expect(heroCta).toBeVisible()
     // Footer LGPD link
-    const lgpdLink = page.locator("a[href='/lgpd']")
+    const lgpdLink = page.locator("a[href='/lgpd']").first()
     await expect(lgpdLink).toBeVisible()
     // Footer Terms link
     const termosLink = page.locator("a[href='/termos']")
@@ -178,7 +177,7 @@ test.describe("4. Empty states para novos usuarios", () => {
   test("Pagina LGPD carrega com secoes", async ({ page }) => {
     await page.goto(`${URL}/lgpd`)
     await page.waitForLoadState("networkidle")
-    await expect(page.locator("text=LGPD").or(page.locator("text=lgpd"))).toBeVisible()
+    await expect(page.locator("text=LGPD").or(page.locator("text=lgpd")).first()).toBeVisible()
   })
 
   test("Pagina de horarios publicos carrega", async ({ page }) => {
@@ -193,21 +192,27 @@ test.describe("4. Empty states para novos usuarios", () => {
 // ============================================================
 
 test.describe("5. Rotas protegidas redirecionam", () => {
-  const protectedRoutes = [
+  const protectedPages = [
     "/dashboard",
     "/dashboard/aluno",
     "/dashboard/dono",
     "/dashboard/professor",
-    "/api/perfil",
-    "/api/conta",
-    "/api/notificacoes",
   ]
 
-  for (const route of protectedRoutes) {
+  for (const route of protectedPages) {
     test(`${route} redireciona para login`, async ({ page }) => {
-      const resp = await page.goto(`${URL}${route}`, { waitUntil: "networkidle" })
+      await page.goto(`${URL}${route}`, { waitUntil: "networkidle" })
       // Should redirect to login
       await page.waitForURL(/\/login/, { timeout: 10000 })
+    })
+  }
+
+  const protectedApis = ["/api/perfil", "/api/conta", "/api/notificacoes"]
+
+  for (const route of protectedApis) {
+    test(`${route} retorna 401 sem autenticacao`, async ({ page }) => {
+      const resp = await page.goto(`${URL}${route}`)
+      expect(resp?.status()).toBe(401)
     })
   }
 })
@@ -238,9 +243,9 @@ test.describe("7. API Health Check", () => {
     expect(resp?.status()).toBe(200)
   })
 
-  test("API publica de horarios responde", async ({ page }) => {
+  test("API de horarios exige autenticacao", async ({ page }) => {
     const resp = await page.goto(`${URL}/api/agenda/horarios`)
-    expect(resp?.status()).toBe(200)
+    expect(resp?.status()).toBe(401)
   })
 
   test("API /api/leads aceita POST", async ({ page }) => {

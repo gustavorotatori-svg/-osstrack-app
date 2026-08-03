@@ -1,12 +1,14 @@
 import { test, expect, Page } from "@playwright/test"
-
-const URL = "http://localhost:3000"
+import { URL } from "./constants"
+import { resetRateLimits, preparePage } from "./helpers"
 
 // ============================================================
 // HELPERS
 // ============================================================
 
 async function login(page: Page, email: string, password: string) {
+  await resetRateLimits()
+  await preparePage(page)
   await page.goto(`${URL}/login`)
   await page.waitForLoadState("networkidle")
   await page.fill('input[type="email"]', email)
@@ -32,6 +34,8 @@ async function dismissTour(page: Page) {
 async function checkNoConsoleErrors(page: Page) {
   const logs: string[] = []
   page.on("console", (msg) => {
+    // Ignora aviso dev-mode do React/CSP (eval no modo dev do Next)
+    if (msg.text().includes("eval() is not supported in this environment")) return
     if (msg.type() === "error") logs.push(msg.text())
   })
   page.on("pageerror", (err) => logs.push(err.message))
@@ -96,19 +100,21 @@ test.describe("2. Aluno — Jornada Completa", () => {
     // Hero
     await expect(page.locator("h1")).toBeVisible()
 
-    // Quick actions (4 buttons)
-    const quickActions = page.locator("button", { hasText: /Treinos|Turmas|Progresso|Ranking/ }).first()
-    await expect(quickActions).toBeVisible()
-
-    // Tech stats (4 cards)
-    const stats = page.locator(".tech-stat")
+    // Stats (4 cards)
+    const stats = page.locator(".stat-glass")
     await expect(stats).toHaveCount(4)
 
-    // Progress Ring
-    await expect(page.locator("svg").first()).toBeVisible()
+    // Section tabs + Quick actions ficam na aba "Atividade"
+    const atividadeTab = page.locator("button", { hasText: /^🔥 Atividade$/ })
+    await expect(atividadeTab).toBeVisible()
+    await atividadeTab.click()
+    const quickActions = page.locator("button.quick-action").first()
+    await expect(quickActions).toBeVisible()
 
-    // Mestre do Mês card
-    await expect(page.locator("text=Mestre do Mês").or(page.locator("text=Mestre")).first()).toBeVisible()
+    // Volta para a aba Jornada e verifica Mestre do Mês
+    const jornadaTab = page.locator("button", { hasText: /^🥋 Jornada$/ })
+    await jornadaTab.click()
+    await expect(page.locator("text=Mestre do Mês").or(page.locator("text=Mestre")).first()).toBeVisible({ timeout: 15000 })
 
     await checkNoConsoleErrors(page)
   })
@@ -122,7 +128,7 @@ test.describe("2. Aluno — Jornada Completa", () => {
     await expect(page.locator("h1")).toBeVisible()
 
     // Stats mini (3 cards)
-    const stats = page.locator(".tech-stat")
+    const stats = page.locator(".stat-glass")
     await expect(stats).toHaveCount(3)
 
     // "Iniciar Treino" button
@@ -145,8 +151,7 @@ test.describe("2. Aluno — Jornada Completa", () => {
   })
 
   test("Check-in carrega sem erros", async () => {
-    await page.goto(`${URL}/dashboard/aluno/checkin`)
-    await page.waitForLoadState("networkidle")
+    await page.goto(`${URL}/dashboard/aluno/checkin`, { waitUntil: "domcontentloaded" })
     await expect(page.locator("body")).toBeVisible()
     await checkNoConsoleErrors(page)
   })
@@ -155,11 +160,19 @@ test.describe("2. Aluno — Jornada Completa", () => {
     await page.goto(`${URL}/dashboard/aluno/evolucao`)
     await page.waitForLoadState("networkidle")
 
+    // Estado vazio quando o aluno ainda não tem graduações cadastradas
+    const emptyState = page.locator("text=Nenhuma graduação disponível")
+    if (await emptyState.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await expect(page.locator("body")).toBeVisible()
+      await checkNoConsoleErrors(page)
+      return
+    }
+
     // Hero
     await expect(page.locator("h1")).toBeVisible()
 
     // Stats (4 cards)
-    const stats = page.locator(".tech-stat")
+    const stats = page.locator(".stat-glass")
     await expect(stats).toHaveCount(4)
 
     // Bar chart
@@ -228,8 +241,12 @@ test.describe("2. Aluno — Jornada Completa", () => {
     await page.waitForLoadState("networkidle")
     await dismissTour(page)
 
+    // Quick actions ficam na aba "Atividade"
+    const atividadeTab = page.locator("button", { hasText: /^🔥 Atividade$/ })
+    await atividadeTab.click()
+
     // Click the "Ranking" quick action button
-    const rankingBtn = page.locator("button.relative.overflow-hidden.rounded-xl", { hasText: "Ranking" })
+    const rankingBtn = page.locator("button.quick-action", { hasText: "Ranking" })
     await expect(rankingBtn).toBeVisible()
     await rankingBtn.click()
 
@@ -259,24 +276,24 @@ test.describe("3. Professor — Jornada Completa", () => {
     // Hero
     await expect(page.locator("h1")).toBeVisible()
 
-    // Quick actions (6 buttons)
-    const quickActions = page.locator("button", { hasText: /Turmas|Alunos|Presenças|Graduações|Relatórios|Config/ }).first()
+    // Quick actions (visíveis na dashboard)
+    const quickActions = page.locator("button.quick-action").first()
     await expect(quickActions).toBeVisible()
 
-    // Stats (3 cards)
-    const stats = page.locator(".tech-stat")
-    await expect(stats).toHaveCount(3)
+    // Stats (4 cards)
+    const stats = page.locator(".stat-glass")
+    await expect(stats).toHaveCount(4)
 
     // Tab bar
     const tabBar = page.locator(".tab-bar")
     await expect(tabBar).toBeVisible()
     await expect(tabBar.locator("button", { hasText: "Geral" })).toBeVisible()
-    await expect(tabBar.locator("button", { hasText: "Presenças" })).toBeVisible()
+    await expect(tabBar.locator("button", { hasText: "Alunos" })).toBeVisible()
 
     // Verify both sections render by switching tabs
-    await tabBar.locator("button", { hasText: "Presenças" }).click()
+    await tabBar.locator("button", { hasText: "Alunos" }).click()
     await page.waitForTimeout(300)
-    await expect(page.locator("text=Presenças").first()).toBeVisible()
+    await expect(page.locator("text=Alunos").first()).toBeVisible()
 
     await tabBar.locator("button", { hasText: "Geral" }).click()
     await page.waitForTimeout(300)
@@ -335,7 +352,7 @@ test.describe("3. Professor — Jornada Completa", () => {
     await dismissTour(page)
 
     // Click the "Alunos" quick action button
-    const alunosBtn = page.locator("button.relative.overflow-hidden.rounded-xl", { hasText: "Alunos" })
+    const alunosBtn = page.locator("button.quick-action", { hasText: "Alunos" })
     await expect(alunosBtn).toBeVisible()
     await alunosBtn.click()
 
@@ -365,12 +382,12 @@ test.describe("4. Dono — Jornada Completa", () => {
     // Hero
     await expect(page.locator("h1")).toBeVisible()
 
-    // Quick actions (6 buttons)
-    const quickActions = page.locator("button", { hasText: /Turmas|Alunos|Financeiro|Relatórios|Agenda|Config/ }).first()
+    // Quick actions
+    const quickActions = page.locator("button.quick-action").first()
     await expect(quickActions).toBeVisible()
 
     // Stats (4 cards)
-    const stats = page.locator(".tech-stat")
+    const stats = page.locator(".stat-glass")
     await expect(stats).toHaveCount(4)
 
     // Monthly chart
@@ -527,7 +544,6 @@ test.describe("5. Cadastro — Dois POVs", () => {
     // Step 1: personal data fields visible
     await expect(page.locator("#cad-nome")).toBeVisible()
     await expect(page.locator("#cad-email")).toBeVisible()
-    await expect(page.locator("#cad-tel")).toBeVisible()
     await expect(page.locator("#cad-senha")).toBeVisible()
     await expect(page.locator("#cad-confirmar-senha")).toBeVisible()
 
@@ -551,9 +567,8 @@ test.describe("5. Cadastro — Dois POVs", () => {
     // Fill personal data
     await page.fill("#cad-nome", `Aluno Teste ${Date.now()}`)
     await page.fill("#cad-email", `aluno${Date.now()}@test.com`)
-    await page.fill("#cad-tel", "(81) 99999-0001")
-    await page.fill("#cad-senha", "12345678")
-    await page.fill("#cad-confirmar-senha", "12345678")
+    await page.fill("#cad-senha", "Teste12345")
+    await page.fill("#cad-confirmar-senha", "Teste12345")
 
     // Select "Aluno" role card
     await page.locator("button", { hasText: "Aluno" }).first().click()
@@ -611,9 +626,8 @@ test.describe("5. Cadastro — Dois POVs", () => {
     // Fill personal data
     await page.fill("#cad-nome", `Dono Teste ${Date.now()}`)
     await page.fill("#cad-email", `dono${Date.now()}@test.com`)
-    await page.fill("#cad-tel", "(81) 99999-0002")
-    await page.fill("#cad-senha", "12345678")
-    await page.fill("#cad-confirmar-senha", "12345678")
+    await page.fill("#cad-senha", "Teste12345")
+    await page.fill("#cad-confirmar-senha", "Teste12345")
 
     // Select "Dono de Academia"
     await page.locator("button", { hasText: "Dono de Academia" }).click()

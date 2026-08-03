@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test"
-
-const URL = "http://localhost:3000"
+import { URL } from "./constants"
+import { login } from "./helpers"
 
 const DONO = { email: "carlos@email.com", password: "123456" }
 const ALUNO = { email: "rafael@email.com", password: "123456" }
@@ -8,11 +8,7 @@ const ALUNO = { email: "rafael@email.com", password: "123456" }
 test.describe("CRUD Famílias", () => {
   test.beforeEach(async ({ page }) => {
     // Login como dono
-    await page.goto(`${URL}/login`)
-    await page.fill('input[type="email"]', DONO.email)
-    await page.fill('input[type="password"]', DONO.password)
-    await page.click('button[type="submit"]')
-    await page.waitForURL(/\/dashboard\/dono/, { timeout: 15000 })
+    await login(page, DONO.email, DONO.password, /\/dashboard\/dono/)
   })
 
   test("1. Navegar para página de famílias", async ({ page }) => {
@@ -66,7 +62,7 @@ test.describe("CRUD Famílias", () => {
     await page.waitForTimeout(1000)
 
     // Clica no botão de editar (lápis) da família recém-criada
-    const pencilButtons = page.locator('button:has(svg[class*="w-4 h-4"])')
+    const pencilButtons = page.locator("main button:has(svg[class*='w-4 h-4'])")
     const editBtn = pencilButtons.first()
     if (await editBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
       await editBtn.click()
@@ -145,7 +141,7 @@ test.describe("CRUD Famílias", () => {
     await page.goto(`${URL}/dashboard/dono`)
     await page.waitForLoadState("networkidle")
 
-    const familiasLink = page.locator('a[href="/dashboard/dono/familia"]')
+    const familiasLink = page.locator("button.sidebar-nav-item", { hasText: "Famílias" })
     await expect(familiasLink).toBeVisible({ timeout: 5000 })
   })
 })
@@ -156,21 +152,17 @@ test.describe("Família no perfil do aluno", () => {
     const page = await ctx.newPage()
 
     // Login como aluno
-    await page.goto(`${URL}/login`)
-    await page.fill('input[type="email"]', ALUNO.email)
-    await page.fill('input[type="password"]', ALUNO.password)
-    await page.click('button[type="submit"]')
-    await page.waitForURL(/\/dashboard\/aluno/, { timeout: 15000 })
+    await login(page, ALUNO.email, ALUNO.password, /\/dashboard\/aluno/)
 
     await page.goto(`${URL}/dashboard/aluno/perfil`)
     await page.waitForLoadState("networkidle")
 
     // Se o aluno tiver família, deve mostrar o card
-    const familiaCard = page.locator("text=Família").or(page.locator("text=Desconto familiar"))
+    const familiaCard = page.getByText("Desconto familiar")
     const exists = await familiaCard.isVisible({ timeout: 5000 }).catch(() => false)
 
     // O perfil deve carregar independente de ter família ou não
-    const nome = page.locator("text=Rafael").or(page.locator("h2"))
+    const nome = page.getByRole("heading", { name: /Rafael/ })
     await expect(nome).toBeVisible({ timeout: 5000 })
 
     await ctx.close()
@@ -180,11 +172,7 @@ test.describe("Família no perfil do aluno", () => {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
 
-    await page.goto(`${URL}/login`)
-    await page.fill('input[type="email"]', ALUNO.email)
-    await page.fill('input[type="password"]', ALUNO.password)
-    await page.click('button[type="submit"]')
-    await page.waitForURL(/\/dashboard\/aluno/, { timeout: 15000 })
+    await login(page, ALUNO.email, ALUNO.password, /\/dashboard\/aluno/)
 
     await page.goto(`${URL}/dashboard/aluno/perfil`)
     await page.waitForLoadState("networkidle")
@@ -203,17 +191,13 @@ test.describe("Lista de alunos com família", () => {
     const ctx = await browser.newContext()
     const page = await ctx.newPage()
 
-    await page.goto(`${URL}/login`)
-    await page.fill('input[type="email"]', DONO.email)
-    await page.fill('input[type="password"]', DONO.password)
-    await page.click('button[type="submit"]')
-    await page.waitForURL(/\/dashboard\/dono/, { timeout: 15000 })
+    await login(page, DONO.email, DONO.password, /\/dashboard\/dono/)
 
     await page.goto(`${URL}/dashboard/dono/alunos`)
     await page.waitForLoadState("networkidle")
 
     // Coluna Família deve existir no header
-    const familiaHeader = page.locator("text=Família").first()
+    const familiaHeader = page.getByText("Família", { exact: true })
     await expect(familiaHeader).toBeVisible({ timeout: 5000 })
 
     await ctx.close()

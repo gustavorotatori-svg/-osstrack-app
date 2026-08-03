@@ -67,6 +67,17 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     }
 
     await prisma.familiaMembro.create({ data: { familiaId: id, alunoId: parsed.data.alunoId } })
+
+    await prisma.notificacao.create({
+      data: {
+        usuarioId: parsed.data.alunoId,
+        tipo: "familia",
+        titulo: "Você entrou em uma família!",
+        descricao: `Você foi adicionado à família "${familia.nome}" com ${familia.desconto}% de desconto.`,
+        link: "/dashboard/aluno/perfil",
+      },
+    })
+
     return NextResponse.json({ success: true })
   } catch (error) {
     return handleApiError(error)

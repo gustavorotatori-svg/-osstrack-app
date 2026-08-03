@@ -15,13 +15,24 @@ export default async function ProfessorAlunosPage() {
   const alunos = await prisma.usuario.findMany({
     where: { professorId: professor.id, role: "aluno" },
     orderBy: { nome: "asc" },
+    include: {
+      familiaMembros: {
+        select: { familia: { select: { id: true, nome: true } } },
+      },
+    },
   })
 
   return (
     <>
       <BackButton href="/dashboard/professor" />
       <AlunosClient
-        alunos={alunos.map((a) => ({ id: a.id, nome: a.nome, faixa: a.faixa, grau: a.grau }))}
+        alunos={alunos.map((a) => ({
+          id: a.id,
+          nome: a.nome,
+          faixa: a.faixa,
+          grau: a.grau,
+          familiaNome: a.familiaMembros[0]?.familia.nome || null,
+        }))}
       />
     </>
   )

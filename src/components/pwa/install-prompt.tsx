@@ -64,8 +64,8 @@ export function InstallPrompt() {
   }, [canInstall, dismissed])
 
   function handleDismiss() {
-    handleDismiss()
     localStorage.setItem("pwa-install-dismissed", "true")
+    setShowPrompt(false)
   }
 
   if (isStandalone || dismissed) return null

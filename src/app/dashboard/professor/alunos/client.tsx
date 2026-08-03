@@ -11,7 +11,7 @@ import { Celebration } from "@/components/ui/celebration"
 import { getBeltEmoji } from "@/lib/utils"
 import { useT } from "@/lib/use-t"
 
-type Aluno = { id: string; nome: string; faixa: string; grau: number }
+type Aluno = { id: string; nome: string; faixa: string; grau: number; familiaNome?: string | null }
 
 const beltList = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 const beltOrder: Record<string, number> = { Branca: 0, Azul: 1, Roxa: 2, Marrom: 3, Preta: 4 }
@@ -138,8 +138,18 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
                 {filtrados.map((a) => (
                   <div key={a.id} className="glass-card text-center p-4">
                     <Avatar name={a.nome} faixa={a.faixa} size={44} />
-                    <div className="text-sm font-semibold mt-1.5 truncate">{a.nome}</div>
+                    <a href={`/dashboard/professor/alunos/${a.id}`} className="block mt-1.5">
+                      <div className="text-sm font-semibold truncate hover:text-[var(--gold)] transition-colors">{a.nome}</div>
+                    </a>
                     <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{getBeltEmoji(a.faixa)} {a.faixa} · {a.grau + 1}º Grau</div>
+                    {a.familiaNome && (
+                      <div className="mt-1.5">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                          style={{ background: "rgba(212,168,71,0.1)", border: "1px solid rgba(212,168,71,0.25)", color: "var(--gold)" }}>
+                          👨‍👩‍👧 {a.familiaNome}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex flex-wrap gap-1.5 mt-3 justify-center">
                       <button onClick={() => { setShowPromote(a.id); setPromovendo(`${a.id}|${a.faixa}|${a.grau}`) }}
                         className="btn btn-primary px-3 py-2 text-xs active:scale-[0.97] min-h-[36px]">{t("promover")}</button>

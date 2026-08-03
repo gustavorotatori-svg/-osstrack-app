@@ -76,6 +76,14 @@ export default async function DonoDashboard() {
     _count: true,
   })
 
+  const familias = await prisma.familia.findMany({
+    where: { academiaId: academia.id },
+    include: { _count: { select: { membros: true } } },
+    orderBy: { nome: "asc" },
+  })
+
+  const totalMembrosFamilia = familias.reduce((acc, f) => acc + f._count.membros, 0)
+
   return (
     <OwnerDashboardClient
       role="dono"
@@ -104,6 +112,12 @@ export default async function DonoDashboard() {
         graus: g.graus,
         aulasPorGrau: g.aulasPorGrau,
         aulasProxFx: g.aulasProxFx,
+      }))}
+      familias={familias.map((f) => ({
+        id: f.id,
+        nome: f.nome,
+        desconto: f.desconto,
+        membros: f._count.membros,
       }))}
     />
   )

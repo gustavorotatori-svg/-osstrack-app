@@ -1,6 +1,6 @@
 import { test, expect, type Page, type ConsoleMessage } from "@playwright/test"
-
-const URL = "http://localhost:3000"
+import { URL } from "./constants"
+import { resetRateLimits, preparePage } from "./helpers"
 
 interface ErrorLog {
   page: string
@@ -11,6 +11,8 @@ interface ErrorLog {
 const allErrors: ErrorLog[] = []
 
 async function login(page: Page, email: string, password: string) {
+  await resetRateLimits()
+  await preparePage(page)
   await page.goto(`${URL}/login`)
   await page.fill('input[type="email"]', email)
   await page.fill('input[type="password"]', password)
