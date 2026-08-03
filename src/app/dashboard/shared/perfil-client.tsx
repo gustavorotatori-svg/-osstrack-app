@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { BackButton } from "@/components/ui/back-button"
 import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
@@ -83,6 +84,7 @@ export default function PerfilClient({ role }: { role: string }) {
     return (
       <DashboardShell role={role}>
         <div className="max-w-lg mx-auto space-y-5 animate-fade-in">
+          <BackButton href={`/dashboard/${role}`} />
           <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-6 space-y-4 text-center">
             <div className="belt-loading rounded-full w-20 h-20 mx-auto" />
             <div className="belt-loading rounded-lg h-6 w-32 mx-auto" />
@@ -100,6 +102,7 @@ export default function PerfilClient({ role }: { role: string }) {
     <DashboardShell role={role}>
       <PageTransition>
         <div className="max-w-lg mx-auto space-y-5">
+          <BackButton href={`/dashboard/${role}`} />
           <div className="glass-card p-6 text-center relative overflow-hidden">
             <div className="relative inline-block group">
               <Avatar name={data.nome} faixa={data.faixa} size={88} src={data.avatar} />

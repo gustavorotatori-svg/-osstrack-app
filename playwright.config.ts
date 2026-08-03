@@ -3,6 +3,7 @@ import { defineConfig } from "@playwright/test"
 export default defineConfig({
   testDir: "./tests",
   timeout: 60000,
+  workers: 1,
   globalSetup: "./tests/global-setup.ts",
   use: {
     headless: true,

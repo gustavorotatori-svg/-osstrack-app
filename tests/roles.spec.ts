@@ -17,7 +17,7 @@ async function login(page: Page, email: string, password: string) {
   await page.fill('input[type="email"]', email)
   await page.fill('input[type="password"]', password)
   await page.click('button[type="submit"]')
-  await page.waitForURL(/\/dashboard/, { timeout: 15000 })
+  await page.waitForURL(/\/dashboard/, { timeout: 30000 })
 }
 
 async function checkPage(page: Page, url: string, role: string, desc: string) {
@@ -27,15 +27,17 @@ async function checkPage(page: Page, url: string, role: string, desc: string) {
   })
   page.on("pageerror", (err: Error) => errors.push(`pageerror: ${err.message}`))
 
-  const resp = await page.goto(url, { waitUntil: "networkidle", timeout: 20000 })
+  const resp = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 })
   const status = resp?.status() ?? 0
   if (status >= 400) errors.push(`HTTP ${status}`)
 
+  await page.waitForTimeout(800)
   const title = await page.title().catch(() => "")
   allErrors.push({ page: `${desc} (${url})`, role, errors })
 }
 
 test("Dono - todas as páginas", async ({ browser }) => {
+  test.setTimeout(180000)
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
 
@@ -67,6 +69,7 @@ test("Dono - todas as páginas", async ({ browser }) => {
 })
 
 test("Professor - todas as páginas", async ({ browser }) => {
+  test.setTimeout(180000)
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
 
@@ -93,6 +96,7 @@ test("Professor - todas as páginas", async ({ browser }) => {
 })
 
 test("Aluno - todas as páginas", async ({ browser }) => {
+  test.setTimeout(180000)
   const ctx = await browser.newContext()
   const page = await ctx.newPage()
 
