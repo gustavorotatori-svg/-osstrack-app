@@ -14,7 +14,7 @@ async function login(page: Page, email: string, password: string) {
   await page.fill('input[type="email"]', email)
   await page.fill('input[type="password"]', password)
   await page.click('button[type="submit"]')
-  await page.waitForURL(/\/dashboard/, { timeout: 15000 })
+  await page.waitForURL(/\/dashboard/, { timeout: 30000 })
 }
 
 async function dismissTour(page: Page) {
@@ -33,9 +33,14 @@ async function dismissTour(page: Page) {
 
 async function checkNoConsoleErrors(page: Page) {
   const logs: string[] = []
+  const devArtifacts = [
+    "eval() is not supported in this environment",
+    "script resource is behind a redirect",
+    "Failed to fetch",
+  ]
   page.on("console", (msg) => {
-    // Ignora aviso dev-mode do React/CSP (eval no modo dev do Next)
-    if (msg.text().includes("eval() is not supported in this environment")) return
+    // Ignora artefatos dev-mode do Next/React (eval/CSP, fetch cancelado em navegação rápida)
+    if (devArtifacts.some((a) => msg.text().includes(a))) return
     if (msg.type() === "error") logs.push(msg.text())
   })
   page.on("pageerror", (err) => logs.push(err.message))

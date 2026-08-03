@@ -27,11 +27,11 @@ test.describe("1. Landing page - todos os viewports", () => {
       await page.goto(URL, { waitUntil: "networkidle" })
 
       // Hero section deve estar visível
-      const hero = page.locator("h1").or(page.locator("text=OssTrack")).first()
+      const hero = page.locator("h1")
       await expect(hero).toBeVisible({ timeout: 10000 })
 
-      // CTA de cadastro
-      const cta = page.locator("a[href='/cadastro']").first()
+      // CTA de cadastro (hero)
+      const cta = page.locator("section a[href='/cadastro']").first()
       await expect(cta).toBeVisible()
 
       // Mobile: sticky CTA deve existir em < 768px
@@ -41,10 +41,10 @@ test.describe("1. Landing page - todos os viewports", () => {
       }
 
       // Footer com links legais
-      const lgpdLink = page.locator("a[href='/lgpd']")
+      const lgpdLink = page.locator("footer a[href='/lgpd']")
       await expect(lgpdLink).toBeVisible()
 
-      const termosLink = page.locator("a[href='/termos']")
+      const termosLink = page.locator("footer a[href='/termos']")
       await expect(termosLink).toBeVisible()
 
       await ctx.close()
@@ -307,8 +307,8 @@ test.describe("7. Botão Voltar nas páginas internas", () => {
 
       // Navega para uma sub-página
       const rolePrefix = `/dashboard/${user.role}`
-      await page.goto(`${URL}${rolePrefix}/perfil`)
-      await page.waitForLoadState("networkidle")
+      await page.goto(`${URL}${rolePrefix}/perfil`, { waitUntil: "domcontentloaded" })
+      await page.waitForTimeout(1500)
 
       // Procura botão de voltar
       const backBtn = page.locator("button", { hasText: /Voltar|voltar/ }).or(
