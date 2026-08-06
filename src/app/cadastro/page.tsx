@@ -72,6 +72,7 @@ export default function Cadastro() {
     academiaId: "", professorId: "", codigoConvite: "", skipAcademia: false,
     faixa: "Branca", grau: 0,
     consentimentoTermos: false, consentimentoLGPD: false, consentimentoMarketing: false,
+    responsavelNome: "", responsavelCpf: "", consentimentoResponsavel: false,
   })
 
   const [busca, setBusca] = useState("")
@@ -87,6 +88,20 @@ export default function Cadastro() {
   const t = useT("cadastro")
   const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
   const TOTAL_STEPS = 2
+
+  function eMenor(): boolean {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(form.dataNascimento)
+    if (!m) return false
+    const nasc = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]))
+    if (isNaN(nasc.getTime())) return false
+    const hoje = new Date()
+    let idade = hoje.getFullYear() - nasc.getFullYear()
+    const passou =
+      hoje.getMonth() > nasc.getMonth() ||
+      (hoje.getMonth() === nasc.getMonth() && hoje.getDate() >= nasc.getDate())
+    if (!passou) idade--
+    return idade < 18
+  }
 
   const stepLabels: string[] = ["Cadastro", "Finalizar"]
 
@@ -197,6 +212,11 @@ export default function Cadastro() {
         setError("Você precisa aceitar os Termos de Uso e a Política de Privacidade")
         return
       }
+      if (eMenor()) {
+        if (!form.responsavelNome.trim()) { setError("Menores de 18 anos: informe o nome do responsável legal"); return }
+        if (!form.responsavelCpf.trim()) { setError("Menores de 18 anos: informe o CPF do responsável legal"); return }
+        if (!form.consentimentoResponsavel) { setError("Menores de 18 anos: o responsável legal precisa consentir com o tratamento dos dados"); return }
+      }
     }
 
     setLoading(true)
@@ -233,6 +253,9 @@ export default function Cadastro() {
         role: form.role, codigoConvite: form.codigoConvite || undefined,
         aceitouTermos: form.consentimentoTermos, aceitouLGPD: form.consentimentoLGPD,
         aceitouMarketing: form.consentimentoMarketing,
+        responsavelNome: form.responsavelNome || undefined,
+        responsavelCpf: form.responsavelCpf || undefined,
+        consentimentoResponsavel: form.consentimentoResponsavel,
         recaptchaToken: recaptchaToken || undefined,
       }
       if (form.professorId) body.professorId = form.professorId
@@ -283,6 +306,11 @@ export default function Cadastro() {
             <div>
               <label htmlFor="cad-email" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.emailLabel")}</label>
               <input id="cad-email" type="email" autoComplete="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
+            </div>
+            <div>
+              <label htmlFor="cad-nascimento" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Data de nascimento</label>
+              <input id="cad-nascimento" type="date" autoComplete="bday" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">Para menores de 18 anos, exigimos o consentimento do responsável legal (Art. 14 da LGPD).</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -566,6 +594,31 @@ export default function Cadastro() {
                   </div>
                 </>
               )}
+            </div>
+          )}
+
+          {eMenor() && (
+            <div className="space-y-3">
+              <p className="text-xs text-[var(--text-secondary)] text-center">
+                Você é <strong>menor de 18 anos</strong>. Para atender ao Art. 14 da LGPD, precisamos do consentimento do seu responsável legal:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="cad-resp-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Nome do responsável legal *</label>
+                  <input id="cad-resp-nome" type="text" autoComplete="name" className="input" placeholder="Nome completo" required value={form.responsavelNome} onChange={(e) => update("responsavelNome", e.target.value)} />
+                </div>
+                <div>
+                  <label htmlFor="cad-resp-cpf" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">CPF do responsável legal *</label>
+                  <input id="cad-resp-cpf" type="text" autoComplete="off" className="input" placeholder="000.000.000-00" required value={form.responsavelCpf} onChange={(e) => update("responsavelCpf", e.target.value)} />
+                </div>
+              </div>
+              <label className="flex items-start gap-3 cursor-pointer group">
+                <input type="checkbox" checked={form.consentimentoResponsavel} onChange={(e) => update("consentimentoResponsavel", e.target.checked)}
+                  className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
+                <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
+                  Sou responsável legal e consinto com o tratamento dos dados pessoais do menor conforme a LGPD (Lei 13.709/2018) *
+                </span>
+              </label>
             </div>
           )}
 

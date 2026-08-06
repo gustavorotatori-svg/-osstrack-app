@@ -5,6 +5,7 @@ const WINDOW_MS = 60 * 1000 // 1 minute window
 const LIMITS: Record<string, number> = {
   login: 5,
   register: 3,
+  leads: 5,
   "recuperar-senha": 3,
   "redefinir-senha": 3,
   "enviar-verificacao": 3,

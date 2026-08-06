@@ -134,7 +134,7 @@ test.describe("4. Condições adversas - tratamento de erros", () => {
     await page.waitForTimeout(2000)
 
     // Deve mostrar mensagem de erro (não deve crashar)
-    const errorMsg = page.locator(".text-red-400, [role='alert'], .text-red-500")
+    const errorMsg = page.locator("div[role='alert']:not([id='__next-route-announcer__'])")
     await expect(errorMsg).toBeVisible({ timeout: 5000 })
   })
 
