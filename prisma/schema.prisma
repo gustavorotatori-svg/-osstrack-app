@@ -92,6 +92,11 @@ model Usuario {
   aceitouLGPD     Boolean  @default(false)
   aceitouMarketing Boolean @default(false)
   dataAceite      DateTime?
+  lgpdVersao      String?
+  termosVersao    String?
+  responsavelNome String?
+  responsavelCpf  String?
+  consentimentoResponsavel Boolean @default(false)
    resetToken      String?
    resetTokenExpires DateTime?
    dataNascimento  String?
@@ -458,6 +463,8 @@ model Lead {
   academia    String?
   telefone    String?
   baixouEbook Boolean  @default(true)
+  consentimento Boolean @default(false)
+  consentimentoData DateTime?
   createdAt   DateTime @default(now())
 }
 

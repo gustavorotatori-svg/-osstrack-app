@@ -11,6 +11,7 @@ const leadSchema = z.object({
   email: z.string().email("E-mail inválido").max(255),
   academia: z.string().max(120).optional(),
   telefone: z.string().max(20).optional(),
+  consentimento: z.boolean({ message: "Consentimento é obrigatório" }),
 })
 
 export async function POST(req: Request) {
@@ -27,10 +28,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Dados inválidos" }, { status: 400 })
     }
 
-    const { nome, email, academia, telefone } = parsed.data
+    const { nome, email, academia, telefone, consentimento } = parsed.data
+
+    if (!consentimento) {
+      return NextResponse.json(
+        { error: "É necessário consentir com o tratamento dos seus dados (LGPD)" },
+        { status: 400 }
+      )
+    }
 
     const lead = await prisma.lead.create({
-      data: { nome, email, academia, telefone },
+      data: { nome, email, academia, telefone, consentimento: true, consentimentoData: new Date() },
     })
 
     return NextResponse.json({ success: true, id: lead.id })

@@ -28,19 +28,23 @@ const sections = [
     content: "Você tem direito a: acessar todos os dados que armazenamos sobre você, solicitar correção de dados incompletos ou desatualizados, solicitar exclusão dos seus dados (sujeito a retenções legais), revogar consentimento a qualquer momento, e exportar seus dados em formato estruturado. Para exercer qualquer direito, entre em contato pelo e-mail privacidade@osstrack.app."
   },
   {
-    title: "5. Nossas Ferramentas de Segurança",
+    title: "5. Dados de Crianças e Adolescentes (Art. 14 LGPD)",
+    content: "Para o cadastro de menores de 18 anos, exigimos o consentimento do responsável legal, que deve informar seu nome e CPF no momento do cadastro. O responsável pode, a qualquer momento, solicitar acesso, retificação, portabilidade ou exclusão dos dados do menor pelo e-mail privacidade@osstrack.app. Os dados de crianças e adolescentes são tratados com prioridade máxima de proteção e apenas na estrita medida necessária para o funcionamento da plataforma."
+  },
+  {
+    title: "6. Nossas Ferramentas de Segurança",
     content: "Toda comunicação com a plataforma é criptografada via HTTPS/TLS. Os dados armazenados no banco PostgreSQL (Neon) são criptografados em repouso. Senhas são hashadas com bcrypt. A geolocalização dos check-ins é usada apenas no momento do registro para validar presença e não é rastreada continuamente. Não armazenamos números de cartão de crédito — todo pagamento é processado diretamente pelo Stripe, que é certificado PCI DSS Nível 1. Controles de acesso baseados em função (RBAC) garantem que cada usuário veja apenas o que precisa. Realizamos backups automáticos diários do banco de dados."
   },
   {
-    title: "6. Cookies",
+    title: "7. Cookies",
     content: "Utilizamos cookies essenciais para autenticação e funcionamento da plataforma (NextAuth session token). Não utilizamos cookies de rastreamento ou publicidade. Você pode controlar os cookies nas configurações do seu navegador, mas a desativação de cookies essenciais pode afetar o funcionamento da plataforma."
   },
   {
-    title: "7. Retenção de Dados",
+    title: "8. Retenção de Dados",
     content: "Mantemos seus dados enquanto sua conta estiver ativa. Após exclusão da conta, os dados são anonimizados ou excluídos em até 30 dias, exceto quando a retenção for exigida por lei."
   },
   {
-    title: "8. Contato do DPO",
+    title: "9. Contato do DPO",
     content: "Para questões relacionadas à privacidade e proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail privacidade@osstrack.app ou pelo formulário de contato na página de Ajuda."
   },
 ]
@@ -60,7 +64,7 @@ export default function LgpdPage() {
             <p className="text-[var(--white-muted)] leading-relaxed max-w-lg mx-auto">
               Como protegemos seus dados e respeitamos sua privacidade no OssTrack, em conformidade com a Lei Geral de Proteção de Dados (LGPD).
             </p>
-            <div className="text-xs text-[var(--gray)] mt-2">Última atualização: 29 de maio de 2026</div>
+            <div className="text-xs text-[var(--gray)] mt-2">Última atualização: 5 de agosto de 2026</div>
           </div>
 
           <div className="space-y-4">

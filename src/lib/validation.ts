@@ -12,38 +12,74 @@ export const senhaSchema = z
   .regex(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula")
   .regex(/[0-9]/, "A senha deve conter pelo menos um número")
 
-export const registerSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório").max(120),
-  email: emailSchema,
-  telefone: z.string().max(20).optional().default(""),
-  senha: senhaSchema,
-  role: z.enum(ROLES, { message: "Tipo de conta inválido" }),
-  dataNascimento: z.string().max(10).nullable().optional(),
-  faixa: z.string().max(30).optional(),
-  grau: z.coerce.number().int().min(0).max(10).optional(),
-  aceitouTermos: z.boolean({ message: "Aceite os Termos de Uso" }),
-  aceitouLGPD: z.boolean({ message: "Aceite a Política de Privacidade" }),
-  aceitouMarketing: z.boolean().optional().default(false),
-  academiaId: z.string().optional(),
-  professorId: z.string().optional(),
-  codigoConvite: z.string().optional(),
-  recaptchaToken: z.string().optional(),
-  endereco: z.string().max(200).optional().default(""),
-  cidade: z.string().max(100).optional().default(""),
-  estado: z.string().max(50).optional().default(""),
-  lat: z.coerce.number().optional().default(0),
-  lng: z.coerce.number().optional().default(0),
-  raio: z.coerce.number().int().optional().default(200),
-  academia: z.object({
-    nome: z.string().min(1, "Nome da academia é obrigatório").max(120),
+function idadeEmAnos(dataNascimento: string): number | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dataNascimento)
+  if (!m) return null
+  const nasc = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]))
+  if (isNaN(nasc.getTime())) return null
+  const hoje = new Date()
+  let idade = hoje.getFullYear() - nasc.getFullYear()
+  const passouAniversario =
+    hoje.getMonth() > nasc.getMonth() ||
+    (hoje.getMonth() === nasc.getMonth() && hoje.getDate() >= nasc.getDate())
+  if (!passouAniversario) idade--
+  return idade
+}
+
+export function eMenorDeIdade(dataNascimento?: string | null): boolean {
+  if (!dataNascimento) return false
+  const idade = idadeEmAnos(dataNascimento)
+  return idade !== null && idade < 18
+}
+
+export const registerSchema = z
+  .object({
+    nome: z.string().min(1, "Nome é obrigatório").max(120),
+    email: emailSchema,
+    telefone: z.string().max(20).optional().default(""),
+    senha: senhaSchema,
+    role: z.enum(ROLES, { message: "Tipo de conta inválido" }),
+    dataNascimento: z.string().max(10).nullable().optional(),
+    faixa: z.string().max(30).optional(),
+    grau: z.coerce.number().int().min(0).max(10).optional(),
+    aceitouTermos: z.boolean({ message: "Aceite os Termos de Uso" }),
+    aceitouLGPD: z.boolean({ message: "Aceite a Política de Privacidade" }),
+    aceitouMarketing: z.boolean().optional().default(false),
+    responsavelNome: z.string().max(120).optional().default(""),
+    responsavelCpf: z.string().max(20).optional().default(""),
+    consentimentoResponsavel: z.boolean().optional().default(false),
+    academiaId: z.string().optional(),
+    professorId: z.string().optional(),
+    codigoConvite: z.string().optional(),
+    recaptchaToken: z.string().optional(),
     endereco: z.string().max(200).optional().default(""),
     cidade: z.string().max(100).optional().default(""),
     estado: z.string().max(50).optional().default(""),
     lat: z.coerce.number().optional().default(0),
     lng: z.coerce.number().optional().default(0),
     raio: z.coerce.number().int().optional().default(200),
-  }).optional(),
-})
+    academia: z.object({
+      nome: z.string().min(1, "Nome da academia é obrigatório").max(120),
+      endereco: z.string().max(200).optional().default(""),
+      cidade: z.string().max(100).optional().default(""),
+      estado: z.string().max(50).optional().default(""),
+      lat: z.coerce.number().optional().default(0),
+      lng: z.coerce.number().optional().default(0),
+      raio: z.coerce.number().int().optional().default(200),
+    }).optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (!eMenorDeIdade(val.dataNascimento)) return
+    if (!val.responsavelNome?.trim()) {
+      ctx.addIssue({ code: "custom", path: ["responsavelNome"], message: "Menores de 18 anos: informe o nome do responsável legal" })
+    }
+    if (!val.responsavelCpf?.trim()) {
+      ctx.addIssue({ code: "custom", path: ["responsavelCpf"], message: "Menores de 18 anos: informe o CPF do responsável legal" })
+    }
+    if (!val.consentimentoResponsavel) {
+      ctx.addIssue({ code: "custom", path: ["consentimentoResponsavel"], message: "Menores de 18 anos: é necessário o consentimento do responsável legal" })
+    }
+  })
 
 export const loginSchema = z.object({
   email: emailSchema,

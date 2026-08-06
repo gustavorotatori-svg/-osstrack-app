@@ -6,6 +6,7 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 import { registerSchema } from "@/lib/validation"
 import { notificarUsuario } from "@/lib/notificar"
 import { sendEmail, renderEmailLayout } from "@/lib/email"
+import { LGPD_VERSAO, TERMOS_VERSAO } from "@/lib/lgpd"
 
 async function marcarConviteUsado(codigoConvite?: string) {
   if (!codigoConvite) return
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
       academia: academiaData, codigoConvite, professorId,
       faixa, grau, academiaId: acId,
       aceitouTermos, aceitouLGPD, aceitouMarketing,
+      responsavelNome, responsavelCpf, consentimentoResponsavel,
       endereco, cidade, estado, lat, lng, raio,
     } = parsed.data
 
@@ -106,6 +108,11 @@ export async function POST(request: Request) {
             aceitouLGPD: aceitouLGPD || false,
             aceitouMarketing: aceitouMarketing || false,
             dataAceite: new Date(),
+            lgpdVersao: LGPD_VERSAO,
+            termosVersao: TERMOS_VERSAO,
+            responsavelNome: responsavelNome || null,
+            responsavelCpf: responsavelCpf || null,
+            consentimentoResponsavel: consentimentoResponsavel || false,
             emailVerificationToken,
             emailVerificationExpiry,
           },
@@ -214,6 +221,11 @@ export async function POST(request: Request) {
             aceitouLGPD: aceitouLGPD || false,
             aceitouMarketing: aceitouMarketing || false,
             dataAceite: new Date(),
+            lgpdVersao: LGPD_VERSAO,
+            termosVersao: TERMOS_VERSAO,
+            responsavelNome: responsavelNome || null,
+            responsavelCpf: responsavelCpf || null,
+            consentimentoResponsavel: consentimentoResponsavel || false,
             emailVerificationToken,
             emailVerificationExpiry,
           },
@@ -267,6 +279,11 @@ export async function POST(request: Request) {
         aceitouLGPD: aceitouLGPD || false,
         aceitouMarketing: aceitouMarketing || false,
         dataAceite: new Date(),
+        lgpdVersao: LGPD_VERSAO,
+        termosVersao: TERMOS_VERSAO,
+        responsavelNome: responsavelNome || null,
+        responsavelCpf: responsavelCpf || null,
+        consentimentoResponsavel: consentimentoResponsavel || false,
         emailVerificationToken,
         emailVerificationExpiry,
       },

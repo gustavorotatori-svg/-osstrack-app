@@ -250,8 +250,15 @@ test.describe("7. API Health Check", () => {
 
   test("API /api/leads aceita POST", async ({ page }) => {
     const resp = await page.request.post(`${URL}/api/leads`, {
-      data: { nome: "Teste", email: `lead${Date.now()}@test.com`, origem: "landing" },
+      data: { nome: "Teste", email: `lead${Date.now()}@test.com`, origem: "landing", consentimento: true },
     })
     expect(resp.ok()).toBeTruthy()
+  })
+
+  test("API /api/leads rejeita POST sem consentimento", async ({ page }) => {
+    const resp = await page.request.post(`${URL}/api/leads`, {
+      data: { nome: "Teste", email: `lead-no-consent${Date.now()}@test.com`, origem: "landing" },
+    })
+    expect(resp.status()).toBe(400)
   })
 })
