@@ -31,7 +31,13 @@ export async function middleware(req: NextRequest) {
   const isAuthenticated = !!token
 
   if (pathname.startsWith("/api")) {
-    if (!isAuthenticated) {
+    const isCronPath =
+      pathname.startsWith("/api/cron") ||
+      pathname === "/api/aniversario/notificar" ||
+      pathname === "/api/mestredomes"
+    const isVercelCron = req.headers.get("x-vercel-cron") === "1"
+    const hasCronSecret = !!process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
+    if (!isAuthenticated && !(isCronPath && (isVercelCron || hasCronSecret))) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
     return NextResponse.next()
