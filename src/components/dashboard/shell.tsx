@@ -12,7 +12,7 @@ import { useTheme } from "@/components/layout/providers"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 import { OssTransition, triggerOssTransition } from "@/components/ui/oss-transition"
 import { PullToRefresh } from "@/components/ui/pull-to-refresh"
-import { DumbbellIcon, SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
+import { GiIcon, SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
 
 type IconProps = { active: boolean }
 
@@ -226,7 +226,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--bg)] border-r border-[var(--border)] flex-col">
         <Link href="/" className="flex items-center gap-3 px-5 h-16 border-b border-[var(--border)] hover:opacity-80 transition-opacity">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--gold)" }}>
-            <DumbbellIcon className="w-4.5 h-4.5 text-black" />
+            <GiIcon className="w-4.5 h-4.5 text-black" />
           </div>
           <div>
             <span className="font-extrabold text-base" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
@@ -320,7 +320,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--bg)]/95 sticky top-0 z-50 border-b border-[var(--border)]/50 pt-[env(safe-area-inset-top)]" style={{ height: "calc(3.5rem + env(safe-area-inset-top))" }}>
         <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--gold)", color: "#000" }}>
-            <DumbbellIcon className="w-4 h-4" />
+            <GiIcon className="w-4 h-4" />
           </div>
           <div>
             <span className="font-extrabold text-sm" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
