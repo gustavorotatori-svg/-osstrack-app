@@ -5,7 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { useT } from "@/lib/use-t"
-import { LockIcon, CrownIcon, AwardIcon, ClipboardIcon, DumbbellIcon, UsersIcon, CalendarIcon, FlameIcon } from "@/components/ui/icons"
+import { LockIcon, CrownIcon, AwardIcon, ClipboardIcon, GiIcon, UsersIcon, CalendarIcon, FlameIcon } from "@/components/ui/icons"
 import { getNivelInfo } from "@/lib/disciplina"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
@@ -129,7 +129,7 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestres, 
                 className={`shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize ${
                   categoriaFilter === cat ? "bg-[var(--gold)] text-black shadow-md" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--text-secondary)]"
                 }`}>
-                {cat === "adulto" ? <><DumbbellIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("adulto")}</> : cat === "master" ? <><DumbbellIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("master")}</> : <><UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("infantil")}</>}
+                {cat === "adulto" ? <><GiIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("adulto")}</> : cat === "master" ? <><GiIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("master")}</> : <><UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />{t("infantil")}</>}
               </button>
             ))}
             <button onClick={() => setPeriodoFilter(periodoFilter === "mes" ? "total" : "mes")}

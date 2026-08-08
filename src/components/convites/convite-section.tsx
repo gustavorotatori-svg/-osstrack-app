@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
-import { GraduationIcon, UserPlusIcon, HandshakeIcon, BuildingIcon, DumbbellIcon, CopyIcon, MessageIcon, RefreshIcon, TimerIcon, CheckIcon, SmartphoneIcon } from "@/components/ui/icons"
+import { GraduationIcon, UserPlusIcon, HandshakeIcon, BuildingIcon, GiIcon, CopyIcon, MessageIcon, RefreshIcon, TimerIcon, CheckIcon, SmartphoneIcon } from "@/components/ui/icons"
 
 type TipoConvite = "professor" | "aluno" | "amigo" | "academia"
 
@@ -16,7 +16,7 @@ const configKeys: Record<TipoConvite, Record<string, string>> = {
 
 const iconMap: Record<string, typeof GraduationIcon> = {
   professor: GraduationIcon,
-  aluno: DumbbellIcon,
+  aluno: GiIcon,
   amigo: HandshakeIcon,
   academia: BuildingIcon,
 }

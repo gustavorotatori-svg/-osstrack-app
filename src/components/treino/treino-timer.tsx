@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { useT } from "@/lib/use-t"
-import { DumbbellIcon, RefreshIcon } from "@/components/ui/icons"
+import { GiIcon, RefreshIcon } from "@/components/ui/icons"
 
 type Fase = "preparacao" | "round" | "descanso" | "concluido"
 
@@ -167,7 +167,7 @@ export function TreinoTimer() {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {fase === "preparacao" ? (
             <div className="text-center">
-              <DumbbellIcon className="w-10 h-10 mb-2 mx-auto" />
+              <GiIcon className="w-10 h-10 mb-2 mx-auto" />
               <p className="text-xs text-[var(--white-muted)]">{t("subtitle")}</p>
             </div>
           ) : (
