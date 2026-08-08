@@ -85,6 +85,22 @@ export function DumbbellIcon(props: IconProps) {
   )
 }
 
+export function GiIcon(props: IconProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj} {...props}>
+      <path d="M12 2.5 8.4 13.5" />
+      <path d="M12 2.5 15.6 13.5" />
+      <path d="M6.5 4.5C8.8 2.7 15.2 2.7 17.5 4.5" />
+      <path d="M6.5 4.5 3.8 10.8 7.4 12" />
+      <path d="M17.5 4.5 20.2 10.8 16.6 12" />
+      <path d="M3.8 10.8 5 18.5" />
+      <path d="M20.2 10.8 19 18.5" />
+      <path d="M5 18.5h14" />
+      <path d="M4.3 15.8h15.4" />
+    </svg>
+  )
+}
+
 export function UserPlusIcon(props: IconProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj} {...props}>

@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
-import { DumbbellIcon, XIcon } from "@/components/ui/icons"
+import { GiIcon, XIcon } from "@/components/ui/icons"
 
 export function MobileMenu() {
   const { data: session } = useSession()
@@ -39,7 +39,7 @@ export function MobileMenu() {
             <div className="flex items-center justify-between mb-12">
               <Link href="/" className="flex items-center gap-3 font-extrabold text-xl" onClick={() => setOpen(false)}>
                 <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center">
-                  <DumbbellIcon className="w-5 h-5 text-black" />
+                  <GiIcon className="w-5 h-5 text-black" />
                 </span>
                 <span className="text-white font-extrabold">OssTrack</span>
               </Link>

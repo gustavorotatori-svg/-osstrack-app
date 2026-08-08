@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
-import { DumbbellIcon } from "@/components/ui/icons"
+import { GiIcon } from "@/components/ui/icons"
 import { Camera, Play, MessageCircle } from "lucide-react"
 
 export function Footer() {
@@ -49,7 +49,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight mb-4">
               <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center animate-float">
-                <DumbbellIcon className="w-4 h-4 text-black" />
+                <GiIcon className="w-4 h-4 text-black" />
               </span>
               <span>OssTrack</span>
             </Link>
