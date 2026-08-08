@@ -3,11 +3,11 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
-import { DumbbellIcon, CrownIcon, SparklesIcon, TargetIcon } from "@/components/ui/icons"
+import { GiIcon, CrownIcon, SparklesIcon, TargetIcon } from "@/components/ui/icons"
 
 const STEPS = [
   {
-    icon: <DumbbellIcon className="w-8 h-8" />,
+    icon: <GiIcon className="w-8 h-8" />,
     color: "#60a5fa",
     title: "Faça seu primeiro check-in",
     desc: "Toque no botão vermelho e confirme sua presença. Funciona por GPS ou código.",

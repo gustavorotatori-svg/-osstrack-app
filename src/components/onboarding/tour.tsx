@@ -3,10 +3,10 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useT } from "@/lib/use-t"
-import { DumbbellIcon, GraduationIcon, CrownIcon, MapPinIcon, TrendingIcon, AwardIcon, SmartphoneIcon, ClipboardIcon, UsersIcon, CalendarIcon, ChartIcon } from "@/components/ui/icons"
+import { GiIcon, GraduationIcon, CrownIcon, MapPinIcon, TrendingIcon, AwardIcon, SmartphoneIcon, ClipboardIcon, UsersIcon, CalendarIcon, ChartIcon } from "@/components/ui/icons"
 
 const iconsMap: Record<string, React.ReactNode> = {
-  "🥋": <DumbbellIcon className="w-8 h-8" />,
+  "🥋": <GiIcon className="w-8 h-8" />,
   "👨‍🏫": <GraduationIcon className="w-8 h-8" />,
   "👑": <CrownIcon className="w-8 h-8" />,
   "📍": <MapPinIcon className="w-5 h-5" />,

@@ -5,7 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { BadgeCard } from "@/components/gamification/badge-card"
 import { PageTransition } from "@/components/ui/page-transition"
 import { useT } from "@/lib/use-t"
-import { DumbbellIcon, FlameIcon, StarIcon, HandshakeIcon, GraduationIcon, AwardIcon, GiftIcon, ClipboardIcon, SearchIcon } from "@/components/ui/icons"
+import { GiIcon, FlameIcon, StarIcon, HandshakeIcon, GraduationIcon, AwardIcon, GiftIcon, ClipboardIcon, SearchIcon } from "@/components/ui/icons"
 
 type ConquistaData = {
   id: string
@@ -43,7 +43,7 @@ export function AchievementsClient({ conquistas }: Props) {
   }, [conquistas])
 
   const categorias: Record<string, { label: string; icon: React.ReactNode; desc: string }> = {
-    presenca:   { label: t("categorias.presenca"),   icon: <DumbbellIcon className="w-4 h-4" />, desc: t("categorias.presencaDesc") },
+    presenca:   { label: t("categorias.presenca"),   icon: <GiIcon className="w-4 h-4" />, desc: t("categorias.presencaDesc") },
     streak:     { label: t("categorias.streak"),     icon: <FlameIcon className="w-4 h-4" />, desc: t("categorias.streakDesc") },
     especial:   { label: t("categorias.especial"),   icon: <StarIcon className="w-4 h-4" />, desc: t("categorias.especialDesc") },
     social:     { label: t("categorias.social"),     icon: <HandshakeIcon className="w-4 h-4" />, desc: t("categorias.socialDesc") },

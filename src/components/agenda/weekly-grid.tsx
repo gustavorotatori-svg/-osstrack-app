@@ -1,6 +1,6 @@
 "use client"
 
-import { DumbbellIcon } from "@/components/ui/icons"
+import { GiIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
 
 const HOURS = Array.from({ length: 17 }, (_, i) => `${String(i + 6).padStart(2, "0")}:00`)
@@ -66,7 +66,7 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
       >
         {/* Header */}
         <div className="h-10 flex items-center justify-center bg-[var(--dark-card)] border-b border-r border-[var(--dark-border)] sticky left-0 z-10">
-          <DumbbellIcon className="w-4 h-4 text-[var(--white-muted)]" />
+          <GiIcon className="w-4 h-4 text-[var(--white-muted)]" />
         </div>
         {DAYS.map((d) => (
           <div
@@ -116,7 +116,7 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
                         }}
                       >
                         <span className="truncate w-full text-center leading-tight">
-                          {h.turma?.icone || <DumbbellIcon className="w-3 h-3 inline -mt-0.5" />} {h.turma?.nome || "Treino"}
+                          {h.turma?.icone || <GiIcon className="w-3 h-3 inline -mt-0.5" />} {h.turma?.nome || "Treino"}
                         </span>
                         {h.professor && (
                           <span className="text-[8px] opacity-60 truncate w-full text-center">
