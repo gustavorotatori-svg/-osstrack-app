@@ -161,7 +161,7 @@ export async function POST(request: Request) {
       })
 
       // Send verification email (non-blocking)
-      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
+      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
       sendEmail({
         to: email,
         subject: "Verifique seu e-mail — OssTrack",
@@ -251,7 +251,7 @@ export async function POST(request: Request) {
       if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
       // Send verification email (non-blocking)
-      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
+      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
       sendEmail({
         to: email,
         subject: "Verifique seu e-mail — OssTrack",
@@ -308,7 +308,7 @@ export async function POST(request: Request) {
     if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
     // Send verification email (non-blocking)
-    const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${usuario.id}`
+    const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${usuario.id}`
     sendEmail({
       to: email,
       subject: "Verifique seu e-mail — OssTrack",

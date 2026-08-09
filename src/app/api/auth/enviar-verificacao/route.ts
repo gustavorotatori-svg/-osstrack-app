@@ -28,7 +28,7 @@ export async function POST() {
       },
     })
 
-    const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://osstrack-app.vercel.app"}/api/auth/verificar-email?token=${token}&userId=${session.user.id}`
+    const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${token}&userId=${session.user.id}`
 
     await sendEmail({
       to: session.user.email!,

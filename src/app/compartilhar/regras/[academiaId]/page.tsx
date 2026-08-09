@@ -29,7 +29,7 @@ export default async function CompartilharRegrasPage({ params }: { params: Promi
     (a, b) => beltOrder.indexOf(a.faixa) - beltOrder.indexOf(b.faixa)
   )
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://osstrack-app.vercel.app"
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://osstrack.com.br"
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-white">
