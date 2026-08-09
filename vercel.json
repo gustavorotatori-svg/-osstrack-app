@@ -1,6 +1,62 @@
 {
   "framework": "nextjs",
   "buildCommand": "next build",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.osstrack.com.br" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "osstrack.com" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.osstrack.com" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "osstrack.club" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.osstrack.club" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "osstrack.xyz" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.osstrack.xyz" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "osstrack.store" }]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://osstrack.com.br/$1",
+      "permanent": true,
+      "has": [{ "type": "host", "value": "www.osstrack.store" }]
+    }
+  ],
   "crons": [
     {
       "path": "/api/aniversario/notificar",

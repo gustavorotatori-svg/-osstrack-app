@@ -23,7 +23,7 @@ export default function NovoAlunoScreen() {
     }
     setLoading(true)
     try {
-      const res = await fetch("https://osstrack-app.vercel.app/api/academia/alunos", {
+      const res = await fetch("https://osstrack.com.br/api/academia/alunos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

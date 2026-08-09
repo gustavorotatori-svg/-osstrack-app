@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     })
 
     // Send email with reset link (never expose token in API response)
-    const resetUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.app"}/redefinir-senha?token=${token}`
+    const resetUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/redefinir-senha?token=${token}`
     sendEmail({
       to: email,
       subject: "Recupere sua senha — OssTrack",

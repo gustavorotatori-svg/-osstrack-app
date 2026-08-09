@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://*.neon.tech https://www.google.com https://osstrack-app.vercel.app https://osstrack.app https://*.upstash.io",
+              "connect-src 'self' https://*.neon.tech https://www.google.com https://osstrack-app.vercel.app https://osstrack.app https://osstrack.com.br https://*.upstash.io",
               "frame-src 'self' https://www.google.com",
               "worker-src 'self' blob:",
               "manifest-src 'self'",

@@ -25,7 +25,7 @@ async function notificar(alvo: Alvo, titulo: string, descricao: string, link: st
     html: renderEmailLayout(
       titulo,
       `Olá, ${alvo.nome}! ${descricao}`,
-      { label: "Voltar ao treino", url: `${process.env.NEXTAUTH_URL || "https://osstrack-app.vercel.app"}${link}` }
+      { label: "Voltar ao treino", url: `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}${link}` }
     ),
   }).catch(() => {})
 }

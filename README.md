@@ -39,7 +39,7 @@ npm run capture
 
 Ou contra um deploy específico:
 ```bash
-CAPTURE_URL=https://osstrack-app.vercel.app npm run capture
+CAPTURE_URL=https://osstrack.com.br npm run capture
 ```
 
 As imagens são salvas em `public/screenshots/`.

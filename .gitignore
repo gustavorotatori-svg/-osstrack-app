@@ -19,3 +19,4 @@ vercel-*
 *.png
 cookie*
 !cookie-consent*
+.env*

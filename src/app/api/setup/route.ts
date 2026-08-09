@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       "http://localhost:3000",
       "https://osstrack-app.vercel.app",
       "https://osstrack.app",
+      "https://osstrack.com.br",
     ]
     if (!allowedOrigins.some((o) => origin.startsWith(o))) {
       return NextResponse.json({ error: "Origem não permitida" }, { status: 403 })

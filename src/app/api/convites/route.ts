@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     // TODO: no future, limitar tipos de convite por role se necessário
 
     const codigo = crypto.randomBytes(8).toString("hex")
-    const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack-app.vercel.app"
+    const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack.com.br"
     const link = `${baseUrl}/convite/${codigo}`
 
     const conviteData: any = {

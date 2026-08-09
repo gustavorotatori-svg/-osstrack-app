@@ -1,6 +1,6 @@
 import type { ApiResponse } from "./types"
 
-const BASE_URL = "https://osstrack-app.vercel.app"
+const BASE_URL = "https://osstrack.com.br"
 
 export class OssTrackAPI {
   private token: string | null = null
