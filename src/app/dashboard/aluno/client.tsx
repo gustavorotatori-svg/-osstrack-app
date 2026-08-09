@@ -21,7 +21,6 @@ import { useRouter } from "next/navigation"
 import { triggerOssTransition } from "@/components/ui/oss-transition"
 import { getNivelInfo } from "@/lib/disciplina"
 import { AttendanceHeatmap } from "@/components/ui/attendance-heatmap"
-import { InteractiveTour } from "@/components/onboarding/interactive-tour"
 import { StreakSalvage } from "@/components/gamification/streak-salvage"
 
 type Props = {
@@ -134,18 +133,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
   const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
   const [bannerDismissed, setBannerDismissed] = useState(false)
-  const [showTour, setShowTour] = useState(false)
-
-  useEffect(() => {
-    const done = typeof window !== "undefined" && localStorage.getItem("oss_tour_done")
-    if (!done && !aluno.academia && ultimasPresencas.length === 0) {
-      setShowTour(true)
-    }
-  }, [])
 
   return (
     <DashboardShell role="aluno">
-      {showTour && <InteractiveTour onFinish={() => setShowTour(false)} />}
       <PageTransition>
         <div className="max-w-4xl mx-auto">
 

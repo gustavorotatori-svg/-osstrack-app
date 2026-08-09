@@ -54,6 +54,12 @@ export function InstallPrompt() {
     }
     return false
   })
+  const [pushDismissed, setPushDismissed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("osstrack_push_dismissed") === "true"
+    }
+    return false
+  })
 
   useEffect(() => {
     registerSw()
@@ -66,6 +72,11 @@ export function InstallPrompt() {
   function handleDismiss() {
     localStorage.setItem("pwa-install-dismissed", "true")
     setShowPrompt(false)
+  }
+
+  function handlePushDismiss() {
+    localStorage.setItem("osstrack_push_dismissed", "true")
+    setPushDismissed(true)
   }
 
   if (isStandalone || dismissed) return null
@@ -137,7 +148,7 @@ export function InstallPrompt() {
         </div>
       )}
 
-      {!showPrompt && pushAvailable && (
+      {!showPrompt && pushAvailable && !pushDismissed && (
         <div className="fixed bottom-4 left-4 right-4 z-50 md:left-auto md:right-4 md:w-80 animate-slide-up">
           <div className="glass-card p-4 flex items-start gap-3 shadow-2xl border-[rgba(212,168,71,0.12)]">
             <div className="w-10 h-10 rounded-xl bg-[var(--gold)]/10 flex items-center justify-center shrink-0">
@@ -157,7 +168,7 @@ export function InstallPrompt() {
                   {loading ? "..." : subscribed ? "Desativar" : "Ativar"}
                 </button>
                 <button
-                  onClick={() => handleDismiss()}
+                  onClick={() => handlePushDismiss()}
                   className="py-2 px-3 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
                   {subscribed ? "OK" : "Agora não"}

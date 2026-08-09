@@ -37,6 +37,9 @@ export async function POST(request: Request) {
 
     const email = rawEmail.toLowerCase().trim()
 
+    // Login só bloqueia por verificação quando SMTP está configurado
+    const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
+
     // Rate limit by IP
     const ip = getClientIp(request)
     const ipCheck = await checkRateLimit(`ip:${ip}`, "register")
@@ -169,7 +172,7 @@ export async function POST(request: Request) {
         ),
       }).catch(() => {})
 
-      return NextResponse.json({ redirect: result.redirect })
+      return NextResponse.json({ redirect: result.redirect, verificationRequired: smtpConfigured })
     }
 
     if (role === "professor") {
@@ -259,7 +262,7 @@ export async function POST(request: Request) {
         ),
       }).catch(() => {})
 
-      return NextResponse.json({ redirect: "/dashboard/professor" })
+      return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: smtpConfigured })
     }
 
     const usuario = await prisma.usuario.create({
@@ -316,7 +319,7 @@ export async function POST(request: Request) {
       ),
     }).catch(() => {})
 
-    return NextResponse.json({ redirect: "/dashboard/aluno" })
+    return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: smtpConfigured })
   } catch (error: any) {
     console.error("Register error:", error?.message || error)
     const msg = error?.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"
