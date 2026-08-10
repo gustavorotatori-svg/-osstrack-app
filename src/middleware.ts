@@ -11,6 +11,7 @@ export async function middleware(req: NextRequest) {
     "/recuperar-senha", "/redefinir-senha", "/email-confirmado",
     "/sitemap.xml", "/robots.txt",
     "/manifest.webmanifest", "/screenshot",
+    "/opengraph-image",
   ]
   if (
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||
