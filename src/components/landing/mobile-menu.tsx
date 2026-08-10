@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
-import { GiIcon, XIcon } from "@/components/ui/icons"
+import { XIcon } from "@/components/ui/icons"
 
 export function MobileMenu() {
   const { data: session } = useSession()
@@ -37,11 +37,8 @@ export function MobileMenu() {
           <div className="absolute inset-0 bg-black/85 backdrop-blur-2xl" />
           <div className="relative z-10 flex flex-col h-full p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-12">
-              <Link href="/" className="flex items-center gap-3 font-extrabold text-xl" onClick={() => setOpen(false)}>
-                <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center">
-                  <GiIcon className="w-5 h-5 text-black" />
-                </span>
-                <span className="text-white font-extrabold">OssTrack</span>
+              <Link href="/" aria-label="OssTrack" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+                <img src="/logo.png" alt="OssTrack" width={40} height={40} className="w-10 h-10 rounded-xl object-contain" />
               </Link>
               <button onClick={() => setOpen(false)} aria-label="Fechar menu" className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10 transition-all">
                 <XIcon className="w-5 h-5" />

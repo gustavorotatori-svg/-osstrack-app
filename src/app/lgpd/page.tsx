@@ -25,11 +25,11 @@ const sections = [
   },
   {
     title: "4. Seus Direitos (LGPD)",
-    content: "Você tem direito a: acessar todos os dados que armazenamos sobre você, solicitar correção de dados incompletos ou desatualizados, solicitar exclusão dos seus dados (sujeito a retenções legais), revogar consentimento a qualquer momento, e exportar seus dados em formato estruturado. Para exercer qualquer direito, entre em contato pelo e-mail privacidade@osstrack.app."
+    content: "Você tem direito a: acessar todos os dados que armazenamos sobre você, solicitar correção de dados incompletos ou desatualizados, solicitar exclusão dos seus dados (sujeito a retenções legais), revogar consentimento a qualquer momento, e exportar seus dados em formato estruturado. Para exercer qualquer direito, entre em contato pelo e-mail passador@osstrack.com."
   },
   {
     title: "5. Dados de Crianças e Adolescentes (Art. 14 LGPD)",
-    content: "Para o cadastro de menores de 18 anos, exigimos o consentimento do responsável legal, que deve informar seu nome e CPF no momento do cadastro. O responsável pode, a qualquer momento, solicitar acesso, retificação, portabilidade ou exclusão dos dados do menor pelo e-mail privacidade@osstrack.app. Os dados de crianças e adolescentes são tratados com prioridade máxima de proteção e apenas na estrita medida necessária para o funcionamento da plataforma."
+    content: "Para o cadastro de menores de 18 anos, exigimos o consentimento do responsável legal, que deve informar seu nome e CPF no momento do cadastro. O responsável pode, a qualquer momento, solicitar acesso, retificação, portabilidade ou exclusão dos dados do menor pelo e-mail passador@osstrack.com. Os dados de crianças e adolescentes são tratados com prioridade máxima de proteção e apenas na estrita medida necessária para o funcionamento da plataforma."
   },
   {
     title: "6. Nossas Ferramentas de Segurança",
@@ -45,7 +45,7 @@ const sections = [
   },
   {
     title: "9. Contato do DPO",
-    content: "Para questões relacionadas à privacidade e proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail privacidade@osstrack.app ou pelo formulário de contato na página de Ajuda."
+    content: "Para questões relacionadas à privacidade e proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail passador@osstrack.com ou pelo formulário de contato na página de Ajuda."
   },
 ]
 

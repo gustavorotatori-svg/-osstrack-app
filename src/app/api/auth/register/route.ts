@@ -18,6 +18,37 @@ async function marcarConviteUsado(codigoConvite?: string) {
   } catch {} // non-critical
 }
 
+async function enviarEmailVerificacao(opts: { to: string; nome: string; token: string; userId: string }): Promise<boolean> {
+  const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${opts.token}&userId=${opts.userId}`
+  try {
+    const resultado = await Promise.race([
+      sendEmail({
+        to: opts.to,
+        subject: "Verifique seu e-mail — OssTrack",
+        html: renderEmailLayout(
+          "Verifique seu e-mail",
+          `Olá ${opts.nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
+          { label: "Verificar e-mail", url: verifyUrl }
+        ),
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("SMTP_TIMEOUT")), 8000)),
+    ])
+    return resultado.sent === true
+  } catch {
+    return false
+  }
+}
+
+// Sem entrega real do e-mail de verificação, a conta nasce verificada para o auto-login funcionar.
+async function ativarSemVerificacao(userId: string) {
+  try {
+    await prisma.usuario.update({
+      where: { id: userId },
+      data: { emailVerified: new Date(), emailVerificationToken: null, emailVerificationExpiry: null },
+    })
+  } catch {}
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
@@ -36,9 +67,6 @@ export async function POST(request: Request) {
     } = parsed.data
 
     const email = rawEmail.toLowerCase().trim()
-
-    // Login só bloqueia por verificação quando SMTP está configurado
-    const smtpConfigured = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
 
     // Rate limit by IP
     const ip = getClientIp(request)
@@ -160,19 +188,10 @@ export async function POST(request: Request) {
         return { redirect: "/dashboard/dono", userId: dono.id }
       })
 
-      // Send verification email (non-blocking)
-      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
-      sendEmail({
-        to: email,
-        subject: "Verifique seu e-mail — OssTrack",
-        html: renderEmailLayout(
-          "Verifique seu e-mail",
-          `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
-          { label: "Verificar e-mail", url: verifyUrl }
-        ),
-      }).catch(() => {})
+      const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: result.userId })
+      if (!emailSent) await ativarSemVerificacao(result.userId)
 
-      return NextResponse.json({ redirect: result.redirect, verificationRequired: smtpConfigured })
+      return NextResponse.json({ redirect: result.redirect, verificationRequired: emailSent })
     }
 
     if (role === "professor") {
@@ -250,19 +269,10 @@ export async function POST(request: Request) {
       // Marca convite após criação confirmada (fora da transaction por ser não-crítico)
       if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
-      // Send verification email (non-blocking)
-      const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${result.userId}`
-      sendEmail({
-        to: email,
-        subject: "Verifique seu e-mail — OssTrack",
-        html: renderEmailLayout(
-          "Verifique seu e-mail",
-          `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
-          { label: "Verificar e-mail", url: verifyUrl }
-        ),
-      }).catch(() => {})
+      const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: result.userId })
+      if (!emailSent) await ativarSemVerificacao(result.userId)
 
-      return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: smtpConfigured })
+      return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: emailSent })
     }
 
     const usuario = await prisma.usuario.create({
@@ -307,19 +317,10 @@ export async function POST(request: Request) {
     // Marca convite após criação confirmada
     if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
-    // Send verification email (non-blocking)
-    const verifyUrl = `${process.env.NEXTAUTH_URL || "https://osstrack.com.br"}/api/auth/verificar-email?token=${emailVerificationToken}&userId=${usuario.id}`
-    sendEmail({
-      to: email,
-      subject: "Verifique seu e-mail — OssTrack",
-      html: renderEmailLayout(
-        "Verifique seu e-mail",
-        `Olá ${nome.split(" ")[0]}! Clique no botão abaixo para confirmar seu e-mail e ativar sua conta.`,
-        { label: "Verificar e-mail", url: verifyUrl }
-      ),
-    }).catch(() => {})
+    const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: usuario.id })
+    if (!emailSent) await ativarSemVerificacao(usuario.id)
 
-    return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: smtpConfigured })
+    return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: emailSent })
   } catch (error: any) {
     console.error("Register error:", error?.message || error)
     const msg = error?.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"

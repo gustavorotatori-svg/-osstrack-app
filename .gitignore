@@ -17,6 +17,13 @@ test-results/
 screenshot-*
 vercel-*
 *.png
+!public/logo.png
+!public/logo-dark.png
+!public/icon-192.png
+!public/icon-512.png
+!public/icon-192-maskable.png
+!public/apple-touch-icon.png
+!src/app/icon.png
 cookie*
 !cookie-consent*
 .env*
