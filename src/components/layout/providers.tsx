@@ -27,17 +27,9 @@ export function useLocale() {
   return useContext(LocaleContext)
 }
 
-function getInitialPref(): ThemePref {
-  try {
-    const stored = localStorage.getItem("osstrack_theme_pref")
-    if (stored === "light") return "light"
-  } catch {}
-  return "dark"
-}
-
 export function Providers({ children }: { children: ReactNode }) {
-  const [pref, setPref] = useState<ThemePref>(getInitialPref)
-  const [theme, setTheme] = useState<Theme>(() => getInitialPref())
+  const [pref, setPref] = useState<ThemePref>("dark")
+  const [theme, setTheme] = useState<Theme>("dark")
   const [locale, setLocaleState] = useState<Locale>("pt")
   const [mounted, setMounted] = useState(false)
 
@@ -49,6 +41,11 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true)
+    const storedPref = localStorage.getItem("osstrack_theme_pref")
+    if (storedPref === "light") {
+      setPref("light")
+      setTheme("light")
+    }
     const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
     if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
       setLocaleState(storedLocale)
@@ -56,9 +53,10 @@ export function Providers({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
+    if (!mounted) return
     localStorage.setItem("osstrack_theme_pref", pref)
     applyTheme(pref)
-  }, [pref, applyTheme])
+  }, [pref, mounted, applyTheme])
 
   useEffect(() => {
     localStorage.setItem("osstrack_locale", locale)
@@ -78,7 +76,7 @@ export function Providers({ children }: { children: ReactNode }) {
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
-          {mounted ? children : <div className="min-h-screen" style={{ background: "var(--bg)" }} />}
+          {children}
           <Toaster
             position="top-center"
             toastOptions={{

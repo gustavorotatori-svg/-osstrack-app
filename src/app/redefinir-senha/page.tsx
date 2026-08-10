@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 
-export default function RedefinirSenha() {
+function RedefinirSenhaContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const token = searchParams.get("token") || ""
@@ -177,5 +177,13 @@ export default function RedefinirSenha() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function RedefinirSenha() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--bg)" }} />}>
+      <RedefinirSenhaContent />
+    </Suspense>
   )
 }

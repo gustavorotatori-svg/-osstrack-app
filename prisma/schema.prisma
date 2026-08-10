@@ -68,6 +68,9 @@ model Usuario {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  @@index([academiaId, role])
+  @@index([role])
+
   presencas       Presenca[]
   turmasAluno     TurmaAluno[]
   turmas          Turma[]
@@ -139,6 +142,9 @@ model Contrato {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  @@index([academiaId, status])
+  @@index([alunoId])
+
   cobrancas  Cobranca[]
 }
 
@@ -159,6 +165,9 @@ model Cobranca {
   pagoEm         String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+
+  @@index([academiaId, status])
+  @@index([alunoId, status])
 }
 
 model Turma {
@@ -204,6 +213,11 @@ model Presenca {
   confirmadoPor String?
   origem      String   @default("app")
   createdAt   DateTime @default(now())
+
+  @@index([alunoId, data])
+  @@index([alunoId, status])
+  @@index([status, createdAt])
+  @@index([data])
 }
 
 model Graduacao {
@@ -339,6 +353,8 @@ model Notificacao {
   lida      Boolean  @default(false)
   link      String?
   createdAt DateTime @default(now())
+
+  @@index([usuarioId, lida, createdAt])
 }
 
 model Streak {
@@ -402,6 +418,7 @@ model Agendamento {
   createdAt    DateTime @default(now())
 
   @@unique([horarioId, alunoId, data])
+  @@index([academiaId, data])
 }
 
 model PushSubscription {
@@ -479,6 +496,8 @@ model CheckinCodigo {
   usadoPor  String?
   expiresAt DateTime
   createdAt DateTime @default(now())
+
+  @@index([academiaId, usado, expiresAt])
 }
 
 model RateLimitAttempt {
