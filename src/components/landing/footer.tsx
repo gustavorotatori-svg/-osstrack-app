@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
-import { GiIcon } from "@/components/ui/icons"
 import { Camera, Play, MessageCircle } from "lucide-react"
 
 export function Footer() {
@@ -48,9 +47,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight mb-4">
-              <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center animate-float">
-                <GiIcon className="w-4 h-4 text-black" />
-              </span>
+              <img src="/logo.png" alt="OssTrack" width={32} height={32} className="w-8 h-8 rounded-xl object-contain animate-float" />
               <span>OssTrack</span>
             </Link>
             <p className="text-sm text-[var(--white-muted)] leading-relaxed max-w-xs">
@@ -74,6 +71,7 @@ export function Footer() {
               <li><Link href="/ajuda" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("ajuda")}</Link></li>
               <li><Link href="/ajuda#contato-form" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("faleConosco")}</Link></li>
               <li><a href="https://wa.me/5511942221028" target="_blank" rel="noopener noreferrer" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">{t("whatsapp")}</a></li>
+              <li><a href="mailto:passador@osstrack.com" className="text-sm text-[var(--white-muted)] hover:text-[var(--gold)] transition-colors">passador@osstrack.com</a></li>
             </ul>
           </div>
 

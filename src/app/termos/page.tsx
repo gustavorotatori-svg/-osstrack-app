@@ -76,7 +76,7 @@ export default function TermosPage() {
                 Você pode excluir sua conta a qualquer momento através da opção "Excluir minha conta" na página de
                 Perfil. Os dados serão removidos permanentemente em até 30 dias após a solicitação, exceto quando a
                 retenção for exigida por lei. Você também pode solicitar a exclusão dos seus dados entrando em
-                contato pelo e-mail privacidade@osstrack.app.
+                contato pelo e-mail passador@osstrack.com.
               </p>
             </div>
 

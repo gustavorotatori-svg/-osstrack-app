@@ -55,7 +55,7 @@ const faqSchema = {
     {
       "@type": "Question",
       name: "Como entrar em contato com o suporte?",
-      acceptedAnswer: { "@type": "Answer", text: "Use o formulário 'Fale Conosco' na página de Ajuda, envie um e-mail para suporte@osstrack.app ou mande uma mensagem no WhatsApp." },
+      acceptedAnswer: { "@type": "Answer", text: "Use o formulário 'Fale Conosco' na página de Ajuda, envie um e-mail para passador@osstrack.com ou mande uma mensagem no WhatsApp." },
     },
   ],
 }
@@ -91,7 +91,7 @@ const faqItems = [
   },
   {
     q: "Como entrar em contato com o suporte?",
-    r: "Use o formulário 'Fale Conosco' abaixo, envie um e-mail para suporte@osstrack.app ou mande uma mensagem no WhatsApp: (11) 94222-1028."
+    r: "Use o formulário 'Fale Conosco' abaixo, envie um e-mail para passador@osstrack.com ou mande uma mensagem no WhatsApp: (11) 94222-1028."
   },
 ]
 

@@ -7,7 +7,7 @@ import { CookieConsent } from "@/components/layout/cookie-consent"
 const title = "OssTrack — Sua jornada no tatame"
 const description =
   "Plataforma de evolução para academias de Jiu-Jitsu. Transforme frequência, disciplina e evolução em metas claras e compartilháveis."
-const url = "https://osstrack.app"
+const url = "https://osstrack.com.br"
 
 const jsonLd = {
   "@context": "https://schema.org",
