@@ -201,6 +201,7 @@ export default function Cadastro() {
       if (!/[a-z]/.test(form.senha)) { setError("A senha deve conter pelo menos uma letra minúscula"); return }
       if (!/[0-9]/.test(form.senha)) { setError("A senha deve conter pelo menos um número"); return }
       if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); return }
+      if (!form.dataNascimento) { setError("Informe a data de nascimento"); return }
       if (!form.role) { setError("Selecione um tipo de conta"); return }
       avancarStep(); return
     }
@@ -323,7 +324,7 @@ export default function Cadastro() {
             </div>
             <div>
               <label htmlFor="cad-nascimento" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Data de nascimento</label>
-              <input id="cad-nascimento" type="date" autoComplete="bday" className="input" value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
+              <input id="cad-nascimento" type="date" autoComplete="bday" className="input" required value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
               <p className="text-[10px] text-[var(--text-muted)] mt-1">Para menores de 18 anos, exigimos o consentimento do responsável legal (Art. 14 da LGPD).</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

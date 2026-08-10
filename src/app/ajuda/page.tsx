@@ -158,6 +158,13 @@ function ContatoForm() {
         <textarea id="mensagem" name="mensagem" required rows={5} placeholder="Como podemos ajudar?"
           className="input-field resize-none" />
       </div>
+      <label className="flex items-start gap-2.5 text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        <input type="checkbox" name="consentimento" required className="mt-0.5 shrink-0 accent-[var(--gold)]" />
+        <span>
+          Autorizo o tratamento dos meus dados pessoais (nome, e-mail e mensagem) apenas para responder à minha
+          solicitação, conforme a <Link href="/lgpd" className="underline font-semibold" style={{ color: "var(--gold)" }}>Política de Privacidade</Link>.
+        </span>
+      </label>
       <button type="submit"
         className="btn-gold px-8 py-3.5 text-sm font-bold w-full md:w-auto active:scale-[0.97]">
         Enviar Mensagem
