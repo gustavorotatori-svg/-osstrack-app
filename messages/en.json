@@ -1,4 +1,18 @@
 {
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about OssTrack.",
+    "q1": "Is OssTrack really free?",
+    "a1": "Yes. OssTrack is 100% free for academies, instructors and students — no hidden plans, no student limits and no credit card required.",
+    "q2": "What does OssTrack do?",
+    "a2": "GPS check-in for students, belt and graduation progression, streaks, ranking, attendance tracking, finance and reports — all in one place, in the browser.",
+    "q3": "Do I need to install an app?",
+    "a3": "No. OssTrack works right in your phone or computer browser. You can add it to your home screen and use it like an app (PWA).",
+    "q4": "How does check-in work?",
+    "a4": "Students open OssTrack at class time and check in with the academy's GPS. Attendance is recorded automatically to the correct class and time.",
+    "q5": "Does it work for any academy size?",
+    "a5": "Yes. From small classes to large teams, OssTrack tracks attendance, progression and student retention in real time."
+  },
   "nav": {
     "entrar": "Sign In",
     "cadastro": "Start Free",

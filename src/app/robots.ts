@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next"
 
 export default function robots(): MetadataRoute.Robots {
+  const base = (process.env.NEXTAUTH_URL || "https://osstrack.com.br").replace(/\/$/, "")
+
   return {
     rules: [
       {
@@ -9,6 +11,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/dashboard/", "/convite/", "/screenshot/"],
       },
     ],
-    sitemap: "https://osstrack.app/sitemap.xml",
+    sitemap: `${base}/sitemap.xml`,
   }
 }
