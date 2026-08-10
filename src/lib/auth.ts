@@ -117,7 +117,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, // 7 days (reduced from 30-day default)
+    maxAge: 7 * 24 * 60 * 60, // absolute: 7 days
+    updateAge: 24 * 60 * 60, // rolling refresh: re-signs on activity, max once/day
   },
   jwt: {
     maxAge: 7 * 24 * 60 * 60,

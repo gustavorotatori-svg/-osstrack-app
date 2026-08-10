@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { toast } from "sonner"
@@ -53,7 +53,7 @@ function ProgressDots({ current, total, labels }: { current: number; total: numb
   )
 }
 
-export default function Cadastro() {
+function CadastroContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [step, setStep] = useState(1)
@@ -758,5 +758,13 @@ export default function Cadastro() {
       </div>
       <InstallPrompt />
     </div>
+  )
+}
+
+export default function Cadastro() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--bg)" }} />}>
+      <CadastroContent />
+    </Suspense>
   )
 }

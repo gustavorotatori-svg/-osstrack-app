@@ -2,8 +2,9 @@
 
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { Suspense } from "react"
 
-export default function EmailConfirmado() {
+function EmailConfirmadoContent() {
   const searchParams = useSearchParams()
   const success = searchParams.get("success") === "true"
   const error = searchParams.get("error")
@@ -46,5 +47,13 @@ export default function EmailConfirmado() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function EmailConfirmado() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--bg)" }} />}>
+      <EmailConfirmadoContent />
+    </Suspense>
   )
 }

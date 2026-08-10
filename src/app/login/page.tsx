@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, Suspense } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
@@ -36,7 +36,7 @@ const ROLE_CONFIG: Record<Role, { label: string; icon: string; color: string; gr
   },
 }
 
-export default function Login() {
+function LoginContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -267,5 +267,13 @@ export default function Login() {
       </div>
       <InstallPrompt />
     </div>
+  )
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" style={{ background: "var(--bg)" }} />}>
+      <LoginContent />
+    </Suspense>
   )
 }
