@@ -24,9 +24,7 @@ export default function DashboardRedirect() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
       <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center text-lg text-black animate-pulse">
-          🥋
-        </div>
+        <div className="w-10 h-10 gradient-gold rounded-xl animate-pulse" />
         <p className="text-sm text-[var(--white-muted)]">Redirecionando...</p>
       </div>
     </div>

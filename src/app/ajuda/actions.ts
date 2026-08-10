@@ -12,8 +12,9 @@ export async function enviarContato(formData: FormData) {
   const nome = formData.get("nome")?.toString().trim()
   const email = formData.get("email")?.toString().trim()
   const mensagem = formData.get("mensagem")?.toString().trim()
+  const consentimento = formData.get("consentimento")?.toString()
 
-  if (!nome || !email || !mensagem) return
+  if (!nome || !email || !mensagem || !consentimento) return
 
   try {
     await prisma.contato.create({

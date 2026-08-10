@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { decryptCpf } from "@/lib/cpf-crypto"
 
 export async function DELETE() {
   try {
@@ -58,6 +59,10 @@ export async function DELETE() {
       await tx.participacaoCompeticao.deleteMany({ where: { alunoId: usuario.id } })
       await tx.familiaMembro.deleteMany({ where: { alunoId: usuario.id } })
       await tx.notificacao.deleteMany({ where: { usuarioId: usuario.id } })
+
+      // PII fora das tabelas do usuário (LGPD Art. 18 VI — eliminação completa)
+      await tx.rateLimitAttempt.deleteMany({ where: { identifier: `email:${usuario.email}` } })
+      await tx.contato.deleteMany({ where: { email: usuario.email } })
 
       if (usuario.role === "dono" && usuario.academiaId) {
         // Anonimiza o dono e remove seus dados pessoais da academia, mantendo a academia ativa
@@ -152,7 +157,7 @@ export async function GET() {
         termosVersao: usuario.termosVersao,
         lgpdVersao: usuario.lgpdVersao,
         responsavel: usuario.consentimentoResponsavel
-          ? { nome: usuario.responsavelNome, cpf: usuario.responsavelCpf }
+          ? { nome: usuario.responsavelNome, cpf: decryptCpf(usuario.responsavelCpf) }
           : null,
       },
       presencas: usuario.presencas,

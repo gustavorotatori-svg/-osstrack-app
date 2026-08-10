@@ -7,6 +7,7 @@ import { registerSchema } from "@/lib/validation"
 import { notificarUsuario } from "@/lib/notificar"
 import { sendEmail, renderEmailLayout } from "@/lib/email"
 import { LGPD_VERSAO, TERMOS_VERSAO } from "@/lib/lgpd"
+import { encryptCpf } from "@/lib/cpf-crypto"
 
 async function marcarConviteUsado(codigoConvite?: string) {
   if (!codigoConvite) return
@@ -142,7 +143,7 @@ export async function POST(request: Request) {
             lgpdVersao: LGPD_VERSAO,
             termosVersao: TERMOS_VERSAO,
             responsavelNome: responsavelNome || null,
-            responsavelCpf: responsavelCpf || null,
+            responsavelCpf: responsavelCpf ? encryptCpf(responsavelCpf) : null,
             consentimentoResponsavel: consentimentoResponsavel || false,
             emailVerificationToken,
             emailVerificationExpiry,
@@ -246,7 +247,7 @@ export async function POST(request: Request) {
             lgpdVersao: LGPD_VERSAO,
             termosVersao: TERMOS_VERSAO,
             responsavelNome: responsavelNome || null,
-            responsavelCpf: responsavelCpf || null,
+            responsavelCpf: responsavelCpf ? encryptCpf(responsavelCpf) : null,
             consentimentoResponsavel: consentimentoResponsavel || false,
             emailVerificationToken,
             emailVerificationExpiry,
@@ -294,9 +295,9 @@ export async function POST(request: Request) {
         dataAceite: new Date(),
         lgpdVersao: LGPD_VERSAO,
         termosVersao: TERMOS_VERSAO,
-        responsavelNome: responsavelNome || null,
-        responsavelCpf: responsavelCpf || null,
-        consentimentoResponsavel: consentimentoResponsavel || false,
+            responsavelNome: responsavelNome || null,
+            responsavelCpf: responsavelCpf ? encryptCpf(responsavelCpf) : null,
+            consentimentoResponsavel: consentimentoResponsavel || false,
         emailVerificationToken,
         emailVerificationExpiry,
       },
