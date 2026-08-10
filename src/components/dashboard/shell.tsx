@@ -12,7 +12,7 @@ import { useTheme } from "@/components/layout/providers"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 import { OssTransition, triggerOssTransition } from "@/components/ui/oss-transition"
 import { PullToRefresh } from "@/components/ui/pull-to-refresh"
-import { SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
+import { GiIcon, SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
 
 type IconProps = { active: boolean }
 
@@ -225,8 +225,13 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {/* DESKTOP SIDEBAR */}
       <div className="hidden md:flex fixed left-0 top-0 bottom-0 z-40 w-60 bg-[var(--bg)] border-r border-[var(--border)] flex-col">
         <Link href="/" className="flex items-center gap-3 px-5 h-16 border-b border-[var(--border)] hover:opacity-80 transition-opacity">
-          <img src="/logo.png" alt="OssTrack" width={36} height={36} className="w-9 h-9 rounded-lg object-contain shrink-0" />
-          <span className="block text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--gold)" }}>
+            <GiIcon className="w-4.5 h-4.5 text-black" />
+          </div>
+          <div>
+            <span className="font-extrabold text-base" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
+            <span className="block text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
+          </div>
         </Link>
 
         <div className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5 scrollbar-none">
@@ -314,8 +319,13 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       {/* MOBILE HEADER */}
       <header className="flex md:hidden items-center justify-between px-4 h-14 bg-[var(--bg)]/95 sticky top-0 z-50 border-b border-[var(--border)]/50 pt-[env(safe-area-inset-top)]" style={{ height: "calc(3.5rem + env(safe-area-inset-top))" }}>
         <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-          <img src="/logo.png" alt="OssTrack" width={32} height={32} className="w-8 h-8 rounded-lg object-contain shrink-0" />
-          <span className="block text-[9px] font-bold uppercase tracking-[0.1em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "var(--gold)", color: "#000" }}>
+            <GiIcon className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="font-extrabold text-sm" style={{ background: "var(--gold-gradient)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>OssTrack</span>
+            <span className="block text-[9px] font-bold uppercase tracking-[0.1em]" style={{ color: "var(--gold)" }}>{t(role)}</span>
+          </div>
         </Link>
         <div className="flex items-center gap-0.5">
           {topItems.map((item) => {
