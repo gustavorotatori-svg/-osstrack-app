@@ -40,13 +40,11 @@ export const metadata: Metadata = {
     title,
     description,
     url,
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "OssTrack" }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/og.svg"],
   },
   robots: { index: true, follow: true },
 }

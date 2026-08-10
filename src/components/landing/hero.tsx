@@ -57,9 +57,9 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
         </h1>
 
         {/* Tagline */}
-        <p className={`text-base md:text-lg max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
+        <h2 className={`text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
           {t("titulo2")}
-        </p>
+        </h2>
         <p className={`text-xs md:text-sm max-w-md mx-auto mt-2 leading-relaxed transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-muted)" }}>
           {t("subtitle")}
         </p>
