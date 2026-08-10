@@ -73,7 +73,7 @@ export default function TermosPage() {
             <div className="glass-card p-6 md:p-8">
               <h2 className="text-base font-bold mb-3 text-[var(--gold)]">5. Cancelamento e Exclusão</h2>
               <p className="text-sm text-[var(--white-muted)] leading-relaxed">
-                Você pode excluir sua conta a qualquer momento através da opção "Excluir minha conta" na página de
+                Você pode excluir sua conta a qualquer momento através da opção &quot;Excluir minha conta&quot; na página de
                 Perfil. Os dados serão removidos permanentemente em até 30 dias após a solicitação, exceto quando a
                 retenção for exigida por lei. Você também pode solicitar a exclusão dos seus dados entrando em
                 contato pelo e-mail passador@osstrack.com.
@@ -83,7 +83,7 @@ export default function TermosPage() {
             <div className="glass-card p-6 md:p-8">
               <h2 className="text-base font-bold mb-3 text-[var(--gold)]">6. Limitação de Responsabilidade</h2>
               <p className="text-sm text-[var(--white-muted)] leading-relaxed">
-                O OssTrack é fornecido "como está", sem garantias de disponibilidade contínua ou ininterrupta.
+                O OssTrack é fornecido &quot;como está&quot;, sem garantias de disponibilidade contínua ou ininterrupta.
                 Não nos responsabilizamos por danos diretos ou indiretos decorrentes do uso ou da impossibilidade
                 de uso da plataforma, incluindo perda de dados, lucros cessantes ou interrupção de negócios.
                 A plataforma pode ser modificada, suspensa ou descontinuada a qualquer momento, mediante aviso prévio.
