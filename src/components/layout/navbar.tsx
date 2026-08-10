@@ -6,6 +6,7 @@ import { useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
 import { MobileMenu } from "@/components/landing/mobile-menu"
+import { GiIcon } from "@/components/ui/icons"
 import { useInstall } from "@/components/pwa/install-prompt"
 
 export function Navbar() {
@@ -29,8 +30,11 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-6xl mx-auto flex items-center">
-        <Link href="/" aria-label="OssTrack" className="flex items-center gap-3 group shrink-0 mr-10">
-          <img src="/logo.png" alt="OssTrack" width={40} height={40} className="w-10 h-10 rounded-xl object-contain transition-transform duration-300 group-hover:scale-105 shrink-0" />
+        <Link href="/" className="flex items-center gap-3 font-extrabold text-xl tracking-tight group shrink-0 mr-10">
+          <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shrink-0 shadow-lg shadow-[var(--gold)]/10">
+            <GiIcon className="w-5 h-5 text-black" />
+          </span>
+          <span className={`hidden sm:inline transition-colors ${scrolled ? "text-white" : "text-[var(--text)]"}`}>OssTrack</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
