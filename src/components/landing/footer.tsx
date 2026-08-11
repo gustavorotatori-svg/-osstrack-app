@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
 
-import { Camera, Play, MessageCircle } from "lucide-react"
+import { MessageCircle } from "lucide-react"
 
 export function Footer() {
   const t = useT("footer")
@@ -11,8 +11,6 @@ export function Footer() {
   const tFrases = useT("frases")
 
   const socialLinks = [
-    { href: "https://instagram.com/osstrack", label: "Instagram", icon: Camera },
-    { href: "https://youtube.com/@osstrack", label: "YouTube", icon: Play },
     { href: "https://wa.me/5511942221028", label: "WhatsApp", icon: MessageCircle },
   ]
 
