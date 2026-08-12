@@ -46,9 +46,11 @@ export async function middleware(req: NextRequest) {
   }
 
   if (!isAuthenticated) {
-    const url = new URL("/login", req.url)
-    url.searchParams.set("callbackUrl", pathname)
-    return NextResponse.redirect(url)
+    if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
+      const url = new URL("/login", req.url)
+      url.searchParams.set("callbackUrl", pathname)
+      return NextResponse.redirect(url)
+    }
   }
 
   const role = token!.role as string | undefined
