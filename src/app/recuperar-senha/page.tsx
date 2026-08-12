@@ -71,6 +71,9 @@ export default function RecuperarSenha() {
             </div>
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>OssTrack</h1>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.25em] mt-1" style={{ color: "var(--gold)" }}>
+            The Jiu Jitsu Revolution
+          </p>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
             {sent ? "Verifique seu e-mail" : "Digite seu email para receber o link"}
           </p>

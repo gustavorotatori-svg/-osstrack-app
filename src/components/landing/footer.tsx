@@ -45,10 +45,13 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 md:gap-10 mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight mb-4">
+            <Link href="/" className="flex items-center gap-2.5 font-bold text-base tracking-tight mb-1">
               <span className="w-8 h-8 gradient-gold rounded-xl flex items-center justify-center animate-float" />
               <span>OssTrack</span>
             </Link>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--gold)] mb-4">
+              The Jiu Jitsu Revolution
+            </p>
             <p className="text-sm text-[var(--white-muted)] leading-relaxed max-w-xs">
               {t("descricao")}
             </p>
