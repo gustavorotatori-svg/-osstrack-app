@@ -51,6 +51,7 @@ export async function middleware(req: NextRequest) {
       url.searchParams.set("callbackUrl", pathname)
       return NextResponse.redirect(url)
     }
+    return NextResponse.next()
   }
 
   const role = token!.role as string | undefined
