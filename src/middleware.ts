@@ -12,6 +12,7 @@ export async function middleware(req: NextRequest) {
     "/sitemap.xml", "/robots.txt",
     "/manifest.webmanifest", "/screenshot",
     "/opengraph-image",
+    "/api/erro", "/api/webhook",
   ]
   if (
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||

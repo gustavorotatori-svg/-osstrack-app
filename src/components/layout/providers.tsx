@@ -53,6 +53,38 @@ export function Providers({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
+    function report(message: string, stack?: string) {
+      try {
+        fetch("/api/erro", {
+          method: "POST",
+          keepalive: true,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: message.slice(0, 500),
+            stack: (stack || "").slice(0, 2000),
+            url: window.location.pathname,
+          }),
+        }).catch(() => {})
+      } catch {
+        // não bloquear o app por causa do report
+      }
+    }
+    function onError(e: ErrorEvent) {
+      report(e.message, e.error?.stack)
+    }
+    function onRejection(e: PromiseRejectionEvent) {
+      const reason = e.reason
+      report(reason?.message || String(reason), reason?.stack)
+    }
+    window.addEventListener("error", onError)
+    window.addEventListener("unhandledrejection", onRejection)
+    return () => {
+      window.removeEventListener("error", onError)
+      window.removeEventListener("unhandledrejection", onRejection)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!mounted) return
     localStorage.setItem("osstrack_theme_pref", pref)
     applyTheme(pref)
