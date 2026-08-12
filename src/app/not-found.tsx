@@ -1,7 +1,5 @@
 import Link from "next/link"
 
-export const metadata = { title: "Página não encontrada — OssTrack" }
-
 export default function NotFound() {
   return (
     <main className="tatame-bg min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
