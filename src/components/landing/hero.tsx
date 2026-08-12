@@ -51,10 +51,15 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         {/* OssTrack */}
-        <h1 className={`text-[clamp(4rem,15vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        <h1 className={`text-[clamp(4rem,15vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] mb-2 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
           <span style={{ color: "var(--text)" }}>Oss</span>
           <span className="gradient-gold-text">Track</span>
         </h1>
+
+        {/* Slogan */}
+        <p className={`text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] mb-5 transition-all duration-700 delay-100 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--gold)" }}>
+          The Jiu Jitsu Revolution
+        </p>
 
         {/* Tagline */}
         <h2 className={`text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
