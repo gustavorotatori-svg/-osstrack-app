@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Script from "next/script"
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { CookieConsent } from "@/components/layout/cookie-consent"
@@ -80,6 +81,7 @@ export default function RootLayout({
           <CookieConsent />
         </Providers>
         </div>
+        <Analytics />
       </body>
     </html>
   )

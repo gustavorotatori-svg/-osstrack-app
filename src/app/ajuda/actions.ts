@@ -2,7 +2,9 @@
 
 import prisma from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
+import { headers } from "next/headers"
 import { sendEmail } from "@/lib/email"
+import { checkRateLimit } from "@/lib/rate-limit"
 
 function esc(valor: string) {
   return valor.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;")
@@ -15,6 +17,16 @@ export async function enviarContato(formData: FormData) {
   const consentimento = formData.get("consentimento")?.toString()
 
   if (!nome || !email || !mensagem || !consentimento) return
+
+  try {
+    const hdrs = await headers()
+    const forwarded = hdrs.get("x-forwarded-for")
+    const ip = forwarded ? forwarded.split(",")[0].trim() : hdrs.get("x-real-ip") || "127.0.0.1"
+    const rl = await checkRateLimit(`ip:${ip}`, "contato")
+    if (!rl.allowed) return
+  } catch {
+    // se o rate limit falhar, segue sem bloquear para não quebrar o formulário
+  }
 
   try {
     await prisma.contato.create({

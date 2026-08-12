@@ -9,6 +9,8 @@ const LIMITS: Record<string, number> = {
   "recuperar-senha": 3,
   "redefinir-senha": 3,
   "enviar-verificacao": 3,
+  "validar-token-reset": 10,
+  "contato": 5,
 }
 
 export async function checkRateLimit(identifier: string, endpoint: string): Promise<{ allowed: boolean; remaining: number }> {
