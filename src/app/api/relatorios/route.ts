@@ -98,6 +98,72 @@ export async function GET() {
   const engajamento = totalAlunos > 0 ? Math.round((alunosSemana.length / totalAlunos) * 100) : 0
   const retencao6m = totalAlunos > 0 ? Math.round((alunosAtivos.length / totalAlunos) * 100) : 0
 
+  // ---------- Financeiro ----------
+  const inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1)
+  const fimMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 1)
+
+  const receitasMes = await prisma.cobranca.aggregate({
+    _sum: { valor: true },
+    _count: { id: true },
+    where: { academiaId, status: "pago", dataPagamento: { gte: inicioMes, lt: fimMes } },
+  })
+
+  const despesasMes = await prisma.despesa.aggregate({
+    _sum: { valor: true },
+    where: { academiaId, status: "pago", dataPagamento: { gte: inicioMes, lt: fimMes } },
+  })
+
+  const inadimplentesCount = await prisma.cobranca.count({
+    where: { academiaId, status: "pendente", dataVencimento: { lt: hoje } },
+  })
+
+  const cobrancasMesCount = await prisma.cobranca.count({
+    where: { academiaId, dataVencimento: { gte: inicioMes, lt: fimMes } },
+  })
+
+  const pagasMes = receitasMes._count?.id || 0
+  const receita = receitasMes._sum?.valor || 0
+  const despesa = despesasMes._sum?.valor || 0
+  const ticketMedio = pagasMes > 0 ? Math.round(receita / pagasMes) : 0
+  const inadimplencia = cobrancasMesCount > 0 ? Math.round((inadimplentesCount / cobrancasMesCount) * 100) : 0
+  const lucroMes = receita - despesa
+
+  // ---------- Churn (cancelamentos no mês) ----------
+  const canceladosMes = await prisma.contrato.count({
+    where: { academiaId, status: "cancelado", updatedAt: { gte: inicioMes } },
+  })
+  const churn = totalAlunos > 0 ? Math.round((canceladosMes / totalAlunos) * 100) : 0
+
+  // ---------- Por turma (últimos 30 dias) ----------
+  const trintaDiasAtras = new Date()
+  trintaDiasAtras.setDate(trintaDiasAtras.getDate() - 30)
+
+  const presencasPorTurmaRaw = await prisma.presenca.groupBy({
+    by: ["turma"],
+    where: {
+      aluno: { academiaId },
+      status: "confirmed",
+      data: { gte: trintaDiasAtras },
+    },
+    _count: true,
+  })
+
+  const presencasPorTurma = presencasPorTurmaRaw
+    .filter((p) => p.turma)
+    .map((p) => ({ turma: p.turma, total: p._count }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 8)
+
+  // ---------- Alunos por faixa ----------
+  const porFaixaRaw = await prisma.usuario.groupBy({
+    by: ["faixa"],
+    where: { academiaId, role: "aluno" },
+    _count: true,
+  })
+  const porFaixa = porFaixaRaw
+    .map((f) => ({ faixa: f.faixa || "Outra", total: f._count }))
+    .sort((a, b) => b.total - a.total)
+
   return NextResponse.json({
     presencasHoje,
     totalPresencas,
@@ -107,6 +173,19 @@ export async function GET() {
     retencao6m,
     alunosAtivos: alunosAtivos.length,
     alunosSemana: alunosSemana.length,
+    financeiro: {
+      receitaMes: receita,
+      despesasMes: despesa,
+      lucroMes,
+      ticketMedio,
+      pagasMes,
+      inadimplentes: inadimplentesCount,
+      inadimplencia,
+    },
+    churn,
+    canceladosMes,
+    presencasPorTurma,
+    porFaixa,
   })
   } catch (error) {
     return handleApiError(error)

@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         }
 
         const top = ranking[0]
-        await prisma.mestreDoMes.upsert({
+        await prisma.alunoDoMes.upsert({
           where: { academiaId_mes_ano_categoria: { academiaId: academia.id, mes: mesAlvo, ano, categoria } },
           update: { alunoId: top.alunoId, totalAulas: top._count },
           create: { academiaId: academia.id, alunoId: top.alunoId, mes: mesAlvo, ano, categoria, totalAulas: top._count },
@@ -74,6 +74,8 @@ export async function POST(req: NextRequest) {
 
       results.push(resultadosAcademia)
     }
+
+    await prisma.cronLog.create({ data: { tipo: "mestredomes" } }).catch(() => {})
 
     return NextResponse.json({ message: "Mestres do Mês calculados!", results })
   } catch (error) {

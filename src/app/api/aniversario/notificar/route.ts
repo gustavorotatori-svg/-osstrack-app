@@ -55,6 +55,8 @@ export async function POST(req: NextRequest) {
       notificados++
     }
 
+    await prisma.cronLog.create({ data: { tipo: "aniversario" } }).catch(() => {})
+
     return NextResponse.json({
       ok: true,
       notificados,

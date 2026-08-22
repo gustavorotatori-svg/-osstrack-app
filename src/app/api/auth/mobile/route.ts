@@ -35,6 +35,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })
     }
 
+    if (!user.senha) {
+      return NextResponse.json({ error: "Conta criada com Google. Use o login com Google." }, { status: 401 })
+    }
+
     const valid = await bcrypt.compare(senha, user.senha)
     if (!valid) {
       return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })

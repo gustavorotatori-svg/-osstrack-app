@@ -40,7 +40,7 @@ export function MestreDoMesCard() {
     <div className="glass-card-accent p-5" style={{"--accent-color": "var(--gold)"} as React.CSSProperties}>
       <div className="flex items-center gap-2 mb-4">
         <CrownIcon className="w-5 h-5 text-[var(--gold)]" />
-        <span className="section-header mb-0">{t("mestreDoMes.title")}</span>
+        <span className="section-header mb-0">{t("alunoDoMes.title")}</span>
       </div>
       <div className="grid grid-cols-3 gap-2.5">
         {CATEGORIAS.map((cat) => {
@@ -64,10 +64,10 @@ export function MestreDoMesCard() {
                   <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold mt-1 ${getBeltColor(m.faixa)}`}>
                     {getBeltEmoji(m.faixa)} {m.faixa}
                   </span>
-                  <p className="text-[10px] text-[var(--text-secondary)] mt-1">{t("mestreDoMes.aulas").replace("{n}", String(m.totalAulas))}</p>
+                  <p className="text-[10px] text-[var(--text-secondary)] mt-1">{t("alunoDoMes.aulas").replace("{n}", String(m.totalAulas))}</p>
                 </>
               ) : (
-                <p className="text-xs text-[var(--text-muted)]">{t("mestreDoMes.nenhumMestre")}</p>
+                <p className="text-xs text-[var(--text-muted)]">{t("alunoDoMes.nenhumAluno")}</p>
               )}
             </div>
           )

@@ -161,7 +161,7 @@
       "erroRegistrar": "Ошибка при регистрации посещения",
       "checkinRegistrado": "Отметка успешно зарегистрирована!",
       "erroConexao": "Ошибка соединения. Попробуйте снова.",
-      "metaSemanalConcluida": "Еженедельная цель достигнута!",
+      "progressoSemanalConcluida": "Прогресс за неделю достигнут!",
       "streakDias": "Серия {n} дней!",
       "streakDiasLenda": "Серия {n} дней! Легенда!",
       "novaConquista": "Новое достижение! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "Посмотрите свою позицию среди учеников",
       "desativado": "Рейтинг отключен",
       "desativadoDesc": "Академия еще не активировала рейтинг. Возвращайтесь позже!",
-      "mestreDoMes": "Ученик месяца",
+      "alunoDoMes": "Ученик месяца",
       "aulasNoMes": "{n} занятий в месяце",
       "semMestre": "Пока нет",
       "todas": "Все",
@@ -1005,16 +1005,16 @@
       "pontos": "{n} очков",
       "recompensa": "Награда"
     },
-    "metaSemanal": {
-      "title": "Еженедельная цель",
+    "progressoSemanal": {
+      "title": "Прогресс за неделю",
       "concluida": "Выполнена",
       "metaBatida": "Цель достигнута!",
       "faltamTreinos": "Осталось {n} тренировок",
       "treinosEssaSemana": "Тренировок на этой неделе"
     },
-    "mestreDoMes": {
+    "alunoDoMes": {
       "title": "Ученик месяца",
-      "nenhumMestre": "Ученик месяца не определен",
+      "nenhumAluno": "Ученик не определён",
       "aulas": "{n} занятий",
       "meses": [
         "Января",
@@ -1138,7 +1138,31 @@
     "convidarOssTrack": "Пригласить в OssTrack",
     "nivelDisciplina": "Уровень дисциплины",
     "atleta": "Спортсмен",
-    "dias": "дней"
+    "dias": "дней",
+    "horas": {
+      "titulo": "Тренировочные часы",
+      "subtitulo": "Время на татами",
+      "horasNoPeriodo": "часов",
+      "totalGeral": "Всего: {h}h · {n} занятий за этот период",
+      "diasAtivos": "Активные дни",
+      "mediaDia": "Среднее/день",
+      "mediaMes": "Среднее/месяц",
+      "totalAulas": "Всего занятий",
+      "metaMensal": "Месячная цель: {n}h",
+      "metaBatida": "Цель достигнута!",
+      "faltam": "Осталось {n}h",
+      "horasPorMes": "Часы по месяцам",
+      "horasPorSemana": "Часы по неделям",
+      "ultimasAulas": "Последние занятия",
+      "aula": "Занятие",
+      "verHoras": "Посмотреть часы →",
+      "semana": "Эта неделя",
+      "mes": "Этот месяц",
+      "trimestre": "Последние 3 месяца",
+      "ano": "Этот год",
+      "ytd": "С начала года",
+      "total": "Всего"
+    }
   },
   "relatorios": {
     "subtitle": "Метрики и показатели академии",

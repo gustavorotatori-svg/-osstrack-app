@@ -9,7 +9,7 @@ const profiles = [
     title: "Dono",
     desc: "Gestão completa da sua academia",
     gradient: "linear-gradient(135deg, #d4a847, #8a6e2a)",
-    features: ["Financeiro", "Alunos", "Relatórios", "Check-ins"],
+    features: ["Financeiro", "Alunos", "Relatórios", "Cobranças", "Waiver"],
   },
   {
     slug: "professor",
@@ -23,7 +23,7 @@ const profiles = [
     title: "Aluno",
     desc: "Sua jornada no tatame",
     gradient: "linear-gradient(135deg, #059669, #065f46)",
-    features: ["Evolução", "Streak", "Ranking", "Metas"],
+    features: ["Evolução", "Horas", "Streak", "Ranking", "Google Login"],
   },
 ]
 

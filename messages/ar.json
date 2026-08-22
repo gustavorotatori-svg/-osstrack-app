@@ -161,7 +161,7 @@
       "erroRegistrar": "خطأ في تسجيل الحضور",
       "checkinRegistrado": "تم تسجيل الحضور بأمان!",
       "erroConexao": "خطأ في الاتصال. حاول مرة تانية.",
-      "metaSemanalConcluida": "الهدف الأسبوعي مكتمل!",
+      "progressoSemanalConcluida": "التقدم الأسبوعي مكتمل!",
       "streakDias": "{n} أيام سلسلة!",
       "streakDiasLenda": "{n} أيام سلسلة! أسطورة!",
       "novaConquista": "إنجاز جديد! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "شوف مرتبتك بين الطلاب",
       "desativado": "الترتيب معطل",
       "desativadoDesc": "الأكاديمية لسا ما فعّلت الترتيب. ارجع بعدين!",
-      "mestreDoMes": "أستاذ الشهر",
+      "alunoDoMes": "تلميذ الشهر",
       "aulasNoMes": "{n} حصص بالشهر",
       "semMestre": "لسا في حدا",
       "todas": "الكل",
@@ -263,7 +263,6 @@
       "posicaoFaixa": "أنت بالمرتبة {pos} بفئة {faixa}",
       "faltamAulas": "تبقى {n} حصص عشان توصل للمرتبة الأولى!"
     },
-
     "agenda": {
       "title": "جدول الحصص",
       "subtitle": "مرر الماوس فوق الحصص لترى التفاصيل",
@@ -863,7 +862,6 @@
       "professorSelecionado": "الأستاذ المختار",
       "pular": "تقدر تتخطى هالخطوة."
     },
-
     "grauOption": "{g}º درجة",
     "buttons": {
       "voltar": "رجوع",
@@ -1007,16 +1005,16 @@
       "pontos": "{n} نقاط",
       "recompensa": "المكافأة"
     },
-    "metaSemanal": {
-      "title": "الهدف الأسبوعي",
+    "progressoSemanal": {
+      "title": "التقدم الأسبوعي",
       "concluida": "مكتمل",
       "metaBatida": "تم تحقيق الهدف!",
       "faltamTreinos": "تبقى {n} تمرين",
       "treinosEssaSemana": "تمارين هالأسبوع"
     },
-    "mestreDoMes": {
-      "title": "أستاذ الشهر",
-      "nenhumMestre": "ما في أستاذ محدد هالشهر",
+    "alunoDoMes": {
+      "title": "تلميذ الشهر",
+      "nenhumAluno": "لم يتم تحديد تلميذ هذا الشهر",
       "aulas": "{n} حصص",
       "meses": [
         "يناير",
@@ -1140,7 +1138,31 @@
     "convidarOssTrack": "دعوة إلى OssTrack",
     "nivelDisciplina": "مستوى الانضباط",
     "atleta": "رياضي",
-    "dias": "أيام"
+    "dias": "أيام",
+    "horas": {
+      "titulo": "ساعات التدريب",
+      "subtitulo": "وقتك على الحصيرة",
+      "horasNoPeriodo": "ساعات",
+      "totalGeral": "المجموع: {h}h · {n} حصص في هذه الفترة",
+      "diasAtivos": "أيام نشطة",
+      "mediaDia": "متوسط/يوم",
+      "mediaMes": "متوسط/شهر",
+      "totalAulas": "إجمالي الحصص",
+      "metaMensal": "الهدف الشهري: {n}h",
+      "metaBatida": "تم تحقيق الهدف!",
+      "faltam": "متبقي {n}h",
+      "horasPorMes": "الساعات حسب الشهر",
+      "horasPorSemana": "الساعات حسب الأسبوع",
+      "ultimasAulas": "آخر الحصص",
+      "aula": "حصة",
+      "verHoras": "عرض ساعاتك →",
+      "semana": "هذا الأسبوع",
+      "mes": "هذا الشهر",
+      "trimestre": "آخر 3 أشهر",
+      "ano": "هذا العام",
+      "ytd": "من بداية العام",
+      "total": "المجموع"
+    }
   },
   "relatorios": {
     "subtitle": "مقاييس ومؤشرات الأكاديمية",

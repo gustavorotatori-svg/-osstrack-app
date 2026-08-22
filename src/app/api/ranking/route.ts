@@ -104,12 +104,12 @@ export async function GET(request: Request) {
   const CATEGORIAS = ["adulto", "master", "infantil"]
   const mestres: Record<string, unknown> = {}
   for (const cat of CATEGORIAS) {
-    let m = await prisma.mestreDoMes.findFirst({
+    let m = await prisma.alunoDoMes.findFirst({
       where: { academiaId: session.user.academiaId, mes: now.getMonth() + 1, ano: now.getFullYear(), categoria: cat },
       include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },
     })
     if (!m) {
-      m = await prisma.mestreDoMes.findFirst({
+      m = await prisma.alunoDoMes.findFirst({
         where: { academiaId: session.user.academiaId, categoria: cat },
         orderBy: [{ ano: "desc" }, { mes: "desc" }],
         include: { aluno: { select: { nome: true, faixa: true, grau: true, avatar: true } } },

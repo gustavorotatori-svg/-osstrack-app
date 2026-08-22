@@ -38,7 +38,7 @@ const DIARIAS_POOL = [
   { dia: 7, titulo: "Fotografe o Treino", descricao: "Registre seu treino com um check-in por QR code", icone: "📸", pontos: 10 },
   { dia: 8, titulo: "Noite de Treino", descricao: "Faça check-in após as 18h", icone: "🌙", pontos: 10 },
   { dia: 9, titulo: "Dobradinha", descricao: "Treine em dois horários diferentes hoje", icone: "💪", pontos: 20 },
-  { dia: 10, titulo: "Faixa Limpa?", descricao: "Atualize seu perfil hoje", icone: "🧹", pontos: 5 },
+  { dia: 10, titulo: "Primeira Faixa", descricao: "Atualize seu perfil hoje", icone: "🥋", pontos: 5 },
 ]
 
 const SEMANAIS_POOL = [

@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import prisma from "./prisma"
@@ -22,6 +23,11 @@ function getSecret(): string {
 export const authOptions: NextAuthOptions = {
   secret: getSecret(),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: { params: { prompt: "select_account" } },
+    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -66,6 +72,7 @@ export const authOptions: NextAuthOptions = {
         })
 
         if (!user) return null
+        if (!user.senha) return null
 
         const valid = await bcrypt.compare(credentials.password, user.senha)
         if (!valid) return null
@@ -89,6 +96,44 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "google") return true
+
+      const existingUser = await prisma.usuario.findUnique({
+        where: { email: user.email! },
+        include: { academia: { select: { nome: true } } },
+      })
+
+      if (existingUser) {
+        user.id = existingUser.id
+        ;(user as any).role = existingUser.role
+        ;(user as any).faixa = existingUser.faixa
+        ;(user as any).grau = existingUser.grau
+        ;(user as any).academiaId = existingUser.academiaId
+        ;(user as any).academiaNome = existingUser.academia?.nome || null
+        return true
+      }
+
+      const newUser = await prisma.usuario.create({
+        data: {
+          email: user.email!,
+          nome: user.name || user.email!.split("@")[0],
+          avatar: user.image || null,
+          role: "aluno",
+          faixa: "Branca",
+          grau: 1,
+          emailVerified: new Date(),
+        },
+      })
+
+      user.id = newUser.id
+      ;(user as any).role = "aluno"
+      ;(user as any).faixa = "Branca"
+      ;(user as any).grau = 1
+      ;(user as any).academiaId = null
+      ;(user as any).academiaNome = null
+      return true
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role as UserRole

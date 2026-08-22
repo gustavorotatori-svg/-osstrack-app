@@ -161,7 +161,7 @@
       "erroRegistrar": "उपस्थिति दर्ज करने में त्रुटि",
       "checkinRegistrado": "चेक-इन सुरक्षित रूप से दर्ज हुआ!",
       "erroConexao": "कनेक्शन त्रुटि। पुनः प्रयास करें।",
-      "metaSemanalConcluida": "साप्ताहिक लक्ष्य पूरा हुआ!",
+      "progressoSemanalConcluida": "साप्ताहिक प्रगति पूरी!",
       "streakDias": "{n} दिनों की लगातार उपस्थिति!",
       "streakDiasLenda": "{n} दिनों की लगातार उपस्थिति! महान!",
       "novaConquista": "नई उपलब्धि! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "छात्रों के बीच अपनी स्थिति देखें",
       "desativado": "रैंकिंग निष्क्रिय",
       "desativadoDesc": "अकादमी ने अभी तक रैंकिंग सक्रिय नहीं की है। बाद में वापस आएँ!",
-      "mestreDoMes": "महीने का सर्वश्रेष्ठ",
+      "alunoDoMes": "महीने का छात्र",
       "aulasNoMes": "महीने में {n} कक्षाएं",
       "semMestre": "अभी तक कोई नहीं",
       "todas": "सभी",
@@ -263,7 +263,6 @@
       "posicaoFaixa": "आप {faixa} में {pos}वें स्थान पर हैं",
       "faltamAulas": "पहले स्थान पर पहुँचने के लिए {n} कक्षाएं बाकी हैं!"
     },
-
     "agenda": {
       "title": "कक्षा शेड्यूल",
       "subtitle": "विवरण देखने के लिए कक्षाओं पर होवर करें",
@@ -863,7 +862,6 @@
       "professorSelecionado": "शिक्षक चयनित",
       "pular": "यह चरण छोड़ सकते हैं।"
     },
-
     "grauOption": "{g}वीं डिग्री",
     "buttons": {
       "voltar": "वापस",
@@ -1007,16 +1005,16 @@
       "pontos": "{n} अंक",
       "recompensa": "इनाम"
     },
-    "metaSemanal": {
-      "title": "साप्ताहिक लक्ष्य",
+    "progressoSemanal": {
+      "title": "साप्ताहिक प्रगति",
       "concluida": "पूर्ण हुआ",
       "metaBatida": "लक्ष्य प्राप्त हुआ!",
       "faltamTreinos": "{n} प्रशिक्षण बाकी {s}",
       "treinosEssaSemana": "इस सप्ताह प्रशिक्षण"
     },
-    "mestreDoMes": {
-      "title": "महीने का सर्वश्रेष्ठ",
-      "nenhumMestre": "इस महीने कोई सर्वश्रेष्ठ परिभाषित नहीं",
+    "alunoDoMes": {
+      "title": "महीने का छात्र",
+      "nenhumAluno": "इस महीने कोई छात्र निर्धारित नहीं",
       "aulas": "{n} कक्षाएं",
       "meses": [
         "जनवरी",
@@ -1140,7 +1138,31 @@
     "convidarOssTrack": "OssTrack पर आमंत्रित करें",
     "nivelDisciplina": "अनुशासन स्तर",
     "atleta": "एथलीट",
-    "dias": "दिन"
+    "dias": "दिन",
+    "horas": {
+      "titulo": "प्रशिक्षण घंटे",
+      "subtitulo": "गद्दे पर आपका समय",
+      "horasNoPeriodo": "घंटे",
+      "totalGeral": "कुल: {h}h · इस अवधि में {n} कक्षाएं",
+      "diasAtivos": "सक्रिय दिन",
+      "mediaDia": "औसत/दिन",
+      "mediaMes": "औसत/महीना",
+      "totalAulas": "कुल कक्षाएं",
+      "metaMensal": "मासिक लक्ष्य: {n}h",
+      "metaBatida": "लक्ष्य पूरा!",
+      "faltam": "{n}h शेष",
+      "horasPorMes": "महीने अनुसार घंटे",
+      "horasPorSemana": "सप्ताह अनुसार घंटे",
+      "ultimasAulas": "हाल की कक्षाएं",
+      "aula": "कक्षा",
+      "verHoras": "अपने घंटे देखें →",
+      "semana": "इस सप्ताह",
+      "mes": "इस महीने",
+      "trimestre": "पिछले 3 महीने",
+      "ano": "इस साल",
+      "ytd": "वर्ष अब तक",
+      "total": "कुल"
+    }
   },
   "relatorios": {
     "subtitle": "अकादमी मीट्रिक और संकेतक",

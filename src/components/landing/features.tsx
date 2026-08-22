@@ -8,10 +8,13 @@ const cards = [
   { icon: "📍", titleKey: "checkin", descKey: "checkinDesc", accent: "#3b82f6", radius: "24px 8px 24px 8px", floatY: [0, -6, 0], dur: 4 },
   { icon: "📈", titleKey: "evolucao", descKey: "evolucaoDesc", accent: "#6366f1", radius: "8px 24px 8px 24px", floatY: [0, 8, 0], dur: 5 },
   { icon: "🏆", titleKey: "gamificacao", descKey: "gamificacaoDesc", accent: "#d4a847", radius: "24px 24px 8px 8px", floatY: [0, -4, 0], dur: 3.5 },
+  { icon: "⏱️", titleKey: "horas", descKey: "horasDesc", accent: "#8b5cf6", radius: "8px 20px 20px 8px", floatY: [0, 7, 0], dur: 4.8 },
   { icon: "🎯", titleKey: "metas", descKey: "metasDesc", accent: "#06b6d4", radius: "8px 8px 24px 24px", floatY: [0, 6, 0], dur: 6 },
   { icon: "📱", titleKey: "whatsapp", descKey: "whatsappDesc", accent: "#22c55e", radius: "20px 4px 20px 4px", floatY: [0, -8, 0], dur: 4.5 },
   { icon: "🥋", titleKey: "graduacao", descKey: "graduacaoDesc", accent: "#ef4444", radius: "4px 20px 4px 20px", floatY: [0, 5, 0], dur: 5.5 },
   { icon: "🟢", titleKey: "wellhub", descKey: "wellhubDesc", accent: "#10b981", radius: "16px 16px 16px 16px", floatY: [0, -5, 0], dur: 4.2 },
+  { icon: "⚡", titleKey: "googleLogin", descKey: "googleLoginDesc", accent: "#f59e0b", radius: "20px 8px 20px 8px", floatY: [0, 4, 0], dur: 3.8 },
+  { icon: "📋", titleKey: "waiver", descKey: "waiverDesc", accent: "#ec4899", radius: "8px 16px 8px 16px", floatY: [0, -6, 0], dur: 5.2 },
 ]
 
 function FeatureCard({ c, i, t }: { c: typeof cards[0]; i: number; t: (k: string) => string }) {

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
+import { GoogleIcon } from "@/components/ui/google-icon"
 
 type Role = "aluno" | "professor" | "dono"
 
@@ -245,6 +246,25 @@ function LoginContent() {
             style={{ background: cfg.color, color: "#000" }}
           >
             {loading ? t("entrando") : t("entrar")}
+          </button>
+
+          <div className="relative my-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[var(--border)]" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 text-[var(--text-muted)]" style={{ background: "var(--bg-card)" }}>ou</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => signIn("google", { callbackUrl: searchParams.get("callbackUrl") || "/dashboard" })}
+            className="w-full py-3.5 rounded-xl text-sm font-bold border border-[var(--border)] bg-[var(--bg-surface)] hover:bg-[var(--border)] transition-all duration-300 active:scale-[0.97] flex items-center justify-center gap-3"
+            style={{ color: "var(--text)" }}
+          >
+            <GoogleIcon className="w-5 h-5" />
+            Entrar com Google
           </button>
 
           <p className="text-center text-xs text-[var(--text-secondary)]">

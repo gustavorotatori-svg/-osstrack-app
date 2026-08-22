@@ -161,7 +161,7 @@
       "erroRegistrar": "Error al registrar presencia",
       "checkinRegistrado": "¡Check-in registrado con éxito!",
       "erroConexao": "Error de conexión. Intente de nuevo.",
-      "metaSemanalConcluida": "¡Meta Semanal Completada!",
+      "progressoSemanalConcluida": "¡Progreso Semanal Completado!",
       "streakDias": "¡{n} días de racha!",
       "streakDiasLenda": "¡{n} días de racha! ¡Leyenda!",
       "novaConquista": "¡Nuevo Logro! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "Ve tu posición entre los alumnos",
       "desativado": "Ranking Desactivado",
       "desativadoDesc": "La academia aún no ha activado el ranking. ¡Vuelve más tarde!",
-      "mestreDoMes": "Maestro del Mes",
+      "alunoDoMes": "Alumno del Mes",
       "aulasNoMes": "{n} clases en el mes",
       "semMestre": "Ninguno aún",
       "todas": "Todos",
@@ -1005,16 +1005,16 @@
       "pontos": "{n} puntos",
       "recompensa": "Recompensa"
     },
-    "metaSemanal": {
-      "title": "Meta Semanal",
+    "progressoSemanal": {
+      "title": "Progreso Semanal",
       "concluida": "Completada",
       "metaBatida": "¡Meta conseguida!",
       "faltamTreinos": "Faltan {n} entreno{s}",
       "treinosEssaSemana": "Entrenos esta semana"
     },
-    "mestreDoMes": {
-      "title": "Maestro del Mes",
-      "nenhumMestre": "Ningún maestro definido este mes",
+    "alunoDoMes": {
+      "title": "Alumno del Mes",
+      "nenhumAluno": "Ningún alumno definido este mes",
       "aulas": "{n} clases",
       "meses": [
         "Enero",
@@ -1090,7 +1090,31 @@
     "menos": "menos",
     "dias": "días",
     "atleta": "Atleta"
-  },
+  ,
+    "horas": {
+      "titulo": "Horas de Entrenamiento",
+      "subtitulo": "Tu tiempo en el tatami",
+      "horasNoPeriodo": "horas",
+      "totalGeral": "Total: {h}h · {n} clases en este período",
+      "diasAtivos": "Días activos",
+      "mediaDia": "Prom/día",
+      "mediaMes": "Prom/mes",
+      "totalAulas": "Total clases",
+      "metaMensal": "Meta mensual: {n}h",
+      "metaBatida": "¡Meta alcanzada!",
+      "faltam": "Faltan {n}h",
+      "horasPorMes": "Horas por mes",
+      "horasPorSemana": "Horas por semana",
+      "ultimasAulas": "Últimas clases",
+      "aula": "Clase",
+      "verHoras": "Ver tus horas →",
+      "semana": "Esta semana",
+      "mes": "Este mes",
+      "trimestre": "Últimos 3 meses",
+      "ano": "Este año",
+      "ytd": "Año a la fecha",
+      "total": "Total"
+    }},
   "compartilharPage": {
     "badge": "Comparte tu progreso",
     "card600": "Tarjeta (600x600)",

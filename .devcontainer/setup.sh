@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "==> Instalando dependências (npm install)..."
+echo "==> Instalando dependências..."
 npm install
 
 echo "==> Gerando Prisma Client..."
@@ -27,6 +27,13 @@ if [ ! -f .env ]; then
   add_env STRIPE_SECRET_KEY
   add_env STRIPE_PREMIUM_PRICE_ID
   add_env STRIPE_WEBHOOK_SECRET
+  add_env GOOGLE_CLIENT_ID
+  add_env GOOGLE_CLIENT_SECRET
+  add_env RECAPTCHA_SECRET_KEY
+  add_env RESEND_API_KEY
+  add_env SMTP_USER
+  add_env SMTP_PASS
+  add_env CRON_SECRET
 
   if ! grep -q '^DATABASE_URL=' .env; then
     echo "!! ATENÇÃO: faltou DATABASE_URL. Adicione em GitHub > repo > Settings > Secrets and variables > Codespaces"
@@ -35,13 +42,10 @@ if [ ! -f .env ]; then
     echo "!! ATENÇÃO: faltou NEXTAUTH_SECRET. Adicione o mesmo secret usado no Vercel."
   fi
 else
-  echo "==> .env já existe no container, mantendo como está."
+  echo "==> .env já existe, mantendo como está."
 fi
 
-echo "==> Instalando Vercel CLI (para publicar direto do Codespace)..."
-npm install -g vercel >/dev/null 2>&1 || echo "(vercel CLI opcional — siga se quiser publicar daqui)"
+echo "==> Instalando Vercel CLI..."
+npm install -g vercel >/dev/null 2>&1 || true
 
-echo "==> Instalando browser do Playwright (para E2E na nuvem)..."
-npx playwright install chromium --with-deps || echo "(sem browser do Playwright — só afeta a suíte E2E local ao container)"
-
-echo "==> Setup concluído."
+echo "==> Setup concluído. Rode: npm run dev"

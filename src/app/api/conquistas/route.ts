@@ -35,7 +35,7 @@ export async function POST() {
       where: { remetenteId: session.user.id },
     })
 
-    const mestreDoMes = await prisma.mestreDoMes.count({
+    const alunoDoMes = await prisma.alunoDoMes.count({
       where: { alunoId: session.user.id },
     })
 
@@ -80,8 +80,8 @@ export async function POST() {
         progresso = Math.min(convitesFeitos, c.condicao)
         atingiu = convitesFeitos >= c.condicao
       } else if (c.tipo === "mestre_mes") {
-        progresso = Math.min(mestreDoMes, c.condicao)
-        atingiu = mestreDoMes >= c.condicao
+        progresso = Math.min(alunoDoMes, c.condicao)
+        atingiu = alunoDoMes >= c.condicao
       } else if (c.tipo === "semana_completa") {
         // Number of weeks with 5+ presencas
         const semanasCompletas = await prisma.presenca.groupBy({

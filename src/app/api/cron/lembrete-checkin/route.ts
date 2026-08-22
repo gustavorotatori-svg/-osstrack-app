@@ -38,6 +38,8 @@ export async function GET(req: Request) {
       sent++
     }
 
+    await prisma.cronLog.create({ data: { tipo: "lembrete-checkin" } }).catch(() => {})
+
     return NextResponse.json({ ok: true, sent, total: alunosSemCheckin.length })
   } catch (error) {
     return handleApiError(error)
