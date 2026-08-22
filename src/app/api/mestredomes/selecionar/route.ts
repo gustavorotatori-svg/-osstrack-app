@@ -36,13 +36,13 @@ export async function PUT(req: Request) {
     const mes = now.getMonth() + 1
     const ano = now.getFullYear()
 
-    await prisma.mestreDoMes.upsert({
+    await prisma.alunoDoMes.upsert({
       where: { academiaId_mes_ano_categoria: { academiaId: session.user.academiaId, mes, ano, categoria } },
       update: { alunoId, totalAulas: 0 },
       create: { academiaId: session.user.academiaId, alunoId, mes, ano, categoria, totalAulas: 0 },
     })
 
-    const mestre = await prisma.mestreDoMes.findFirst({
+    const mestre = await prisma.alunoDoMes.findFirst({
       where: { academiaId: session.user.academiaId, mes, ano, categoria },
       include: { aluno: { select: { id: true, nome: true, faixa: true, avatar: true } } },
     })

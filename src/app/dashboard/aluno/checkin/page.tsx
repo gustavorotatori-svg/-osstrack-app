@@ -92,7 +92,7 @@ export default function CheckinPage() {
         const data = await res.json()
         if (data.concluida && !metaSemanal.concluida) {
           setShowMetaCelebration(true)
-          setCelebrationMsg(`🎯 ${t("metaSemanalConcluida")}`)
+          setCelebrationMsg(`🎯 ${t("progressoSemanalConcluida")}`)
           setTimeout(() => setShowMetaCelebration(false), 5000)
         }
         setMetaSemanal(data)
@@ -267,7 +267,7 @@ export default function CheckinPage() {
       <BackButton href="/dashboard/aluno" />
       {showConfetti && <Confetti />}
       <CelebrationOverlay show={showCelebration} message={celebrationMsg} submessage={`${t("continueAssim")} 🥋`} />
-      <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("metaSemanalConcluida")}`} submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />
+      <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("progressoSemanalConcluida")}`} submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-6 text-center">

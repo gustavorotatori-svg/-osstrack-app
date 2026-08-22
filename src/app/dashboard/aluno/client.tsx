@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, Flame, Medal, Share2, BarChart3, Target, ArrowUpRight, Users, UserPlus, Zap, Trophy, Sword, ChevronRight, TrendingUp } from "lucide-react"
+import { Calendar, Flame, Medal, Share2, BarChart3, Target, ArrowUpRight, Users, UserPlus, Zap, Trophy, Sword, ChevronRight, TrendingUp, FileText, Clock } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
@@ -133,6 +133,14 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
   const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
   const [bannerDismissed, setBannerDismissed] = useState(false)
+  const [waiver, setWaiver] = useState<{ termo: any; minhaAssinatura: any } | null>(null)
+
+  useEffect(() => {
+    fetch("/api/waiver/termo")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setWaiver(d))
+      .catch(() => {})
+  }, [])
 
   return (
     <DashboardShell role="aluno">
@@ -196,6 +204,25 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
             </div>
           </div>
 
+          {/* HORAS DE TREINO — banner card */}
+          <a href="/dashboard/aluno/horas" className="block mb-6 group">
+            <div className="relative overflow-hidden rounded-2xl p-4 transition-all active:scale-[0.98]" style={{ background: "linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(139,92,246,0.08) 50%, rgba(212,168,71,0.06) 100%)", border: "1px solid rgba(59,130,246,0.15)" }}>
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)" }} />
+              <div className="relative flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 4px 15px rgba(59,130,246,0.25)" }}>
+                    <Clock className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[var(--text-secondary)]">Horas de treino</p>
+                    <p className="text-lg font-black" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Ver suas horas →</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
+
           {/* GAMIFICATION XP BAR */}
           {(() => {
             const gl = getGamificationLevel(pontos)
@@ -242,6 +269,27 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                   <button onClick={() => router.push("/dashboard/aluno/perfil")}
                     className="inline-flex items-center gap-1.5 px-4 py-2 mt-2.5 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
                     {ta("buscarAcademia")} <ArrowUpRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TERMO DE RESPONSABILIDADE BANNER */}
+          {waiver?.termo && !waiver.minhaAssinatura && (
+            <div className="mb-4 p-4 rounded-2xl border border-[rgba(212,168,71,0.15)] relative" style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.08) 0%, rgba(212,168,71,0.02) 100%)" }}>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[rgba(212,168,71,0.08)] border border-[rgba(212,168,71,0.1)] flex items-center justify-center shrink-0">
+                  <FileText className="w-5 h-5 text-[var(--gold)]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm">Assine o termo de responsabilidade</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mt-0.5">
+                    Sua academia publicou o termo (versão {waiver.termo.versao}). A assinatura é obrigatória e fica registrada digitalmente.
+                  </p>
+                  <button onClick={() => router.push("/dashboard/aluno/waiver")}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 mt-2.5 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
+                    {ta("lerAssinar")} <ArrowUpRight className="w-3 h-3" />
                   </button>
                 </div>
               </div>

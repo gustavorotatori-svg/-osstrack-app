@@ -56,7 +56,13 @@
     "graduacao": "Regras de Graduação",
     "graduacaoDesc": "Regras claras, critérios justos e promoção automática. Adeus, planilha do Excel.",
     "wellhub": "Wellhub (Gympass)",
-    "wellhubDesc": "Integração com Wellhub para check-in de alunos parceiros. Registro separado para relatórios financeiros."
+    "wellhubDesc": "Integração com Wellhub para check-in de alunos parceiros. Registro separado para relatórios financeiros.",
+    "horas": "Horas de Treino",
+    "horasDesc": "Acompanhe quanto tempo você passa no tatame. Gráficos, metas e histórico de horas por turma. Seu compromisso em números.",
+    "googleLogin": "Login com Google",
+    "googleLoginDesc": "Acesse com um clique usando sua conta Google. Sem cadastro complicado, sem esquecer senha. Rápido e seguro.",
+    "waiver": "Termo de Responsabilidade",
+    "waiverDesc": "Assinatura digital do waiver direto no app. Segurança jurídica para a academia e praticidade para o aluno."
   },
   "comoFunciona": {
     "badge": "Como funciona",
@@ -179,7 +185,7 @@
       "erroRegistrar": "Erro ao registrar presença",
       "checkinRegistrado": "Check-in registrado com segurança!",
       "erroConexao": "Erro de conexão. Tente novamente.",
-      "metaSemanalConcluida": "Meta Semanal Concluída!",
+      "progressoSemanalConcluida": "Progresso Semanal Concluído!",
       "streakDias": "{n} dias de streak!",
       "streakDiasLenda": "{n} dias de streak! Lenda!",
       "novaConquista": "Nova Conquista! {nome}",
@@ -265,7 +271,7 @@
       "subtitle": "Veja sua posição entre os alunos",
       "desativado": "Ranking Desativado",
       "desativadoDesc": "A academia ainda não ativou o ranking. Volte mais tarde!",
-      "mestreDoMes": "Mestre do Mês",
+      "alunoDoMes": "Aluno do Mês",
       "aulasNoMes": "{n} aulas no mês",
       "semMestre": "Nenhum ainda",
       "todas": "Todas",
@@ -1113,16 +1119,16 @@
       "pontos": "{n} pontos",
       "recompensa": "Recompensa"
     },
-    "metaSemanal": {
-      "title": "Meta Semanal",
+    "progressoSemanal": {
+      "title": "Progresso Semanal",
       "concluida": "Concluída",
       "metaBatida": "Meta batida!",
       "faltamTreinos": "Faltam {n} treino{s}",
       "treinosEssaSemana": "Treinos essa semana"
     },
-    "mestreDoMes": {
-      "title": "Mestre do Mês",
-      "nenhumMestre": "Nenhum mestre definido este mês",
+    "alunoDoMes": {
+      "title": "Aluno do Mês",
+      "nenhumAluno": "Nenhum aluno definido este mês",
       "aulas": "{n} aulas",
       "meses": [
         "Janeiro",
@@ -1244,9 +1250,34 @@
     "mais": "Mais",
     "aulasNv": "aulas · Nv.",
     "convidarOssTrack": "Convidar para o OssTrack",
+    "lerAssinar": "Ler e assinar",
     "nivelDisciplina": "Nível de Disciplina",
     "atleta": "Atleta",
-    "dias": "dias"
+    "dias": "dias",
+    "horas": {
+      "titulo": "Horas de Treino",
+      "subtitulo": "Seu tempo no tatame",
+      "horasNoPeriodo": "horas",
+      "totalGeral": "Total geral: {h}h · {n} aulas neste período",
+      "diasAtivos": "Dias ativos",
+      "mediaDia": "Média/dia",
+      "mediaMes": "Média/mês",
+      "totalAulas": "Total aulas",
+      "metaMensal": "Meta mensal: {n}h",
+      "metaBatida": "Meta batida!",
+      "faltam": "Faltam {n}h",
+      "horasPorMes": "Horas por mês",
+      "horasPorSemana": "Horas por semana",
+      "ultimasAulas": "Últimas aulas",
+      "aula": "Aula",
+      "verHoras": "Ver suas horas →",
+      "semana": "Esta semana",
+      "mes": "Este mês",
+      "trimestre": "Últimos 3 meses",
+      "ano": "Este ano",
+      "ytd": "Ano a data",
+      "total": "Total"
+    }
   },
   "relatorios": {
     "subtitle": "Métricas e indicadores da academia",

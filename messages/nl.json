@@ -19,9 +19,9 @@
   },
   "frases": [
     "Elke zwarte band was ooit een witte band die nooit opgaf.",
-    "School, leraar en leerling: \u20ac0. Helemaal gratis.",
+    "School, leraar en leerling: €0. Helemaal gratis.",
     "Elke check-in is een hoofdstuk van uw verhaal op de tatami.",
-    "Evolutie is niet lineair \u2014 op OssTrack is het zichtbaar.",
+    "Evolutie is niet lineair — op OssTrack is het zichtbaar.",
     "Uw beste zelf komt tevoorschijn wanneer niemand kijkt."
   ],
   "features": {
@@ -37,7 +37,7 @@
     "metas": "Doelen en Missies",
     "metasDesc": "Wekelijks doel, dagelijkse missie en dat duwtje dat elke leerling nodig heeft om niet over te slaan.",
     "whatsapp": "WhatsApp",
-    "whatsappDesc": "Directe links naar WhatsApp. Deel check-ins, uitnodigingen en resultaten met \u00e9\u00e9n klik.",
+    "whatsappDesc": "Directe links naar WhatsApp. Deel check-ins, uitnodigingen en resultaten met één klik.",
     "graduacao": "Promotieregels",
     "graduacaoDesc": "Duidelijke regels, eerlijke criteria en automatische promotie. Weg met de Excel-spreadsheet."
   },
@@ -55,9 +55,9 @@
   "planos": {
     "badge": "Eerlijke prijs",
     "titulo": "Abonnementen",
-    "subtitulo": "School, leraar en leerling: \u20ac0. Helemaal gratis.",
+    "subtitulo": "School, leraar en leerling: €0. Helemaal gratis.",
     "gratis": "Free",
-    "gratisPreco": "\u20ac 0",
+    "gratisPreco": "€ 0",
     "gratisDesc": "Voor leerlingen die willen beginnen",
     "gratisFeatures": [
       "Check-in via QR-code",
@@ -68,7 +68,7 @@
       "Prestaties en bandvooruitgang"
     ],
     "tudoGratis": "Alles Gratis",
-    "tudoGratisPreco": "\u20ac 0",
+    "tudoGratisPreco": "€ 0",
     "tudoGratisDesc": "Voor leerlingen die echt willen evolueren",
     "tudoGratisFeatures": [
       "Alles van Free",
@@ -78,7 +78,7 @@
       "Prioritaire ondersteuning"
     ],
     "academia": "School",
-    "academiaPreco": "\u20ac 0",
+    "academiaPreco": "€ 0",
     "academiaDesc": "Volledig beheer van uw school",
     "academiaFeatures": [
       "Volledig dashboard",
@@ -95,10 +95,10 @@
   "testimonials": {
     "titulo": "Wat de meesters zeggen",
     "badge": "Getuigenissen",
-    "subtitulo": "Meester en leraren die het beheer van hun scholen hebben getransformeerd \u2014 en de relatie van leerlingen met trainen."
+    "subtitulo": "Meester en leraren die het beheer van hun scholen hebben getransformeerd — en de relatie van leerlingen met trainen."
   },
   "footer": {
-    "descricao": "Uw school beter georganiseerd, uw leerlingen gemotiveerder. Alles op \u00e9\u00e9n plek, 100% gratis.",
+    "descricao": "Uw school beter georganiseerd, uw leerlingen gemotiveerder. Alles op één plek, 100% gratis.",
     "whatsapp": "WhatsApp",
     "direitos": "Alle rechten voorbehouden.",
     "termos": "Gebruiksvoorwaarden",
@@ -161,21 +161,21 @@
       "erroRegistrar": "Fout bij registreren aanwezigheid",
       "checkinRegistrado": "Check-in veilig geregistreerd!",
       "erroConexao": "Verbindingsfout. Probeer het opnieuw.",
-      "metaSemanalConcluida": "Weekdoel Bereikt!",
+      "progressoSemanalConcluida": "Weekvoortgang Bereikt!",
       "streakDias": "{n} dagen streak!",
       "streakDiasLenda": "{n} dagen streak! Legende!",
       "novaConquista": "Nieuwe Prestatie! {nome}",
       "checkinFeito": "Check-in gedaan voor de training van vandaag!",
       "continueAssim": "Ga zo door! Oss",
       "permissaoNegada": "Locatietoestemming geweigerd. Schakel GPS in de instellingen van uw telefoon in om in te checken.",
-      "antiFraudeAtivo": "Anti-fraude actief \u00b7 Veilige locatie",
+      "antiFraudeAtivo": "Anti-fraude actief · Veilige locatie",
       "frases": [
         "U bent vandaag verschenen. En dat is wat dromers van doeners scheidt.",
         "Elke zwarte band was ooit een witte band die niet miste. Ga door.",
         "Deze check-in is weer een stap in uw reis. De zwarte band is het gevolg.",
         "De tatami liegt niet. En vandaag heeft u laten zien dat u er bent.",
-        "\u00c9\u00e9n ronde tegelijk. \u00c9\u00e9n les tegelijk. \u00c9\u00e9n leven tegelijk.",
-        "Evolutie is geen sprint. Het is een marathon van check-ins. En u hebt er zojuist weer \u00e9\u00e9n voltooid.",
+        "Één ronde tegelijk. Één les tegelijk. Één leven tegelijk.",
+        "Evolutie is geen sprint. Het is een marathon van check-ins. En u hebt er zojuist weer één voltooid.",
         "De kampioen bestaat in elke training die niemand zag. Wij zagen het.",
         "U hoeft niet de beste te zijn. U moet beter zijn dan gisteren. En vandaag was u dat.",
         "Oss. Bedankt dat u het proces vertrouwt. De zwarte band is nog maar het begin.",
@@ -228,7 +228,7 @@
       "todas": "Alle",
       "mostrarBloqueadas": "Toon vergrendelde",
       "nenhumaEncontrada": "Geen prestaties gevonden",
-      "verTodas": "Bekijk alle prestaties \u2192",
+      "verTodas": "Bekijk alle prestaties →",
       "categorias": {
         "presenca": "Aanwezigheid",
         "presencaDesc": "Lessen en frequentie",
@@ -247,7 +247,7 @@
       "subtitle": "Bekijk uw positie tussen de leerlingen",
       "desativado": "Ranglijst Uitgeschakeld",
       "desativadoDesc": "De school heeft de ranglijst nog niet geactiveerd. Kom later terug!",
-      "mestreDoMes": "Meester van de Maand",
+      "alunoDoMes": "Leerling van de Maand",
       "aulasNoMes": "{n} lessen deze maand",
       "semMestre": "Nog geen",
       "todas": "Alle",
@@ -276,8 +276,8 @@
     },
     "compartilhar": {
       "title": "Evolutie Delen",
-      "descPremium": "Automatische afbeelding met uw echte statistieken \u2014 klaar voor Instagram",
-      "descBloqueado": "Automatische afbeelding met uw echte statistieken \u2014 beschikbaar voor iedereen",
+      "descPremium": "Automatische afbeelding met uw echte statistieken — klaar voor Instagram",
+      "descBloqueado": "Automatische afbeelding met uw echte statistieken — beschikbaar voor iedereen",
       "totalAulas": "Totaal Lessen",
       "esteMes": "Deze Maand",
       "streakAtual": "Huidige Streak",
@@ -287,7 +287,7 @@
       "gerando": "Genereren...",
       "whatsapp": "WhatsApp",
       "instagram": "Instagram",
-      "copiar": "Kopi\u00ebren"
+      "copiar": "Kopiëren"
     },
     "dashboard": {
       "fazerCheckin": "Check-in Doen",
@@ -311,13 +311,13 @@
       "pendente": "In Afwachting",
       "convidarAmigo": "Vriend Uitnodigen",
       "conquistas2": "Prestaties",
-      "verTodas": "Bekijk alle prestaties \u2192",
-      "treinoHoje": "Training van vandaag bevestigd! \ud83e\udd4b",
+      "verTodas": "Bekijk alle prestaties →",
+      "treinoHoje": "Training van vandaag bevestigd! 🥋",
       "registrado": "Succesvol geregistreerd",
       "chegouHoje": "Bij de school aangekomen?",
       "compartilharMomento": "Tijd om te delen!",
       "gerarArte": "Genereer een automatische afbeelding van uw voortgang om op Instagram te plaatsen",
-      "streakDias": "\ud83d\udd25 {n} dagen streak!",
+      "streakDias": "🔥 {n} dagen streak!",
       "verificandoLocalizacao": "Locatie controleren...",
       "geolocalizacaoIndisponivel": "Geolocatie niet beschikbaar op dit apparaat",
       "checkinSucesso": "Check-in succesvol uitgevoerd!",
@@ -337,7 +337,7 @@
         "Elke zwarte band was ooit een witte band die nooit opgaf.",
         "De mat liegt niet. Het geeft precies terug wat u erin stopt.",
         "Evolutie gaat niet over beter zijn dan anderen. Het gaat over beter zijn dan uzelf gisteren.",
-        "\u00c9\u00e9n ronde tegelijk. \u00c9\u00e9n les tegelijk. \u00c9\u00e9n band tegelijk.",
+        "Één ronde tegelijk. Één les tegelijk. Één band tegelijk.",
         "Discipline is doen wat gedaan moet worden, zelfs wanneer niemand kijkt.",
         "Jiu-Jitsu verandert u niet in een vechter. Het verandert u in wie u zou moeten zijn.",
         "Oss is niet zomaar een woord. Het is een belofte om door te gaan.",
@@ -458,7 +458,7 @@
     },
     "agenda": {
       "title": "Mijn Agenda",
-      "subtitle": "Wekelijks rooster \u2014 klik op een leeg tijdslot om toe te voegen",
+      "subtitle": "Wekelijks rooster — klik op een leeg tijdslot om toe te voegen",
       "fechar": "Sluiten",
       "novoHorario": "Nieuw Tijdslot",
       "turma": "Klas",
@@ -563,7 +563,7 @@
     },
     "agenda": {
       "title": "Schoolagenda",
-      "subtitle": "Wekelijks rooster \u2014 klik op een leeg tijdslot om toe te voegen",
+      "subtitle": "Wekelijks rooster — klik op een leeg tijdslot om toe te voegen",
       "fechar": "Sluiten",
       "novoHorario": "Nieuw Tijdslot",
       "turma": "Klas",
@@ -598,13 +598,13 @@
       "compartilharDesc": "Stuur deze link naar uw leerlingen om de vereisten voor elke band te zien",
       "linkCompartilhavel": "Deelbare link",
       "carregando": "Laden...",
-      "copiarLink": "Link Kopi\u00ebren",
-      "copiando": "Kopi\u00ebren...",
+      "copiarLink": "Link Kopiëren",
+      "copiando": "Kopiëren...",
       "linkCopiado": "Link gekopieerd!",
-      "erroCopiar": "Fout bij kopi\u00ebren",
+      "erroCopiar": "Fout bij kopiëren",
       "whatsapp": "WhatsApp",
       "previa": "Voorbeeld",
-      "requisitosVisiveis": "\u2192 Vereisten zichtbaar in de link",
+      "requisitosVisiveis": "→ Vereisten zichtbaar in de link",
       "faixa": "Band",
       "graus": "Strepen",
       "aulasPorGrau": "Lessen per Streep",
@@ -624,7 +624,7 @@
       "legenda": "Legenda",
       "legendaGraus": "Aantal strepen op de huidige band",
       "legendaAulasPorGrau": "Vereiste check-ins voor elke streep",
-      "legendaProxFaixa": "Totaal aantal lessen om van band te wisselen (leeg = automatisch = strepen \u00d7 lessenPerStreep)",
+      "legendaProxFaixa": "Totaal aantal lessen om van band te wisselen (leeg = automatisch = strepen × lessenPerStreep)",
       "legendaMinAno": "Minimum aantal lessen per jaar om in aanmerking te komen voor de volgende band",
       "legendaRegra": "Per streep = promoveert bij voltooien strepen | Per lessen = promoveert bij bereiken totaal aantal lessen | Per examen = promoveert alleen op examendatum",
       "compartilharWhatsMsg": "Bekijk de promotieregels van de school!\n\n{link}",
@@ -660,7 +660,7 @@
       "convidarProfessor": "Nodig een leraar uit voor uw school:",
       "convidarAluno": "Nodig een leerling uit voor uw school:",
       "gerarLink": "Link Genereren",
-      "copiarLink": "Link Kopi\u00ebren",
+      "copiarLink": "Link Kopiëren",
       "copiado": "Gekopieerd!",
       "gerando": "Genereren..."
     },
@@ -674,7 +674,7 @@
       "presencaConfirmada": "Aanwezigheid bevestigd!",
       "erroConfirmar": "Fout bij bevestigen",
       "alunoNaoEncontrado": "Leerling niet gevonden",
-      "presencaConfirmadaMsg": "Aanwezigheid bevestigd \u2014 {nome} om {horario}"
+      "presencaConfirmadaMsg": "Aanwezigheid bevestigd — {nome} om {horario}"
     },
     "financeiro": {
       "title": "Financieel",
@@ -700,7 +700,7 @@
       "planoCriado": "Abonnement aangemaakt!",
       "planoAtualizado": "Abonnement bijgewerkt!",
       "nenhumPlano": "Geen abonnementen geregistreerd",
-      "taxaMatricula": "Inschrijvingskosten (\u20ac)",
+      "taxaMatricula": "Inschrijvingskosten (€)",
       "matricula": "inschrijving",
       "contratosTitle": "Contracten",
       "novoContrato": "Nieuw Contract",
@@ -731,13 +731,13 @@
       "obsPlaceholder": "Bijv: Elektriciteitsrekening juli",
       "descricaoPlaceholder": "Bijv: Huur van de maand",
       "nome": "Naam",
-      "valor": "Bedrag (\u20ac)",
+      "valor": "Bedrag (€)",
       "periodo": "Periode",
       "descricao": "Beschrijving",
       "categoria": "Categorie",
       "aluno": "Leerling",
       "plano": "Abonnement",
-      "valorContrato": "Contractbedrag (\u20ac)",
+      "valorContrato": "Contractbedrag (€)",
       "selecioneAluno": "Selecteer een leerling...",
       "selecionePlano": "Selecteer een abonnement...",
       "salvando": "Opslaan...",
@@ -824,7 +824,7 @@
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Schoolnaam",
-      "nomeAcademiaPlaceholder": "Bijv: Nova Uni\u00e3o",
+      "nomeAcademiaPlaceholder": "Bijv: Nova União",
       "enderecoLabel": "Adres",
       "enderecoPlaceholder": "Straat, nummer, wijk",
       "cidadeLabel": "Stad / Provincie",
@@ -931,7 +931,7 @@
       "step2Title": "Leerlingen",
       "step2Desc": "Beheer het hele team en volg de individuele voortgang.",
       "step3Title": "Promoties",
-      "step3Desc": "Stel evolutieregels in: lessen per streep, banden, categorie\u00ebn.",
+      "step3Desc": "Stel evolutieregels in: lessen per streep, banden, categorieën.",
       "step4Title": "Rapporten",
       "step4Desc": "Volg behoud, frequentie en groei van de school."
     }
@@ -961,7 +961,7 @@
       "btnLabel": "Mijn Link Genereren",
       "successMsg": "Uw uitnodigingslink is gegenereerd!",
       "previewTitle": "Uitnodiging voor Vriend",
-      "previewBody": "H\u00e9! Kom met mij trainen! Ga naar de link en registreer u op OssTrack om samen onze evolutie te volgen.",
+      "previewBody": "Hé! Kom met mij trainen! Ga naar de link en registreer u op OssTrack om samen onze evolutie te volgen.",
       "cardLabel": "Vriend"
     },
     "academia": {
@@ -973,9 +973,9 @@
       "previewBody": "Hallo! Ik ben leraar en nodig uw school uit om zich bij OssTrack aan te sluiten. Gratis platform voor scholen en leraren. Registreer u en laten we samenwerken!",
       "cardLabel": "School"
     },
-    "copiarLink": "Link Kopi\u00ebren",
+    "copiarLink": "Link Kopiëren",
     "copiado": "Gekopieerd!",
-    "copiando": "Kopi\u00ebren...",
+    "copiando": "Kopiëren...",
     "compartilhar": "Delen",
     "fechar": "Sluiten",
     "compartilharWhatsApp": "Delen op WhatsApp",
@@ -1005,16 +1005,16 @@
       "pontos": "{n} punten",
       "recompensa": "Beloning"
     },
-    "metaSemanal": {
-      "title": "Weekdoel",
+    "progressoSemanal": {
+      "title": "Weekvoortgang",
       "concluida": "Voltooid",
       "metaBatida": "Doel bereikt!",
       "faltamTreinos": "Nog {n} trainingen",
       "treinosEssaSemana": "Trainingen deze week"
     },
-    "mestreDoMes": {
-      "title": "Meester van de Maand",
-      "nenhumMestre": "Deze maand geen meester vastgesteld",
+    "alunoDoMes": {
+      "title": "Leerling van de Maand",
+      "nenhumAluno": "Geen leerling gedefinieerd deze maand",
       "aulas": "{n} lessen",
       "meses": [
         "Januari",
@@ -1063,20 +1063,20 @@
     "badge": "100% gratis",
     "titulo": "Geen abonnementskosten.",
     "tituloDestaque": "Geen addertje.",
-    "descricao": "School, leraar en leerling: \u20ac 0. OssTrack is volledig gratis.",
-    "card1Icon": "\ud83e\udd4b",
+    "descricao": "School, leraar en leerling: € 0. OssTrack is volledig gratis.",
+    "card1Icon": "🥋",
     "card1Title": "Onbeperkt Trainen",
     "card1Desc": "Registreer zoveel trainingen als u wilt. Geen limiet, geen blokkade, geen gedoe.",
-    "card2Icon": "\ud83c\udfdb\ufe0f",
+    "card2Icon": "🏛️",
     "card2Title": "Volledig Beheer",
     "card2Desc": "Leerlingen, check-ins, banden, leraren. Uw school in uw zak.",
-    "card3Icon": "\ud83c\udfc6",
+    "card3Icon": "🏆",
     "card3Title": "Gamification",
-    "card3Desc": "Ranglijst, vuurstreak en prestaties die een gezonde verslaving cre\u00ebren.",
-    "card4Icon": "\ud83d\udcca",
+    "card3Desc": "Ranglijst, vuurstreak en prestaties die een gezonde verslaving creëren.",
+    "card4Icon": "📊",
     "card4Title": "Statistieken",
     "card4Desc": "Real-time rapporten. Frequentie, evolutie, behoud.",
-    "cta": "Begin nu \u2014 het is gratis"
+    "cta": "Begin nu — het is gratis"
   },
   "perfilPage": {
     "max5mb": "Max 5MB",
@@ -1089,7 +1089,7 @@
     "erroExcluir": "Fout bij verwijderen account",
     "excluirConta": "Verwijder mijn account",
     "semAcademia": "Geen school",
-    "desde": "\ud83e\udd4b Sinds",
+    "desde": "🥋 Sinds",
     "editarPerfil": "Profiel Bewerken",
     "nome": "Naam",
     "telefone": "Telefoon",
@@ -1099,7 +1099,7 @@
     "enviando": "Verzenden...",
     "clicarEnviar": "Klik om een foto te verzenden",
     "colarLink": "Of plak de link van een afbeelding",
-    "fotoCarregada": "\u2705 Foto geladen",
+    "fotoCarregada": "✅ Foto geladen",
     "salvando": "Opslaan...",
     "salvar": "Opslaan",
     "cancelar": "Annuleren",
@@ -1113,12 +1113,12 @@
   },
   "compartilharPage": {
     "badge": "Delen",
-    "descricao": "Automatische afbeelding met uw statistieken \u2014 klaar voor sociale media",
+    "descricao": "Automatische afbeelding met uw statistieken — klaar voor sociale media",
     "card600": "Kaart (600x600)",
     "stories": "Stories (1080x1920)",
     "compartilhar": "Delen",
-    "copiar": "Kopi\u00ebren",
-    "copiado": "\u2705 Gekopieerd!"
+    "copiar": "Kopiëren",
+    "copiado": "✅ Gekopieerd!"
   },
   "alunoDashboard": {
     "treinos": "Trainingen",
@@ -1134,11 +1134,35 @@
     "buscarAcademia": "School zoeken",
     "menos": "Minder",
     "mais": "Meer",
-    "aulasNv": "lessen \u00b7 Nv.",
+    "aulasNv": "lessen · Nv.",
     "convidarOssTrack": "Uitnodigen voor OssTrack",
     "nivelDisciplina": "Disciplineniveau",
     "atleta": "Atleet",
-    "dias": "dagen"
+    "dias": "dagen",
+    "horas": {
+      "titulo": "Trainingstijden",
+      "subtitulo": "Jouw tijd op de mat",
+      "horasNoPeriodo": "uren",
+      "totalGeral": "Totaal: {h}h · {n} lessen in deze periode",
+      "diasAtivos": "Actieve dagen",
+      "mediaDia": "Gem/dag",
+      "mediaMes": "Gem/maand",
+      "totalAulas": "Totaal lessen",
+      "metaMensal": "Maandelijks doel: {n}h",
+      "metaBatida": "Doel bereikt!",
+      "faltam": "Nog {n}h",
+      "horasPorMes": "Uren per maand",
+      "horasPorSemana": "Uren per week",
+      "ultimasAulas": "Recente lessen",
+      "aula": "Les",
+      "verHoras": "Bekijk je uren →",
+      "semana": "Deze week",
+      "mes": "Deze maand",
+      "trimestre": "Laatste 3 maanden",
+      "ano": "Dit jaar",
+      "ytd": "Jaar tot nu",
+      "total": "Totaal"
+    }
   },
   "relatorios": {
     "subtitle": "Statistieken en indicatoren van de school",

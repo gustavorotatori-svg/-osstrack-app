@@ -14,12 +14,12 @@ export async function GET() {
   startOfWeek.setDate(now.getDate() - now.getDay())
   startOfWeek.setHours(0, 0, 0, 0)
 
-  let meta = await prisma.metaSemanal.findFirst({
+  let meta = await prisma.progressoSemanal.findFirst({
     where: { alunoId: session.user.id, semanaInicio: startOfWeek },
   })
 
   if (!meta) {
-    meta = await prisma.metaSemanal.create({
+    meta = await prisma.progressoSemanal.create({
       data: { alunoId: session.user.id, semanaInicio: startOfWeek, aulasAlvo: 5 },
     })
   }
@@ -44,16 +44,16 @@ export async function POST() {
   startOfWeek.setDate(now.getDate() - now.getDay())
   startOfWeek.setHours(0, 0, 0, 0)
 
-  let meta = await prisma.metaSemanal.findFirst({
+  let meta = await prisma.progressoSemanal.findFirst({
     where: { alunoId: session.user.id, semanaInicio: startOfWeek },
   })
 
   if (!meta) {
-    meta = await prisma.metaSemanal.create({
+    meta = await prisma.progressoSemanal.create({
       data: { alunoId: session.user.id, semanaInicio: startOfWeek, aulasAlvo: 5, aulasFeitas: 1 },
     })
   } else {
-    meta = await prisma.metaSemanal.update({
+    meta = await prisma.progressoSemanal.update({
       where: { id: meta.id },
       data: { aulasFeitas: { increment: 1 } },
     })

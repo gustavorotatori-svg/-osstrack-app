@@ -135,6 +135,8 @@ export async function GET(req: Request) {
       total++
     }
 
+    await prisma.cronLog.create({ data: { tipo: "reengagement" } }).catch(() => {})
+
     return NextResponse.json({
       ok: true,
       totalSent: total,

@@ -161,7 +161,7 @@
       "erroRegistrar": "Errore nel registrare la presenza",
       "checkinRegistrado": "Check-in registrato con successo!",
       "erroConexao": "Errore di connessione. Riprova.",
-      "metaSemanalConcluida": "Obiettivo Settimanale Raggiunto!",
+      "progressoSemanalConcluida": "Progresso Settimanale Raggiunto!",
       "streakDias": "{n} giorni di serie!",
       "streakDiasLenda": "{n} giorni di serie! Leggenda!",
       "novaConquista": "Nuova Conquista! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "Scopri la tua posizione tra gli studenti",
       "desativado": "Classifica Disattivata",
       "desativadoDesc": "L'accademia non ha ancora attivato la classifica. Torna più tardi!",
-      "mestreDoMes": "Maestro del Mese",
+      "alunoDoMes": "Alumno del Mese",
       "aulasNoMes": "{n} lezioni nel mese",
       "semMestre": "Nessuno ancora",
       "todas": "Tutte",
@@ -263,7 +263,6 @@
       "posicaoFaixa": "Sei al {pos}° posto nella cintura {faixa}",
       "faltamAulas": "Mancano {n} lezioni per raggiungere il 1° posto!"
     },
-
     "agenda": {
       "title": "Agenda Lezioni",
       "subtitle": "Passa il mouse sulle lezioni per vedere i dettagli",
@@ -863,7 +862,6 @@
       "professorSelecionado": "Insegnante selezionato",
       "pular": "Puoi saltare questo passaggio."
     },
-
     "grauOption": "{g}° Grado",
     "buttons": {
       "voltar": "Indietro",
@@ -1007,16 +1005,16 @@
       "pontos": "{n} punti",
       "recompensa": "Ricompensa"
     },
-    "metaSemanal": {
-      "title": "Obiettivo Settimanale",
+    "progressoSemanal": {
+      "title": "Progresso Settimanale",
       "concluida": "Completato",
       "metaBatida": "Obiettivo raggiunto!",
       "faltamTreinos": "Mancano {n} allenamento{s}",
       "treinosEssaSemana": "Allenamenti questa settimana"
     },
-    "mestreDoMes": {
-      "title": "Maestro del Mese",
-      "nenhumMestre": "Nessun maestro definito questo mese",
+    "alunoDoMes": {
+      "title": "Alumno del Mese",
+      "nenhumAluno": "Nessun alumno definito questo mese",
       "aulas": "{n} lezioni",
       "meses": [
         "Gennaio",
@@ -1140,7 +1138,31 @@
     "convidarOssTrack": "Invita su OssTrack",
     "nivelDisciplina": "Livello di Disciplina",
     "atleta": "Atleta",
-    "dias": "giorni"
+    "dias": "giorni",
+    "horas": {
+      "titulo": "Ore di Allenamento",
+      "subtitulo": "Il tuo tempo sul tatami",
+      "horasNoPeriodo": "ore",
+      "totalGeral": "Totale: {h}h · {n} lezioni in questo periodo",
+      "diasAtivos": "Giorni attivi",
+      "mediaDia": "Media/giorno",
+      "mediaMes": "Media/mese",
+      "totalAulas": "Totale lezioni",
+      "metaMensal": "Obiettivo mensile: {n}h",
+      "metaBatida": "Obiettivo raggiunto!",
+      "faltam": "Mancano {n}h",
+      "horasPorMes": "Ore per mese",
+      "horasPorSemana": "Ore per settimana",
+      "ultimasAulas": "Ultime lezioni",
+      "aula": "Lezione",
+      "verHoras": "Vedi le tue ore →",
+      "semana": "Questa settimana",
+      "mes": "Questo mese",
+      "trimestre": "Ultimi 3 mesi",
+      "ano": "Quest'anno",
+      "ytd": "Anno in corso",
+      "total": "Totale"
+    }
   },
   "relatorios": {
     "subtitle": "Metriche e indicatori dell'accademia",

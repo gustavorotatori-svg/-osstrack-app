@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { useT } from "@/lib/use-t"
 import { PageTransition } from "@/components/ui/page-transition"
@@ -309,6 +310,23 @@ export default function ConfigPage() {
               state={inviteAluno}
               setState={setInviteAluno}
             />
+          </div>
+
+          <div className="glass-card p-6 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-bold">Termo de Responsabilidade</h3>
+                <p className="text-[10px] text-[var(--text-muted)] mt-0.5">
+                  Waiver digital: alunos assinam no app (nome, CPF, data e dispositivo)
+                </p>
+              </div>
+              <Link
+                href="/dashboard/dono/waiver"
+                className="btn btn-primary px-5 py-2.5 rounded-lg font-semibold text-xs"
+              >
+                Gerenciar
+              </Link>
+            </div>
           </div>
         </div>
       </PageTransition>

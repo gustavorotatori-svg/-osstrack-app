@@ -41,10 +41,10 @@ export async function DELETE() {
 
       // Dados pessoais do usuário
       await tx.alunoConquista.deleteMany({ where: { alunoId: usuario.id } })
-      await tx.mestreDoMes.deleteMany({ where: { alunoId: usuario.id } })
+      await tx.alunoDoMes.deleteMany({ where: { alunoId: usuario.id } })
       await tx.presenca.deleteMany({ where: { alunoId: usuario.id } })
       await tx.turmaAluno.deleteMany({ where: { alunoId: usuario.id } })
-      await tx.metaSemanal.deleteMany({ where: { alunoId: usuario.id } })
+      await tx.progressoSemanal.deleteMany({ where: { alunoId: usuario.id } })
       await tx.missaoDiaria.deleteMany({ where: { alunoId: usuario.id } })
       await tx.comentarioMural.deleteMany({ where: { usuarioId: usuario.id } })
       await tx.curtidaMural.deleteMany({ where: { usuarioId: usuario.id } })
@@ -109,12 +109,12 @@ export async function GET() {
       where: { id: session.user.id },
       include: {
         presencas: { orderBy: { data: "desc" } },
-        metasSemanais: { orderBy: { semanaInicio: "desc" } },
+        progressosSemanais: { orderBy: { semanaInicio: "desc" } },
         missoesDiarias: true,
         streak: true,
         contratos: { include: { plano: true, cobrancas: true } },
         agendamentos: { orderBy: { data: "desc" } },
-        mestreDoMes: true,
+        alunoDoMes: true,
         participacoesCompeticao: true,
         familiaMembros: { include: { familia: true } },
         convites: true,
@@ -161,12 +161,12 @@ export async function GET() {
           : null,
       },
       presencas: usuario.presencas,
-      metasSemanais: usuario.metasSemanais,
+      progressosSemanais: usuario.progressosSemanais,
       missoesDiarias: usuario.missoesDiarias,
       conquistas,
       contratos: usuario.contratos,
       agendamentos: usuario.agendamentos,
-      mestreDoMes: usuario.mestreDoMes,
+      alunoDoMes: usuario.alunoDoMes,
       participacoesCompeticao: usuario.participacoesCompeticao,
       familia: usuario.familiaMembros,
       convites: usuario.convites,

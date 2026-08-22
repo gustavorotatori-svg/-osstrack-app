@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, Medal, Target, TrendingUp, UserPlus, Share2, Search, Trophy, ChevronRight, CheckCircle, Zap, ArrowUpRight, Flame } from "lucide-react"
+import { Calendar, Medal, Target, TrendingUp, UserPlus, Share2, Search, Trophy, ChevronRight, CheckCircle, Zap, ArrowUpRight, Flame, Clock } from "lucide-react"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { getNivelInfo } from "@/lib/disciplina"
 import { ProgressRing } from "@/app/dashboard/aluno/progress-ring"
@@ -67,6 +67,7 @@ const quickActions = [
   { label: "Evolução", icon: Target, href: "/dashboard/aluno/evolucao" },
   { label: "Conquistas", icon: Medal, href: "/dashboard/aluno/conquistas" },
   { label: "Ranking", icon: TrendingUp, href: "/dashboard/aluno/ranking" },
+  { label: "Horas", icon: Clock, href: "/dashboard/aluno/horas" },
   { label: "Convidar", icon: UserPlus, href: "#convites" },
 ]
 
@@ -257,12 +258,12 @@ export function ScreenshotDemo() {
                 </div>
               </div>
 
-              {/* Meta Semanal — glass-card (mesma estrutura do componente real) */}
+              {/* Progresso Semanal — glass-card (mesma estrutura do componente real) */}
               <div className="glass-card p-5">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-[var(--gold)]" />
-                    <span className="section-header mb-0">Meta Semanal</span>
+                    <span className="section-header mb-0">Progresso Semanal</span>
                   </div>
                   <span className="badge" style={{ background: "rgba(201,168,76,0.1)", color: "var(--gold)" }}>Semanal</span>
                 </div>
@@ -345,6 +346,23 @@ export function ScreenshotDemo() {
                   </div>
                 </div>
               </div>
+
+              {/* Horas de Treino — banner card */}
+              <div className="relative overflow-hidden rounded-2xl p-4" style={{ background: "linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(139,92,246,0.08) 50%, rgba(212,168,71,0.06) 100%)", border: "1px solid rgba(59,130,246,0.15)" }}>
+                <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)" }} />
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 4px 15px rgba(59,130,246,0.25)" }}>
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-[var(--text-secondary)]">Horas de treino</p>
+                      <p className="text-lg font-black" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Ver suas horas →</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -378,7 +396,7 @@ export function ScreenshotDemo() {
               </div>
 
               {/* Quick actions — mesmas classes do real */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {quickActions.map((action) => {
                   const Icon = action.icon
                   return (

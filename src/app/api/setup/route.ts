@@ -27,8 +27,8 @@ export async function POST(request: Request) {
     if (force) {
       await prisma.postagemMural.deleteMany()
       await prisma.missaoDiaria.deleteMany()
-      await prisma.metaSemanal.deleteMany()
-      await prisma.mestreDoMes.deleteMany()
+      await prisma.progressoSemanal.deleteMany()
+      await prisma.alunoDoMes.deleteMany()
       await prisma.alunoConquista.deleteMany()
       await prisma.presenca.deleteMany()
       await prisma.turmaAluno.deleteMany()
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
         await prisma.presenca.createMany({ data: presencas })
       }
 
-      await prisma.mestreDoMes.create({
+      await prisma.alunoDoMes.create({
         data: { academiaId: academia.id, alunoId: aluno.id, mes: now.getMonth() + 1, ano: now.getFullYear(), totalAulas: presencas.length },
       })
     }

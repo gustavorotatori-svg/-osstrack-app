@@ -7,13 +7,13 @@ import { handleApiError } from "@/lib/api-error"
 const CATEGORIAS = ["adulto", "master", "infantil"]
 
 async function getMestre(academiaId: string, mes: number, ano: number, categoria: string) {
-  let mestre = await prisma.mestreDoMes.findFirst({
+  let mestre = await prisma.alunoDoMes.findFirst({
     where: { academiaId, mes, ano, categoria },
     include: { aluno: { select: { nome: true, faixa: true, avatar: true } } },
   })
 
   if (!mestre) {
-    mestre = await prisma.mestreDoMes.findFirst({
+    mestre = await prisma.alunoDoMes.findFirst({
       where: { academiaId, categoria },
       orderBy: [{ ano: "desc" }, { mes: "desc" }],
       include: { aluno: { select: { nome: true, faixa: true, avatar: true } } },

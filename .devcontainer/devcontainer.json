@@ -1,11 +1,11 @@
 {
   "name": "OssTrack",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
-  "forwardPorts": [3100],
+  "forwardPorts": [3000],
   "portsAttributes": {
-    "3100": {
+    "3000": {
       "label": "OssTrack App",
-      "onAutoForward": "notify"
+      "onAutoForward": "openBrowser"
     }
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
@@ -16,8 +16,7 @@
         "esbenp.prettier-vscode",
         "Prisma.prisma",
         "bradlc.vscode-tailwindcss",
-        "ms-vscode.vscode-typescript-next",
-        "ms-azuretools.vscode-docker"
+        "ms-vscode.vscode-typescript-next"
       ],
       "settings": {
         "editor.formatOnSave": true,

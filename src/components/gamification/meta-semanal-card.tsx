@@ -5,7 +5,7 @@ import { CheckCircle, Target, TrendingUp } from "lucide-react"
 import { useT } from "@/lib/use-t"
 
 export function MetaSemanalCard() {
-  const t = useT("gamification.metaSemanal")
+  const t = useT("gamification.progressoSemanal")
   const [meta, setMeta] = useState<{ aulasFeitas: number; aulasAlvo: number; concluida: boolean } | null>(null)
 
   useEffect(() => {

@@ -161,7 +161,7 @@
       "erroRegistrar": "出席登録エラー",
       "checkinRegistrado": "チェックインが安全に記録されました！",
       "erroConexao": "接続エラー。もう一度お試しください。",
-      "metaSemanalConcluida": "週間目標達成！",
+      "progressoSemanalConcluida": "週間進捗達成！",
       "streakDias": "{n}日の連続記録！",
       "streakDiasLenda": "{n}日の連続記録！レジェンド！",
       "novaConquista": "新しい達成！{nome}",
@@ -247,7 +247,7 @@
       "subtitle": "生徒の中での順位を見る",
       "desativado": "ランキング無効",
       "desativadoDesc": "道場がまだランキングを有効にしていません。また後で来てください！",
-      "mestreDoMes": "今月の最優秀選手",
+      "alunoDoMes": "今月の優秀生徒",
       "aulasNoMes": "今月{n}回の授業",
       "semMestre": "まだいません",
       "todas": "すべて",
@@ -263,7 +263,6 @@
       "posicaoFaixa": "{faixa}帯で{pos}位です",
       "faltamAulas": "1位になるまであと{n}回の授業！"
     },
-
     "agenda": {
       "title": "授業スケジュール",
       "subtitle": "授業にカーソルを合わせて詳細を表示",
@@ -863,7 +862,6 @@
       "professorSelecionado": "選択された講師",
       "pular": "このステップはスキップできます。"
     },
-
     "grauOption": "{g}級",
     "buttons": {
       "voltar": "戻る",
@@ -1007,16 +1005,16 @@
       "pontos": "{n}ポイント",
       "recompensa": "報酬"
     },
-    "metaSemanal": {
-      "title": "週間目標",
+    "progressoSemanal": {
+      "title": "週間進捗",
       "concluida": "達成",
       "metaBatida": "目標達成！",
       "faltamTreinos": "あと{n}回のトレーニング",
       "treinosEssaSemana": "今週のトレーニング"
     },
-    "mestreDoMes": {
-      "title": "今月の最優秀選手",
-      "nenhumMestre": "今月の最優秀選手は未定です",
+    "alunoDoMes": {
+      "title": "今月の優秀生徒",
+      "nenhumAluno": "今月の生徒はまだいません",
       "aulas": "{n}回の授業",
       "meses": [
         "1月",
@@ -1140,7 +1138,31 @@
     "convidarOssTrack": "OssTrackに招待",
     "nivelDisciplina": "規律レベル",
     "atleta": "アスリート",
-    "dias": "日"
+    "dias": "日",
+    "horas": {
+      "titulo": "トレーニング時間",
+      "subtitulo": "マット上の時間",
+      "horasNoPeriodo": "時間",
+      "totalGeral": "合計: {h}h · {n}クラス（この期間）",
+      "diasAtivos": "活動日数",
+      "mediaDia": "平均/日",
+      "mediaMes": "平均/月",
+      "totalAulas": "合計クラス数",
+      "metaMensal": "月間目標: {n}h",
+      "metaBatida": "目標達成！",
+      "faltam": "残り {n}h",
+      "horasPorMes": "月別時間",
+      "horasPorSemana": "週別時間",
+      "ultimasAulas": "最近のクラス",
+      "aula": "クラス",
+      "verHoras": "時間を確認 →",
+      "semana": "今週",
+      "mes": "今月",
+      "trimestre": "過去3ヶ月",
+      "ano": "今年",
+      "ytd": "年初来",
+      "total": "合計"
+    }
   },
   "relatorios": {
     "subtitle": "道場の指標とKPI",

@@ -161,7 +161,7 @@
       "erroRegistrar": "Fel vid registrering av närvaro",
       "checkinRegistrado": "Incheckning registrerad!",
       "erroConexao": "Anslutningsfel. Försök igen.",
-      "metaSemanalConcluida": "Veckomål Uppnått!",
+      "progressoSemanalConcluida": "Veckans Framsteg Uppnått!",
       "streakDias": "{n} dagars streak!",
       "streakDiasLenda": "{n} dagars streak! Legend!",
       "novaConquista": "Ny Bedrift! {nome}",
@@ -247,7 +247,7 @@
       "subtitle": "Se din position bland eleverna",
       "desativado": "Ranking Inaktiverad",
       "desativadoDesc": "Akademin har inte aktiverat ranking än. Kom tillbaka senare!",
-      "mestreDoMes": "Månadens Mästare",
+      "alunoDoMes": "Månadens Elev",
       "aulasNoMes": "{n} lektioner i månaden",
       "semMestre": "Ingen än",
       "todas": "Alla",
@@ -1005,16 +1005,16 @@
       "pontos": "{n} poäng",
       "recompensa": "Belöning"
     },
-    "metaSemanal": {
-      "title": "Veckomål",
+    "progressoSemanal": {
+      "title": "Veckans Framsteg",
       "concluida": "Klart",
       "metaBatida": "Målet uppnått!",
       "faltamTreinos": "{n} träning(ar) kvar",
       "treinosEssaSemana": "Träningar denna vecka"
     },
-    "mestreDoMes": {
-      "title": "Månadens Mästare",
-      "nenhumMestre": "Ingen mästare utsedd denna månad",
+    "alunoDoMes": {
+      "title": "Månadens Elev",
+      "nenhumAluno": "Ingen elev definierad denna månad",
       "aulas": "{n} lektioner",
       "meses": [
         "Januari",
@@ -1138,7 +1138,31 @@
     "convidarOssTrack": "Bjud in till OssTrack",
     "nivelDisciplina": "Disciplinnivå",
     "atleta": "Atlet",
-    "dias": "dagar"
+    "dias": "dagar",
+    "horas": {
+      "titulo": "Tränningstimmar",
+      "subtitulo": "Din tid på mattan",
+      "horasNoPeriodo": "timmar",
+      "totalGeral": "Totalt: {h}h · {n} lektioner denna period",
+      "diasAtivos": "Aktiva dagar",
+      "mediaDia": "Snitt/dag",
+      "mediaMes": "Snitt/månad",
+      "totalAulas": "Totalt lektioner",
+      "metaMensal": "Månadsmål: {n}h",
+      "metaBatida": "Mål uppnått!",
+      "faltam": "Återstår {n}h",
+      "horasPorMes": "Timmar per månad",
+      "horasPorSemana": "Timmar per vecka",
+      "ultimasAulas": "Senaste lektionerna",
+      "aula": "Lektion",
+      "verHoras": "Se dina timmar →",
+      "semana": "Denna vecka",
+      "mes": "Denna månad",
+      "trimestre": "Senaste 3 månaderna",
+      "ano": "I år",
+      "ytd": "År till dato",
+      "total": "Totalt"
+    }
   },
   "relatorios": {
     "subtitle": "Mätvärden och indikatorer för akademin",

@@ -161,7 +161,7 @@
       "erroRegistrar": "登记出勤时出错",
       "checkinRegistrado": "签到已安全登记！",
       "erroConexao": "连接错误。请重试。",
-      "metaSemanalConcluida": "每周目标已完成！",
+      "progressoSemanalConcluida": "每周进度已完成！",
       "streakDias": "{n}天连续记录！",
       "streakDiasLenda": "{n}天连续记录！传奇！",
       "novaConquista": "新成就！{nome}",
@@ -247,7 +247,7 @@
       "subtitle": "查看你在学员中的位置",
       "desativado": "排名已关闭",
       "desativadoDesc": "道馆尚未启用排名。请稍后再来！",
-      "mestreDoMes": "月度之星",
+      "alunoDoMes": "月度之星",
       "aulasNoMes": "本月{n}节课",
       "semMestre": "暂无",
       "todas": "全部",
@@ -263,7 +263,6 @@
       "posicaoFaixa": "你在{faixa}段位中排名第{pos}位",
       "faltamAulas": "还需{n}节课才能达到第1名！"
     },
-
     "agenda": {
       "title": "课程安排",
       "subtitle": "将鼠标悬停在课程上查看详情",
@@ -863,7 +862,6 @@
       "professorSelecionado": "已选教练",
       "pular": "可以跳过此步骤。"
     },
-
     "grauOption": "{g}段带",
     "buttons": {
       "voltar": "返回",
@@ -1007,16 +1005,16 @@
       "pontos": "{n}分",
       "recompensa": "奖励"
     },
-    "metaSemanal": {
-      "title": "每周目标",
+    "progressoSemanal": {
+      "title": "每周进度",
       "concluida": "已完成",
       "metaBatida": "目标达成！",
       "faltamTreinos": "还需{n}次训练",
       "treinosEssaSemana": "本周训练"
     },
-    "mestreDoMes": {
+    "alunoDoMes": {
       "title": "月度之星",
-      "nenhumMestre": "本月尚未指定之星",
+      "nenhumAluno": "本月暂无学生",
       "aulas": "{n}节课",
       "meses": [
         "1月",
@@ -1140,7 +1138,31 @@
     "convidarOssTrack": "邀请加入OssTrack",
     "nivelDisciplina": "纪律等级",
     "atleta": "运动员",
-    "dias": "天"
+    "dias": "天",
+    "horas": {
+      "titulo": "训练时间",
+      "subtitulo": "你在道场的时间",
+      "horasNoPeriodo": "小时",
+      "totalGeral": "总计: {h}h · {n} 节课（此期间）",
+      "diasAtivos": "活跃天数",
+      "mediaDia": "平均/天",
+      "mediaMes": "平均/月",
+      "totalAulas": "总课程数",
+      "metaMensal": "月度目标: {n}h",
+      "metaBatida": "目标达成！",
+      "faltam": "还差 {n}h",
+      "horasPorMes": "按月统计",
+      "horasPorSemana": "按周统计",
+      "ultimasAulas": "最近课程",
+      "aula": "课程",
+      "verHoras": "查看时间 →",
+      "semana": "本周",
+      "mes": "本月",
+      "trimestre": "近3个月",
+      "ano": "今年",
+      "ytd": "年初至今",
+      "total": "总计"
+    }
   },
   "relatorios": {
     "subtitle": "道馆的指标和指数",

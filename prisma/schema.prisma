@@ -29,7 +29,7 @@ model Academia {
   usuarios        Usuario[]
   turmas          Turma[]
   graduacoes      Graduacao[]
-  mestresDoMes    MestreDoMes[]
+  alunosDoMes    AlunoDoMes[]
   postagensMural  PostagemMural[]
   horariosAula    HorarioAula[]
   agendamentos    Agendamento[]
@@ -45,13 +45,15 @@ model Academia {
   despesas          Despesa[]
   competicoes       Competicao[]
   familias          Familia[]
+  termosWaiver      TermoWaiver[]
+  assinaturasWaiver AssinaturaWaiver[]
 }
 
 model Usuario {
   id         String   @id @default(cuid())
   nome       String
   email      String   @unique
-  senha      String
+  senha      String?
   role       String   @default("aluno")
   telefone   String?
   avatar     String?
@@ -76,10 +78,10 @@ model Usuario {
   turmas          Turma[]
   alunos          Usuario[]           @relation("ProfessorAlunos")
   professor       Usuario?            @relation("ProfessorAlunos", fields: [professorId], references: [id])
-  metasSemanais   MetaSemanal[]
+  progressosSemanais   ProgressoSemanal[]
   missoesDiarias  MissaoDiaria[]
   postagensMural  PostagemMural[]
-  mestreDoMes     MestreDoMes[]
+  alunoDoMes     AlunoDoMes[]
   notificacoes    Notificacao[]
   comentariosMural ComentarioMural[]
   curtidasMural CurtidaMural[]
@@ -106,10 +108,11 @@ model Usuario {
    nivelDisciplina String?
    pushSubscriptions PushSubscription[]
      premiumSubscription PremiumSubscription?
-     wellhubId       String?
-     participacoesCompeticao ParticipacaoCompeticao[]
-     familiaMembros  FamiliaMembro[]
-  }
+      wellhubId       String?
+      participacoesCompeticao ParticipacaoCompeticao[]
+      familiaMembros  FamiliaMembro[]
+      assinaturasWaiver AssinaturaWaiver[]
+   }
 
 model PlanoMensalidade {
   id         String   @id @default(cuid())
@@ -209,8 +212,9 @@ model Presenca {
   horario     String
   status      String   @default("pendente")
   turma       String?
-  observacao  String?
+  observacao   String?
   confirmadoPor String?
+  duracaoMinutos Int?
   origem      String   @default("app")
   createdAt   DateTime @default(now())
 
@@ -264,7 +268,7 @@ model AlunoConquista {
   @@unique([alunoId, conquistaId])
 }
 
-model MestreDoMes {
+model AlunoDoMes {
   id        String   @id @default(cuid())
   academiaId String
   academia  Academia @relation(fields: [academiaId], references: [id])
@@ -279,7 +283,7 @@ model MestreDoMes {
   @@unique([academiaId, mes, ano, categoria])
 }
 
-model MetaSemanal {
+model ProgressoSemanal {
   id        String   @id @default(cuid())
   alunoId   String
   aluno     Usuario  @relation(fields: [alunoId], references: [id])
@@ -560,4 +564,47 @@ model FamiliaMembro {
   aluno    Usuario @relation(fields: [alunoId], references: [id])
 
   @@unique([familiaId, alunoId])
+}
+
+model TermoWaiver {
+  id         String   @id @default(cuid())
+  academiaId String
+  academia   Academia @relation(fields: [academiaId], references: [id])
+  titulo     String   @default("Termo de Responsabilidade")
+  conteudo   String
+  versao     Int      @default(1)
+  ativo      Boolean  @default(true)
+  criadoPor  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  assinaturas AssinaturaWaiver[]
+
+  @@index([academiaId, ativo])
+}
+
+model AssinaturaWaiver {
+  id           String   @id @default(cuid())
+  academiaId   String
+  academia     Academia @relation(fields: [academiaId], references: [id])
+  termoId      String
+  termo        TermoWaiver @relation(fields: [termoId], references: [id], onDelete: Cascade)
+  alunoId      String
+  aluno        Usuario  @relation(fields: [alunoId], references: [id])
+  nomeCompleto String
+  cpf          String
+  ip           String?
+  userAgent    String?
+  assinadoEm   DateTime @default(now())
+
+  @@unique([alunoId, termoId])
+  @@index([academiaId])
+}
+
+model CronLog {
+  id     String   @id @default(cuid())
+  tipo   String
+  rodouEm DateTime @default(now())
+
+  @@index([tipo, rodouEm])
 }

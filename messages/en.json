@@ -56,7 +56,13 @@
     "graduacao": "Graduation Rules",
     "graduacaoDesc": "Clear rules, fair criteria and automatic promotions. Goodbye, Excel spreadsheet.",
     "wellhub": "Wellhub (Gympass)",
-    "wellhubDesc": "Wellhub integration for partner student check-ins. Separate tracking for financial reports."
+    "wellhubDesc": "Wellhub integration for partner student check-ins. Separate tracking for financial reports.",
+    "horas": "Training Hours",
+    "horasDesc": "Track how much time you spend on the mat. Charts, goals, and class history. Your commitment in numbers.",
+    "googleLogin": "Google Login",
+    "googleLoginDesc": "Sign in with one click using your Google account. No complicated registration, no forgotten passwords. Fast and secure.",
+    "waiver": "Liability Waiver",
+    "waiverDesc": "Digital waiver signature right in the app. Legal security for the academy and convenience for the student."
   },
   "comoFunciona": {
     "badge": "How it works",
@@ -180,7 +186,7 @@
       "erroRegistrar": "Error registering attendance",
       "checkinRegistrado": "Check-in successfully registered!",
       "erroConexao": "Connection error. Try again.",
-      "metaSemanalConcluida": "Weekly Goal Completed!",
+      "progressoSemanalConcluida": "Weekly Progress Completed!",
       "streakDias": "{n} day streak!",
       "streakDiasLenda": "{n} day streak! Legend!",
       "novaConquista": "New Achievement! {nome}",
@@ -266,7 +272,7 @@
       "subtitle": "See your position among students",
       "desativado": "Ranking Disabled",
       "desativadoDesc": "The academy hasn't activated the ranking yet. Come back later!",
-      "mestreDoMes": "Master of the Month",
+      "alunoDoMes": "Student of the Month",
       "aulasNoMes": "{n} classes this month",
       "semMestre": "None yet",
       "todas": "All",
@@ -1024,16 +1030,16 @@
       "pontos": "{n} points",
       "recompensa": "Reward"
     },
-    "metaSemanal": {
-      "title": "Weekly Goal",
+    "progressoSemanal": {
+      "title": "Weekly Progress",
       "concluida": "Completed",
       "metaBatida": "Goal achieved!",
       "faltamTreinos": "{n} training{s} left",
       "treinosEssaSemana": "Trainings this week"
     },
-    "mestreDoMes": {
-      "title": "Master of the Month",
-      "nenhumMestre": "No master defined this month",
+    "alunoDoMes": {
+      "title": "Student of the Month",
+      "nenhumAluno": "No student selected this month",
       "aulas": "{n} classes",
       "meses": [
         "January",
@@ -1097,7 +1103,31 @@
     "buscarAcademia": "Find Academy",
     "conquistas": "Achievements",
     "convidarOssTrack": "Invite to OssTrack"
-  },
+  ,
+    "horas": {
+      "titulo": "Training Hours",
+      "subtitulo": "Your time on the mat",
+      "horasNoPeriodo": "hours",
+      "totalGeral": "Total: {h}h · {n} classes in this period",
+      "diasAtivos": "Active days",
+      "mediaDia": "Avg/day",
+      "mediaMes": "Avg/month",
+      "totalAulas": "Total classes",
+      "metaMensal": "Monthly goal: {n}h",
+      "metaBatida": "Goal reached!",
+      "faltam": "{n}h remaining",
+      "horasPorMes": "Hours by month",
+      "horasPorSemana": "Hours by week",
+      "ultimasAulas": "Recent classes",
+      "aula": "Class",
+      "verHoras": "See your hours →",
+      "semana": "This week",
+      "mes": "This month",
+      "trimestre": "Last 3 months",
+      "ano": "This year",
+      "ytd": "Year to date",
+      "total": "Total"
+    }},
   "compartilharPage": {
     "compartilhar": "Share",
     "copiar": "Copy",
