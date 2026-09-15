@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
+import { track } from "@vercel/analytics"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 
 type RoleType = "aluno" | "professor" | "dono"
@@ -287,6 +288,7 @@ function CadastroContent() {
       if (!res.ok) { setError(data.error || t("errors.criacao")); setLoading(false); return }
 
       setLoading(false)
+      try { track("cadastro_concluido", { role: form.role as string }) } catch {}
       if (data.verificationRequired) {
         setVerificationPending(true)
       } else {
@@ -333,6 +335,7 @@ function CadastroContent() {
                 <div className="relative">
                   <input id="cad-senha" type={showPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showPassword ? (
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -347,6 +350,7 @@ function CadastroContent() {
                 <div className="relative">
                   <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? "Esconder senha" : "Mostrar senha"}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showConfirmPassword ? (
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -358,7 +362,7 @@ function CadastroContent() {
               </div>
             </div>
             {form.confirmarSenha && form.senha !== form.confirmarSenha && (
-              <p className="text-[10px] text-red-400 -mt-1">As senhas não conferem</p>
+              <p className="text-[10px] text-red-400 -mt-1" aria-live="polite">As senhas não conferem</p>
             )}
           </div>
 
@@ -398,25 +402,25 @@ function CadastroContent() {
             <div className="space-y-3">
               <p className="text-xs text-[var(--text-secondary)] text-center">Cadastre sua academia no OssTrack</p>
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
-                <input type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
+                <label htmlFor="cad-dono-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
+                <input id="cad-dono-nome" type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
-                  <input type="text" className="input" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
+                  <label htmlFor="cad-dono-endereco" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.enderecoLabel")}</label>
+                  <input id="cad-dono-endereco" type="text" className="input" placeholder={t("step2Dono.enderecoPlaceholder")} value={form.academiaEndereco} onChange={(e) => update("academiaEndereco", e.target.value)} />
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
-                  <input type="text" className="input" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
+                  <label htmlFor="cad-dono-cidade" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.cidadeLabel")}</label>
+                  <input id="cad-dono-cidade" type="text" className="input" placeholder={t("step2Dono.cidadePlaceholder")} value={form.academiaCidade} onChange={(e) => update("academiaCidade", e.target.value)} />
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">
+                <label htmlFor="cad-dono-raio" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">
                   {t("step2Dono.raioLabel")}
                   <span className="ml-1.5 text-[10px] font-normal text-[var(--text-muted)]">(distância máxima em metros para check-in automático)</span>
                 </label>
-                <input type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
+                <input id="cad-dono-raio" type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
               </div>
               <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="10" r="3" /><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" /></svg>
@@ -437,14 +441,14 @@ function CadastroContent() {
               <p className="text-xs text-[var(--text-secondary)] text-center">Informe sua graduação e vínculo</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
-                  <select className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
+                  <label htmlFor="cad-prof-faixa" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
+                  <select id="cad-prof-faixa" className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
                     {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.grauLabel")}</label>
-                  <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+                  <label htmlFor="cad-prof-grau" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.grauLabel")}</label>
+                  <select id="cad-prof-grau" className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
                     {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("grauOption").replace("{g}", String(g))}</option>)}
                   </select>
                 </div>
@@ -454,7 +458,7 @@ function CadastroContent() {
                   <div className="h-px bg-[var(--border)]" />
                   <p className="text-xs text-[var(--text-secondary)] text-center">Vincule-se a uma academia (opcional agora)</p>
                   <div className="relative">
-                    <input type="text" className="input" placeholder="Buscar academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    <input type="text" className="input" aria-label="Buscar academia para vínculo" placeholder="Buscar academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
                     {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
                   </div>
                   {resultados.length > 0 && (
@@ -491,9 +495,9 @@ function CadastroContent() {
               <p className="text-xs text-[var(--text-secondary)] text-center">Complete seu perfil de atleta</p>
               {!form.academiaId && !form.codigoConvite && !form.skipAcademia ? (
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Buscar academia</label>
+                  <label htmlFor="cad-aluno-academia" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Buscar academia</label>
                   <div className="relative">
-                    <input type="text" className="input" placeholder="Digite o nome da sua academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    <input id="cad-aluno-academia" type="text" className="input" placeholder="Digite o nome da sua academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
                     {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
                   </div>
                   {resultados.length > 0 && (
@@ -532,14 +536,14 @@ function CadastroContent() {
               <div className="h-px bg-[var(--border)]" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
-                  <select className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
+                  <label htmlFor="cad-aluno-faixa" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
+                  <select id="cad-aluno-faixa" className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
                     {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.grauLabel")}</label>
-                  <select className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
+                  <label htmlFor="cad-aluno-grau" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.grauLabel")}</label>
+                  <select id="cad-aluno-grau" className="input" value={form.grau} onChange={(e) => update("grau", Number(e.target.value))}>
                     {[0, 1, 2, 3, 4, 5, 6].map((g) => <option key={g} value={g}>{t("step3Aluno.grauOption").replace("{g}", String(g))}</option>)}
                   </select>
                 </div>
@@ -548,9 +552,9 @@ function CadastroContent() {
                 <>
                   <div className="h-px bg-[var(--border)]" />
                   <div>
-                    <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Professor (opcional)</label>
+                    <label htmlFor="cad-aluno-professor" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Professor (opcional)</label>
                     <div className="relative">
-                      <input type="text" className="input" placeholder="Buscar professor..." value={buscaProf}
+                      <input id="cad-aluno-professor" type="text" className="input" placeholder="Buscar professor..." value={buscaProf}
                         onChange={(e) => {
                           setBuscaProf(e.target.value)
                           if (buscaProfTimer.current) clearTimeout(buscaProfTimer.current)
@@ -618,8 +622,8 @@ function CadastroContent() {
               <input type="checkbox" checked={form.consentimentoTermos} onChange={(e) => update("consentimentoTermos", e.target.checked)}
                 className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
               <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-                Aceito os <Link href="/termos" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Termos de Uso</Link> e a{" "}
-                <Link href="/lgpd" target="_blank" className="text-[var(--gold)] font-semibold hover:underline">Política de Privacidade</Link> *
+                Aceito os <Link href="/termos" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">Termos de Uso</Link> e a{" "}
+                <Link href="/lgpd" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">Política de Privacidade</Link> *
               </span>
             </label>
             <label className="flex items-start gap-3 cursor-pointer group">

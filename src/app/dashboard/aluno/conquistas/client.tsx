@@ -148,7 +148,10 @@ export function AchievementsClient({ conquistas }: Props) {
             <div className="text-xs font-semibold">{t("mostrarBloqueadas")}</div>
             <button
               onClick={() => setShowBloqueadas(!showBloqueadas)}
-              className={`relative w-10 h-6 rounded-full transition-all ${showBloqueadas ? "bg-emerald-600" : "bg-[var(--border)]"}`}
+              role="switch"
+              aria-label={t("mostrarBloqueadas")}
+              aria-checked={showBloqueadas}
+              className={`relative w-10 h-6 rounded-full transition-all ${showBloqueadas ? "bg-emerald-600" : "bg-[var(--toggle-off)]"}`}
             >
               <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-md transition-all ${showBloqueadas ? "right-0.5" : "left-0.5"}`} />
             </button>

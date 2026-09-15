@@ -91,7 +91,7 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
         </div>
 
         {/* Stats — agora obtidos do banco de dados */}
-        {stats && (
+        {stats && (stats.academias > 0 || stats.alunos > 0) && (
           <div className={`flex items-center justify-center gap-4 sm:gap-8 md:gap-16 mt-20 transition-all duration-700 delay-300 ${mounted ? "opacity-100" : "opacity-0"}`}>
             {[
               { value: mounted ? formatStat(stats.academias) : "0", label: t("statsAcademias") },

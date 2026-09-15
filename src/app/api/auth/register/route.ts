@@ -9,6 +9,40 @@ import { sendEmail, renderEmailLayout } from "@/lib/email"
 import { LGPD_VERSAO, TERMOS_VERSAO } from "@/lib/lgpd"
 import { encryptCpf } from "@/lib/cpf-crypto"
 
+async function enviarEmailBoasVindas(opts: { to: string; nome: string; role: string; academiaNome?: string }) {
+  const primeiroNome = opts.nome.split(" ")[0]
+  const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack.com.br"
+
+  const mensagens: Record<string, { titulo: string; corpo: string; cta: string; link: string }> = {
+    dono: {
+      titulo: `${primeiroNome}, sua academia está no ar! 🥋`,
+      corpo: `Parabéns por dar o primeiro passo! Sua academia <strong>${opts.academiaNome || "sua academia"}</strong> já está configurada no OssTrack.<br><br>Aqui vão 3 dicas pra começar com o pé direito:<br><br>1️⃣ <strong>Convide seus professores</strong> — eles podem gerenciar turmas e presenças<br>2️⃣ <strong>Configure as graduações</strong> — defina as regras de faixa da sua academia<br>3️⃣ <strong>Compartilhe com seus alunos</strong> — cada um cria conta gratuita e começa a fazer check-in`,
+      cta: "Acessar o Painel",
+      link: "/dashboard/dono",
+    },
+    professor: {
+      titulo: `${primeiroNome}, bem-vindo ao time! 🏆`,
+      corpo: `Sua conta de professor está pronta. Aqui você gerencia turmas, confirma presenças e acompanha a evolução dos seus alunos.<br><br><strong>Primeiro passo:</strong> crie sua primeira turma e adicione seus alunos.`,
+      cta: "Criar Primeira Turma",
+      link: "/dashboard/professor",
+    },
+    aluno: {
+      titulo: `${primeiroNome}, sua jornada começou! ⚡`,
+      corpo: `Bem-vindo ao OssTrack! Agora você pode:<br><br>📍 <strong>Fazer check-in</strong> nas aulas com GPS<br>📊 <strong>Acompanhar sua evolução</strong> de faixa<br>🔥 <strong>Manter seu streak</strong> de treinos<br>🏆 <strong>Subir no ranking</strong> da academia<br><br>Abra o OssTrack na hora da aula e faça seu primeiro check-in!`,
+      cta: "Fazer Primeiro Check-in",
+      link: "/dashboard/aluno/checkin",
+    },
+  }
+
+  const msg = mensagens[opts.role] || mensagens.aluno
+
+  await sendEmail({
+    to: opts.to,
+    subject: msg.titulo.replace(/[🥋🏆⚡]/g, "").trim(),
+    html: renderEmailLayout(msg.titulo, msg.corpo, { label: msg.cta, url: `${baseUrl}${msg.link}` }),
+  }).catch(() => {})
+}
+
 async function marcarConviteUsado(codigoConvite?: string) {
   if (!codigoConvite) return
   try {
@@ -192,6 +226,9 @@ export async function POST(request: Request) {
       const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: result.userId })
       if (!emailSent) await ativarSemVerificacao(result.userId)
 
+      // E-mail de boas-vindas (assíncrono, não bloqueia)
+      enviarEmailBoasVindas({ to: email, nome, role: "dono", academiaNome: academiaData.nome }).catch(() => {})
+
       return NextResponse.json({ redirect: result.redirect, verificationRequired: emailSent })
     }
 
@@ -273,6 +310,8 @@ export async function POST(request: Request) {
       const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: result.userId })
       if (!emailSent) await ativarSemVerificacao(result.userId)
 
+      enviarEmailBoasVindas({ to: email, nome, role: "professor" }).catch(() => {})
+
       return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: emailSent })
     }
 
@@ -320,6 +359,8 @@ export async function POST(request: Request) {
 
     const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: usuario.id })
     if (!emailSent) await ativarSemVerificacao(usuario.id)
+
+    enviarEmailBoasVindas({ to: email, nome, role: "aluno" }).catch(() => {})
 
     return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: emailSent })
   } catch (error: any) {

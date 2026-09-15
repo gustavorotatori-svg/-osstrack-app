@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react"
 const testimonialsData = [
   {
     initials: "CM", name: "Carlos Mota", role: "Mestre — Iron BJJ Team",
-    text: "O OssTrack nos fez perceber que cada presença é uma história. Meus alunos não faltam mais porque não querem quebrar o streak. O engajamento subiu 40% em 3 meses. Mas o mais bonito é ver eles celebrando cada conquista como se fosse a primeira.",
+    text: "O OssTrack nos fez perceber que cada presença é uma história. Meus alunos não faltam mais porque não querem quebrar o streak. O engajamento mudou completamente. Mas o mais bonito é ver eles celebrando cada conquista como se fosse a primeira.",
   },
   {
     initials: "AS", name: "André Santos", role: "Professor — Força Jiu-Jitsu",
@@ -19,7 +19,7 @@ const testimonialsData = [
   },
   {
     initials: "RM", name: "Ricardo Martins", role: "Professor — Titan JJ",
-    text: "Implementei o OssTrack em 3 unidades. A unificação dos dados, o controle de presença e a relação com os pais dos alunos menores de idade mudou completamente nossa gestão.",
+    text: "Implementei o OssTrack e unifiquei a gestão. O controle de presença e a relação com os pais dos alunos menores de idade mudou completamente nossa operação.",
   },
   {
     initials: "LF", name: "Luiz Fernando", role: "Dono — Oss JJ Team",
@@ -36,6 +36,15 @@ function ExpandableText({ text }: { text: string }) {
   return (
     <div
       className="cursor-pointer"
+      role="button"
+      tabIndex={isLong ? 0 : undefined}
+      aria-expanded={expanded}
+      onKeyDown={(e) => {
+        if (isLong && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault()
+          setExpanded((p) => !p)
+        }
+      }}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
       onClick={() => setExpanded((p) => !p)}

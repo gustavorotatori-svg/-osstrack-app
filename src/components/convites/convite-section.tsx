@@ -128,6 +128,7 @@ export function ConviteSection({ tipo }: ConviteSectionProps) {
               value={inviteLink}
               readOnly
               onClick={(e) => { (e.target as HTMLInputElement).select(); navigator.clipboard.writeText(inviteLink); toast.success("Link copiado!") }}
+              onKeyDown={(e) => { if (e.key === "Enter") { (e.target as HTMLInputElement).select(); navigator.clipboard.writeText(inviteLink); toast.success("Link copiado!") } }}
               className="flex-1 px-4 py-3 rounded-xl bg-black/60 border border-[var(--dark-border)] text-white text-sm text-center cursor-pointer min-h-[44px]"
             />
           </div>

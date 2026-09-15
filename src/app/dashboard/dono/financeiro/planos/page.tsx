@@ -99,8 +99,8 @@ export default function PlanosPage() {
                 className="w-full input-field px-3 py-2.5 mt-1" />
             </div>
             <div>
-              <label className="text-[11px] text-[var(--text-secondary)]">{t("periodo")}</label>
-              <select value={form.periodo} onChange={e => setForm({...form, periodo: e.target.value})}
+              <label htmlFor="plano-periodo" className="text-[11px] text-[var(--text-secondary)]">{t("periodo")}</label>
+              <select id="plano-periodo" value={form.periodo} onChange={e => setForm({...form, periodo: e.target.value})}
                 className="w-full input-field px-3 py-2.5 mt-1">
                 {periodos.map(p => <option key={p} value={p}>{t(p)}</option>)}
               </select>
@@ -137,10 +137,10 @@ export default function PlanosPage() {
                     <p className="text-lg font-extrabold text-[var(--gold)]">R$ {(p.valor / 100).toFixed(2)}</p>
                     {p.taxaMatricula > 0 && <p className="text-[10px] text-[var(--text-secondary)]">+ R$ {(p.taxaMatricula / 100).toFixed(2)} {t("matricula")}</p>}
                     <div className="flex gap-1 mt-1 justify-end">
-                      <button onClick={() => startEdit(p)}
+                      <button onClick={() => startEdit(p)} aria-label="Editar plano"
                         className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)]">✏️</button>
                       <button onClick={() => toggleAtivo(p.id, p.ativo)}
-                        className={`text-[10px] px-2 py-0.5 rounded-full ${p.ativo ? "bg-green-900/40 text-green-400" : "bg-gray-900/40 text-gray-400"}`}>
+                        className={`text-[10px] px-2 py-0.5 rounded-full ${p.ativo ? "bg-green-900/40 text-green-400" : "bg-[var(--border)] text-[var(--text-muted)]"}`}>
                         {p.ativo ? t("ativo") : t("inativo")}
                       </button>
                     </div>

@@ -54,6 +54,16 @@ export async function GET() {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
+    const admins = (process.env.ADMIN_EMAILS || "")
+      .toLowerCase()
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean)
+
+    if (!admins.length || !admins.includes((session.user.email || "").toLowerCase())) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+    }
+
     const [total, ultimos] = await Promise.all([
       prisma.lead.count(),
       prisma.lead.findMany({ orderBy: { createdAt: "desc" }, take: 50 }),

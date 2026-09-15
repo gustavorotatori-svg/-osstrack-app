@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, HelpCircle, Flame, Zap, Trophy, Target, ChevronRight } from "lucide-react"
+import { useEscape } from "@/lib/use-escape"
 
 const steps = [
   {
@@ -36,6 +37,8 @@ export function GamificationGuide() {
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState(0)
 
+  useEscape(() => setOpen(false), open)
+
   return (
     <>
       <button
@@ -61,6 +64,9 @@ export function GamificationGuide() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.85, opacity: 0, y: 30 }}
               className="glass-card p-6 w-full max-w-sm mx-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Como funciona a gamificação"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">

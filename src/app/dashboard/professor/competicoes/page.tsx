@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { BackButton } from "@/components/ui/back-button"
+import { DashboardShell } from "@/components/dashboard/shell"
 
 interface Competicao {
   id: string
@@ -65,12 +66,22 @@ export default function ProfessorCompeticoesPage() {
   }
 
   if (status === "loading" || loading) {
-    return <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}><div className="belt-loading w-48 h-8 rounded" /></div>
+    return (
+      <DashboardShell role="professor">
+        <div className="max-w-5xl mx-auto">
+          <div className="belt-loading w-24 h-4 rounded mb-6" />
+          <div className="belt-loading w-2/3 h-8 rounded mb-2" />
+          <div className="belt-loading w-1/3 h-3 rounded mb-8" />
+          <div className="glass-card p-5"><div className="belt-loading w-full h-16 rounded" /></div>
+          <div className="glass-card p-5"><div className="belt-loading w-full h-16 rounded" /></div>
+        </div>
+      </DashboardShell>
+    )
   }
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg)" }}>
-      <div className="max-w-5xl mx-auto px-5 py-8">
+    <DashboardShell role="professor">
+      <div className="max-w-5xl mx-auto">
         <BackButton href="/dashboard/professor" />
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -86,8 +97,8 @@ export default function ProfessorCompeticoesPage() {
               <input name="nome" placeholder="Nome do torneio" required className="input-field" />
               <input name="data" type="date" required className="input-field" />
               <input name="local" placeholder="Local" className="input-field" />
-              <select name="faixa" className="input-field"><option value="">Todas as faixas</option><option value="Branca">Branca</option><option value="Azul">Azul</option><option value="Roxa">Roxa</option><option value="Marrom">Marrom</option><option value="Preta">Preta</option></select>
-              <select name="categoria" className="input-field"><option value="">Todas</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Master</option></select>
+              <select name="faixa" aria-label="Faixa" className="input-field"><option value="">Todas as faixas</option><option value="Branca">Branca</option><option value="Azul">Azul</option><option value="Roxa">Roxa</option><option value="Marrom">Marrom</option><option value="Preta">Preta</option></select>
+              <select name="categoria" aria-label="Categoria" className="input-field"><option value="">Todas</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Master</option></select>
             </div>
             <button type="submit" className="btn-gold text-sm px-6 py-2.5">Salvar</button>
           </form>
@@ -137,6 +148,6 @@ export default function ProfessorCompeticoesPage() {
           </div>
         )}
       </div>
-    </main>
+    </DashboardShell>
   )
 }

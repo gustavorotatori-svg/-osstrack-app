@@ -183,10 +183,11 @@ export default function DonoAgendaPage() {
               </h4>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
+                  <label htmlFor="agenda-turma" className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("turma")}
                   </label>
                   <select
+                    id="agenda-turma"
                     value={turmaId}
                     onChange={(e) => setTurmaId(e.target.value)}
                     className="input-field w-full text-sm mt-1"
@@ -201,10 +202,11 @@ export default function DonoAgendaPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
+                  <label htmlFor="agenda-professor" className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("professor")}
                   </label>
                   <select
+                    id="agenda-professor"
                     value={professorId}
                     onChange={(e) => setProfessorId(e.target.value)}
                     className="input-field w-full text-sm mt-1"
@@ -221,10 +223,11 @@ export default function DonoAgendaPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
+                  <label htmlFor="agenda-dia" className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                     {t("dia")}
                   </label>
                   <select
+                    id="agenda-dia"
                     value={selectedDay ?? 1}
                     onChange={(e) => setSelectedDay(Number(e.target.value))}
                     className="input-field w-full text-sm mt-1"

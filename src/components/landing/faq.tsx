@@ -17,7 +17,7 @@ const FAQS = [
   },
   {
     q: "Como funciona o check-in?",
-    a: "O aluno abre o OssTrack na hora da aula e faz o check-in com o GPS da academia. A presença é registrada automaticamente na turma e no horário corretos.",
+    a: "O aluno abre o OssTrack, ativa o GPS e faz o check-in. A presença é registrada automaticamente com a hora atual e fica pendente de confirmação do professor.",
   },
   {
     q: "Serve para qualquer tamanho de academia?",

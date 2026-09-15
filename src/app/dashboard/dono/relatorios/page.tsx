@@ -257,7 +257,7 @@ export default function RelatoriosPage() {
                     {p.total}
                   </span>
                   <div
-                    className="w-full rounded-lg transition-all duration-500 cursor-pointer hover:opacity-80"
+                    className="w-full rounded-lg transition-all duration-500 hover:opacity-80"
                     style={{
                       height: `${Math.max(8, (p.total / maxPresencas) * 180)}px`,
                       background: `var(--red)`,

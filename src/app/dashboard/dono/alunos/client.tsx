@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
+import { EmptyState } from "@/components/ui/empty-state"
 import { Search, ChevronDown, X } from "lucide-react"
 import { getBeltColor } from "@/lib/utils"
 
@@ -27,6 +29,7 @@ const FAIXAS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 const CATEGORIAS = ["adulto", "infantil", "iniciante", "master"]
 
 export function AlunosClient() {
+  const router = useRouter()
   const [alunos, setAlunos] = useState<AlunoData[]>([])
   const [loading, setLoading] = useState(true)
   const [busca, setBusca] = useState("")
@@ -97,7 +100,9 @@ export function AlunosClient() {
           <div className="flex flex-wrap gap-2 items-center">
             <div className="relative flex-1 min-w-[200px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
+              <label htmlFor="busca-alunos" className="sr-only">Buscar alunos</label>
               <input
+                id="busca-alunos"
                 type="text"
                 placeholder="Buscar por nome..."
                 value={busca}
@@ -112,9 +117,10 @@ export function AlunosClient() {
             </div>
 
             <select
+              aria-label="Filtrar por faixa"
               value={filtroFaixa}
               onChange={(e) => setFiltroFaixa(e.target.value)}
-              className="input-field text-sm w-[130px]"
+              className="input-field text-sm w-[130px] flex-1 md:flex-none"
             >
               <option value="">Todas faixas</option>
               {FAIXAS.map((f) => (
@@ -123,9 +129,10 @@ export function AlunosClient() {
             </select>
 
             <select
+              aria-label="Filtrar por categoria"
               value={filtroCategoria}
               onChange={(e) => setFiltroCategoria(e.target.value)}
-              className="input-field text-sm w-[130px]"
+              className="input-field text-sm w-[130px] flex-1 md:flex-none"
             >
               <option value="">Todas categorias</option>
               {CATEGORIAS.map((c) => (
@@ -138,38 +145,50 @@ export function AlunosClient() {
             <div className="space-y-2">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="surface p-4 animate-pulse flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/5" />
+                  <div className="w-10 h-10 rounded-full bg-[var(--border)]" />
                   <div className="flex-1 space-y-1.5">
-                    <div className="h-4 w-32 bg-white/5 rounded" />
-                    <div className="h-3 w-20 bg-white/5 rounded" />
+                    <div className="h-4 w-32 bg-[var(--border)] rounded" />
+                    <div className="h-3 w-20 bg-[var(--border)] rounded" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filtrados.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-sm text-[var(--text-secondary)]">
-                {busca || filtroFaixa || filtroCategoria ? "Nenhum aluno encontrado com esses filtros" : "Nenhum aluno cadastrado"}
-              </p>
-            </div>
+            <EmptyState
+              icon="checkin"
+              title={busca || filtroFaixa || filtroCategoria ? "Nenhum aluno encontrado" : "Nenhum aluno cadastrado"}
+              description={
+                busca || filtroFaixa || filtroCategoria
+                  ? "Ajuste os filtros ou o termo de busca para encontrar seus alunos."
+                  : "Compartilhe o link de convite para seus alunos se cadastrarem e começarem a evoluir na academia."
+              }
+              action={
+                busca || filtroFaixa || filtroCategoria
+                  ? undefined
+                  : {
+                      label: "Compartilhar convite",
+                      onClick: () => router.push("/dashboard/dono"),
+                    }
+              }
+            />
           ) : (
             <div className="space-y-1">
               <div className="hidden md:grid grid-cols-12 gap-2 px-4 py-2 text-[10px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">
-                <div className="col-span-3 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("nome")}>
+                <button type="button" className="col-span-3 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("nome")}>
                   Nome {ordenarPor === "nome" && (ordemAsc ? "▲" : "▼")}
-                </div>
-                <div className="col-span-2 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("faixa")}>
+                </button>
+                <button type="button" className="col-span-2 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("faixa")}>
                   Faixa {ordenarPor === "faixa" && (ordemAsc ? "▲" : "▼")}
-                </div>
+                </button>
                 <div className="col-span-1 text-center">Grau</div>
                 <div className="col-span-2">Família</div>
                 <div className="col-span-2">Telefone</div>
-                <div className="col-span-1 cursor-pointer select-none flex items-center gap-1" onClick={() => toggleOrdem("ultimaPresenca")}>
+                <button type="button" className="col-span-1 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("ultimaPresenca")}>
                   Última Aula {ordenarPor === "ultimaPresenca" && (ordemAsc ? "▲" : "▼")}
-                </div>
-                <div className="col-span-1 text-right cursor-pointer select-none flex items-center gap-1 justify-end" onClick={() => toggleOrdem("pontos")}>
+                </button>
+                <button type="button" className="col-span-1 text-right cursor-pointer select-none flex items-center gap-1 justify-end" onClick={() => toggleOrdem("pontos")}>
                   Pontos {ordenarPor === "pontos" && (ordemAsc ? "▲" : "▼")}
-                </div>
+                </button>
               </div>
 
               {filtrados.map((a) => (

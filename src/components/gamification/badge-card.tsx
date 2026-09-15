@@ -59,13 +59,13 @@ export function BadgeCard({
         {nome}
       </div>
 
-      <div className="text-[8px] uppercase tracking-wider font-semibold flex items-center justify-center gap-1">
+      <div className="text-[10px] uppercase tracking-wider font-semibold flex items-center justify-center gap-1">
         {raridade === "lendario" && <SparklesIcon className="w-2.5 h-2.5" />}
         <span className={
-          raridade === "comum" ? "text-white/40" :
+          raridade === "comum" ? "text-white/55" :
           raridade === "raro" ? "text-blue-400" :
           raridade === "epico" ? "text-purple-400" :
-          raridade === "lendario" ? "text-[var(--gold)]" : "text-white/40"
+          raridade === "lendario" ? "text-[var(--gold)]" : "text-white/55"
         }>
           {t(rc.tkey)}
         </span>
@@ -79,7 +79,7 @@ export function BadgeCard({
               style={{ width: `${pct}%`, background: "linear-gradient(90deg, var(--gold-dark), var(--gold))" }}
             />
           </div>
-          <div className="text-[8px] text-[var(--gray)] mt-0.5">
+          <div className="text-[9px] text-[var(--gray)] mt-0.5">
             {progresso}/{progressoMax}
           </div>
         </div>

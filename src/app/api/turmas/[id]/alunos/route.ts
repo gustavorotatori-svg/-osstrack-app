@@ -51,6 +51,12 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
     }
 
+    const aluno = await prisma.usuario.findFirst({
+      where: { id: alunoId, academiaId: session.user.academiaId },
+      select: { id: true },
+    })
+    if (!aluno) return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
+
     const existing = await prisma.turmaAluno.findUnique({
       where: { turmaId_alunoId: { turmaId: id, alunoId } },
     })
@@ -80,6 +86,12 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     if (!turma || turma.academiaId !== session.user.academiaId) {
       return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
     }
+
+    const aluno = await prisma.usuario.findFirst({
+      where: { id: alunoId, academiaId: session.user.academiaId },
+      select: { id: true },
+    })
+    if (!aluno) return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })
 
     await prisma.turmaAluno.deleteMany({
       where: { turmaId: id, alunoId },

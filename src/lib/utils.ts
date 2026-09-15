@@ -12,17 +12,17 @@ export function formatDate(date: Date) {
 
 export function getBeltColor(faixa: string) {
   const cores: Record<string, string> = {
-    Branca: "bg-gray-100 text-gray-900",
-    Azul: "bg-blue-800 text-white",
-    Roxa: "bg-purple-800 text-white",
-    Marrom: "bg-amber-900 text-white",
-    Preta: "bg-black text-yellow-400 border border-gray-700",
+    Branca: "belt-white",
+    Azul: "belt-blue",
+    Roxa: "belt-purple",
+    Marrom: "belt-brown",
+    Preta: "belt-black",
     Cinza: "bg-gray-400 text-white",
     Amarela: "bg-yellow-400 text-black",
     Laranja: "bg-orange-500 text-white",
     Verde: "bg-green-600 text-white",
   }
-  return cores[faixa] || "bg-gray-100 text-gray-900"
+  return cores[faixa] || "belt-white"
 }
 
 export function getBeltEmoji(faixa: string) {

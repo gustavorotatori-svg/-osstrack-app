@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react"
 import { ReactNode, createContext, useContext, useState, useEffect, useCallback } from "react"
+import { MotionConfig } from "framer-motion"
 import { Toaster } from "sonner"
 import type { Locale } from "@/lib/i18n"
 
@@ -108,7 +109,9 @@ export function Providers({ children }: { children: ReactNode }) {
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
         <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
-          {children}
+          <MotionConfig reducedMotion="user">
+            {children}
+          </MotionConfig>
           <Toaster
             position="top-center"
             toastOptions={{

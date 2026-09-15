@@ -9,7 +9,7 @@
     "q3": "Preciso instalar um aplicativo?",
     "a3": "Não. O OssTrack funciona direto no navegador do celular ou do computador. Você pode adicioná-lo à tela inicial e usá-lo como um aplicativo (PWA).",
     "q4": "Como funciona o check-in?",
-    "a4": "O aluno abre o OssTrack na hora da aula e faz o check-in com o GPS da academia. A presença é registrada automaticamente na turma e no horário corretos.",
+    "a4": "O aluno abre o OssTrack, ativa o GPS e faz o check-in. A presença é registrada automaticamente com a hora atual e fica pendente de confirmação do professor.",
     "q5": "Serve para qualquer tamanho de academia?",
     "a5": "Sim. De turmas pequenas a grandes equipes, o OssTrack acompanha frequência, progressão e retenção dos alunos em tempo real."
   },
@@ -282,6 +282,7 @@
       "esteMes": "Este Mês",
       "total": "Total",
       "nenhumAluno": "Nenhum aluno encontrado",
+      "rankVazioDesc": "Os alunos aparecem aqui quando fizerem seus primeiros check-ins na academia.",
       "aulas": "aulas",
       "posicao": "Você está na {pos}ª posição",
       "posicaoFaixa": "Você está na {pos}ª posição na faixa {faixa}",

@@ -86,7 +86,7 @@ export default function DespesasPage() {
   const statusColors: Record<string, string> = {
     pendente: "bg-yellow-900/40 text-yellow-400",
     pago: "bg-green-900/40 text-green-400",
-    cancelado: "bg-gray-900/40 text-gray-400",
+    cancelado: "bg-[var(--border)] text-[var(--text-muted)]",
   }
 
   const categorias = [
@@ -132,8 +132,8 @@ export default function DespesasPage() {
                 <input type="number" step="0.01" className="input-field" value={form.valor} onChange={e => setForm(f => ({ ...f, valor: e.target.value }))} placeholder="0,00" required />
               </div>
               <div>
-                <label className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("categoria")}</label>
-                <select className="input-field" value={form.categoria} onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}>
+                <label htmlFor="despesa-categoria" className="text-[10px] font-semibold text-[var(--text-secondary)] block mb-1">{t("categoria")}</label>
+                <select id="despesa-categoria" className="input-field" value={form.categoria} onChange={e => setForm(f => ({ ...f, categoria: e.target.value }))}>
                   {categorias.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                 </select>
               </div>
@@ -201,7 +201,7 @@ export default function DespesasPage() {
                           {t("pagar")}
                         </button>
                         <button onClick={() => cancelarDespesa(d.id)}
-                          className="text-[9px] px-2 py-0.5 rounded bg-gray-900/30 text-gray-400">
+                          className="text-[9px] px-2 py-0.5 rounded bg-[var(--border)] text-[var(--text-muted)]">
                           {t("cancelar")}
                         </button>
                         <button onClick={() => excluirDespesa(d.id)}

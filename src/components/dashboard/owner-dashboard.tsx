@@ -629,7 +629,10 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                   <button
                     onClick={toggleRanking}
                     disabled={toggling}
-                    className={`relative w-12 h-7 rounded-full transition-all ${rankingVisivel ? "bg-emerald-600" : "bg-[var(--border)]"}`}
+                    role="switch"
+                    aria-label={t("visivelAlunos")}
+                    aria-checked={rankingVisivel}
+                    className={`relative w-12 h-7 rounded-full transition-all ${rankingVisivel ? "bg-emerald-600" : "bg-[var(--toggle-off)]"}`}
                   >
                     <div className={`absolute top-0.5 w-6 h-6 rounded-full bg-white shadow-md transition-all ${rankingVisivel ? "left-5.5" : "left-0.5"}`} />
                   </button>

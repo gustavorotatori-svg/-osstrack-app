@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { agendamentoSchema } from "@/lib/validation"
 
 export async function GET() {
   try {
@@ -35,8 +36,12 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions)
     if (!session || session.user.role !== "aluno") return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
 
-    const { horarioId, data } = await req.json()
-    if (!horarioId || !data) return NextResponse.json({ error: "horarioId e data obrigatórios" }, { status: 400 })
+    const body = await req.json()
+    const parsed = agendamentoSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
+    }
+    const { horarioId, data } = parsed.data
 
     const horario = await prisma.horarioAula.findUnique({
       where: { id: horarioId },

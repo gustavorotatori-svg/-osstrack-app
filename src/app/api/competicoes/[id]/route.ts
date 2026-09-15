@@ -14,6 +14,27 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const body = await req.json()
     const { nome, data, local, faixa, categoria, observacoes, participacoes } = body
 
+    const existente = await prisma.competicao.findFirst({
+      where: { id, academiaId: session.user.academiaId },
+      select: { id: true },
+    })
+    if (!existente) {
+      return NextResponse.json({ error: "Competição não encontrada" }, { status: 404 })
+    }
+
+    if (participacoes && participacoes.length) {
+      const alunoIds = participacoes.map((p: { alunoId: string }) => p.alunoId)
+      const alunos = await prisma.usuario.findMany({
+        where: { id: { in: alunoIds }, academiaId: session.user.academiaId, role: "aluno" },
+        select: { id: true },
+      })
+      const validos = new Set(alunos.map((a) => a.id))
+      const invalidos = alunoIds.filter((id: string) => !validos.has(id))
+      if (invalidos.length) {
+        return NextResponse.json({ error: "Aluno fora da sua academia" }, { status: 400 })
+      }
+    }
+
     const competicao = await prisma.competicao.update({
       where: { id },
       data: {

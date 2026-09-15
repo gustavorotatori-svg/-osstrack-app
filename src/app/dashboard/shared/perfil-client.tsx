@@ -106,7 +106,7 @@ export default function PerfilClient({ role }: { role: string }) {
           <div className="glass-card p-6 text-center relative overflow-hidden">
             <div className="relative inline-block group">
               <Avatar name={data.nome} faixa={data.faixa} size={88} src={data.avatar} />
-              <button onClick={() => setEditando(!editando)}
+              <button onClick={() => setEditando(!editando)} aria-label="Editar perfil" title="Editar perfil"
                 className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-xs text-black font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ background: "var(--gold)" }}>
                 <Pencil className="w-3.5 h-3.5" />
@@ -193,6 +193,8 @@ export default function PerfilClient({ role }: { role: string }) {
                 <div className="flex flex-wrap gap-2 mb-3">
                   {emojis.map((emoji) => (
                     <button key={emoji} type="button" onClick={() => selecionarAvatar(emoji)}
+                      aria-label={`Usar emoji ${emoji} como avatar`}
+                      aria-pressed={avatarUrl === emoji}
                       className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all ${avatarUrl === emoji ? "scale-110" : "border hover:border-[var(--gold)]"}`}
                       style={avatarUrl === emoji ? { background: "var(--gold)", outline: "2px solid var(--gold)" } : { background: "rgba(255,255,255,0.03)", borderColor: "var(--border)" }}
                     >{emoji}</button>

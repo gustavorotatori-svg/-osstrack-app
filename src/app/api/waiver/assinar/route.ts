@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { validarCpf } from "@/lib/cpf"
+import { encryptCpf } from "@/lib/cpf-crypto"
 
 export async function POST(req: Request) {
   try {
@@ -36,15 +37,17 @@ export async function POST(req: Request) {
     const ip = forwarded ? forwarded.split(",")[0].trim() : headers.get("x-real-ip")
     const userAgent = headers.get("user-agent")?.slice(0, 500)
 
+    const cpfEncriptado = encryptCpf(cpf) || cpf
+
     const assinatura = await prisma.assinaturaWaiver.upsert({
       where: { alunoId_termoId: { alunoId: session.user.id, termoId: termo.id } },
-      update: { nomeCompleto, cpf, ip, userAgent },
+      update: { nomeCompleto, cpf: cpfEncriptado, ip, userAgent },
       create: {
         academiaId: session.user.academiaId,
         termoId: termo.id,
         alunoId: session.user.id,
         nomeCompleto,
-        cpf,
+        cpf: cpfEncriptado,
         ip,
         userAgent,
       },

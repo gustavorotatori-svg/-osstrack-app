@@ -6,11 +6,14 @@ import { useSession } from "next-auth/react"
 import { useT } from "@/lib/use-t"
 import { LocaleSwitcher } from "@/components/ui/locale-switcher"
 import { XIcon } from "@/components/ui/icons"
+import { useEscape } from "@/lib/use-escape"
 
 export function MobileMenu() {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false)
   const t = useT("nav")
+
+  useEscape(() => setOpen(false), open)
 
   const links = [
     { href: "/#recursos", label: t("recursos") },

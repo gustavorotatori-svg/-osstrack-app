@@ -69,12 +69,16 @@ export async function PUT(request: Request) {
   if (!id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
   Object.keys(updateData).forEach((key: string) => updateData[key] === undefined && delete updateData[key])
 
-  const graduacao = await prisma.graduacao.update({
-    where: { id },
+  const graduacao = await prisma.graduacao.updateMany({
+    where: { id, academiaId: session.user.academiaId },
     data: updateData,
   })
 
-  return NextResponse.json(graduacao)
+  if (graduacao.count === 0) {
+    return NextResponse.json({ error: "Graduação não encontrada" }, { status: 404 })
+  }
+
+  return NextResponse.json({ success: true })
   } catch (error) {
     return handleApiError(error)
   }
@@ -91,7 +95,12 @@ export async function DELETE(request: Request) {
   if (!body.id || typeof body.id !== "string") return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
   const { id } = body
 
-  await prisma.graduacao.delete({ where: { id } })
+  const deleted = await prisma.graduacao.deleteMany({
+    where: { id, academiaId: session.user.academiaId },
+  })
+  if (deleted.count === 0) {
+    return NextResponse.json({ error: "Graduação não encontrada" }, { status: 404 })
+  }
   return NextResponse.json({ success: true })
   } catch (error) {
     return handleApiError(error)

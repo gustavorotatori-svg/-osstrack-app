@@ -91,6 +91,7 @@ export const authOptions: NextAuthOptions = {
           grau: user.grau,
           academiaId: user.academiaId,
           academiaNome: user.academia?.nome || null,
+          authVersion: user.authVersion,
         }
       },
     }),
@@ -111,28 +112,14 @@ export const authOptions: NextAuthOptions = {
         ;(user as any).grau = existingUser.grau
         ;(user as any).academiaId = existingUser.academiaId
         ;(user as any).academiaNome = existingUser.academia?.nome || null
+        ;(user as any).authVersion = existingUser.authVersion
         return true
       }
 
-      const newUser = await prisma.usuario.create({
-        data: {
-          email: user.email!,
-          nome: user.name || user.email!.split("@")[0],
-          avatar: user.image || null,
-          role: "aluno",
-          faixa: "Branca",
-          grau: 1,
-          emailVerified: new Date(),
-        },
-      })
-
-      user.id = newUser.id
-      ;(user as any).role = "aluno"
-      ;(user as any).faixa = "Branca"
-      ;(user as any).grau = 1
-      ;(user as any).academiaId = null
-      ;(user as any).academiaNome = null
-      return true
+      // LGPD: não criar conta via Google sem consentimento explícito.
+      // O cadastro completo (que exige aceite de Termos/LGPD e maioridade)
+      // só acontece pelo fluxo de credenciais.
+      return false
     },
     async jwt({ token, user }) {
       if (user) {
@@ -142,7 +129,18 @@ export const authOptions: NextAuthOptions = {
         token.academiaId = user.academiaId
         token.academiaNome = (user as any).academiaNome || null
         token.id = user.id
+        token.authVersion = user.authVersion ?? 0
       }
+
+      if (token.authVersion !== undefined && token.id) {
+        const dbUser = await prisma.usuario
+          .findUnique({ where: { id: token.id as string }, select: { authVersion: true } })
+          .catch(() => null)
+        if (dbUser && dbUser.authVersion !== token.authVersion) {
+          throw new Error("Sessão revogada")
+        }
+      }
+
       return token
     },
     async session({ session, token }) {
@@ -160,13 +158,22 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   },
+  events: {
+    async signOut({ token }) {
+      const userId = (token as any)?.id || (token as any)?.sub
+      if (!userId) return
+      await prisma.usuario
+        .update({ where: { id: userId as string }, data: { authVersion: { increment: 1 } } })
+        .catch(() => {})
+    },
+  },
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, // absolute: 7 days
-    updateAge: 24 * 60 * 60, // rolling refresh: re-signs on activity, max once/day
+    maxAge: 24 * 60 * 60, // absolute: 24h
+    updateAge: 12 * 60 * 60, // rolling refresh: re-signs on activity, max once every 12h
   },
   jwt: {
-    maxAge: 7 * 24 * 60 * 60,
+    maxAge: 24 * 60 * 60,
   },
   cookies: {
     sessionToken: {

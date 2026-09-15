@@ -10,6 +10,7 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { Celebration } from "@/components/ui/celebration"
 import { getBeltEmoji } from "@/lib/utils"
 import { useT } from "@/lib/use-t"
+import { useEscape } from "@/lib/use-escape"
 
 type Aluno = { id: string; nome: string; faixa: string; grau: number; familiaNome?: string | null }
 
@@ -28,6 +29,8 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
   const [filtroFaixa, setFiltroFaixa] = useState<string>("todas")
   const [sort, setSort] = useState<SortMode>("nome")
   const [celebrate, setCelebrate] = useState<{ show: boolean; title: string }>({ show: false, title: "" })
+
+  useEscape(() => setShowPromote(null), showPromote !== null)
 
   async function promover(alunoId: string, novaFaixa: string, novoGrau: number) {
     setPromovendoAgora(true)
@@ -98,7 +101,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
           <div className="glass-card p-4">
             {/* Busca */}
-            <input className="input text-sm mb-3" placeholder={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
+            <input className="input text-sm mb-3" placeholder={t("buscar")} aria-label={t("buscar")} value={busca} onChange={(e) => setBusca(e.target.value)} />
 
             {/* Filtro por faixa */}
             <div className="flex gap-1.5 overflow-x-auto scrollbar-none mb-3">
@@ -165,7 +168,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
 
           {showPromote && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowPromote(null)}>
-              <div className="glass-card p-6 w-80 mx-4" onClick={e => e.stopPropagation()}>
+              <div className="glass-card p-6 w-80 mx-4" role="dialog" aria-modal="true" aria-label={t("promoverAluno")} onClick={e => e.stopPropagation()}>
                 <h3 className="font-bold text-base mb-4">{t("promoverAluno")}</h3>
                 <p className="text-sm text-[var(--text-secondary)] mb-4">{t("selecioneFaixa")}</p>
                 <div className="grid grid-cols-2 gap-2 mb-4">

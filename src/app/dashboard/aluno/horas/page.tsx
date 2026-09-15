@@ -288,7 +288,7 @@ export default function HorasPage() {
                 {data.horasPorMes.map((h, i) => {
                   const height = Math.max(12, (h.horas / maxHorasMes) * 180)
                   return (
-                    <div key={h.mes} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
+                    <div key={h.mes} className="flex-1 flex flex-col items-center gap-2 group">
                       <span className="text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-1" style={{ color: barColors[i % 6].match(/#([0-9a-f]+)/i)?.[0] || "#fff" }}>
                         {h.horas}h
                       </span>
@@ -324,7 +324,7 @@ export default function HorasPage() {
               </div>
               <div className="flex items-end gap-1.5 h-36">
                 {data.horasPorSemana.map((h, i) => (
-                  <div key={h.semana} className="flex-1 flex flex-col items-center gap-1.5 group cursor-pointer">
+                  <div key={h.semana} className="flex-1 flex flex-col items-center gap-1.5 group">
                     <span className="text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">
                       {h.horas}h
                     </span>

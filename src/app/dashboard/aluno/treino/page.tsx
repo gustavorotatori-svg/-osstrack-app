@@ -199,7 +199,7 @@ export default function TreinoPage() {
                       <input type="text" placeholder="reps" value={repeticoes} onChange={e => setRepeticoes(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                       <input type="text" placeholder="carga" value={carga} onChange={e => setCarga(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                     </div>
-                    <button onClick={addExercicio} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-gold">
+                    <button onClick={addExercicio} aria-label="Adicionar exercício" title="Adicionar exercício" className="text-xs font-bold px-3 py-1.5 rounded-lg btn-gold">
                       <Check className="w-3.5 h-3.5" />
                     </button>
                   </div>

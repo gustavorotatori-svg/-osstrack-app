@@ -187,11 +187,11 @@ export function TreinoTimer() {
       <div className="flex gap-3">
         {fase !== "concluido" && (
           running ? (
-            <button onClick={parar} className="w-14 h-14 rounded-full bg-red-600/80 text-white flex items-center justify-center text-lg hover:bg-red-600 transition-all active:scale-[0.97]">
+            <button onClick={parar} aria-label="Pausar treino" title="Pausar" className="w-14 h-14 rounded-full bg-red-600/80 text-white flex items-center justify-center text-lg hover:bg-red-600 transition-all active:scale-[0.97]">
               ⏸
             </button>
           ) : (
-            <button onClick={iniciar} className="w-14 h-14 rounded-full gradient-gold text-black flex items-center justify-center text-lg hover:scale-110 transition-all active:scale-[0.97] shadow-lg">
+            <button onClick={iniciar} aria-label="Iniciar treino" title="Iniciar" className="w-14 h-14 rounded-full gradient-gold text-black flex items-center justify-center text-lg hover:scale-110 transition-all active:scale-[0.97] shadow-lg">
               ▶
             </button>
           )
@@ -201,7 +201,7 @@ export function TreinoTimer() {
             <RefreshIcon className="w-4 h-4 inline -mt-0.5 mr-1" /> Novo Treino
           </button>
         )}
-        <button onClick={resetar} className="w-10 h-10 rounded-full bg-[var(--dark-border)] text-[var(--white-muted)] flex items-center justify-center text-xs hover:text-white transition-all">
+        <button onClick={resetar} aria-label="Reiniciar treino" title="Reiniciar" className="w-10 h-10 rounded-full bg-[var(--dark-border)] text-[var(--white-muted)] flex items-center justify-center text-xs hover:text-white transition-all">
           ↺
         </button>
       </div>

@@ -224,8 +224,11 @@ export const horarioAulaSchema = z.object({
 export const horarioAulaUpdateSchema = horarioAulaSchema.partial()
 
 export const agendamentoSchema = z.object({
-  horarioId: z.string().min(1),
-  data: z.string().min(1),
+  horarioId: z.string().min(1, "Horário é obrigatório"),
+  data: z
+    .string()
+    .min(1, "Data é obrigatória")
+    .refine((v) => !isNaN(new Date(v).getTime()), "Data inválida"),
 })
 
 export const cobrancaCreateSchema = z.object({

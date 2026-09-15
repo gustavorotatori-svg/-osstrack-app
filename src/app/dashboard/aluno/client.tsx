@@ -255,7 +255,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {/* SEM ACADEMIA BANNER (persistent across tabs) */}
           {!aluno.academia && !bannerDismissed && (
             <div className="mb-4 p-4 rounded-2xl border border-[rgba(212,168,71,0.1)] relative" style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.06) 0%, rgba(212,168,71,0.02) 100%)" }}>
-              <button onClick={() => setBannerDismissed(true)}
+              <button onClick={() => setBannerDismissed(true)} aria-label="Fechar aviso"
                 className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-white hover:bg-[var(--bg-surface)] transition-all">
                 <X className="w-3.5 h-3.5" />
               </button>

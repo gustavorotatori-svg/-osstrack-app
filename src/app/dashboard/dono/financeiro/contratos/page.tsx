@@ -68,7 +68,7 @@ export default function ContratosPage() {
   const statusColors: Record<string, string> = {
     ativo: "bg-green-900/40 text-green-400",
     inadimplente: "bg-red-900/40 text-red-400",
-    cancelado: "bg-gray-900/40 text-gray-400",
+    cancelado: "bg-[var(--border)] text-[var(--text-muted)]",
     encerrado: "bg-blue-900/40 text-blue-400",
   }
 
@@ -87,8 +87,8 @@ export default function ContratosPage() {
         {showForm && (
           <form onSubmit={criarContrato} className="glass-card p-4 space-y-3">
             <div>
-              <label className="text-[11px] text-[var(--text-secondary)]">{t("aluno")}</label>
-              <select value={form.alunoId} onChange={e => setForm({...form, alunoId: e.target.value})} required
+              <label htmlFor="contrato-aluno" className="text-[11px] text-[var(--text-secondary)]">{t("aluno")}</label>
+              <select id="contrato-aluno" value={form.alunoId} onChange={e => setForm({...form, alunoId: e.target.value})} required
                 className="w-full input-field px-3 py-2.5 mt-1">
                 <option value="">{t("selecioneAluno")}</option>
                 {alunos.map((a: any) => (
@@ -97,8 +97,8 @@ export default function ContratosPage() {
               </select>
             </div>
             <div>
-              <label className="text-[11px] text-[var(--text-secondary)]">{t("plano")}</label>
-              <select value={form.planoId} onChange={e => {
+              <label htmlFor="contrato-plano" className="text-[11px] text-[var(--text-secondary)]">{t("plano")}</label>
+              <select id="contrato-plano" value={form.planoId} onChange={e => {
                 const plano = planos.find(p => p.id === e.target.value)
                 setForm({...form, planoId: e.target.value, valor: plano ? (plano.valor / 100).toFixed(2) : "" })
               }} required
@@ -151,7 +151,7 @@ export default function ContratosPage() {
                       )}
                       {(c.status === "ativo" || c.status === "inadimplente") && (
                         <button onClick={() => alterarStatus(c.id, "cancelado")}
-                          className="text-[10px] px-2.5 py-1 rounded bg-gray-900/30 text-gray-400">
+                          className="text-[10px] px-2.5 py-1 rounded bg-[var(--border)] text-[var(--text-muted)]">
                           {t("cancelar")}
                         </button>
                       )}
@@ -161,7 +161,7 @@ export default function ContratosPage() {
                           {t("reativar")}
                         </button>
                       )}
-                      <button onClick={async () => {
+                      <button aria-label={`Excluir contrato de ${c.aluno.nome}`} onClick={async () => {
                         if (!confirm(`Excluir contrato de ${c.aluno.nome}?`)) return
                         const r = await fetch(`/api/financeiro/contratos/${c.id}`, { method: "DELETE" })
                         if (r.ok) { load(); toast.success("Contrato excluído") }
