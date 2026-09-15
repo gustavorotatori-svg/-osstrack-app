@@ -11,6 +11,7 @@ import { ArrowLeft } from "lucide-react"
 export const metadata: Metadata = {
   title: "Ajuda — OssTrack",
   description: "Tire suas dúvidas sobre o OssTrack: como funciona o check-in, progressão de faixas, planos e mais. Entre em contato com o suporte.",
+  alternates: { canonical: "/ajuda" },
 }
 
 const faqSchema = {

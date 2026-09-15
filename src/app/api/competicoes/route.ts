@@ -38,6 +38,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Nome e data são obrigatórios" }, { status: 400 })
     }
 
+    const alunoIds = participacoes?.length ? participacoes.map((p: { alunoId: string }) => p.alunoId) : []
+    if (alunoIds.length) {
+      const alunos = await prisma.usuario.findMany({
+        where: { id: { in: alunoIds }, academiaId: session.user.academiaId, role: "aluno" },
+        select: { id: true },
+      })
+      const validos = new Set(alunos.map((a) => a.id))
+      const invalidos = alunoIds.filter((id: string) => !validos.has(id))
+      if (invalidos.length) {
+        return NextResponse.json({ error: "Aluno fora da sua academia" }, { status: 400 })
+      }
+    }
+
     const competicao = await prisma.competicao.create({
       data: {
         academiaId: session.user.academiaId,
@@ -80,6 +93,14 @@ export async function DELETE(req: Request) {
     const { searchParams } = new URL(req.url)
     const id = searchParams.get("id")
     if (!id) return NextResponse.json({ error: "ID obrigatório" }, { status: 400 })
+
+    const competicao = await prisma.competicao.findFirst({
+      where: { id, academiaId: session.user.academiaId },
+      select: { id: true },
+    })
+    if (!competicao) {
+      return NextResponse.json({ error: "Competição não encontrada" }, { status: 404 })
+    }
 
     await prisma.participacaoCompeticao.deleteMany({ where: { competicaoId: id } })
     await prisma.competicao.delete({ where: { id } })

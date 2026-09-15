@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useT } from "@/lib/use-t"
+import { track } from "@vercel/analytics"
 import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 import { GoogleIcon } from "@/components/ui/google-icon"
 
@@ -107,6 +108,7 @@ function LoginContent() {
         return
       }
 
+      try { track("login_concluido") } catch {}
       const ref = searchParams.get("ref")
       const callbackUrl = searchParams.get("callbackUrl")
       router.push(callbackUrl || (ref === "ebook" ? "/ebook/conteudo" : "/dashboard"))

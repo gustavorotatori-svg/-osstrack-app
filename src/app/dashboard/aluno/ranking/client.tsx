@@ -8,6 +8,7 @@ import { useT } from "@/lib/use-t"
 import { LockIcon, CrownIcon, AwardIcon, ClipboardIcon, GiIcon, UsersIcon, CalendarIcon, FlameIcon } from "@/components/ui/icons"
 import { getNivelInfo } from "@/lib/disciplina"
 import { PageTransition } from "@/components/ui/page-transition"
+import { EmptyState } from "@/components/ui/empty-state"
 import { toast } from "sonner"
 
 type RankingItem = {
@@ -167,7 +168,11 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestres, 
                 ))}
               </div>
             ) : ranking.length === 0 ? (
-              <div className="text-center py-8 text-sm text-[var(--text-secondary)]">{t("nenhumAluno")}</div>
+              <EmptyState
+                icon="trophy"
+                title={t("nenhumAluno")}
+                description={t("rankVazioDesc")}
+              />
             ) : (
               ranking.map((a) => {
                 const isMe = a.id === alunoId

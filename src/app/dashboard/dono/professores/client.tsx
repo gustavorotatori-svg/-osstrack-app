@@ -71,6 +71,7 @@ export function ProfessoresClient() {
             <input
               type="text"
               placeholder="Buscar professor..."
+              aria-label="Buscar professor"
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
               className="input-field w-full text-sm pl-9"
@@ -86,10 +87,10 @@ export function ProfessoresClient() {
             <div className="space-y-2">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="surface p-4 animate-pulse flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/5" />
+                  <div className="w-10 h-10 rounded-full bg-[var(--border)]" />
                   <div className="flex-1 space-y-1.5">
-                    <div className="h-4 w-32 bg-white/5 rounded" />
-                    <div className="h-3 w-20 bg-white/5 rounded" />
+                    <div className="h-4 w-32 bg-[var(--border)] rounded" />
+                    <div className="h-3 w-20 bg-[var(--border)] rounded" />
                   </div>
                 </div>
               ))}
@@ -124,6 +125,7 @@ export function ProfessoresClient() {
                     <button
                       onClick={() => handleRemover(p.id, p.nome)}
                       disabled={removendo === p.id}
+                      aria-label={`Remover professor ${p.nome}`}
                       className="text-red-400 hover:text-red-300 p-2.5 rounded-lg hover:bg-white/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="Remover professor"
                     >

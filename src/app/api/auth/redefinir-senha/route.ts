@@ -41,7 +41,12 @@ export async function POST(request: Request) {
     const senhaHash = await bcrypt.hash(senha, 10)
     await prisma.usuario.update({
       where: { id: user.id },
-      data: { senha: senhaHash, resetToken: null, resetTokenExpires: null },
+      data: {
+        senha: senhaHash,
+        resetToken: null,
+        resetTokenExpires: null,
+        authVersion: { increment: 1 },
+      },
     })
 
     // Reset rate limits após redefinição bem-sucedida

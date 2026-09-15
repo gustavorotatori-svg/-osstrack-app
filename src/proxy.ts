@@ -1,13 +1,13 @@
 import { getToken } from "next-auth/jwt"
 import { NextRequest, NextResponse } from "next/server"
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   const publicPaths = [
     "/", "/login", "/cadastro", "/convite",
     "/ajuda", "/lgpd", "/termos",
-    "/api/auth", "/api/academias", "/api/leads", "/ebook", "/horarios",
+    "/api/auth", "/api/academias", "/api/leads", "/api/professores", "/ebook", "/horarios",
     "/recuperar-senha", "/redefinir-senha", "/email-confirmado",
     "/sitemap.xml", "/robots.txt",
     "/manifest.webmanifest", "/screenshot",

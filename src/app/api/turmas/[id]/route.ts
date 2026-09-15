@@ -14,7 +14,9 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   }
 
   const turma = await prisma.turma.findUnique({ where: { id } })
-  if (!turma) return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+  if (!turma || turma.academiaId !== session.user.academiaId) {
+    return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+  }
 
   if (session.user.role === "professor" && turma.professorId !== session.user.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -44,7 +46,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   Object.keys(cleanData).forEach((key) => (cleanData as any)[key] === undefined && delete (cleanData as any)[key])
 
   const turma = await prisma.turma.findUnique({ where: { id } })
-  if (!turma) return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+  if (!turma || turma.academiaId !== session.user.academiaId) {
+    return NextResponse.json({ error: "Turma não encontrada" }, { status: 404 })
+  }
 
   if (session.user.role === "professor" && turma.professorId !== session.user.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 })

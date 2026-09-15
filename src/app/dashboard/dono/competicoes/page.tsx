@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { BackButton } from "@/components/ui/back-button"
+import { DashboardShell } from "@/components/dashboard/shell"
 
 interface Competicao {
   id: string
@@ -96,15 +97,26 @@ export default function CompeticoesPage() {
   }
 
   if (status === "loading" || loading) {
-    return <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}><div className="belt-loading w-48 h-8 rounded" /></div>
+    return (
+      <DashboardShell role={session?.user?.role === "dono" ? "dono" : "professor"}>
+        <div className="max-w-5xl mx-auto">
+          <div className="belt-loading w-24 h-4 rounded mb-6" />
+          <div className="belt-loading w-2/3 h-8 rounded mb-2" />
+          <div className="belt-loading w-1/3 h-3 rounded mb-8" />
+          <div className="glass-card p-5"><div className="belt-loading w-full h-16 rounded" /></div>
+          <div className="glass-card p-5"><div className="belt-loading w-full h-16 rounded" /></div>
+        </div>
+      </DashboardShell>
+    )
   }
 
   const role = session?.user?.role
   const basePath = role === "dono" ? "/dashboard/dono" : "/dashboard/professor"
+  const shellRole = role === "dono" ? "dono" : "professor"
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg)" }}>
-      <div className="max-w-5xl mx-auto px-5 py-8">
+    <DashboardShell role={shellRole}>
+      <div className="max-w-5xl mx-auto">
         <BackButton href={basePath} />
 
         <div className="flex items-center justify-between mb-8">
@@ -125,7 +137,7 @@ export default function CompeticoesPage() {
               <input name="nome" placeholder="Nome do torneio" required className="input-field" />
               <input name="data" type="date" required className="input-field" />
               <input name="local" placeholder="Local (opcional)" className="input-field" />
-              <select name="faixa" className="input-field">
+              <select name="faixa" aria-label="Faixa" className="input-field">
                 <option value="">Todas as faixas</option>
                 <option value="Branca">Branca</option>
                 <option value="Azul">Azul</option>
@@ -133,7 +145,7 @@ export default function CompeticoesPage() {
                 <option value="Marrom">Marrom</option>
                 <option value="Preta">Preta</option>
               </select>
-              <select name="categoria" className="input-field">
+              <select name="categoria" aria-label="Categoria" className="input-field">
                 <option value="">Todas as categorias</option>
                 <option value="adulto">Adulto</option>
                 <option value="infantil">Infantil</option>
@@ -208,6 +220,6 @@ export default function CompeticoesPage() {
           </div>
         )}
       </div>
-    </main>
+    </DashboardShell>
   )
 }

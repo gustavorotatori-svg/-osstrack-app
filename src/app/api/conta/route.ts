@@ -28,16 +28,19 @@ export async function DELETE() {
       // Vínculo professor -> alunos
       await tx.usuario.updateMany({ where: { professorId: usuario.id }, data: { professorId: null } })
 
-      // Turmas e horários criados pelo usuário (caso seja professor)
-      const turmaIds = await tx.turma.findMany({ where: { professorId: usuario.id }, select: { id: true } })
-      const ids = turmaIds.map((t) => t.id)
-      if (ids.length) {
-        await tx.turmaAluno.deleteMany({ where: { turmaId: { in: ids } } })
-        await tx.agendamento.deleteMany({ where: { horario: { turmaId: { in: ids } } } })
-        await tx.horarioAula.deleteMany({ where: { turmaId: { in: ids } } })
-        await tx.turma.deleteMany({ where: { id: { in: ids } } })
+      // Quando professor/dono sai, NÃO apagar turmas/matrículas/agendamentos de TERCEIROS
+      // (LGPD Art. 18 — elimina-se apenas os dados do titular). Reatribui as turmas/horários
+      // a um dono da academia para preservar os dados dos demais alunos.
+      if (usuario.role === "professor") {
+        const substituto = await tx.usuario.findFirst({
+          where: { academiaId: usuario.academiaId, role: "dono" },
+          select: { id: true },
+        })
+        if (substituto) {
+          await tx.turma.updateMany({ where: { professorId: usuario.id }, data: { professorId: substituto.id } })
+          await tx.horarioAula.updateMany({ where: { professorId: usuario.id }, data: { professorId: substituto.id } })
+        }
       }
-      await tx.horarioAula.deleteMany({ where: { professorId: usuario.id } })
 
       // Dados pessoais do usuário
       await tx.alunoConquista.deleteMany({ where: { alunoId: usuario.id } })
@@ -59,17 +62,24 @@ export async function DELETE() {
       await tx.participacaoCompeticao.deleteMany({ where: { alunoId: usuario.id } })
       await tx.familiaMembro.deleteMany({ where: { alunoId: usuario.id } })
       await tx.notificacao.deleteMany({ where: { usuarioId: usuario.id } })
+      await tx.assinaturaWaiver.deleteMany({ where: { alunoId: usuario.id } })
 
       // PII fora das tabelas do usuário (LGPD Art. 18 VI — eliminação completa)
       await tx.rateLimitAttempt.deleteMany({ where: { identifier: `email:${usuario.email}` } })
       await tx.contato.deleteMany({ where: { email: usuario.email } })
 
-      if (usuario.role === "dono" && usuario.academiaId) {
-        // Anonimiza o dono e remove seus dados pessoais da academia, mantendo a academia ativa
-        await tx.academia.update({
-          where: { id: usuario.academiaId },
-          data: { responsavel: "Usuário excluído", telefone: "", whatsapp: null, pixKey: null },
-        })
+      // Verifica se o usuário ainda é referenciado como professor de turmas
+      // (ex.: professor sem substituto na academia). Nesse caso, anonimiza em vez
+      // de deletar para não violar a FK não-anulável Turma.professorId.
+      const aindaMinistra = await tx.turma.count({ where: { professorId: usuario.id } })
+
+      if ((usuario.role === "dono" && usuario.academiaId) || aindaMinistra > 0) {
+        if (usuario.role === "dono" && usuario.academiaId) {
+          await tx.academia.update({
+            where: { id: usuario.academiaId },
+            data: { responsavel: "Usuário excluído", telefone: "", whatsapp: null, pixKey: null },
+          })
+        }
         await tx.usuario.update({
           where: { id: usuario.id },
           data: {

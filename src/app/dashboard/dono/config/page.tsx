@@ -237,7 +237,7 @@ export default function ConfigPage() {
             <div className="h-px bg-[var(--border)]" />
 
             <div>
-              <label className="flex items-center justify-between cursor-pointer">
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-semibold text-[var(--text-secondary)]">Wellhub (Gympass)</p>
                   <p className="text-[9px] text-[var(--text-muted)] mt-0.5">Aceitar check-in de alunos via Wellhub</p>
@@ -245,8 +245,11 @@ export default function ConfigPage() {
                 <button
                   type="button"
                   onClick={() => setForm((p) => ({ ...p, wellhubAtivo: !p.wellhubAtivo }))}
+                  role="switch"
+                  aria-label="Wellhub (Gympass)"
+                  aria-checked={form.wellhubAtivo}
                   className={`relative w-11 h-6 rounded-full transition-all duration-200 ${
-                    form.wellhubAtivo ? "bg-[var(--gold)]" : "bg-[var(--border)]"
+                    form.wellhubAtivo ? "bg-[var(--gold)]" : "bg-[var(--toggle-off)]"
                   }`}
                 >
                   <span
@@ -255,7 +258,7 @@ export default function ConfigPage() {
                     }`}
                   />
                 </button>
-              </label>
+              </div>
               {form.wellhubAtivo && (
                 <div className="mt-3 space-y-3">
                   <p className="text-[9px] text-emerald-400 flex items-center gap-1">

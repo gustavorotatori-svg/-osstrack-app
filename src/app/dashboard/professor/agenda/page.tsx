@@ -139,10 +139,11 @@ export default function ProfessorAgendaPage() {
             </h4>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
+                <label htmlFor="pagenda-turma" className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("turma")}
                 </label>
                 <select
+                  id="pagenda-turma"
                   value={turmaId}
                   onChange={(e) => setTurmaId(e.target.value)}
                   className="input w-full text-sm mt-1"
@@ -160,10 +161,11 @@ export default function ProfessorAgendaPage() {
                 )}
               </div>
               <div>
-                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
+                <label htmlFor="pagenda-dia" className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">
                   {t("dia")}
                 </label>
                 <select
+                  id="pagenda-dia"
                   value={selectedDay ?? 1}
                   onChange={(e) => setSelectedDay(Number(e.target.value))}
                   className="input w-full text-sm mt-1"

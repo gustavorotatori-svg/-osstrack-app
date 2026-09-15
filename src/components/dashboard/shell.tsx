@@ -6,6 +6,7 @@ import Link from "next/link"
 import { ReactNode, ReactElement, useState, useEffect } from "react"
 import { useT } from "@/lib/use-t"
 import { OnboardingTour } from "@/components/onboarding/tour"
+import { OnboardingSetup } from "@/components/onboarding/setup-onboarding"
 import { Ossinho } from "@/components/onboarding/ossinho"
 import { PwaInstallStep } from "@/components/onboarding/pwa-install-step"
 import { useTheme } from "@/components/layout/providers"
@@ -13,6 +14,7 @@ import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
 import { OssTransition, triggerOssTransition } from "@/components/ui/oss-transition"
 import { PullToRefresh } from "@/components/ui/pull-to-refresh"
 import { SunIcon, MoonIcon, LogOutIcon } from "@/components/ui/icons"
+import { useEscape } from "@/lib/use-escape"
 
 type IconProps = { active: boolean }
 
@@ -146,6 +148,8 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
   const [notifCount, setNotifCount] = useState(0)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [tourLoaded, setTourLoaded] = useState(false)
+
+  useEscape(() => setShowMobileMenu(false), showMobileMenu)
   const { install, canInstall, isIOS, isStandalone } = useInstall()
   const canInstallApp = (canInstall || isIOS) && !isStandalone
 
@@ -350,7 +354,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
 
       {/* MOBILE OVERLAY MENU */}
       {showMobileMenu && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setShowMobileMenu(false)}>
+        <div className="fixed inset-0 z-[60] md:hidden" onClick={() => setShowMobileMenu(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <div className="absolute right-3 top-16 w-56 surface py-2 overflow-hidden" onClick={e => e.stopPropagation()}>
             {utilityLinks.map((link) => {
@@ -395,6 +399,7 @@ export function DashboardShell({ children, role }: { children: ReactNode; role: 
       <main id="main-content" className="flex-1 w-full md:ml-60 relative z-10">
         <div className="px-4 py-4 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:px-6 lg:px-8 dashboard-content">
           <PullToRefresh>
+            <OnboardingSetup role={role} />
             {children}
           </PullToRefresh>
         </div>

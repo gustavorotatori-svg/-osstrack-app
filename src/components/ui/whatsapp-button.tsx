@@ -43,7 +43,7 @@ export function WhatsAppButton({
       })
       const data = await res.json()
       if (res.ok && data.link) {
-        window.open(data.link, "_blank")
+        window.open(data.link, "_blank", "noopener,noreferrer")
       } else {
         setError(data.error || t("erroGerar"))
       }
@@ -74,7 +74,7 @@ export function WhatsAppButton({
         {loading ? "..." : <MessageIcon className="w-3.5 h-3.5" />}
         {resolvedLabel}
       </button>
-      {error && <div className="text-[9px] text-red-400 mt-1">{error}</div>}
+      {error && <div className="text-[10px] text-[var(--red)] mt-1" role="alert">{error}</div>}
     </div>
   )
 }

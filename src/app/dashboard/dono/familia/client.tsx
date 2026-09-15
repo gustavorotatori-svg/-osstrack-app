@@ -242,11 +242,11 @@ export function FamiliaClient() {
                       </div>
                     </div>
                     <div className="flex gap-1">
-                      <button onClick={() => openEdit(f)}
+                      <button onClick={() => openEdit(f)} aria-label={`Editar família ${f.nome}`} title="Editar família"
                         className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-[var(--gold)] border border-transparent transition-all">
                         <PencilIcon className="w-4 h-4" />
                       </button>
-                      <button onClick={() => handleDelete(f.id)}
+                      <button onClick={() => handleDelete(f.id)} aria-label={`Excluir família ${f.nome}`} title="Excluir família"
                         className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-red-500 border border-transparent transition-all">
                         <Trash2Icon className="w-4 h-4" />
                       </button>
@@ -283,7 +283,7 @@ export function FamiliaClient() {
                                   <button onClick={async () => {
                                     const membroId = await getMembroIdByAlunoId(f.id, a.id)
                                     if (membroId) removerMembro(f.id, membroId, a)
-                                  }}
+                                  }} aria-label={`Remover ${a.nome} da família`} title="Remover da família"
                                     className="text-xs text-red-400 hover:text-red-300 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center">
                                     <XIcon className="w-3.5 h-3.5" />
                                   </button>
@@ -299,6 +299,7 @@ export function FamiliaClient() {
                               onChange={(e) => setSearchTerm(e.target.value)}
                               className="input-field w-full text-sm pl-9"
                               placeholder="Buscar aluno..."
+                              aria-label="Buscar aluno"
                             />
                           </div>
 
@@ -310,9 +311,8 @@ export function FamiliaClient() {
                           ) : (
                             <div className="space-y-1 max-h-40 overflow-y-auto">
                               {filteredAlunos.filter((a) => !membrosNaFamilia.find((m) => m.id === a.id)).map((a) => (
-                                <div key={a.id}
-                                  className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--border)] transition-all cursor-pointer"
-                                  onClick={() => adicionarMembro(f.id, a.id)}>
+                                <button type="button" key={a.id} onClick={() => adicionarMembro(f.id, a.id)} aria-label={`Adicionar ${a.nome} à família`}
+                                  className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--border)] transition-all cursor-pointer text-left">
                                   <div className="flex items-center gap-2">
                                     <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${getBeltColor(a.faixa)}`}>
                                       {a.faixa}
@@ -320,7 +320,7 @@ export function FamiliaClient() {
                                     <span className="text-sm">{a.nome}</span>
                                   </div>
                                   <span className="text-[var(--gold)] font-bold">+</span>
-                                </div>
+                                </button>
                               ))}
                             </div>
                           )}

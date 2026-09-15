@@ -6,9 +6,9 @@ import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
 
 const beltColors: Record<string, string> = {
-  Branca: "bg-gray-100 text-gray-900", Azul: "bg-blue-700 text-white",
-  Roxa: "bg-purple-700 text-white", Marrom: "bg-amber-800 text-white",
-  Preta: "bg-black text-yellow-400 border border-gray-600",
+  Branca: "belt-white", Azul: "belt-blue",
+  Roxa: "belt-purple", Marrom: "belt-brown",
+  Preta: "belt-black", Cinza: "bg-gray-400 text-white",
 }
 
 type Postagem = {
@@ -142,7 +142,7 @@ export default function MuralFeed({ role }: { role: string }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold">{item.aluno.nome}</span>
-                    <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-medium ${beltColors[item.aluno.faixa] || "bg-gray-100 text-gray-900"}`}>
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${beltColors[item.aluno.faixa] || "belt-white"}`}>
                       {item.aluno.faixa}
                     </span>
                   </div>
@@ -167,7 +167,7 @@ export default function MuralFeed({ role }: { role: string }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-semibold">{item.aluno.nome}</span>
-                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${beltColors[item.aluno.faixa] || "bg-gray-100 text-gray-900"}`}>
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full font-medium ${beltColors[item.aluno.faixa] || "belt-white"}`}>
                       {item.aluno.faixa} · {item.aluno.grau + 1}º
                     </span>
                   </div>
@@ -178,6 +178,8 @@ export default function MuralFeed({ role }: { role: string }) {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => toggleCurtida(item.id)}
+                        aria-label={item.curtido ? `Descurtir publicação de ${item.aluno.nome}` : `Curtir publicação de ${item.aluno.nome}`}
+                        aria-pressed={item.curtido}
                         className={`text-xs font-semibold transition-all micro-press flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px] ${
                           item.curtido ? "text-red-400" : "text-[var(--text-muted)] hover:text-red-400"
                         }`}
@@ -189,6 +191,8 @@ export default function MuralFeed({ role }: { role: string }) {
                       </button>
                       <button
                         onClick={() => setComentariosAbertos((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
+                        aria-label={`Comentários da publicação de ${item.aluno.nome}`}
+                        aria-expanded={!!comentariosAbertos[item.id]}
                         className="text-xs text-[var(--red)] hover:text-[var(--red)] transition-colors font-semibold flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px]"
                       >
                         💬 {item.comentarios.length}
@@ -204,7 +208,7 @@ export default function MuralFeed({ role }: { role: string }) {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
                               <span className="text-xs font-semibold">{c.usuario.nome}</span>
-                              <span className={`text-[8px] px-1.5 py-0.5 rounded-full ${beltColors[c.usuario.faixa] || "bg-gray-100"}`}>
+                              <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${beltColors[c.usuario.faixa] || "belt-white"}`}>
                                 {c.usuario.faixa}
                               </span>
                             </div>
@@ -235,6 +239,16 @@ export default function MuralFeed({ role }: { role: string }) {
             </div>
           ))}
         </div>
+
+        {feed.length === 0 && (
+          <div className="glass-card p-10 text-center">
+            <div className="text-4xl mb-4">📢</div>
+            <h4 className="font-bold mb-1.5">O mural está em silêncio</h4>
+            <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
+              Assim que os alunos fizerem check-in, conquistarem marcos ou subirem de faixa, as conquistas aparecem aqui.
+            </p>
+          </div>
+        )}
       </div>
     </DashboardShell>
   )

@@ -55,9 +55,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Aluno já possui um contrato ativo" }, { status: 400 })
   }
 
-  const plano = await prisma.planoMensalidade.findUnique({
-    where: { id: planoId },
+  const plano = await prisma.planoMensalidade.findFirst({
+    where: { id: planoId, academiaId: session.user.academiaId },
   })
+  if (!plano) {
+    return NextResponse.json({ error: "Plano não encontrado" }, { status: 404 })
+  }
 
   const dataInicioContrato = dataInicio ? new Date(dataInicio) : new Date()
 

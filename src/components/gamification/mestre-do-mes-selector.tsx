@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { CrownIcon, SearchIcon, XIcon } from "@/components/ui/icons"
 import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
+import { useEscape } from "@/lib/use-escape"
 import { toast } from "sonner"
 
 type Aluno = {
@@ -35,6 +36,8 @@ export function MestreDoMesSelector() {
   const [alunos, setAlunos] = useState<Aluno[]>([])
   const [search, setSearch] = useState("")
   const [saving, setSaving] = useState(false)
+
+  useEscape(() => setOpen(false), open)
 
   useEffect(() => {
     fetch("/api/mestredomes/meu")
@@ -131,12 +134,15 @@ export function MestreDoMesSelector() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setOpen(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Selecionar Aluno do Mês"
             className="relative w-full max-w-sm glass-card p-5 animate-slide-up max-h-[70vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-3">
               <h4 className="font-bold text-sm">Selecionar Aluno do Mês</h4>
-              <button onClick={() => setOpen(false)} className="p-2.5 rounded-lg hover:bg-[var(--surface)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+              <button onClick={() => setOpen(false)} aria-label="Fechar" className="p-2.5 rounded-lg hover:bg-[var(--surface)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
                 <XIcon className="w-4 h-4" />
               </button>
             </div>

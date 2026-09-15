@@ -107,6 +107,15 @@ function StepCard({ s, i, Icon, t }: { s: { titleKey: string; descKey: string };
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.2 + i * 0.15 }}
       className="group relative pl-14 cursor-pointer"
+      role="button"
+      tabIndex={0}
+      aria-expanded={open}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          setOpen((p) => !p)
+        }
+      }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onClick={() => setOpen((p) => !p)}

@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
         grau: user.grau,
         academiaId: user.academiaId ?? "",
         academiaNome: user.academia?.nome || null,
+        authVersion: user.authVersion,
       },
     })
 

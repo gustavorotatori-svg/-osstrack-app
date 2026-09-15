@@ -170,6 +170,8 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             <div className="relative bg-[var(--dark-card)] border border-[var(--gold)]/20 rounded-2xl p-4 shadow-2xl shadow-black/40">
               <button
                 onClick={dismiss}
+                aria-label="Fechar dica"
+                title="Fechar dica"
                 className="absolute -top-2.5 -right-2.5 w-9 h-9 rounded-full bg-[var(--dark-border)] border border-[var(--gold)]/20 flex items-center justify-center hover:bg-[var(--gold)]/20 transition-colors"
               >
                 <X className="w-4 h-4 text-[var(--white-muted)]" />
@@ -203,6 +205,15 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, type: "spring", damping: 15 }}
             className="w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform active:scale-95"
+            role="button"
+            tabIndex={0}
+            aria-label="Fechar dica"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault()
+                dismiss()
+              }
+            }}
             style={{
               animation: "float 3s ease-in-out infinite",
             }}

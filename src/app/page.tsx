@@ -17,6 +17,7 @@ import { WhatsAppFab } from "@/components/landing/whatsapp-fab"
 import { BackToTop } from "@/components/landing/back-to-top"
 import { MobileCta } from "@/components/landing/mobile-cta"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
+import { ExitIntentPopup } from "@/components/landing/exit-intent-popup"
 
 export const revalidate = 300
 
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
   title: "OssTrack — Gestão de Academias de Jiu-Jitsu (Grátis)",
   description:
     "Plataforma gratuita para academias de Jiu-Jitsu: check-in, progressão de faixas, streaks, gamificação e relatórios. Comece agora.",
+  alternates: { canonical: "/" },
   openGraph: {
     title: "OssTrack — Gestão de Academias de Jiu-Jitsu (Grátis)",
     description:
@@ -75,7 +77,7 @@ export default async function Home() {
   }
 
   return (
-    <main id="main-content" className="tatame-bg overflow-x-hidden">
+    <main className="tatame-bg overflow-x-hidden">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       <Navbar />
       <Hero stats={{ academias: totalAcademias, alunos: totalAlunos, retencao }} />
@@ -91,6 +93,7 @@ export default async function Home() {
       <BackToTop />
       <MobileCta />
       <InstallPrompt />
+      <ExitIntentPopup />
       <AmbientSoundToggle />
     </main>
   )

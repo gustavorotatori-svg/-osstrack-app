@@ -123,7 +123,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
               const isCurrent = i === presencasMensais.length - 1
               return (
                 <div key={m.mes} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[9px] font-bold text-[var(--text-secondary)]">{m.total}</span>
+                  <span className="text-[10px] font-bold text-[var(--text-secondary)]">{m.total}</span>
                   <div
                     className={`w-full rounded-t-lg transition-all duration-500 ${isCurrent ? "tech-glow" : ""}`}
                     style={{ height: `${height}px`, background: isCurrent
@@ -131,7 +131,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
                       : "rgba(255,255,255,0.08)"
                     }}
                   />
-                  <span className="text-[8px] text-[var(--text-muted)]">{m.mes}</span>
+                  <span className="text-[9px] text-[var(--text-muted)]">{m.mes}</span>
                 </div>
               )
             })}

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { BackButton } from "@/components/ui/back-button"
+import { DashboardShell } from "@/components/dashboard/shell"
 import Link from "next/link"
 
 interface AlunoRisco {
@@ -35,12 +36,26 @@ export default function ProfessorChurnPage() {
   }, [session])
 
   if (status === "loading" || loading) {
-    return <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}><div className="belt-loading w-48 h-8 rounded" /></div>
+    return (
+      <DashboardShell role="professor">
+        <div className="max-w-4xl mx-auto">
+          <div className="belt-loading w-24 h-4 rounded mb-6" />
+          <div className="belt-loading w-2/3 h-8 rounded mb-2" />
+          <div className="belt-loading w-1/3 h-3 rounded mb-8" />
+          <div className="grid grid-cols-3 gap-3 mb-8">
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+          </div>
+          <div className="glass-card p-4"><div className="belt-loading w-full h-16 rounded" /></div>
+        </div>
+      </DashboardShell>
+    )
   }
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg)" }}>
-      <div className="max-w-4xl mx-auto px-5 py-8">
+    <DashboardShell role="professor">
+      <div className="max-w-4xl mx-auto">
         <BackButton href="/dashboard/professor" />
         <h1 className="text-2xl font-black tracking-tight gradient-gold-text mb-2">Alerta de Evasão</h1>
         <p className="text-xs mb-8" style={{ color: "var(--text-muted)" }}>Alunos que estão diminuindo a frequência</p>
@@ -66,7 +81,7 @@ export default function ProfessorChurnPage() {
                         <div className="flex items-center gap-2"><span className="text-sm font-bold truncate" style={{ color: "var(--text)" }}>{aluno.nome}</span><span className="text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ background: risco.bg, color: risco.text }}>{risco.label}</span></div>
                         <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{aluno.faixa} • {aluno.motivo}</div>
                       </div>
-                      <Link href={`https://wa.me/?text=${encodeURIComponent(`Fala ${aluno.nome.split(" ")[0]}! Sentimos sua falta no tatame. 🥋`)}`} target="_blank" className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[rgba(34,197,94,0.1)] text-[var(--green)] border border-[rgba(34,197,94,0.3)] hover:bg-[var(--green)] hover:text-white transition-all shrink-0">WhatsApp</Link>
+                      <Link href={`https://wa.me/?text=${encodeURIComponent(`Fala ${aluno.nome.split(" ")[0]}! Sentimos sua falta no tatame. 🥋`)}`} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[rgba(34,197,94,0.1)] text-[var(--green)] border border-[rgba(34,197,94,0.3)] hover:bg-[var(--green)] hover:text-white transition-all shrink-0">WhatsApp</Link>
                     </div>
                   )
                 })}
@@ -75,6 +90,6 @@ export default function ProfessorChurnPage() {
           </>
         )}
       </div>
-    </main>
+    </DashboardShell>
   )
 }

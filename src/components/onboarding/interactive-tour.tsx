@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { GiIcon, CrownIcon, SparklesIcon, TargetIcon } from "@/components/ui/icons"
+import { useEscape } from "@/lib/use-escape"
 
 const STEPS = [
   {
@@ -43,6 +44,8 @@ const STEPS = [
 export function InteractiveTour({ onFinish }: { onFinish: () => void }) {
   const [step, setStep] = useState(0)
   const router = useRouter()
+
+  useEscape(skip, true)
 
   const current = STEPS[step]
   const isLast = step === STEPS.length - 1

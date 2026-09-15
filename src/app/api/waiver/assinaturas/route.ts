@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { mascararCpf } from "@/lib/cpf"
+import { decryptCpf } from "@/lib/cpf-crypto"
 
 export async function GET() {
   try {
@@ -43,7 +44,7 @@ export async function GET() {
       assinatura: a.assinaturasWaiver[0]
         ? {
             nomeCompleto: a.assinaturasWaiver[0].nomeCompleto,
-            cpf: mascararCpf(a.assinaturasWaiver[0].cpf),
+            cpf: mascararCpf(decryptCpf(a.assinaturasWaiver[0].cpf) || ""),
             assinadoEm: a.assinaturasWaiver[0].assinadoEm,
             ip: a.assinaturasWaiver[0].ip,
             userAgent: a.assinaturasWaiver[0].userAgent,

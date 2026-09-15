@@ -52,7 +52,7 @@ export default function CobrancasPage() {
     pendente: "bg-yellow-900/40 text-yellow-400",
     pago: "bg-green-900/40 text-green-400",
     atrasado: "bg-red-900/40 text-red-400",
-    cancelado: "bg-gray-900/40 text-gray-400",
+    cancelado: "bg-[var(--border)] text-[var(--text-muted)]",
   }
 
   const metodos = ["pix", "dinheiro", "cartao", "boleto", "transferencia"]
@@ -99,13 +99,13 @@ export default function CobrancasPage() {
                     </span>
                     {c.status === "pendente" && (
                       <div className="flex gap-1 mt-1 justify-end">
-                        <select onChange={e => { if (e.target.value) pagarCobranca(c.id, e.target.value); e.target.value = "" }}
+                        <select aria-label={t("registrarPagamento")} onChange={e => { if (e.target.value) pagarCobranca(c.id, e.target.value); e.target.value = "" }}
                           className="text-[9px] px-1 py-0.5 rounded input-field">
                           <option value="">{t("registrarPagamento")}</option>
                           {metodos.map(m => <option key={m} value={m}>{t(m)}</option>)}
                         </select>
                         <button onClick={() => cancelarCobranca(c.id)}
-                          className="text-[9px] px-2 py-0.5 rounded bg-gray-900/30 text-gray-400">
+                          className="text-[9px] px-2 py-0.5 rounded bg-[var(--border)] text-[var(--text-muted)]">
                           {t("cancelar")}
                         </button>
                       </div>

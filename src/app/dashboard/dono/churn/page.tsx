@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { BackButton } from "@/components/ui/back-button"
+import { DashboardShell } from "@/components/dashboard/shell"
 import Link from "next/link"
 
 interface AlunoRisco {
@@ -50,15 +51,31 @@ export default function ChurnPage() {
   }, [session])
 
   if (status === "loading" || loading) {
-    return <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--bg)" }}><div className="belt-loading w-48 h-8 rounded" /></div>
+    const loadingRole = session?.user?.role === "dono" ? "dono" : "professor"
+    return (
+      <DashboardShell role={loadingRole}>
+        <div className="max-w-4xl mx-auto">
+          <div className="belt-loading w-24 h-4 rounded mb-6" />
+          <div className="belt-loading w-2/3 h-8 rounded mb-2" />
+          <div className="belt-loading w-1/3 h-3 rounded mb-8" />
+          <div className="grid grid-cols-3 gap-3 mb-8">
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+            <div className="glass-card p-4"><div className="belt-loading w-16 h-6 rounded mx-auto" /></div>
+          </div>
+          <div className="glass-card p-4"><div className="belt-loading w-full h-16 rounded" /></div>
+        </div>
+      </DashboardShell>
+    )
   }
 
   const role = session?.user?.role
   const basePath = role === "dono" ? "/dashboard/dono" : "/dashboard/professor"
+  const shellRole = role === "dono" ? "dono" : "professor"
 
   return (
-    <main className="min-h-screen" style={{ background: "var(--bg)" }}>
-      <div className="max-w-4xl mx-auto px-5 py-8">
+    <DashboardShell role={shellRole}>
+      <div className="max-w-4xl mx-auto">
         <BackButton href={basePath} />
 
         <h1 className="text-2xl font-black tracking-tight gradient-gold-text mb-2">Alerta de Evasão</h1>
@@ -109,6 +126,7 @@ export default function ChurnPage() {
                       <Link
                         href={`https://wa.me/?text=${encodeURIComponent(`Fala ${aluno.nome.split(" ")[0]}! Sentimos sua falta no tatame. Quando vai voltar a treinar? 🥋`)}`}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[rgba(34,197,94,0.1)] text-[var(--green)] border border-[rgba(34,197,94,0.3)] hover:bg-[var(--green)] hover:text-white transition-all shrink-0"
                       >
                         WhatsApp
@@ -121,6 +139,6 @@ export default function ChurnPage() {
           </>
         )}
       </div>
-    </main>
+    </DashboardShell>
   )
 }

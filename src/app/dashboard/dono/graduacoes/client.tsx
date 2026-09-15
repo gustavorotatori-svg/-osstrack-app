@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
+import { useEscape } from "@/lib/use-escape"
 import { PageTransition } from "@/components/ui/page-transition"
 
 type Graduacao = {
@@ -44,6 +45,8 @@ export default function GraduacoesClient({ role }: { role: string }) {
   const [copying, setCopying] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useEscape(() => setShowShare(false), showShare)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -107,17 +110,17 @@ export default function GraduacoesClient({ role }: { role: string }) {
         <div className="text-center py-4">
           {loading ? (
             <div className="glass-card p-6 space-y-4">
-              <div className="h-5 bg-white/10 rounded animate-pulse w-1/3 mx-auto" />
-              <div className="h-3 bg-white/10 rounded animate-pulse w-2/3 mx-auto" />
+              <div className="h-5 bg-[var(--border)] rounded animate-pulse w-1/3 mx-auto" />
+              <div className="h-3 bg-[var(--border)] rounded animate-pulse w-2/3 mx-auto" />
               <div className="grid grid-cols-2 gap-3">
-                <div className="h-24 bg-white/10 rounded-xl animate-pulse" />
-                <div className="h-24 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-24 bg-[var(--border)] rounded-xl animate-pulse" />
+                <div className="h-24 bg-[var(--border)] rounded-xl animate-pulse" />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
-                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
-                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
-                <div className="h-16 bg-white/10 rounded-xl animate-pulse" />
+                <div className="h-16 bg-[var(--border)] rounded-xl animate-pulse" />
+                <div className="h-16 bg-[var(--border)] rounded-xl animate-pulse" />
+                <div className="h-16 bg-[var(--border)] rounded-xl animate-pulse" />
+                <div className="h-16 bg-[var(--border)] rounded-xl animate-pulse" />
               </div>
             </div>
           ) : error ? (
@@ -155,7 +158,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
           {showShare && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowShare(false)}>
               <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-              <div className="relative glass-card max-w-sm w-full p-6" onClick={e => e.stopPropagation()}>
+              <div className="relative glass-card max-w-sm w-full p-6" role="dialog" aria-modal="true" aria-label="Compartilhar Regras de Graduação" onClick={e => e.stopPropagation()}>
                 <div className="text-center mb-4">
                   <div className="text-2xl mb-2">📋</div>
                   <h4 className="font-bold text-sm">Compartilhar Regras de Graduação</h4>
@@ -346,7 +349,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                         <div className="flex gap-1.5">
                           <button onClick={() => startEdit(g)}
                             className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ Editar</button>
-                          <button onClick={async () => {
+                          <button aria-label={`Excluir regra da faixa ${g.faixa}`} onClick={async () => {
                             if (!confirm(`Excluir regra da faixa ${g.faixa}?`)) return
                             const r = await fetch("/api/graduacoes", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: g.id }) })
                             if (r.ok) {

@@ -18,7 +18,12 @@ export async function POST(request: Request) {
   const { alunoId, novaFaixa, novoGrau } = parsed.data
 
   const aluno = await prisma.usuario.findFirst({
-    where: { id: alunoId, professorId: session.user.id },
+    where: {
+      id: alunoId,
+      academiaId: session.user.academiaId,
+      role: "aluno",
+      ...(session.user.role === "professor" ? { professorId: session.user.id } : {}),
+    },
   })
 
   if (!aluno) return NextResponse.json({ error: "Aluno não encontrado" }, { status: 404 })

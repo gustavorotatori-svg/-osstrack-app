@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useT } from "@/lib/use-t"
+import { useEscape } from "@/lib/use-escape"
 import { GiIcon, GraduationIcon, CrownIcon, MapPinIcon, TrendingIcon, AwardIcon, SmartphoneIcon, ClipboardIcon, UsersIcon, CalendarIcon, ChartIcon } from "@/components/ui/icons"
 
 const iconsMap: Record<string, React.ReactNode> = {
@@ -78,6 +79,8 @@ export function OnboardingTour({ role, onComplete }: { role: string; onComplete:
     if (current.action) { finish(); router.push(current.action) }
     else next()
   }
+
+  useEscape(finish, visible)
 
   if (!visible) return null
 

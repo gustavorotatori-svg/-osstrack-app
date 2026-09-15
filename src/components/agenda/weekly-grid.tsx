@@ -119,15 +119,15 @@ export function WeeklyGrid({ horarios, bookedIds = [], onEmptyCell, onClassCell 
                           {h.turma?.icone || <GiIcon className="w-3 h-3 inline -mt-0.5" />} {h.turma?.nome || "Treino"}
                         </span>
                         {h.professor && (
-                          <span className="text-[8px] opacity-60 truncate w-full text-center">
+                          <span className="text-[9px] opacity-80 truncate w-full text-center">
                             {h.professor.nome}
                           </span>
                         )}
-                        <span className="text-[8px] opacity-70">
+                        <span className="text-[9px] opacity-80">
                           {h.horaInicio}-{h.horaFim}
                         </span>
                         {h._count && (
-                          <span className="text-[8px] opacity-70">
+                          <span className="text-[9px] opacity-80">
                             {h._count.agendamentos}/{h.maxAlunos}
                           </span>
                         )}

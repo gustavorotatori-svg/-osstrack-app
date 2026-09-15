@@ -8,6 +8,7 @@ declare module "next-auth" {
     grau?: number
     academiaId?: string | null
     academiaNome?: string | null
+    authVersion?: number
   }
   interface Session {
     user: {
@@ -31,5 +32,6 @@ declare module "next-auth/jwt" {
     grau?: number
     academiaId?: string | null
     academiaNome?: string | null
+    authVersion?: number
   }
 }

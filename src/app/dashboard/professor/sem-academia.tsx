@@ -62,6 +62,7 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
                 type="text"
                 className="input pl-10"
                 placeholder="Buscar academia..."
+                aria-label="Buscar academia"
                 value={busca}
                 onChange={(e) => buscar(e.target.value)}
               />

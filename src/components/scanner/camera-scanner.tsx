@@ -136,6 +136,8 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
 
           <button
             onClick={stopCamera}
+            aria-label="Fechar câmera"
+            title="Fechar câmera"
             className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white text-lg"
           >
             ✕

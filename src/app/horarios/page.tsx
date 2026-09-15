@@ -5,7 +5,10 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Horários das Aulas — OssTrack",
   description: "Veja os horários das aulas da academia de Jiu-Jitsu. Confira o schedule completo.",
+  alternates: { canonical: "/horarios" },
 }
+
+export const revalidate = 300
 
 const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 const diaAtual = new Date().getDay()

@@ -1,6 +1,7 @@
 "use client"
 
 import { DashboardShell } from "@/components/dashboard/shell"
+import { BackButton } from "@/components/ui/back-button"
 import { useRouter } from "next/navigation"
 import { CrownIcon, CheckIcon, SparklesIcon, StarIcon, ChartIcon, Share2Icon, PaletteIcon, MedalIcon, InfinityIcon, CreditCardIcon } from "@/components/ui/icons"
 
@@ -31,7 +32,7 @@ export default function PremiumPage() {
   return (
     <DashboardShell role="aluno">
       <div className="max-w-5xl mx-auto space-y-6">
-        {/* All features unlocked */}
+        <BackButton href="/dashboard/aluno" />
         <div className="relative overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.2)] bg-gradient-to-br from-[rgba(201,168,76,0.1)] via-[rgba(10,10,10,0.8)] to-[rgba(10,10,10,0.9)] p-8 text-center">
           <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
           <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />

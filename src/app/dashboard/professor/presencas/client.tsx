@@ -163,10 +163,12 @@ export function PresencasClient({
                     ) : (
                       <div className="flex gap-1.5 shrink-0">
                         <button onClick={() => confirmar(p.id, "confirmed")} disabled={confirmando === p.id}
+                          aria-label={`Confirmar presença de ${p.aluno.nome}`} title="Confirmar presença"
                           className="w-9 h-9 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-emerald-600/30 active:scale-[0.97] disabled:opacity-50">
                           <Check className="w-4 h-4" />
                         </button>
                         <button onClick={() => confirmar(p.id, "rejected")} disabled={confirmando === p.id}
+                          aria-label={`Marcar ${p.aluno.nome} como ausente`} title="Marcar ausente"
                           className="w-9 h-9 rounded-xl bg-red-700/20 hover:bg-red-700 text-red-400 hover:text-white flex items-center justify-center text-sm font-bold transition-all border border-red-700/30 active:scale-[0.97] disabled:opacity-50">
                           <X className="w-4 h-4" />
                         </button>
@@ -228,7 +230,7 @@ export function PresencasClient({
                       <div className="text-sm font-semibold">{selectedAluno.nome}</div>
                       <div className="text-xs text-[var(--text-secondary)]">{selectedAluno.faixa}</div>
                     </div>
-                    <button onClick={() => { setSelectedAluno(null); setSearchTerm("") }} className="ml-auto p-2 min-h-[36px] min-w-[36px] flex items-center justify-center">
+                    <button onClick={() => { setSelectedAluno(null); setSearchTerm("") }} aria-label="Limpar aluno selecionado" className="ml-auto p-2 min-h-[36px] min-w-[36px] flex items-center justify-center">
                       <X className="w-4 h-4 text-[var(--text-muted)]" />
                     </button>
                   </div>

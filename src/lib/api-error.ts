@@ -1,7 +1,16 @@
 import { NextResponse } from "next/server"
+import * as Sentry from "@sentry/nextjs"
 
 export function handleApiError(error: unknown, context?: string) {
   console.error(`[API]${context ? ` ${context}` : ""}:`, error)
+
+  if (process.env.SENTRY_DSN) {
+    if (error instanceof Error) {
+      Sentry.captureException(error, context ? { extra: { context } } : undefined)
+    } else {
+      Sentry.captureMessage(`[API]${context ? ` ${context}` : ""} ${String(error)}`)
+    }
+  }
 
   if (error && typeof error === "object" && "code" in error) {
     const prismaError = error as { code: string }
