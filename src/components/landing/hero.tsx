@@ -56,11 +56,6 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
           <span className="gradient-gold-text">Track</span>
         </h1>
 
-        {/* Slogan */}
-        <p className={`text-[11px] md:text-sm font-bold uppercase tracking-[0.3em] mb-5 transition-all duration-700 delay-100 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--gold)" }}>
-          The Jiu Jitsu Revolution
-        </p>
-
         {/* Tagline */}
         <h2 className={`text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
           {t("titulo2")}

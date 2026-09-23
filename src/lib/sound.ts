@@ -54,28 +54,3 @@ export function playStreakSound(streak: number) {
     playBeep(660, 0.15, 0.3)
   }
 }
-
-export function playAmbience(volume = 0.05) {
-  try {
-    const c = getCtx()
-    const bufferSize = c.sampleRate * 2
-    const buffer = c.createBuffer(1, bufferSize, c.sampleRate)
-    const data = buffer.getChannelData(0)
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(Math.random(), 3)
-    }
-    const source = c.createBufferSource()
-    source.buffer = buffer
-    source.loop = true
-    const gain = c.createGain()
-    gain.gain.setValueAtTime(volume, c.currentTime)
-    const filter = c.createBiquadFilter()
-    filter.type = "lowpass"
-    filter.frequency.setValueAtTime(200, c.currentTime)
-    source.connect(filter)
-    filter.connect(gain)
-    gain.connect(c.destination)
-    source.start()
-    return { stop: () => { try { source.stop() } catch {} } }
-  } catch { return { stop: () => {} } }
-}

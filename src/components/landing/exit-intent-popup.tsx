@@ -49,8 +49,7 @@ export function ExitIntentPopup() {
         <div className="text-5xl mb-4">🥋</div>
         <h2 id="exit-intent-title" className="text-2xl font-extrabold text-white mb-3">Espere! Sua academia ainda precisa de você</h2>
         <p className="text-[var(--text-secondary)] mb-6 leading-relaxed">
-          O OssTrack é <strong className="text-[var(--gold)]">100% gratuito</strong> — sem mensalidade, sem limite de alunos, sem pegadinha.
-          Cadastre sua academia agora e comece a organizar tudo em 2 minutos.
+          O OssTrack é gratuito para a academia, os professores e os alunos. Cadastre sua academia agora e comece a organizar tudo em 2 minutos.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <a href="/cadastro" className="btn-primary px-6 py-3 text-sm font-bold">
@@ -60,7 +59,6 @@ export function ExitIntentPopup() {
             Agora não
           </button>
         </div>
-        <p className="text-[10px] text-[var(--text-muted)] mt-4">Sem cartão de crédito. Cancele quando quiser.</p>
       </div>
     </div>
   )

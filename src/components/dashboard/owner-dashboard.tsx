@@ -233,7 +233,6 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* Tabs */}
-          <div className="belt-divider">{t("navegacao")}</div>
           <div className="tab-bar">
             <button className={`tab-btn gap-1.5 ${tab === "geral" ? "active" : ""}`} onClick={() => setTab("geral")}>
               <ClipboardIcon className="w-4 h-4" /> {t("geral")}
