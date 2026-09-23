@@ -12,9 +12,7 @@ import prisma from "@/lib/prisma"
 
 import { Footer } from "@/components/landing/footer"
 import { Navbar } from "@/components/layout/navbar"
-import { AmbientSoundToggle } from "@/components/landing/ambient-sound"
 import { WhatsAppFab } from "@/components/landing/whatsapp-fab"
-import { BackToTop } from "@/components/landing/back-to-top"
 import { MobileCta } from "@/components/landing/mobile-cta"
 import { InstallPrompt } from "@/components/pwa/install-prompt"
 import { ExitIntentPopup } from "@/components/landing/exit-intent-popup"
@@ -90,11 +88,9 @@ export default async function Home() {
       <EbookSection />
       <Footer />
       <WhatsAppFab />
-      <BackToTop />
       <MobileCta />
       <InstallPrompt />
       <ExitIntentPopup />
-      <AmbientSoundToggle />
     </main>
   )
 }

@@ -13,7 +13,6 @@ const ScreenshotDemo = dynamic(
 
 export function HowItWorks() {
   const t = useT("comoFunciona")
-  const [showSub, setShowSub] = useState(false)
 
   const steps = [
     { icon: SmartphoneIcon, titleKey: "passo1", descKey: "passo1Desc" },
@@ -65,22 +64,7 @@ export function HowItWorks() {
             >
               {t("titulo")}
             </motion.h2>
-            <motion.button
-              onClick={() => setShowSub((p) => !p)}
-              className="text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors flex items-center gap-1 mb-10"
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                {showSub ? <polyline points="18 15 12 9 6 15" /> : <polyline points="6 9 12 15 18 9" />}
-              </svg>
-              {showSub ? "menos detalhes" : "como funciona?"}
-            </motion.button>
-            <motion.div
-              initial={false}
-              animate={showSub ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <p className="text-sm text-[var(--white-muted)] leading-relaxed mb-6">{t("subtitulo")}</p>
-            </motion.div>
+            <p className="text-sm text-[var(--white-muted)] leading-relaxed mb-10">{t("subtitulo")}</p>
 
             <div className="space-y-6">
               {steps.map((s, i) => {
