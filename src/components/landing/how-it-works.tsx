@@ -3,6 +3,7 @@
 import { useT } from "@/lib/use-t"
 import { motion } from "framer-motion"
 import { useState } from "react"
+import Image from "next/image"
 import { SmartphoneIcon, TrendingIcon, AwardIcon } from "@/components/ui/icons"
 import dynamic from "next/dynamic"
 
@@ -76,6 +77,23 @@ export function HowItWorks() {
             </div>
           </div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6 }}
+          className="mt-12 md:mt-16 max-w-3xl mx-auto"
+        >
+          <Image
+            src="/images/lifestyle-treino.webp"
+            alt="Treino rolando no tatame enquanto o OssTrack gerencia a academia no computador"
+            width={1600}
+            height={900}
+            loading="lazy"
+            className="w-full h-auto rounded-2xl border border-[var(--dark-border)]"
+          />
+        </motion.div>
       </div>
     </section>
   )
