@@ -171,14 +171,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                     {aluno.academia && (
                       <span className="text-[0.625rem] text-[var(--text-muted)]">{aluno.academia}</span>
                     )}
-                    <span className="text-[0.625rem] text-[var(--text-muted)]">· Lv.{levelInfo.level}</span>
                   </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
-                <div className="text-right">
-                  <div className="text-2xl font-black" style={{ color: streak >= 3 ? "var(--orange)" : "var(--gold)" }}>{streak}</div>
-                  <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">streak</div>
                 </div>
               </div>
             </div>
@@ -206,20 +199,16 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
           {/* HORAS DE TREINO — banner card */}
           <a href="/dashboard/aluno/horas" className="block mb-6 group">
-            <div className="relative overflow-hidden rounded-2xl p-4 transition-all active:scale-[0.98]" style={{ background: "linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(139,92,246,0.08) 50%, rgba(212,168,71,0.06) 100%)", border: "1px solid rgba(59,130,246,0.15)" }}>
-              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)" }} />
-              <div className="relative flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", boxShadow: "0 4px 15px rgba(59,130,246,0.25)" }}>
-                    <Clock className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-[var(--text-secondary)]">Horas de treino</p>
-                    <p className="text-lg font-black" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Ver suas horas →</p>
-                  </div>
+            <div className="flex items-center justify-between p-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-surface)] hover:border-[rgba(212,168,76,0.3)] transition-all active:scale-[0.98]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)" }}>
+                  <Clock className="w-5 h-5 text-white" />
                 </div>
-                <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:translate-x-1 transition-transform" />
+                <div>
+                  <p className="text-base font-bold">Horas de treino →</p>
+                </div>
               </div>
+              <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:translate-x-1 transition-transform" />
             </div>
           </a>
 
@@ -370,29 +359,6 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
               <MetaSemanalCard />
               <StreakSalvage currentStreak={streak} pontos={pontos} />
               <DailyMissions />
-
-              {/* XP Level detail */}
-              <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-branca)"} as React.CSSProperties}>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--gold)] to-amber-700 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-[var(--gold)]/20">
-                    {levelInfo.level}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-sm">{levelInfo.title}</span>
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Lv.{levelInfo.level}</span>
-                    </div>
-                    <div className="flex items-center gap-3 mt-2 text-xs">
-                      <span className="text-[var(--text-secondary)]">{totalAulas} aulas</span>
-                      <span className="w-1 h-1 rounded-full bg-[var(--text-muted)]" />
-                      <span className="text-[var(--text-secondary)]">{levelInfo.next.toLocaleString()} XP p/ próximo</span>
-                    </div>
-                    <div className="mt-2 h-1.5 rounded-full bg-[var(--bg-surface)] overflow-hidden">
-                      <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${levelInfo.progress}%` }} />
-                    </div>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           )}
 
