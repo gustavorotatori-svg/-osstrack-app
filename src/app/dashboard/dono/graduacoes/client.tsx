@@ -205,19 +205,6 @@ export default function GraduacoesClient({ role }: { role: string }) {
                   </div>
                 </div>
 
-                <div className="bg-black/30 rounded-xl p-3">
-                  <h5 className="text-[10px] font-bold text-[var(--gold)] mb-2">👀 Prévia</h5>
-                  <div className="space-y-1">
-                    {["Branca", "Azul", "Roxa", "Marrom", "Preta"].map((faixa, i) => (
-                      <div key={faixa} className="flex items-center gap-2 text-[10px] text-[var(--text-secondary)]">
-                        <span>{["⬜", "🟦", "🟪", "🟫", "⬛"][i]}</span>
-                        <span>{faixa}</span>
-                        {i === 0 && <span className="text-[8px] text-[var(--gold)]">→ Requisitos visíveis no link</span>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
                 <button
                   onClick={() => setShowShare(false)}
                   className="w-full mt-4 py-2.5 rounded-xl text-xs font-bold border border-[var(--border)] text-[var(--text-secondary)] hover:text-white transition-all"
