@@ -8,7 +8,7 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { track } from "@vercel/analytics"
-import { InstallPrompt, useInstall } from "@/components/pwa/install-prompt"
+import { InstallPrompt } from "@/components/pwa/install-prompt"
 
 type RoleType = "aluno" | "professor" | "dono"
 
@@ -85,7 +85,6 @@ function CadastroContent() {
   const [geoLoading, setGeoLoading] = useState(false)
   const buscaTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const buscaProfTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const { install, isStandalone } = useInstall()
 
   const t = useT("cadastro")
   const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
@@ -750,16 +749,7 @@ function CadastroContent() {
           </p>
         </form>
 
-        {!isStandalone && (
-          <div className="text-center mt-4">
-            <button onClick={install}
-              className="inline-flex items-center gap-1.5 text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Instalar App
-            </button>
-          </div>
-        )}
-      </div>
+        </div>
       <InstallPrompt />
     </div>
   )
