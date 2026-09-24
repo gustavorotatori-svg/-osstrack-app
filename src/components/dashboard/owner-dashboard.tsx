@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { Crown, TrendingUp, HelpCircle, Target, ArrowUpRight, BarChart3, Users, GraduationCap, Calendar, Settings, Wallet, FileText, ClipboardList, Link2, Gift, AlertTriangle } from "lucide-react"
+import { TrendingUp, HelpCircle, Target, ArrowUpRight, BarChart3, Users, GraduationCap, Calendar, Settings, Wallet, FileText, ClipboardList, Gift, AlertTriangle } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
@@ -78,20 +77,20 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   function getQuickActions() {
     const prefix = role === "dono" ? "dono" : "professor"
     const base = [
-      { label: "Turmas", icon: CalendarIcon, href: `/dashboard/${prefix}/turmas`, color: "from-blue-600/20 to-blue-600/5", border: "border-blue-500/20" },
-      { label: "Alunos", icon: UsersIcon, href: `/dashboard/${prefix}/alunos`, color: "from-emerald-600/20 to-emerald-600/5", border: "border-emerald-500/20" },
-      { label: "Presenças", icon: ClipboardList, href: `/dashboard/${prefix}/presencas`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
-      { label: "Graduações", icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
+      { label: "Turmas", icon: CalendarIcon, href: `/dashboard/${prefix}/turmas` },
+      { label: "Alunos", icon: UsersIcon, href: `/dashboard/${prefix}/alunos` },
+      { label: "Presenças", icon: ClipboardList, href: `/dashboard/${prefix}/presencas` },
+      { label: "Graduações", icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes` },
     ]
     base.push(
-      { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro`, color: "from-yellow-600/20 to-yellow-600/5", border: "border-yellow-500/20" },
-      { label: "Agenda", icon: Calendar, href: `/dashboard/${role}/agenda`, color: "from-purple-600/20 to-purple-600/5", border: "border-purple-500/20" },
+      { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro` },
+      { label: "Agenda", icon: Calendar, href: `/dashboard/${role}/agenda` },
     )
     if (role === "dono") {
       base.push(
-        { label: "Famílias", icon: Users, href: "/dashboard/dono/familia", color: "from-gold/20 to-gold/5", border: "border-gold/20" },
-        { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios", color: "from-pink-600/20 to-pink-600/5", border: "border-pink-500/20" },
-        { label: "Config", icon: Settings, href: "/dashboard/dono/config", color: "from-gray-600/20 to-gray-600/5", border: "border-gray-500/20" },
+        { label: "Famílias", icon: Users, href: "/dashboard/dono/familia" },
+        { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios" },
+        { label: "Config", icon: Settings, href: "/dashboard/dono/config" },
       )
     }
     return base
@@ -108,12 +107,11 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           <div className="hero-gradient p-5 md:p-6">
             <div className="relative z-10 flex items-start justify-between">
               <div>
-                <div className="label text-[var(--gold)] mb-1">{role === "dono" ? "DONO" : "PROFESSOR"}</div>
                 <h1 className="hero-title">{academia.nome}</h1>
                 <p className="hero-sub">{academia.responsavel}</p>
               </div>
               {stats.totalAlunos > 0 && (
-                <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
                   <span className="text-emerald-400/60">vs mês anterior</span>
@@ -191,13 +189,6 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               <div className="stat-glass-value"><AnimatedCounter value={presencasPorMes} /></div>
               <div className="stat-glass-label">{t("esteMes")}</div>
             </div>
-          </div>
-
-          {/* Growth metric mobile */}
-          <div className="flex sm:hidden items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-2 justify-center">
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
-            <span className="text-emerald-400/60">crescimento vs mês anterior</span>
           </div>
 
           {/* Monthly chart */}
@@ -579,11 +570,6 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                         ))}
                       </div>
                     )}
-
-                    <div className="text-xs text-[var(--text-secondary)] p-3 rounded-lg bg-[var(--red-dim)] border border-[var(--red)]/20 flex items-start gap-2">
-                      <Target className="w-3.5 h-3.5 text-[var(--red)] mt-0.5 shrink-0" />
-                      <span>Compartilhe o link de convite com prospects. Quando eles se cadastrarem, serão contabilizados como convertidos.</span>
-                    </div>
                   </>
                 )}
               </div>

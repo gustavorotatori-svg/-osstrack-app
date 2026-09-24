@@ -114,6 +114,26 @@ export default function PerfilClient({ role }: { role: string }) {
             </div>
 
             <h2 className="text-xl font-extrabold tracking-tight mt-4">{data.nome}</h2>
+            {isAluno && (
+              <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2 ${getBeltColor(data.faixa)}`}>
+                {getBeltEmoji(data.faixa)} {data.faixa} · {data.grau + 1}º Grau
+              </span>
+            )}
+            {isAluno && getNivelInfo(data.nivelDisciplina) && (
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
+                  style={{ background: "rgba(212,168,71,0.1)", border: "1px solid rgba(212,168,71,0.2)", color: "var(--gold)" }}>
+                  {getNivelInfo(data.nivelDisciplina)!.icone} {getNivelInfo(data.nivelDisciplina)!.label}
+                </span>
+              </div>
+            )}
+            <p className="text-xs text-[var(--text-secondary)] mt-3">{data.academia || t("semAcademia")}</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">{data.email}</p>
+            {data.dataInicio && (
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">🥋 Desde {new Date(data.dataInicio).toLocaleDateString("pt-BR")}</p>
+            )}
+          </div>
+
           <div className="glass-card p-5 space-y-3">
             <h3 className="font-bold text-sm section-header mb-0">{t("dadosPrivacidade")}</h3>
             <button onClick={async () => {
@@ -142,26 +162,6 @@ export default function PerfilClient({ role }: { role: string }) {
               className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 active:scale-[0.97] btn-danger">
               <Trash2 className="w-4 h-4" /> {t("excluirConta")}
             </button>
-          </div>
-
-          {isAluno && (
-              <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2 ${getBeltColor(data.faixa)}`}>
-                {getBeltEmoji(data.faixa)} {data.faixa} · {data.grau + 1}º Grau
-              </span>
-            )}
-            {isAluno && getNivelInfo(data.nivelDisciplina) && (
-              <div className="mt-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
-                  style={{ background: "rgba(212,168,71,0.1)", border: "1px solid rgba(212,168,71,0.2)", color: "var(--gold)" }}>
-                  {getNivelInfo(data.nivelDisciplina)!.icone} {getNivelInfo(data.nivelDisciplina)!.label}
-                </span>
-              </div>
-            )}
-            <p className="text-xs text-[var(--text-secondary)] mt-3">{data.academia || t("semAcademia")}</p>
-            <p className="text-xs text-[var(--text-muted)] mt-1">{data.email}</p>
-            {data.dataInicio && (
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">🥋 Desde {new Date(data.dataInicio).toLocaleDateString("pt-BR")}</p>
-            )}
           </div>
 
           {!editando ? (
@@ -236,12 +236,12 @@ export default function PerfilClient({ role }: { role: string }) {
                   <div className="stat-glass-label">{t("presencas")}</div>
                 </div>
                 <div className="stat-glass">
-                  <div className="stat-glass-value"><span>{data.thisMonth}</span></div>
-                  <div className="stat-glass-label">{t("aulasEsteMes")}</div>
-                </div>
-                <div className="stat-glass">
                   <div className="stat-glass-value"><span>{data.currentStreak}</span></div>
                   <div className="stat-glass-label">{t("streakAtual")}</div>
+                </div>
+                <div className="stat-glass">
+                  <div className="stat-glass-value"><span>{data.bestStreak}</span></div>
+                  <div className="stat-glass-label">{t("melhorStreak")}</div>
                 </div>
               </div>
 
@@ -278,26 +278,6 @@ export default function PerfilClient({ role }: { role: string }) {
                   </div>
                 </div>
               )}
-
-              <div className="glass-card p-5">
-                <div className="section-header">🔥 Streak</div>
-                <div className="flex items-center justify-between">
-                  <div className="text-center flex-1">
-                    <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{data.currentStreak}</div>
-                    <div className="text-[10px] text-[var(--text-muted)]">{t("atual")}</div>
-                  </div>
-                  <div className="h-10 w-px" style={{ background: "var(--border)" }} />
-                  <div className="text-center flex-1">
-                    <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{data.bestStreak}</div>
-                    <div className="text-[10px] text-[var(--text-muted)]">{t("melhor")}</div>
-                  </div>
-                  <div className="h-10 w-px" style={{ background: "var(--border)" }} />
-                  <div className="text-center flex-1">
-                    <div className="text-lg font-bold text-emerald-500">{data.totalAulas > 0 ? Math.round((data.thisMonth / data.totalAulas) * 100) : 0}%</div>
-                    <div className="text-[10px] text-[var(--text-muted)]">{t("doTotal")}</div>
-                  </div>
-                </div>
-              </div>
             </>
           )}
         </div>
