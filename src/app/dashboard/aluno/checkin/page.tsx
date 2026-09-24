@@ -13,22 +13,29 @@ import { BackButton } from "@/components/ui/back-button"
 import { toast } from "sonner"
 
 function Confetti() {
+  const [particles] = useState(() => {
+    const emojis = ["🥋", "🔥", "💪", "⭐", "🎉", "⚡", "🌟", "🏆"]
+    return Array.from({ length: 40 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      size: 14 + Math.random() * 20,
+      duration: 2 + Math.random() * 2,
+      delay: Math.random() * 0.8,
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+    }))
+  })
   return (
     <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-      {Array.from({ length: 40 }).map((_, i) => {
-        const emojis = ["🥋", "🔥", "💪", "⭐", "🎉", "⚡", "🌟", "🏆"]
-        const size = 14 + Math.random() * 20
-        return (
-          <div key={i} className="absolute" style={{
-            left: `${Math.random() * 100}%`, top: `-10%`,
-            fontSize: `${size}px`,
-            animation: `confettiFall ${2 + Math.random() * 2}s linear forwards`,
-            animationDelay: `${Math.random() * 0.8}s`,
-          }}>
-            {emojis[Math.floor(Math.random() * emojis.length)]}
-          </div>
-        )
-      })}
+      {particles.map((p) => (
+        <div key={p.id} className="absolute" style={{
+          left: `${p.left}%`, top: `-10%`,
+          fontSize: `${p.size}px`,
+          animation: `confettiFall ${p.duration}s linear forwards`,
+          animationDelay: `${p.delay}s`,
+        }}>
+          {p.emoji}
+        </div>
+      ))}
     </div>
   )
 }
@@ -75,7 +82,15 @@ export default function CheckinPage() {
   }, [t])
 
   useEffect(() => {
-    Promise.all([fetchMeta(), fetchStreak()]).finally(() => setLoading(false))
+    let active = true
+    ;(async () => {
+      try {
+        await Promise.all([fetchMeta(), fetchStreak()])
+      } finally {
+        if (active) setLoading(false)
+      }
+    })()
+    return () => { active = false }
   }, [fetchMeta, fetchStreak])
 
   useEffect(() => {

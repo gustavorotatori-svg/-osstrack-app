@@ -64,7 +64,6 @@ export async function GET() {
     }
 
     // Overall retention
-    const totalAlunos = alunos.length
     const eligibleD1 = alunos.filter((a) => Date.now() - new Date(a.createdAt).getTime() >= 1 * 24 * 60 * 60 * 1000).length
     const eligibleD7 = alunos.filter((a) => Date.now() - new Date(a.createdAt).getTime() >= 7 * 24 * 60 * 60 * 1000).length
     const eligibleD30 = alunos.filter((a) => Date.now() - new Date(a.createdAt).getTime() >= 30 * 24 * 60 * 60 * 1000).length

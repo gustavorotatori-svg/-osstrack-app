@@ -3,7 +3,6 @@ import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { OwnerDashboardClient } from "@/components/dashboard/owner-dashboard"
-import { ProfessorSemAcademia } from "./sem-academia"
 
 export default async function ProfessorDashboard() {
   const session = await getServerSession(authOptions)

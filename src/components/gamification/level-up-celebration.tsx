@@ -39,15 +39,17 @@ export function LevelUpCelebration({ currentLevel, pontos }: { currentLevel: num
   }, [levelInfo])
 
   useEffect(() => {
-    try {
-      const lastLevel = parseInt(localStorage.getItem("oss_last_level") || "0", 10)
-      if (currentLevel > lastLevel && lastLevel > 0) {
-        setLevelInfo({ from: lastLevel, to: currentLevel, title: LEVEL_TITLES[currentLevel] || "" })
-        setConfetti(createConfetti())
-        setShow(true)
-      }
-      localStorage.setItem("oss_last_level", String(currentLevel))
-    } catch {}
+    ;(async () => {
+      try {
+        const lastLevel = parseInt(localStorage.getItem("oss_last_level") || "0", 10)
+        if (currentLevel > lastLevel && lastLevel > 0) {
+          setLevelInfo({ from: lastLevel, to: currentLevel, title: LEVEL_TITLES[currentLevel] || "" })
+          setConfetti(createConfetti())
+          setShow(true)
+        }
+        localStorage.setItem("oss_last_level", String(currentLevel))
+      } catch {}
+    })()
   }, [currentLevel])
 
   return (

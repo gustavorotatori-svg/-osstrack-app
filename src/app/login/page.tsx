@@ -48,12 +48,14 @@ function LoginContent() {
   const [loading, setLoading] = useState(false)
   const [role, setRole] = useState<Role>("aluno")
   const t = useT("login")
-  const { install, canInstall, isIOS, isStandalone } = useInstall()
+  const { install, isIOS, isStandalone } = useInstall()
   const cfg = ROLE_CONFIG[role]
 
   useEffect(() => {
-    const r = searchParams.get("role") as Role | null
-    if (r && ROLE_CONFIG[r]) setRole(r)
+    ;(async () => {
+      const r = searchParams.get("role") as Role | null
+      if (r && ROLE_CONFIG[r]) setRole(r)
+    })()
   }, [searchParams])
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -83,7 +85,7 @@ function LoginContent() {
 
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         try {
-          if (!(window as any).grecaptcha) {
+          if (!window.grecaptcha) {
             await new Promise<void>((resolve) => {
               const script = document.createElement("script")
               script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`
@@ -91,7 +93,7 @@ function LoginContent() {
               document.head.appendChild(script)
             })
           }
-          recaptchaToken = await (window as any).grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: "login" })
+          recaptchaToken = await window.grecaptcha!.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: "login" })
         } catch {}
       }
 

@@ -25,6 +25,7 @@ const FILTROS = [
 export function NotificacoesClient({ role }: { role: string }) {
   const t = useT("notificacoes")
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([])
+  const [now] = useState(() => Date.now())
   const [filtro, setFiltro] = useState("todas")
   const router = useRouter()
 
@@ -112,7 +113,7 @@ export function NotificacoesClient({ role }: { role: string }) {
   }
 
   function tempoRelativo(dateStr: string) {
-    const diff = Date.now() - new Date(dateStr).getTime()
+    const diff = now - new Date(dateStr).getTime()
     const mins = Math.floor(diff / 60000)
     if (mins < 1) return "agora"
     if (mins < 60) return `${mins}min`

@@ -97,7 +97,7 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState<Set<string>>(new Set())
   const [tip, setTip] = useState<OssinhoTip | null>(null)
-  const [tipIndex, setTipIndex] = useState(0)
+  const [, setTipIndex] = useState(0)
 
   const t = useCallback(
     (key: string) => {
@@ -112,36 +112,40 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
   )
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("ossinho_dismissed")
-      if (saved) setDismissed(new Set(JSON.parse(saved)))
-    } catch {}
+    ;(async () => {
+      try {
+        const saved = localStorage.getItem("ossinho_dismissed")
+        if (saved) setDismissed(new Set(JSON.parse(saved)))
+      } catch {}
+    })()
   }, [])
 
   useEffect(() => {
-    const tipKey = getTipId(role, pathname)
-    if (!tipKey) {
-      setVisible(false)
-      setTip(null)
-      return
-    }
+    ;(async () => {
+      const tipKey = getTipId(role, pathname)
+      if (!tipKey) {
+        setVisible(false)
+        setTip(null)
+        return
+      }
 
-    if (dismissed.has(tipKey)) {
-      setVisible(false)
-      setTip(null)
-      return
-    }
+      if (dismissed.has(tipKey)) {
+        setVisible(false)
+        setTip(null)
+        return
+      }
 
-    const parts = tipKey.split("_")
-    const tipId = parts.slice(1).join("_")
-    const title = t(`${tipId}.title`)
-    const desc = t(`${tipId}.desc`)
+      const parts = tipKey.split("_")
+      const tipId = parts.slice(1).join("_")
+      const title = t(`${tipId}.title`)
+      const desc = t(`${tipId}.desc`)
 
-    if (title && desc) {
-      setTip({ id: tipKey, title, desc })
-      setTipIndex(0)
-      setVisible(true)
-    }
+      if (title && desc) {
+        setTip({ id: tipKey, title, desc })
+        setTipIndex(0)
+        setVisible(true)
+      }
+    })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [role, pathname, dismissed])
 

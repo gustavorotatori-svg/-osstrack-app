@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { TreinoTimer } from "@/components/treino/treino-timer"
 import { PageTransition } from "@/components/ui/page-transition"
 import { BackButton } from "@/components/ui/back-button"
-import { Play, Check, Clock, History, Dumbbell, Target, ChevronDown, ChevronUp, Flame, BarChart3 } from "lucide-react"
+import { Play, Check, Clock, History, Dumbbell, ChevronDown, ChevronUp, Flame } from "lucide-react"
 
 type Exercise = {
   id: string
@@ -57,9 +57,11 @@ export default function TreinoPage() {
   const [startedAt, setStartedAt] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch((e) => console.error("treino page", e))
-    const saved = localStorage.getItem("osstrack_historico_treino")
-    if (saved) setHistorico(JSON.parse(saved))
+    ;(async () => {
+      fetch("/api/treino").then((r) => r.json()).then((data) => setTreinandoAgora(data.treinando || [])).catch((e) => console.error("treino page", e))
+      const saved = localStorage.getItem("osstrack_historico_treino")
+      if (saved) setHistorico(JSON.parse(saved))
+    })()
   }, [])
 
   useEffect(() => {

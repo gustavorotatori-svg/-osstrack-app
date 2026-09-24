@@ -9,12 +9,14 @@ import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type AgendamentoResumo = { id: string; horarioId: string; data: string; horario?: { horaInicio: string; turma?: { nome: string } | null } | null }
+
 export default function AlunoAgendaPage() {
   const t = useT("aluno.agenda")
   const [horarios, setHorarios] = useState<HorarioData[]>([])
-  const [meusAgendamentos, setMeusAgendamentos] = useState<any[]>([])
+  const [meusAgendamentos, setMeusAgendamentos] = useState<AgendamentoResumo[]>([])
   const [loading, setLoading] = useState(true)
-  const [bookingId, setBookingId] = useState<string | null>(null)
+  const [, setBookingId] = useState<string | null>(null)
 
   const fetchData = useCallback(async () => {
     try {
@@ -26,11 +28,11 @@ export default function AlunoAgendaPage() {
       if (aRes.ok) setMeusAgendamentos(await aRes.json())
     } catch { toast.error(t("erroCarregar") || "Erro ao carregar") }
     setLoading(false)
-  }, [])
+  }, [t])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  useEffect(() => { ;(async () => { await fetchData() })() }, [fetchData])
 
-  const bookedHorarioIds = meusAgendamentos.map((a: any) => a.horarioId)
+  const bookedHorarioIds = meusAgendamentos.map((a) => a.horarioId)
 
   async function handleBook(horario: HorarioData) {
     if (bookedHorarioIds.includes(horario.id)) {
@@ -107,7 +109,7 @@ export default function AlunoAgendaPage() {
           <div className="glass-card p-5">
             <h4 className="font-bold text-sm mb-3">📋 {t("meusAgendamentos")}</h4>
             <div className="space-y-2">
-              {meusAgendamentos.slice(0, 5).map((a: any) => (
+              {meusAgendamentos.slice(0, 5).map((a) => (
                 <div
                   key={a.id}
                   className="flex items-center justify-between bg-black/20 rounded-xl px-3 py-2"

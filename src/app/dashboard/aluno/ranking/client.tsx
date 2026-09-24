@@ -27,7 +27,6 @@ type Props = {
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 const CATEGORIA_ICONES: Record<string, string> = { adulto: "🥋", master: "🏆", infantil: "⭐" }
-const CATEGORIA_CORES: Record<string, string> = { adulto: "#60a5fa", master: "#a855f7", infantil: "#f97316" }
 
 export function RankingClient({ initialRanking, alunoId, belts, initialMestres, visivel }: Props) {
   const t = useT("aluno.ranking")
@@ -40,17 +39,19 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestres, 
   const [filterError, setFilterError] = useState<string | null>(null)
 
   useEffect(() => {
-    const params = new URLSearchParams()
-    if (categoriaFilter !== "geral") params.set("categoria", categoriaFilter)
-    if (beltFilter !== "Todas") params.set("faixa", beltFilter)
-    if (periodoFilter !== "total") params.set("periodo", periodoFilter)
+    ;(async () => {
+      const params = new URLSearchParams()
+      if (categoriaFilter !== "geral") params.set("categoria", categoriaFilter)
+      if (beltFilter !== "Todas") params.set("faixa", beltFilter)
+      if (periodoFilter !== "total") params.set("periodo", periodoFilter)
 
-    setFilterLoading(true)
-    setFilterError(null)
-    fetch(`/api/ranking?${params.toString()}`)
-      .then((r) => r.json())
-      .then((d) => { setRanking(d.ranking || []); setMestres(d.mestres || {}); setFilterLoading(false) })
-      .catch(() => { setFilterError("Erro ao carregar ranking"); setFilterLoading(false); toast.error("Erro ao carregar ranking") })
+      setFilterLoading(true)
+      setFilterError(null)
+      fetch(`/api/ranking?${params.toString()}`)
+        .then((r) => r.json())
+        .then((d) => { setRanking(d.ranking || []); setMestres(d.mestres || {}); setFilterLoading(false) })
+        .catch(() => { setFilterError("Erro ao carregar ranking"); setFilterLoading(false); toast.error("Erro ao carregar ranking") })
+    })()
   }, [categoriaFilter, beltFilter, periodoFilter])
 
   if (!visivel) {

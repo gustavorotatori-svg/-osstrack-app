@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
@@ -27,7 +28,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: "Cobrança não encontrada" }, { status: 404 })
   }
 
-  const updateData: any = {}
+  const updateData: Prisma.CobrancaUncheckedUpdateInput = {}
   if (status === "pago") {
     updateData.status = "pago"
     updateData.metodo = metodo || "dinheiro"

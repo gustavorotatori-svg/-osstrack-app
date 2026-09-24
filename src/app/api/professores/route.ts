@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
@@ -13,7 +14,7 @@ export async function GET(request: Request) {
 
     if (!academiaId) return NextResponse.json([])
 
-    const where: any = { academiaId, role: "professor" }
+    const where: Prisma.UsuarioWhereInput = { academiaId, role: "professor" }
     if (q && q.length >= 2) where.nome = { contains: q, mode: "insensitive" }
 
     const professores = await prisma.usuario.findMany({

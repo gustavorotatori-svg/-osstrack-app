@@ -15,8 +15,6 @@ function diasDesde(data: Date): number {
 }
 
 async function enviarDrip(alvo: Alvo, titulo: string, corpo: string, ctaLabel: string, ctaLink: string, notifTipo: string, notifTitulo: string, notifDesc: string) {
-  const primeiroNome = alvo.nome.split(" ")[0]
-
   await notificarUsuario({
     usuarioId: alvo.id,
     tipo: notifTipo,

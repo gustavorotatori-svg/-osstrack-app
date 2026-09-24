@@ -55,10 +55,10 @@ test.describe("1. Cadastro — fluxo crítico", () => {
     await checkboxes.nth(1).check()
   })
 
-  test("Cadastro duplicado retorna erro especifico", async ({ page }) => {
+  test("Cadastro duplicado retorna erro especifico", async () => {
     // Register an account first via API
     const uniqueEmail = `dup${Date.now()}@test.com`
-    const registerRes = await fetch(`${URL}/api/auth/register`, {
+    await fetch(`${URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -71,7 +71,6 @@ test.describe("1. Cadastro — fluxo crítico", () => {
       }),
     })
     // First attempt may succeed or be rate-limited
-    const firstData = await registerRes.json()
 
     // Try same email again - should show duplicate error
     const res2 = await fetch(`${URL}/api/auth/register`, {
@@ -147,7 +146,7 @@ test.describe("3. Recuperação de senha", () => {
   })
 
   test("Pagina de redefinir rejeita token vazio", async ({ page }) => {
-    const resp = await page.goto(`${URL}/redefinir-senha?token=`)
+    await page.goto(`${URL}/redefinir-senha?token=`)
     // Should show error state or redirect
     await page.waitForLoadState("networkidle")
     const body = page.locator("body")

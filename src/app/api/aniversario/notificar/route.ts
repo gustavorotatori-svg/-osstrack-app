@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 
     const aniversariantes = usuarios.filter((u) => {
       if (!u.dataNascimento) return false
-      const [_, mes, dia] = u.dataNascimento.split("-")
+      const [, mes, dia] = u.dataNascimento.split("-")
       return mes === mesAtual && dia === diaAtual
     })
 

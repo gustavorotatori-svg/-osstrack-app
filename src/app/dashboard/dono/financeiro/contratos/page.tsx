@@ -7,11 +7,15 @@ import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type Contrato = { id: string; aluno: { id: string; nome: string; faixa: string }; plano: { id: string; nome: string }; valor: number; dataInicio: string; status: string }
+type Plano = { id: string; nome: string; valor: number; ativo: boolean }
+type Aluno = { id: string; nome: string; faixa: string }
+
 export default function ContratosPage() {
   const t = useT("dono.financeiro")
-  const [contratos, setContratos] = useState<any[]>([])
-  const [planos, setPlanos] = useState<any[]>([])
-  const [alunos, setAlunos] = useState<any[]>([])
+  const [contratos, setContratos] = useState<Contrato[]>([])
+  const [planos, setPlanos] = useState<Plano[]>([])
+  const [alunos, setAlunos] = useState<Aluno[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ alunoId: "", planoId: "", valor: "" })
@@ -27,8 +31,9 @@ export default function ContratosPage() {
         fetch("/api/academia/alunos").then(r => r.json()).catch(() => []),
       ])
       setContratos(c); setPlanos(p); setAlunos(a)
-    } catch (e: any) {
-      toast.error(e.message || "Erro ao carregar dados")
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Erro ao carregar dados"
+      toast.error(message)
     }
     setLoading(false)
   }
@@ -91,7 +96,7 @@ export default function ContratosPage() {
               <select id="contrato-aluno" value={form.alunoId} onChange={e => setForm({...form, alunoId: e.target.value})} required
                 className="w-full input-field px-3 py-2.5 mt-1">
                 <option value="">{t("selecioneAluno")}</option>
-                {alunos.map((a: any) => (
+                {alunos.map((a: Aluno) => (
                   <option key={a.id} value={a.id}>{a.nome} - {a.faixa}</option>
                 ))}
               </select>
@@ -104,7 +109,7 @@ export default function ContratosPage() {
               }} required
                 className="w-full input-field px-3 py-2.5 mt-1">
                 <option value="">{t("selecionePlano")}</option>
-                {planos.filter(p => p.ativo).map((p: any) => (
+                {planos.filter(p => p.ativo).map((p: Plano) => (
                   <option key={p.id} value={p.id}>{p.nome} - R$ {(p.valor / 100).toFixed(2)}</option>
                 ))}
               </select>

@@ -15,8 +15,7 @@ type Familia = {
 }
 
 type AlunoItem = { id: string; nome: string; faixa: string; grau: number }
-
-const FAIXAS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
+type Membro = { id: string; alunoId: string }
 
 export function FamiliaClient() {
   const [familias, setFamilias] = useState<Familia[]>([])
@@ -41,7 +40,7 @@ export function FamiliaClient() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetchFamilias() }, [fetchFamilias])
+  useEffect(() => { ;(async () => { await fetchFamilias() })() }, [fetchFamilias])
 
   function resetForm() {
     setNome("")
@@ -157,7 +156,7 @@ export function FamiliaClient() {
       const res = await fetch(`/api/familia/${familiaId}`)
       if (res.ok) {
         const data = await res.json()
-        const m = data.membros.find((m: any) => m.alunoId === alunoId)
+        const m = data.membros.find((m: Membro) => m.alunoId === alunoId)
         return m?.id || null
       }
     } catch { /* ignore */ }

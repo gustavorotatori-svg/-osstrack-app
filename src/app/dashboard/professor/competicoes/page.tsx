@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { BackButton } from "@/components/ui/back-button"
 import { DashboardShell } from "@/components/dashboard/shell"
 

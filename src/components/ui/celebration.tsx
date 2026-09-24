@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const CONFETTI = ["🥋", "✨", "🔥", "🎉", "⭐", "💪", "👊", "🏆"]
@@ -9,20 +9,25 @@ type CelebrationProps = { show: boolean; title?: string; message?: string; subme
 
 export function Celebration({ show, title, message, submessage, onDone }: CelebrationProps) {
   const [particles, setParticles] = useState<{ id: number; emoji: string; x: number; delay: number }[]>([])
+  const onDoneRef = useRef(onDone)
+
+  useEffect(() => { onDoneRef.current = onDone }, [onDone])
 
   useEffect(() => {
     if (!show) {
-      setParticles([])
+      ;(async () => setParticles([]))()
       return
     }
-    const p = Array.from({ length: 16 }, (_, i) => ({
-      id: i,
-      emoji: CONFETTI[i % CONFETTI.length],
-      x: Math.random() * 100,
-      delay: Math.random() * 0.4,
-    }))
-    setParticles(p)
-    const timer = setTimeout(() => onDone?.(), 2500)
+    ;(async () => {
+      const p = Array.from({ length: 16 }, (_, i) => ({
+        id: i,
+        emoji: CONFETTI[i % CONFETTI.length],
+        x: Math.random() * 100,
+        delay: Math.random() * 0.4,
+      }))
+      setParticles(p)
+    })()
+    const timer = setTimeout(() => onDoneRef.current?.(), 2500)
     return () => clearTimeout(timer)
   }, [show])
 

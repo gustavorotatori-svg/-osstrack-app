@@ -37,7 +37,7 @@ export default function ProfessorAgendaPage() {
       toast.error(t("erroCarregarHorarios") || "Erro ao carregar horários")
     }
     setLoading(false)
-  }, [])
+  }, [t])
 
   const fetchTurmas = useCallback(async () => {
     try {
@@ -46,9 +46,9 @@ export default function ProfessorAgendaPage() {
     } catch {
       toast.error(t("erroCarregarTurmas") || "Erro ao carregar turmas")
     }
-  }, [])
+  }, [t])
 
-  useEffect(() => { fetchHorarios(); fetchTurmas() }, [fetchHorarios, fetchTurmas])
+  useEffect(() => { ;(async () => { await fetchHorarios(); await fetchTurmas() })() }, [fetchHorarios, fetchTurmas])
 
   function openAddForm(day: number, hour: string) {
     setSelectedDay(day)

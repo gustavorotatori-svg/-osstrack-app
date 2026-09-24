@@ -26,12 +26,14 @@ export function usePushNotifications() {
   }
 
   useEffect(() => {
-    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-      setPermission("unavailable")
-      return
-    }
-    setPermission(Notification.permission)
-    checkSubscription()
+    ;(async () => {
+      if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+        setPermission("unavailable")
+        return
+      }
+      setPermission(Notification.permission)
+      await checkSubscription()
+    })()
   }, [])
 
   const subscribe = useCallback(async () => {

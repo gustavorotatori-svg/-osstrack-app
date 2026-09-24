@@ -8,7 +8,9 @@ import { useEffect, useState } from "react"
 export function Hero({ stats }: { stats?: { academias: number; alunos: number; retencao: number } }) {
   const t = useT("hero")
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    ;(async () => setMounted(true))()
+  }, [])
 
   function formatStat(n: number) {
     if (n >= 10000) return `${(n / 1000).toFixed(0)}K+`

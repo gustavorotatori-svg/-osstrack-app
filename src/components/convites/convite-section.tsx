@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
-import { GraduationIcon, UserPlusIcon, HandshakeIcon, BuildingIcon, GiIcon, CopyIcon, MessageIcon, RefreshIcon, TimerIcon, CheckIcon, SmartphoneIcon } from "@/components/ui/icons"
+import { GraduationIcon, UserPlusIcon, HandshakeIcon, BuildingIcon, GiIcon, CopyIcon, RefreshIcon, TimerIcon, CheckIcon, SmartphoneIcon } from "@/components/ui/icons"
 
 type TipoConvite = "professor" | "aluno" | "amigo" | "academia"
 
@@ -28,7 +28,7 @@ interface ConviteSectionProps {
 export function ConviteSection({ tipo }: ConviteSectionProps) {
   const t = useT("convites")
   const [inviteLink, setInviteLink] = useState("")
-  const [whatsappLink, setWhatsappLink] = useState("")
+  const [, setWhatsappLink] = useState("")
   const [gerando, setGerando] = useState(false)
   const [copied, setCopied] = useState(false)
   const [showPreview, setShowPreview] = useState(false)

@@ -8,13 +8,16 @@ import { CardSkeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { FileText, CheckCircle2, AlertTriangle } from "lucide-react"
 
+type AssinaturaAluno = { alunoId: string; nome: string; faixa: string; assinado: boolean; assinatura?: { assinadoEm: string; cpf: string } | null }
+type AssinaturasData = { alunos?: AssinaturaAluno[] } | null
+
 export default function DonoWaiverPage() {
   const [loading, setLoading] = useState(true)
   const [titulo, setTitulo] = useState("Termo de Responsabilidade")
   const [conteudo, setConteudo] = useState("")
   const [versao, setVersao] = useState(0)
   const [salvando, setSalvando] = useState(false)
-  const [assinaturas, setAssinaturas] = useState<any>(null)
+  const [assinaturas, setAssinaturas] = useState<AssinaturasData>(null)
 
   useEffect(() => {
     Promise.all([
@@ -56,8 +59,8 @@ export default function DonoWaiverPage() {
     }
   }
 
-  const pendentes = assinaturas?.alunos?.filter((a: any) => !a.assinado) || []
-  const assinaram = assinaturas?.alunos?.filter((a: any) => a.assinado) || []
+  const pendentes = assinaturas?.alunos?.filter((a) => !a.assinado) || []
+  const assinaram = assinaturas?.alunos?.filter((a) => a.assinado) || []
 
   return (
     <DashboardShell role="dono">
@@ -147,7 +150,7 @@ export default function DonoWaiverPage() {
                   <p className="text-sm text-[var(--text-secondary)] text-center py-6">Nenhum aluno cadastrado ainda.</p>
                 ) : (
                   <div className="space-y-1.5">
-                    {[...assinaram, ...pendentes].map((a: any) => (
+                    {[...assinaram, ...pendentes].map((a) => (
                       <div key={a.alunoId} className="flex items-center justify-between p-3 rounded-xl" style={{ background: "var(--bg-surface)" }}>
                         <div className="flex items-center gap-3 min-w-0">
                           {a.assinado ? (
@@ -158,7 +161,7 @@ export default function DonoWaiverPage() {
                           <div className="min-w-0">
                             <p className="text-sm font-bold truncate">{a.nome}</p>
                             <p className="text-[10px] text-[var(--text-muted)]">
-                              {a.faixa} · {a.assinado ? `assinou em ${new Date(a.assinatura.assinadoEm).toLocaleDateString("pt-BR")} (CPF ${a.assinatura.cpf})` : "ainda não assinou"}
+                              {a.faixa} · {a.assinado ? `assinou em ${new Date(a.assinatura!.assinadoEm).toLocaleDateString("pt-BR")} (CPF ${a.assinatura!.cpf})` : "ainda não assinou"}
                             </p>
                           </div>
                         </div>

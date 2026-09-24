@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { BookOpen, Download, Heart, Zap, Users, MessageCircle, Award } from "lucide-react"
+import { BookOpen, Download, Heart, Zap, Users, Award } from "lucide-react"
 
 const benefits = [
   { icon: Heart, title: "Pertencimento real", desc: "Estratégias para transformar alunos avulsos em uma comunidade unida que se apoia dentro e fora do tatame." },

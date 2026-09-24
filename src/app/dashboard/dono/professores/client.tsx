@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
-import { Search, X, Trash2, UserPlus } from "lucide-react"
+import { Search, X, Trash2 } from "lucide-react"
 import { getBeltColor } from "@/lib/utils"
 
 type ProfessorData = {
@@ -28,12 +28,14 @@ export function ProfessoresClient() {
   const [removendo, setRemovendo] = useState<string | null>(null)
 
   useEffect(() => {
-    setLoading(true)
-    fetch("/api/professores/vinculados")
-      .then((r) => r.json())
-      .then((d) => setProfessores(d.professores || []))
-      .catch((e) => console.error("professores", e))
-      .finally(() => setLoading(false))
+    ;(async () => {
+      setLoading(true)
+      fetch("/api/professores/vinculados")
+        .then((r) => r.json())
+        .then((d) => setProfessores(d.professores || []))
+        .catch((e) => console.error("professores", e))
+        .finally(() => setLoading(false))
+    })()
   }, [])
 
   async function handleRemover(id: string, nome: string) {

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
-import { toast } from "sonner"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
@@ -110,41 +109,47 @@ function CadastroContent() {
 
   // URL params
   useEffect(() => {
-    const convite = searchParams.get("convite")
-    const tipo = searchParams.get("tipo") as RoleType | null
-    const academiaId = searchParams.get("academiaId")
-    const academiaNome = searchParams.get("academia")
-    const professorId = searchParams.get("professorId")
-    if (convite) {
-      setForm((f) => ({ ...f, codigoConvite: convite, role: tipo || f.role, academiaId: academiaId || f.academiaId }))
-      setRoleChosen(true)
-    }
-    if (academiaNome) setForm((f) => ({ ...f, academiaNome }))
-    if (professorId) setForm((f) => ({ ...f, professorId }))
-    if (tipo && !convite) {
-      setForm((f) => ({ ...f, role: tipo }))
-      setRoleChosen(true)
-    }
+    ;(async () => {
+      const convite = searchParams.get("convite")
+      const tipo = searchParams.get("tipo") as RoleType | null
+      const academiaId = searchParams.get("academiaId")
+      const academiaNome = searchParams.get("academia")
+      const professorId = searchParams.get("professorId")
+      if (convite) {
+        setForm((f) => ({ ...f, codigoConvite: convite, role: tipo || f.role, academiaId: academiaId || f.academiaId }))
+        setRoleChosen(true)
+      }
+      if (academiaNome) setForm((f) => ({ ...f, academiaNome }))
+      if (professorId) setForm((f) => ({ ...f, professorId }))
+      if (tipo && !convite) {
+        setForm((f) => ({ ...f, role: tipo }))
+        setRoleChosen(true)
+      }
+    })()
   }, [searchParams])
 
   // Auto-capture lat/lng for owner
   useEffect(() => {
-    if (form.role === "dono" && step === 2 && "geolocation" in navigator) {
-      setGeoLoading(true)
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setForm((f) => ({ ...f, academiaLat: String(pos.coords.latitude), academiaLng: String(pos.coords.longitude) }))
-          setGeoLoading(false)
-        },
-        () => setGeoLoading(false),
-        { timeout: 5000, enableHighAccuracy: false }
-      )
-    }
+    ;(async () => {
+      if (form.role === "dono" && step === 2 && "geolocation" in navigator) {
+        setGeoLoading(true)
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setForm((f) => ({ ...f, academiaLat: String(pos.coords.latitude), academiaLng: String(pos.coords.longitude) }))
+            setGeoLoading(false)
+          },
+          () => setGeoLoading(false),
+          { timeout: 5000, enableHighAccuracy: false }
+        )
+      }
+    })()
   }, [form.role, step])
 
   // Skip role step if already chosen via URL — go to step 2
   useEffect(() => {
-    if (roleChosen) setStep(2)
+    ;(async () => {
+      if (roleChosen) setStep(2)
+    })()
   }, [roleChosen])
 
   function update(key: string, value: string | number | boolean) {
@@ -230,20 +235,20 @@ function CadastroContent() {
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         try {
           const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-          if (!(window as any).grecaptcha?.ready) {
+          if (!window.grecaptcha?.ready) {
             await new Promise<void>((resolve, reject) => {
               const script = document.createElement("script")
               script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
               script.onload = () => {
-                ;(window as any).grecaptcha.ready(() => resolve())
+                window.grecaptcha?.ready(() => resolve())
               }
               script.onerror = () => reject(new Error("Failed to load reCAPTCHA"))
               document.head.appendChild(script)
             })
           } else {
-            await new Promise<void>((resolve) => (window as any).grecaptcha.ready(resolve))
+            await new Promise<void>((resolve) => window.grecaptcha!.ready(resolve))
           }
-          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "register" })
+          recaptchaToken = await window.grecaptcha!.execute(siteKey, { action: "register" })
         } catch (e) {
           console.warn("[cadastro] reCAPTCHA error:", e)
         }

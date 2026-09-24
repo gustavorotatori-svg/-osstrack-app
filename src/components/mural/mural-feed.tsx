@@ -33,7 +33,8 @@ function LiveBadge() {
 }
 
 export default function MuralFeed({ role }: { role: string }) {
-  const { data: session } = useSession()
+  useSession()
+  const [now] = useState(() => Date.now())
   const [postagens, setPostagens] = useState<Postagem[]>([])
   const [comentariosAbertos, setComentariosAbertos] = useState<Record<string, boolean>>({})
   const [novoComentario, setNovoComentario] = useState<Record<string, string>>({})
@@ -87,7 +88,7 @@ export default function MuralFeed({ role }: { role: string }) {
   }
 
   function timeAgo(date: string) {
-    const diff = Date.now() - new Date(date).getTime()
+    const diff = now - new Date(date).getTime()
     const mins = Math.floor(diff / 60000)
     if (mins < 1) return "agora"
     if (mins < 60) return `${mins}m atrás`

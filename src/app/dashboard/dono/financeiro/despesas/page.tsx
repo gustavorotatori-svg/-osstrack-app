@@ -8,9 +8,11 @@ import { TrendingDown, Plus, X } from "lucide-react"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type Despesa = { id: string; descricao: string; categoria: string; dataVencimento: string; dataPagamento?: string | null; observacao?: string | null; valor: number; status: string }
+
 export default function DespesasPage() {
   const t = useT("dono.financeiro")
-  const [despesas, setDespesas] = useState<any[]>([])
+  const [despesas, setDespesas] = useState<Despesa[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState("todas")
   const [showForm, setShowForm] = useState(false)

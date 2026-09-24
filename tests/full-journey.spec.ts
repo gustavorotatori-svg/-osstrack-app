@@ -519,10 +519,6 @@ test.describe("4. Dono — Jornada Completa", () => {
       // Find the toggle switch
       const toggle = page.locator("button.relative.w-12.h-7.rounded-full")
       if (await toggle.isVisible({ timeout: 3000 }).catch(() => false)) {
-        // Get current state via class
-        const initialClass = await toggle.getAttribute("class") || ""
-        const wasVisible = initialClass.includes("bg-emerald-600")
-
         await toggle.click()
         await page.waitForTimeout(500)
 
@@ -539,7 +535,6 @@ test.describe("4. Dono — Jornada Completa", () => {
 // ============================================================
 
 test.describe("5. Cadastro — Dois POVs", () => {
-  const timestamp = Date.now()
 
   test.describe("5a. ALUNO — Cadastro com academia existente", () => {
   test("Formulário carrega, valida, avança steps e submete", async ({ page }) => {

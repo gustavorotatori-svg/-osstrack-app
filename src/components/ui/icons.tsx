@@ -4,10 +4,6 @@ const S = { sw: "2.5", lc: "square" as const, lj: "round" as const }
 
 type IconProps = LucideProps & { className?: string }
 
-export function Icons({ className }: { className?: string }) {
-  return null
-}
-
 export function UsersIcon(props: IconProps) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={S.sw} strokeLinecap={S.lc} strokeLinejoin={S.lj} {...props}>

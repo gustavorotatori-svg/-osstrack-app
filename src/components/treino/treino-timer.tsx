@@ -44,7 +44,7 @@ export function TreinoTimer() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      ctxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+      ctxRef.current = new (window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)()
     }
     return () => { ctxRef.current?.close() }
   }, [])

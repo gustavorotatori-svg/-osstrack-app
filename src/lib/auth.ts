@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
 
         // Verify recaptcha for login if configured
         if (process.env.RECAPTCHA_SECRET_KEY) {
-          const recaptchaToken = (credentials as any).recaptchaToken
+          const recaptchaToken = (credentials as Record<string, string | undefined>).recaptchaToken
           if (!recaptchaToken) {
             throw new Error("reCAPTCHA é obrigatório")
           }
@@ -107,12 +107,12 @@ export const authOptions: NextAuthOptions = {
 
       if (existingUser) {
         user.id = existingUser.id
-        ;(user as any).role = existingUser.role
-        ;(user as any).faixa = existingUser.faixa
-        ;(user as any).grau = existingUser.grau
-        ;(user as any).academiaId = existingUser.academiaId
-        ;(user as any).academiaNome = existingUser.academia?.nome || null
-        ;(user as any).authVersion = existingUser.authVersion
+        user.role = existingUser.role as UserRole
+        user.faixa = existingUser.faixa
+        user.grau = existingUser.grau
+        user.academiaId = existingUser.academiaId
+        user.academiaNome = existingUser.academia?.nome || null
+        user.authVersion = existingUser.authVersion
         return true
       }
 
@@ -127,7 +127,7 @@ export const authOptions: NextAuthOptions = {
         token.faixa = user.faixa
         token.grau = user.grau
         token.academiaId = user.academiaId
-        token.academiaNome = (user as any).academiaNome || null
+        token.academiaNome = user.academiaNome || null
         token.id = user.id
         token.authVersion = user.authVersion ?? 0
       }
@@ -160,7 +160,7 @@ export const authOptions: NextAuthOptions = {
   },
   events: {
     async signOut({ token }) {
-      const userId = (token as any)?.id || (token as any)?.sub
+      const userId = token?.id || token?.sub
       if (!userId) return
       await prisma.usuario
         .update({ where: { id: userId as string }, data: { authVersion: { increment: 1 } } })

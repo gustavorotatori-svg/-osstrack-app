@@ -21,18 +21,18 @@ export default function RecuperarSenha() {
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         try {
           const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-          if (!(window as any).grecaptcha?.ready) {
+          if (!window.grecaptcha?.ready) {
             await new Promise<void>((resolve, reject) => {
               const script = document.createElement("script")
               script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-              script.onload = () => { (window as any).grecaptcha.ready(() => resolve()) }
+              script.onload = () => { window.grecaptcha?.ready(() => resolve()) }
               script.onerror = () => reject(new Error("Failed to load reCAPTCHA"))
               document.head.appendChild(script)
             })
           } else {
-            await new Promise<void>((resolve) => (window as any).grecaptcha.ready(resolve))
+            await new Promise<void>((resolve) => window.grecaptcha!.ready(resolve))
           }
-          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "recuperar_senha" })
+          recaptchaToken = await window.grecaptcha!.execute(siteKey, { action: "recuperar_senha" })
         } catch { console.warn("[recuperar-senha] reCAPTCHA error") }
       }
 

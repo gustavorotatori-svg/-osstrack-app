@@ -39,14 +39,16 @@ export function AlunosClient() {
   const [ordemAsc, setOrdemAsc] = useState(true)
 
   useEffect(() => {
-    setLoading(true)
-    fetch("/api/dashboard/dono/alunos")
-      .then((r) => r.json())
-      .then((d) => {
-        setAlunos(d.alunos || [])
-      })
-      .catch((e) => console.error("alunos", e))
-      .finally(() => setLoading(false))
+    ;(async () => {
+      setLoading(true)
+      fetch("/api/dashboard/dono/alunos")
+        .then((r) => r.json())
+        .then((d) => {
+          setAlunos(d.alunos || [])
+        })
+        .catch((e) => console.error("alunos", e))
+        .finally(() => setLoading(false))
+    })()
   }, [])
 
   function getUltimaPresenca(p: string | null) {

@@ -13,8 +13,10 @@ export const revalidate = 300
 const diasSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 const diaAtual = new Date().getDay()
 
+type HorarioPublico = { id: string; diaSemana: number; horaInicio: string; horaFim: string; maxAlunos: number; turma: { nome: string; cor: string; icone: string; modalidade: string; categoria: string }; professor: { nome: string } }
+
 export default async function HorariosPublicos() {
-  let horarios: any[] = []
+  let horarios: HorarioPublico[] = []
   try {
     horarios = await prisma.horarioAula.findMany({
       include: {

@@ -17,7 +17,6 @@ type Props = {
 export function WhatsAppButton({
   acao,
   alunoId,
-  alunoNome,
 
   linkPersonalizado,
   label,

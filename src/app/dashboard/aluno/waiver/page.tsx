@@ -8,10 +8,13 @@ import { CardSkeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { FileText, CheckCircle2, Clock } from "lucide-react"
 
+type WaiverTermo = { versao: number; titulo: string; conteudo: string }
+type WaiverAssinatura = { assinadoEm: string; nomeCompleto: string; cpf: string }
+
 export default function AlunoWaiverPage() {
   const [loading, setLoading] = useState(true)
-  const [termo, setTermo] = useState<any>(null)
-  const [minhaAssinatura, setMinhaAssinatura] = useState<any>(null)
+  const [termo, setTermo] = useState<WaiverTermo | null>(null)
+  const [minhaAssinatura, setMinhaAssinatura] = useState<WaiverAssinatura | null>(null)
   const [nomeCompleto, setNomeCompleto] = useState("")
   const [cpf, setCpf] = useState("")
   const [assinando, setAssinando] = useState(false)

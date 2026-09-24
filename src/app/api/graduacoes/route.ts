@@ -64,10 +64,10 @@ export async function PUT(request: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message || "id é obrigatório" }, { status: 400 })
   }
-  const { id, ...updateData } = parsed.data as any
+  const id = (body as { id?: unknown }).id
 
-  if (!id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
-  Object.keys(updateData).forEach((key: string) => updateData[key] === undefined && delete updateData[key])
+  if (typeof id !== "string" || !id) return NextResponse.json({ error: "id é obrigatório" }, { status: 400 })
+  const updateData = parsed.data
 
   const graduacao = await prisma.graduacao.updateMany({
     where: { id, academiaId: session.user.academiaId },

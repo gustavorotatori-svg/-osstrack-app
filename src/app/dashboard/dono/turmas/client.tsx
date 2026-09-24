@@ -34,7 +34,6 @@ const CORES = [
   { label: "Cinza", value: "#6B7280" },
 ]
 const ICONES = ["🥋", "🟦", "🟥", "🟨", "🟢", "👶", "💪", "🔥", "⚔️", "🛡️"]
-const FAIXAS = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 
 export function TurmasClient({ role = "dono" }: { role?: string }) {
    const tr = useT("dono.turmas")
@@ -65,7 +64,7 @@ export function TurmasClient({ role = "dono" }: { role?: string }) {
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetchTurmas() }, [fetchTurmas])
+  useEffect(() => { ;(async () => { await fetchTurmas() })() }, [fetchTurmas])
 
   function resetForm() {
     setNome("")

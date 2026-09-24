@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { SparklesIcon, FlameIcon } from "@/components/ui/icons"
 
 const beltVarMap: Record<string, string> = {
@@ -28,7 +29,7 @@ export function Avatar({ name, faixa, size = 40, mood = "normal", src }: { name:
   if (src) {
     return (
       <div className="shrink-0 relative" style={{ width: size, height: size }}>
-        <img src={src} alt={name} title={name} className="w-full h-full object-cover rounded-xl" style={{ borderRadius: mood === "party" ? size * 0.35 : size * 0.25 }} />
+        <Image src={src} alt={name} title={name} width={size} height={size} unoptimized className="w-full h-full object-cover rounded-xl" style={{ borderRadius: mood === "party" ? size * 0.35 : size * 0.25 }} />
         {deco && <span className="absolute -top-1 -right-1 text-xs">{deco}</span>}
       </div>
     )

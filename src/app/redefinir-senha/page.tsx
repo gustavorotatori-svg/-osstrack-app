@@ -1,12 +1,11 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 
 function RedefinirSenhaContent() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const token = searchParams.get("token") || ""
 
   const [senha, setSenha] = useState("")
@@ -38,18 +37,18 @@ function RedefinirSenhaContent() {
       if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
         try {
           const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-          if (!(window as any).grecaptcha?.ready) {
+          if (!window.grecaptcha?.ready) {
             await new Promise<void>((resolve, reject) => {
               const script = document.createElement("script")
               script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
-              script.onload = () => { (window as any).grecaptcha.ready(() => resolve()) }
+              script.onload = () => { window.grecaptcha?.ready(() => resolve()) }
               script.onerror = () => reject(new Error("Failed to load reCAPTCHA"))
               document.head.appendChild(script)
             })
           } else {
-            await new Promise<void>((resolve) => (window as any).grecaptcha.ready(resolve))
+            await new Promise<void>((resolve) => window.grecaptcha!.ready(resolve))
           }
-          recaptchaToken = await (window as any).grecaptcha.execute(siteKey, { action: "redefinir_senha" })
+          recaptchaToken = await window.grecaptcha!.execute(siteKey, { action: "redefinir_senha" })
         } catch { console.warn("[redefinir-senha] reCAPTCHA error") }
       }
 

@@ -27,8 +27,9 @@ export function StreakSalvage({ currentStreak, pontos }: { currentStreak: number
       setRestored(true)
       toast.success("Streak restaurado para 3 dias! 🔥")
       setTimeout(() => window.location.reload(), 1500)
-    } catch (e: any) {
-      toast.error(e.message || "Erro ao restaurar streak")
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Erro ao restaurar streak"
+      toast.error(message)
     } finally {
       setSaving(false)
     }

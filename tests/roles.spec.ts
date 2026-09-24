@@ -1,4 +1,4 @@
-import { test, expect, type Page, type ConsoleMessage } from "@playwright/test"
+import { test, type Page, type ConsoleMessage } from "@playwright/test"
 import { URL } from "./constants"
 import { resetRateLimits, preparePage } from "./helpers"
 
@@ -32,7 +32,6 @@ async function checkPage(page: Page, url: string, role: string, desc: string) {
   if (status >= 400) errors.push(`HTTP ${status}`)
 
   await page.waitForTimeout(800)
-  const title = await page.title().catch(() => "")
   allErrors.push({ page: `${desc} (${url})`, role, errors })
 }
 

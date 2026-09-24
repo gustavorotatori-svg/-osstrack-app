@@ -6,8 +6,6 @@ import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
 import { mestreSelecionarSchema } from "@/lib/validation"
 
-const CATEGORIAS = ["adulto", "master", "infantil"]
-
 export async function PUT(req: Request) {
   try {
     const session = await getServerSession(authOptions)

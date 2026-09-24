@@ -10,7 +10,10 @@ export function ExitIntentPopup() {
   useEffect(() => {
     if (typeof window === "undefined") return
     const wasDismissed = localStorage.getItem("osstrack_exit_dismissed")
-    if (wasDismissed) { setDismissed(true); return }
+    if (wasDismissed) {
+      ;(async () => setDismissed(true))()
+      return
+    }
 
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !show && !dismissed) {

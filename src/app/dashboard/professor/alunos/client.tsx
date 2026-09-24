@@ -77,7 +77,7 @@ export function AlunosClient({ alunos: initial }: { alunos: Aluno[] }) {
     return beltList.slice(idx)
   }
 
-  let filtrados = alunos.filter((a) => {
+  const filtrados = alunos.filter((a) => {
     const matchNome = a.nome.toLowerCase().includes(busca.toLowerCase())
     const matchFaixa = filtroFaixa === "todas" || a.faixa === filtroFaixa
     return matchNome && matchFaixa

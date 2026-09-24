@@ -1,6 +1,6 @@
 "use client"
 
-import { LockIcon, CrownIcon } from "@/components/ui/icons"
+import { CrownIcon } from "@/components/ui/icons"
 import { useT } from "@/lib/use-t"
 import { useRouter } from "next/navigation"
 

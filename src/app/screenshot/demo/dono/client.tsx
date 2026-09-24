@@ -12,15 +12,6 @@ export function DonoScreenshotDemo() {
   const dados = [180, 210, 195, 245, 290, 312]
   const maxDado = Math.max(...dados, 1)
 
-  const alunos = [
-    { nome: "Rafael Oliveira", faixa: "Azul", grau: 2, categoria: "adulto" },
-    { nome: "Lucas Santos", faixa: "Branca", grau: 1, categoria: "adulto" },
-    { nome: "Pedro Alves", faixa: "Roxa", grau: 1, categoria: "adulto" },
-    { nome: "João Lima", faixa: "Marrom", grau: 3, categoria: "adulto" },
-    { nome: "Maria Costa", faixa: "Branca", grau: 0, categoria: "adulto" },
-    { nome: "Ana Oliveira", faixa: "Azul", grau: 3, categoria: "adulto" },
-  ]
-
   const presencas = [
     { aluno: "Rafael Oliveira", data: "17/06", status: "confirmed" },
     { aluno: "Lucas Santos", data: "17/06", status: "confirmed" },
