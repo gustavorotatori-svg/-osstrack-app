@@ -112,8 +112,7 @@ export default function MuralFeed({ role }: { role: string }) {
         {treinandoAgora.length > 0 && (
           <div className="surface p-5" style={{borderColor: 'rgba(220,38,38,0.12)'}}>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-sm tracking-tight flex items-center gap-2">
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+              <h3 className="font-bold text-sm tracking-tight">
                 Treinando agora
               </h3>
               <LiveBadge />
@@ -121,7 +120,6 @@ export default function MuralFeed({ role }: { role: string }) {
             <div className="flex flex-wrap gap-2">
               {treinandoAgora.map((p, i) => (
                 <div key={i} className="flex items-center gap-2 bg-[var(--red-dim)] border border-[var(--red)]/20 rounded-xl px-3 py-1.5 text-xs animate-scale-in" style={{ animationDelay: `${i * 0.08}s` }}>
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                   <span className="font-semibold">{p.nome}</span>
                   <span className="text-[var(--text-secondary)]">· {p.faixa}</span>
                 </div>
@@ -149,7 +147,6 @@ export default function MuralFeed({ role }: { role: string }) {
                   <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">chegou para treinar! 🥋</p>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-emerald-500 font-semibold">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                   {timeAgo(item.createdAt)}
                 </div>
               </div>

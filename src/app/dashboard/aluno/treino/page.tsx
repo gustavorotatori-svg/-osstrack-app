@@ -271,7 +271,6 @@ export default function TreinoPage() {
               <div className="flex flex-wrap gap-2">
                 {treinandoAgora.map((p, i) => (
                   <div key={i} className="flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs" style={{ background: "var(--red-dim)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                     <span className="font-semibold">{p.nome}</span>
                     <span className="text-[var(--text-secondary)]">· {p.faixa}</span>
                   </div>

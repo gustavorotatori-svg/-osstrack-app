@@ -6,7 +6,7 @@ import { useT } from "@/lib/use-t"
 import { useRouter } from "next/navigation"
 import { triggerOssTransition } from "@/components/ui/oss-transition"
 import { toast } from "sonner"
-import { CreditCardIcon, TrendingDown, TrendingUp, ArrowRight } from "lucide-react"
+import { TrendingDown, ArrowRight } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
@@ -102,11 +102,10 @@ export default function FinanceiroPage() {
   return (
     <DashboardShell role="dono">
       <BackButton href="/dashboard/dono" />
-      <div className="max-w-5xl mx-auto space-y-4">
-        <div className="glass-card-gold p-5 text-center">
-          <CreditCardIcon className="w-8 h-8 mx-auto mb-2 text-[var(--gold)]" />
-          <h2 className="text-lg font-extrabold">{t("title")}</h2>
-          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
+        <div className="max-w-5xl mx-auto space-y-4">
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
+          <p className="text-sm text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2">
