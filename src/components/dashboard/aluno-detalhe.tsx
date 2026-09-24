@@ -32,8 +32,6 @@ type AlunoDetalheData = {
 }
 
 export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; role: "dono" | "professor" }) {
-  const prefix = role === "dono" ? "dono" : "professor"
-
   function formatarData(iso: string) {
     const d = new Date(iso)
     return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" })
@@ -81,27 +79,12 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
               <div className="stat-glass-label">Presenças</div>
             </div>
             <div className="stat-glass">
-              <div className="stat-glass-value"><span>{aluno.thisMonth}</span></div>
-              <div className="stat-glass-label">Este mês</div>
-            </div>
-            <div className="stat-glass">
               <div className="stat-glass-value"><span>{aluno.currentStreak}</span></div>
               <div className="stat-glass-label">Streak</div>
             </div>
-          </div>
-
-          <div className="glass-card p-5">
-            <div className="section-header">🔥 Streak</div>
-            <div className="flex items-center justify-between">
-              <div className="text-center flex-1">
-                <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{aluno.currentStreak}</div>
-                <div className="text-[10px] text-[var(--text-muted)]">atual</div>
-              </div>
-              <div className="h-10 w-px" style={{ background: "var(--border)" }} />
-              <div className="text-center flex-1">
-                <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{aluno.bestStreak}</div>
-                <div className="text-[10px] text-[var(--text-muted)]">melhor</div>
-              </div>
+            <div className="stat-glass">
+              <div className="stat-glass-value"><span>{aluno.bestStreak}</span></div>
+              <div className="stat-glass-label">Melhor</div>
             </div>
           </div>
 
@@ -156,11 +139,6 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
               <MessageCircle className="w-4 h-4 inline mr-2" />Chamar no WhatsApp
             </button>
           )}
-
-          <a href={`/dashboard/${prefix}/alunos`}
-            className="block w-full text-center py-3.5 rounded-xl text-sm font-medium border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all min-h-[44px]">
-            Voltar para alunos
-          </a>
         </div>
       </PageTransition>
     </DashboardShell>
