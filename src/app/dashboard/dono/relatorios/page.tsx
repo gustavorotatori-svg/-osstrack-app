@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { useT } from "@/lib/use-t"
-import { TrendingUp, Users, Calendar, Activity, BarChart3, Download, Wallet } from "lucide-react"
+import { Download, Wallet } from "lucide-react"
 import { BackButton } from "@/components/ui/back-button"
 
 type RelatoriosData = {
@@ -38,7 +38,6 @@ export default function RelatoriosPage() {
   const [data, setData] = useState<RelatoriosData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [tab, setTab] = useState<string>("frequencia")
 
   useEffect(() => {
     fetch("/api/relatorios")
@@ -317,25 +316,10 @@ export default function RelatoriosPage() {
               <div className="text-sm text-[var(--text-muted)] mt-1">
                 de {data?.totalAlunos || 0} alunos cadastrados
               </div>
-              <div className="mt-3 h-2 bg-[var(--border)] rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full"
-                  style={{ width: `${Math.min(100, data?.engajamento || 0)}%`, background: `var(--red)` }}
-                />
-              </div>
             </div>
             <div className="glass-card p-6">
               <div className="text-sm text-[var(--text-secondary)] mb-1">Alunos ativos (últimos 90 dias)</div>
               <div className="text-3xl font-extrabold text-emerald-500">{data?.alunosAtivos || 0}</div>
-              <div className="text-sm text-[var(--text-muted)] mt-1">
-                {data?.retencao6m || 0}% de retenção
-              </div>
-              <div className="mt-3 h-2 bg-[var(--border)] rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
-                  style={{ width: `${Math.min(100, data?.retencao6m || 0)}%` }}
-                />
-              </div>
             </div>
           </div>
         </div>
