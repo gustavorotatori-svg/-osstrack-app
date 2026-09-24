@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, Flame, Medal, Share2, BarChart3, Target, ArrowUpRight, Users, UserPlus, Zap, Trophy, Sword, ChevronRight, TrendingUp, FileText, Clock } from "lucide-react"
+import { Calendar, Medal, Share2, Target, ArrowUpRight, UserPlus, Trophy, ChevronRight, TrendingUp, FileText, Clock } from "lucide-react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { PageTransition } from "@/components/ui/page-transition"
@@ -100,6 +100,9 @@ function getLevelInfo(totalAulas: number) {
 const allBelts = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 const beltColors = ["#e5e5e5", "#2563eb", "#9333ea", "#92400e", "#222"]
 
+type WaiverTermo = { versao: number; titulo: string; conteudo: string }
+type WaiverAssinatura = { assinadoEm: string; nomeCompleto: string; cpf: string }
+
 export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, conquistas, streak, nivelDisciplina }: Props) {
   const t = useT("aluno.dashboard")
   const ta = useT("alunoDashboard")
@@ -117,10 +120,6 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
     return m === new Date().getMonth()
   }).length
 
-  const presencasRecentes = useMemo(() => {
-    return ultimasPresencas.slice(0, 14).reverse()
-  }, [ultimasPresencas])
-
   const conquistasUnlocked = conquistas.filter(c => c.desbloqueada).length
 
   const quickActions = [
@@ -133,7 +132,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
   const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
   const [bannerDismissed, setBannerDismissed] = useState(false)
-  const [waiver, setWaiver] = useState<{ termo: any; minhaAssinatura: any } | null>(null)
+  const [waiver, setWaiver] = useState<{ termo: WaiverTermo; minhaAssinatura: WaiverAssinatura } | null>(null)
 
   useEffect(() => {
     fetch("/api/waiver/termo")

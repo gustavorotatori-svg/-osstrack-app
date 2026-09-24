@@ -9,7 +9,7 @@ import { BackButton } from "@/components/ui/back-button"
 
 export default function AlunoQRPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [qrData, setQrData] = useState("")
+  const [, setQrData] = useState("")
   const [loading, setLoading] = useState(true)
 
   async function renderQR(data: string, canvas: HTMLCanvasElement | null) {

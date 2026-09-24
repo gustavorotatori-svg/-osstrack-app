@@ -26,7 +26,6 @@ type MestreData = {
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 const CATEGORIA_LABELS: Record<string, string> = { adulto: "🥋 Adulto", master: "🏆 Master", infantil: "⭐ Infantil" }
-const CATEGORIA_KEYS: Record<string, string> = { adulto: "adulto", master: "master", infantil: "infantil" }
 
 export function MestreDoMesSelector() {
   const [mestres, setMestres] = useState<Record<string, MestreData>>({})

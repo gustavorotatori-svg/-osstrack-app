@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
@@ -18,7 +19,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     if (!parsed.success) {
       return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
     }
-    const despesaData = parsed.data
     const despesa = await prisma.despesa.findFirst({
       where: { id, academiaId: session.user.academiaId },
     })
@@ -26,7 +26,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       return NextResponse.json({ error: "Despesa não encontrada" }, { status: 404 })
     }
 
-    const updateData: any = {}
+    const updateData: Prisma.DespesaUncheckedUpdateInput = {}
 
     if (body.status === "pago") {
       updateData.status = "pago"

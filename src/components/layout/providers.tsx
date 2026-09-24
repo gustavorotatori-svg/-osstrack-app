@@ -41,16 +41,18 @@ export function Providers({ children }: { children: ReactNode }) {
   }, [])
 
   useEffect(() => {
-    setMounted(true)
-    const storedPref = localStorage.getItem("osstrack_theme_pref")
-    if (storedPref === "light") {
-      setPref("light")
-      setTheme("light")
-    }
-    const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
-    if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
-      setLocaleState(storedLocale)
-    }
+    ;(async () => {
+      setMounted(true)
+      const storedPref = localStorage.getItem("osstrack_theme_pref")
+      if (storedPref === "light") {
+        setPref("light")
+        setTheme("light")
+      }
+      const storedLocale = localStorage.getItem("osstrack_locale") as Locale | null
+      if (storedLocale && ["pt", "en", "es", "fr", "de", "nl", "sv", "ja", "ar", "zh", "hi", "it", "ru", "ko"].includes(storedLocale)) {
+        setLocaleState(storedLocale)
+      }
+    })()
   }, [])
 
   useEffect(() => {
@@ -87,8 +89,10 @@ export function Providers({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!mounted) return
-    localStorage.setItem("osstrack_theme_pref", pref)
-    applyTheme(pref)
+    ;(async () => {
+      localStorage.setItem("osstrack_theme_pref", pref)
+      applyTheme(pref)
+    })()
   }, [pref, mounted, applyTheme])
 
   useEffect(() => {

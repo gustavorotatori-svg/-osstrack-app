@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { useSession } from "next-auth/react"
 import { playBeep } from "@/lib/sound"
 import { getBeltEmoji } from "@/lib/utils"
-import { Share2, Copy, Download, Image } from "lucide-react"
+import { Share2, Copy, Download, Image as ImageIcon } from "lucide-react"
 import { toast } from "sonner"
 import { PageTransition } from "@/components/ui/page-transition"
 import { BackButton } from "@/components/ui/back-button"
@@ -20,7 +20,7 @@ export default function CompartilharPage() {
   const [stats, setStats] = useState({ totalAulas: 0, presencasMes: 0, streak: 0, bestStreak: 0 })
   const [generating, setGenerating] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [storyMode, setStoryMode] = useState(false)
+  const [, setStoryMode] = useState(false)
 
   useEffect(() => {
     fetch("/api/perfil")
@@ -337,7 +337,7 @@ export default function CompartilharPage() {
             </button>
             <button onClick={() => generateImage(true)} disabled={generating}
               className="flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-sm border border-[var(--gold)]/30 text-[var(--gold)] hover:bg-[var(--gold)]/10 transition-all active:scale-[0.97]">
-<Image className="w-4 h-4" /> {tc("stories")}
+<ImageIcon className="w-4 h-4" /> {tc("stories")}
             </button>
           </div>
 

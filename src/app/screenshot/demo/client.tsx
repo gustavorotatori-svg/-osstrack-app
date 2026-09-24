@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, Medal, Target, TrendingUp, UserPlus, Share2, Search, Trophy, ChevronRight, CheckCircle, Zap, ArrowUpRight, Flame, Clock } from "lucide-react"
+import { Calendar, Medal, Target, TrendingUp, UserPlus, Share2, Trophy, ChevronRight, CheckCircle, Zap, Clock } from "lucide-react"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { getNivelInfo } from "@/lib/disciplina"
 import { ProgressRing } from "@/app/dashboard/aluno/progress-ring"

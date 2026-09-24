@@ -13,7 +13,7 @@ import it from "../../messages/it.json"
 import ru from "../../messages/ru.json"
 import ko from "../../messages/ko.json"
 
-const allMessages: Record<string, any> = { pt, en, es, fr, de, nl, sv, ja, ar, zh, hi, it, ru, ko }
+const allMessages: Record<Locale, Record<string, unknown>> = { pt, en, es, fr, de, nl, sv, ja, ar, zh, hi, it, ru, ko }
 
 export type Locale = "pt" | "en" | "es" | "fr" | "de" | "nl" | "sv" | "ja" | "ar" | "zh" | "hi" | "it" | "ru" | "ko"
 
@@ -21,12 +21,13 @@ export function getMessages(locale: Locale) {
   return allMessages[locale] || allMessages["pt"]
 }
 
-function getNested(obj: any, path: string): string {
+function getNested(obj: Record<string, unknown>, path: string): string {
   const keys = path.split(".")
-  let current = obj
+  let current: unknown = obj
   for (const key of keys) {
     if (current == null) return path
-    current = current[key]
+    if (typeof current !== "object") return path
+    current = (current as Record<string, unknown>)[key]
   }
   return typeof current === "string" ? current : path
 }

@@ -24,18 +24,14 @@ export async function POST(request: Request) {
     const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack.com.br"
     const link = `${baseUrl}/convite/${codigo}`
 
-    const conviteData: any = {
+    const conviteTipo = tipo === "academia" ? "academia" : tipo === "amigo" ? "aluno" : tipo
+    const conviteData = {
       codigo,
       remetenteId: session.user.id,
       academiaId: session.user.academiaId || null,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    }
-
-    if (tipo === "academia") {
-      conviteData.tipo = "academia"
-      conviteData.professorId = session.user.id
-    } else {
-      conviteData.tipo = tipo === "amigo" ? "aluno" : tipo
+      tipo: conviteTipo,
+      ...(tipo === "academia" ? { professorId: session.user.id } : {}),
     }
 
     await prisma.convite.create({ data: conviteData })

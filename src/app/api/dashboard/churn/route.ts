@@ -11,8 +11,6 @@ export async function GET() {
     if (session.user.role === "aluno") return NextResponse.json({ error: "Sem permissão" }, { status: 403 })
 
     const agora = new Date()
-    const dias7 = new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000)
-    const dias14 = new Date(agora.getTime() - 14 * 24 * 60 * 60 * 1000)
     const dias30 = new Date(agora.getTime() - 30 * 24 * 60 * 60 * 1000)
 
     const todosAlunos = await prisma.usuario.findMany({

@@ -43,7 +43,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: parsed.error.issues[0]?.message || "Dados inválidos" }, { status: 400 })
   }
   const cleanData = parsed.data
-  Object.keys(cleanData).forEach((key) => (cleanData as any)[key] === undefined && delete (cleanData as any)[key])
+  Object.keys(cleanData).forEach((key) => {
+    const record = cleanData as Record<string, unknown>
+    if (record[key] === undefined) delete record[key]
+  })
 
   const turma = await prisma.turma.findUnique({ where: { id } })
   if (!turma || turma.academiaId !== session.user.academiaId) {

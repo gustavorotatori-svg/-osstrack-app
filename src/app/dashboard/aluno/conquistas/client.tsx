@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { BadgeCard } from "@/components/gamification/badge-card"
 import { PageTransition } from "@/components/ui/page-transition"
 import { useT } from "@/lib/use-t"
-import { GiIcon, FlameIcon, StarIcon, HandshakeIcon, GraduationIcon, AwardIcon, GiftIcon, ClipboardIcon, SearchIcon } from "@/components/ui/icons"
+import { GiIcon, FlameIcon, StarIcon, HandshakeIcon, GraduationIcon, GiftIcon, ClipboardIcon, SearchIcon } from "@/components/ui/icons"
 
 type ConquistaData = {
   id: string
@@ -31,16 +31,6 @@ type Props = {
 
 export function AchievementsClient({ conquistas }: Props) {
   const t = useT("aluno.conquistas")
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!conquistas) {
-      setError("Erro ao carregar conquistas")
-    } else {
-      setLoading(false)
-    }
-  }, [conquistas])
 
   const categorias: Record<string, { label: string; icon: React.ReactNode; desc: string }> = {
     presenca:   { label: t("categorias.presenca"),   icon: <GiIcon className="w-4 h-4" />, desc: t("categorias.presencaDesc") },
@@ -69,34 +59,6 @@ export function AchievementsClient({ conquistas }: Props) {
   const progressoGeral = conquistas.length > 0
     ? Math.round((desbloqueadas.length / conquistas.length) * 100)
     : 0
-
-  if (loading) {
-    return (
-      <DashboardShell role="aluno">
-        <div className="grid grid-cols-4 gap-2 py-8">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="glass-card p-4 h-32 animate-pulse" />
-          ))}
-        </div>
-      </DashboardShell>
-    )
-  }
-
-  if (error) {
-    return (
-      <DashboardShell role="aluno">
-        <div className="max-w-5xl mx-auto py-20">
-          <div className="glass-card text-center py-12">
-            <SearchIcon className="w-10 h-10 mb-3 mx-auto text-[var(--text-secondary)]" />
-            <p className="text-sm text-[var(--text-secondary)]">{error}</p>
-            <button onClick={() => window.location.reload()} className="btn-primary mt-4 px-6 py-2 text-xs font-bold rounded-xl">
-              Tentar novamente
-            </button>
-          </div>
-        </div>
-      </DashboardShell>
-    )
-  }
 
   return (
     <DashboardShell role="aluno">

@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const mes = now.getMonth()
     const ano = now.getFullYear()
     const vencimento = new Date(ano, mes + 1, 10)
-    const criadas: any[] = []
+    const criadas: unknown[] = []
 
     for (const contrato of contratos) {
       const ultima = contrato.cobrancas[0]

@@ -68,9 +68,11 @@ export function OnboardingSetup({ role }: { role: string }) {
   const [collapsed, setCollapsed] = useState<boolean>(() => !isMobile())
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem("osstrack_setup_done") === "1") setDismissed(true)
-    } catch {}
+    ;(async () => {
+      try {
+        if (localStorage.getItem("osstrack_setup_done") === "1") setDismissed(true)
+      } catch {}
+    })()
   }, [])
 
   useEffect(() => {

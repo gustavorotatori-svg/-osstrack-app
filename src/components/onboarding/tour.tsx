@@ -61,6 +61,9 @@ export function OnboardingTour({ role, onComplete }: { role: string; onComplete:
   const router = useRouter()
   const tours = buildTours(tBase)
   const t = tours[role as keyof typeof tours]
+
+  useEscape(finish, visible)
+
   if (!t) return null
 
   const current = t.steps[step]
@@ -79,8 +82,6 @@ export function OnboardingTour({ role, onComplete }: { role: string; onComplete:
     if (current.action) { finish(); router.push(current.action) }
     else next()
   }
-
-  useEscape(finish, visible)
 
   if (!visible) return null
 

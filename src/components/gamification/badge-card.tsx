@@ -32,7 +32,7 @@ const nivelColors: Record<string, string> = {
 
 export function BadgeCard({
   nome, icone, iconeBloqueado, descricao, nivelLabel, raridade,
-  desbloqueada, progresso, progressoMax, progressoAtual,
+  desbloqueada, progresso, progressoMax,
 }: BadgeProps) {
   const t = useT("gamification")
   const rc = rarityConfig[raridade] || rarityConfig.comum

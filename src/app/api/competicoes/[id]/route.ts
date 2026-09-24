@@ -35,7 +35,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       }
     }
 
-    const competicao = await prisma.competicao.update({
+    await prisma.competicao.update({
       where: { id },
       data: {
         ...(nome && { nome }),

@@ -16,6 +16,9 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
   const [facingMode, setFacingMode] = useState<"environment" | "user">("environment")
   const streamRef = useRef<MediaStream | null>(null)
   const scanningRef = useRef(true)
+  const onScanRef = useRef(onScan)
+
+  useEffect(() => { onScanRef.current = onScan }, [onScan])
 
   const stopCamera = useCallback(() => {
     scanningRef.current = false
@@ -26,29 +29,29 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
     setActive(false)
   }, [])
 
-  function scanFrame() {
+  const scanFrame = useCallback(function scanFrameLoop() {
     if (!scanningRef.current || !videoRef.current || !canvasRef.current) return
     const video = videoRef.current
     const canvas = canvasRef.current
     if (video.readyState !== video.HAVE_ENOUGH_DATA) {
-      requestAnimationFrame(scanFrame)
+      requestAnimationFrame(scanFrameLoop)
       return
     }
     canvas.width = video.videoWidth
     canvas.height = video.videoHeight
     const ctx = canvas.getContext("2d")
-    if (!ctx) { requestAnimationFrame(scanFrame); return }
+    if (!ctx) { requestAnimationFrame(scanFrameLoop); return }
     ctx.drawImage(video, 0, 0)
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
     const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: "dontInvert" })
     if (code) {
       scanningRef.current = false
       stopCamera()
-      onScan(code.data)
+      onScanRef.current(code.data)
       return
     }
-    requestAnimationFrame(scanFrame)
-  }
+    requestAnimationFrame(scanFrameLoop)
+  }, [stopCamera])
 
   const startCamera = useCallback(async () => {
     setLoading(true)
@@ -73,7 +76,7 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
         : "Não foi possível acessar a câmera."
       onError?.(msg)
     }
-  }, [facingMode, onError])
+  }, [facingMode, onError, scanFrame])
 
   useEffect(() => {
     return () => { scanningRef.current = false; if (streamRef.current) { streamRef.current.getTracks().forEach((t) => t.stop()) } }

@@ -49,22 +49,26 @@ export default function GraduacoesClient({ role }: { role: string }) {
   useEscape(() => setShowShare(false), showShare)
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("osstrack_academiaId")
-      if (stored) {
-        const base = window.location.origin
-        setShareLink(`${base}/compartilhar/regras/${stored}`)
+    ;(async () => {
+      if (typeof window !== "undefined") {
+        const stored = localStorage.getItem("osstrack_academiaId")
+        if (stored) {
+          const base = window.location.origin
+          setShareLink(`${base}/compartilhar/regras/${stored}`)
+        }
       }
-    }
+    })()
   }, [])
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
-    fetch("/api/graduacoes")
-      .then(r => { if (!r.ok) throw new Error("Erro ao carregar"); return r.json() })
-      .then((d) => { setGraduacoes(d); setLoading(false) })
-      .catch(() => { toast.error("Erro ao carregar regras de graduação"); setError("Erro ao carregar regras de graduação"); setLoading(false) })
+    ;(async () => {
+      setLoading(true)
+      setError(null)
+      fetch("/api/graduacoes")
+        .then(r => { if (!r.ok) throw new Error("Erro ao carregar"); return r.json() })
+        .then((d) => { setGraduacoes(d); setLoading(false) })
+        .catch(() => { toast.error("Erro ao carregar regras de graduação"); setError("Erro ao carregar regras de graduação"); setLoading(false) })
+    })()
   }, [])
 
   const filtered = graduacoes.filter(g => g.categoria === categoria)
@@ -100,7 +104,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
     setSaving(false)
   }
 
-  function updateField(field: string, value: any) {
+  function updateField(field: string, value: number | string | null) {
     setEditForm(prev => prev ? { ...prev, [field]: value } : null)
   }
 
@@ -399,7 +403,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
               <p><span className="text-[var(--gold)] font-semibold">Aulas por Grau:</span> Check-ins necessários para cada grau</p>
               <p><span className="text-[var(--gold)] font-semibold">Próx. Faixa:</span> Total de aulas para mudar de faixa (em branco = automático = graus × aulasPorGrau)</p>
               <p><span className="text-[var(--gold)] font-semibold">Mín/Ano:</span> Mínimo de aulas no ano para ser elegível à próxima faixa</p>
-              <p><span className="text-[var(--gold)] font-semibold">Regra:</span> "Por graus" = sobe ao completar graus | "Por aulas" = sobe ao atingir total de aulas | "Por exame" = sobe apenas na data do exame</p>
+              <p><span className="text-[var(--gold)] font-semibold">Regra:</span> &ldquo;Por graus&rdquo; = sobe ao completar graus | &ldquo;Por aulas&rdquo; = sobe ao atingir total de aulas | &ldquo;Por exame&rdquo; = sobe apenas na data do exame</p>
             </div>
           </div>
         )}

@@ -363,9 +363,10 @@ export async function POST(request: Request) {
     enviarEmailBoasVindas({ to: email, nome, role: "aluno" }).catch(() => {})
 
     return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: emailSent })
-  } catch (error: any) {
-    console.error("Register error:", error?.message || error)
-    const msg = error?.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error))
+    console.error("Register error:", err.message || error)
+    const msg = err.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"
     return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

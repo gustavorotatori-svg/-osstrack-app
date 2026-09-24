@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const diaSemana = searchParams.get("dia")
 
-    const where: any = { academiaId: session.user.academiaId || "" }
+    const where: Prisma.HorarioAulaWhereInput = { academiaId: session.user.academiaId || "" }
     if (diaSemana) where.diaSemana = Number(diaSemana)
 
     const horarios = await prisma.horarioAula.findMany({
@@ -44,9 +45,9 @@ export async function POST(req: Request) {
     }
     const { turmaId, diaSemana, horaInicio, horaFim, maxAlunos, local } = parsed.data
     const turmaNome = body.turmaNome
-    let professorId = body.professorId
+    const professorId = body.professorId
 
-    let finalProfessorId = professorId === "me" ? session.user.id : professorId
+    const finalProfessorId = professorId === "me" ? session.user.id : professorId
     let finalTurmaId = turmaId
     if (!finalTurmaId && turmaNome) {
       const turma = await prisma.turma.create({

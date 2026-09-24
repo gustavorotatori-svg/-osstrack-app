@@ -99,7 +99,7 @@ export async function POST() {
       atualizadas,
       erros,
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Erro interno" }, { status: 500 })
   }
 }

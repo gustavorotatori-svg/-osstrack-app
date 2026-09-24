@@ -31,7 +31,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Você já tem um check-in pendente hoje" }, { status: 400 })
     }
 
-    const hoje = new Date().toISOString().split("T")[0]
     const codigoValido = await prisma.checkinCodigo.findFirst({
       where: {
         academiaId: session.user.academiaId,

@@ -228,7 +228,7 @@ async function autoCompleteMissoes(usuarioId: string, role: string) {
     },
   }
 
-  let updatedIds: string[] = []
+  const updatedIds: string[] = []
   for (const m of missoes) {
     if (m.concluida) continue
     const check = conditions[m.tipo]

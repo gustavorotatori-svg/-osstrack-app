@@ -117,7 +117,7 @@ export async function POST(request: Request) {
       })
     }
 
-    const conquistas = await prisma.conquista.createMany({
+    await prisma.conquista.createMany({
       data: [
         { nome: "Primeiro Check-in", icone: "✅", descricao: "Fez o primeiro check-in", tipo: "primeiro", condicao: 1 },
         { nome: "Sequência de Bronze", icone: "🥉", descricao: "5 dias seguidos de treino", tipo: "streak", condicao: 5 },

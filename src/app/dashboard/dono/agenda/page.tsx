@@ -39,7 +39,7 @@ export default function DonoAgendaPage() {
       toast.error(t("erroCarregarHorarios"))
     }
     setLoading(false)
-  }, [])
+  }, [t])
 
   const fetchProfessores = useCallback(async () => {
     try {
@@ -49,7 +49,7 @@ export default function DonoAgendaPage() {
     } catch {
       toast.error(t("erroCarregarProfessores"))
     }
-  }, [])
+  }, [t])
 
   const fetchTurmas = useCallback(async () => {
     try {
@@ -59,13 +59,15 @@ export default function DonoAgendaPage() {
     } catch {
       toast.error(t("erroCarregarTurmas"))
     }
-  }, [])
+  }, [t])
 
   useEffect(() => {
-    fetchHorarios()
-    fetchProfessores()
-    fetchTurmas()
-  }, [])
+    ;(async () => {
+      fetchHorarios()
+      fetchProfessores()
+      fetchTurmas()
+    })()
+  }, [fetchHorarios, fetchProfessores, fetchTurmas])
 
   const [editId, setEditId] = useState<string | null>(null)
 

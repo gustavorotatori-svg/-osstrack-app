@@ -39,13 +39,6 @@ export async function POST() {
       where: { alunoId: session.user.id },
     })
 
-    const startOfWeek = new Date(now)
-    startOfWeek.setDate(now.getDate() - now.getDay())
-    startOfWeek.setHours(0, 0, 0, 0)
-    const presencasSemana = await prisma.presenca.count({
-      where: { alunoId: session.user.id, status: "confirmed", data: { gte: startOfWeek } },
-    })
-
     const aluno = await prisma.usuario.findUnique({
       where: { id: session.user.id },
       select: { faixa: true },
@@ -83,12 +76,6 @@ export async function POST() {
         progresso = Math.min(alunoDoMes, c.condicao)
         atingiu = alunoDoMes >= c.condicao
       } else if (c.tipo === "semana_completa") {
-        // Number of weeks with 5+ presencas
-        const semanasCompletas = await prisma.presenca.groupBy({
-          by: ["data"],
-          where: { alunoId: session.user.id, status: "confirmed" },
-          _count: true,
-        })
         // Simplified: count distinct weeks with 5+ presencas
         const weekMap = new Map<string, number>()
         for (const p of await prisma.presenca.findMany({ where: { alunoId: session.user.id, status: "confirmed" }, select: { data: true } })) {

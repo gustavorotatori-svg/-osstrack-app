@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
     dateFilter.setHours(0, 0, 0, 0)
   }
 
-  const whereAluno: any = {
+  const whereAluno: Prisma.UsuarioWhereInput = {
     academiaId: session.user.academiaId,
     role: "aluno",
   }
@@ -70,7 +71,7 @@ export async function GET(request: Request) {
     alunoIds = alunoIds.filter((id) => idsDaTurma.has(id))
   }
 
-  const wherePresenca: any = {
+  const wherePresenca: Prisma.PresencaWhereInput = {
     alunoId: { in: alunoIds },
     status: "confirmed",
   }

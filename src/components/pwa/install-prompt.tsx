@@ -15,8 +15,10 @@ export function useInstall() {
   const [isStandalone, setIsStandalone] = useState(false)
 
   useEffect(() => {
-    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window))
-    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches)
+    ;(async () => {
+      setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent) && !("MSStream" in window))
+      setIsStandalone(window.matchMedia("(display-mode: standalone)").matches)
+    })()
     const handler = (e: Event) => {
       e.preventDefault()
       setDeferredPrompt(e as BeforeInstallPromptEvent)
@@ -48,7 +50,7 @@ export function InstallPrompt() {
   const { install, canInstall, isIOS, isStandalone } = useInstall()
   const { permission, subscribed, loading, subscribe, unsubscribe } = usePushNotifications()
   const [showPrompt, setShowPrompt] = useState(false)
-  const [dismissed, setDismissed] = useState(() => {
+  const [dismissed] = useState(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("pwa-install-dismissed") === "true"
     }
@@ -66,7 +68,9 @@ export function InstallPrompt() {
   }, [])
 
   useEffect(() => {
-    if (canInstall && !dismissed) setShowPrompt(true)
+    ;(async () => {
+      if (canInstall && !dismissed) setShowPrompt(true)
+    })()
   }, [canInstall, dismissed])
 
   function handleDismiss() {
@@ -135,7 +139,7 @@ export function InstallPrompt() {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold">Instalar OssTrack</p>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                No Safari, toque em <strong>Compartilhar</strong> <span className="text-[var(--gold)]">↑</span> e depois <strong>"Adicionar à Tela de Início"</strong>
+                No Safari, toque em <strong>Compartilhar</strong> <span className="text-[var(--gold)]">↑</span> e depois <strong>&ldquo;Adicionar à Tela de Início&rdquo;</strong>
               </p>
               <button
                 onClick={() => handleDismiss()}

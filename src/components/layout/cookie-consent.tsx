@@ -7,8 +7,10 @@ export function CookieConsent() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem("osstrack_cookie_consent")
-    if (!consent) setVisible(true)
+    ;(async () => {
+      const consent = localStorage.getItem("osstrack_cookie_consent")
+      if (!consent) setVisible(true)
+    })()
   }, [])
 
   function accept() {

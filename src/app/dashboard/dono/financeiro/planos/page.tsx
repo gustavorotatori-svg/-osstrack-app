@@ -7,9 +7,11 @@ import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type Plano = { id: string; nome: string; valor: number; taxaMatricula: number; descricao: string | null; periodo: string; ativo: boolean }
+
 export default function PlanosPage() {
   const t = useT("dono.financeiro")
-  const [planos, setPlanos] = useState<any[]>([])
+  const [planos, setPlanos] = useState<Plano[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({ nome: "", valor: "", taxaMatricula: "", descricao: "", periodo: "mensal" })
@@ -26,7 +28,7 @@ export default function PlanosPage() {
     setLoading(false)
   }
 
-  function startEdit(p: any) {
+  function startEdit(p: Plano) {
     setEditId(p.id)
     setForm({ nome: p.nome, valor: (p.valor / 100).toString(), taxaMatricula: (p.taxaMatricula > 0 ? p.taxaMatricula / 100 : 0).toString(), descricao: p.descricao || "", periodo: p.periodo })
     setShowForm(true)

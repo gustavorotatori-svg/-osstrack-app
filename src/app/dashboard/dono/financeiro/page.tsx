@@ -11,19 +11,37 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGri
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type HistoricoMes = { mes: string; receita: number; despesa: number }
+type CobrancaResumo = { id: string; aluno: { nome: string }; contrato?: { plano?: { nome: string } | null } | null; dataVencimento: string; valor: number; status: string }
+type DespesaResumo = { id: string; descricao: string; categoria: string; dataVencimento: string; valor: number; status: string }
+type FinanceiroData = {
+  historico?: HistoricoMes[]
+  receitaMes?: number
+  despesaMes?: number
+  fluxoCaixa?: number
+  valorPotencialMes?: number
+  taxaAdimplencia?: number
+  inadimplentes?: number
+  contratosAtivos?: number
+  totalPlanos?: number
+  wellhubCheckinsMes?: number
+  ultimasCobrancas?: CobrancaResumo[]
+  ultimasDespesas?: DespesaResumo[]
+} | null
+
 export default function FinanceiroPage() {
   const t = useT("dono.financeiro")
   const router = useRouter()
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<FinanceiroData>(null)
   const [loading, setLoading] = useState(true)
   const [gerando, setGerando] = useState(false)
-  const [chartData, setChartData] = useState<any[]>([])
+  const [chartData, setChartData] = useState<{ name: string; receita: number; despesa: number }[]>([])
 
   useEffect(() => {
     fetch("/api/financeiro/dashboard").then(r => r.json()).then(d => {
       setData(d); setLoading(false)
       if (d?.historico?.length > 0) {
-        setChartData(d.historico.map((h: any) => ({
+        setChartData(d.historico.map((h: HistoricoMes) => ({
           name: new Date(h.mes).toLocaleDateString("pt-BR", { month: "short" }),
           receita: h.receita || 0,
           despesa: h.despesa || 0,
@@ -62,7 +80,7 @@ export default function FinanceiroPage() {
         const err = await r.json().catch(() => ({}))
         toast.error(err.error || "Erro ao gerar cobranças")
       }
-    } catch (e) {
+    } catch {
       toast.error("Erro de rede ao gerar cobranças")
     }
     setGerando(false)
@@ -96,7 +114,7 @@ export default function FinanceiroPage() {
     { label: t("inadimplentes"), value: data?.inadimplentes || 0, color: "text-red-400" },
     { label: t("contratosAtivos"), value: data?.contratosAtivos || 0, color: "text-[var(--gold)]" },
     { label: t("planosAtivos"), value: data?.totalPlanos || 0, color: "text-[var(--gold)]" },
-    ...(data?.wellhubCheckinsMes > 0 ? [{ label: "Check-ins Wellhub (mês)", value: data.wellhubCheckinsMes, color: "text-emerald-400" }] : []),
+    ...(data && (data.wellhubCheckinsMes ?? 0) > 0 ? [{ label: "Check-ins Wellhub (mês)", value: data.wellhubCheckinsMes ?? 0, color: "text-emerald-400" }] : []),
   ]
 
   return (
@@ -124,8 +142,8 @@ export default function FinanceiroPage() {
               <BarChart data={chartData} barCategoryGap="20%">
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="name" tick={{ fontSize: 10, fill: "var(--text-muted)" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 10, fill: "var(--text-muted)" }} axisLine={false} tickLine={false} tickFormatter={(v: any) => `R$${(Number(v)/100).toFixed(0)}`} />
-                <Tooltip contentStyle={{ background: "var(--bg-surface)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--text)" }} formatter={(value: any) => `R$ ${(Number(value)/100).toFixed(2)}`} />
+                <YAxis tick={{ fontSize: 10, fill: "var(--text-muted)" }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `R$${(Number(v)/100).toFixed(0)}`} />
+                <Tooltip contentStyle={{ background: "var(--bg-surface)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--text)" }} formatter={(value: unknown) => `R$ ${(Number(value)/100).toFixed(2)}`} />
                 <Legend wrapperStyle={{ fontSize: 10 }} />
                 <Bar dataKey="receita" name="Receita" fill="var(--green)" radius={[4,4,0,0]} />
                 <Bar dataKey="despesa" name="Despesa" fill="var(--red)" radius={[4,4,0,0]} />
@@ -157,7 +175,7 @@ export default function FinanceiroPage() {
             {data?.ultimasCobrancas?.length === 0 && (
               <p className="text-xs text-[var(--text-secondary)] text-center py-4">{t("nenhumaCobranca")}</p>
             )}
-            {data?.ultimasCobrancas?.map((c: any) => (
+            {data?.ultimasCobrancas?.map((c: CobrancaResumo) => (
               <div key={c.id} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
                 <div>
                   <p className="text-sm font-medium">{c.aluno.nome}</p>
@@ -176,7 +194,7 @@ export default function FinanceiroPage() {
           </div>
         </div>
 
-        {data?.ultimasDespesas?.length > 0 && (
+        {(data?.ultimasDespesas?.length ?? 0) > 0 && (
           <div className="glass-card p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-sm">{t("ultimasDespesas")}</h3>
@@ -186,7 +204,7 @@ export default function FinanceiroPage() {
               </button>
             </div>
             <div className="space-y-2">
-              {data?.ultimasDespesas?.map((d: any) => (
+              {data?.ultimasDespesas?.map((d: DespesaResumo) => (
                 <div key={d.id} className="flex items-center justify-between py-2 border-b border-[var(--border)] last:border-0">
                   <div>
                     <p className="text-sm font-medium">{d.descricao}</p>

@@ -157,10 +157,6 @@ test.describe("Família no perfil do aluno", () => {
     await page.goto(`${URL}/dashboard/aluno/perfil`)
     await page.waitForLoadState("networkidle")
 
-    // Se o aluno tiver família, deve mostrar o card
-    const familiaCard = page.getByText("Desconto familiar")
-    const exists = await familiaCard.isVisible({ timeout: 5000 }).catch(() => false)
-
     // O perfil deve carregar independente de ter família ou não
     const nome = page.getByRole("heading", { name: /Rafael/ })
     await expect(nome).toBeVisible({ timeout: 5000 })

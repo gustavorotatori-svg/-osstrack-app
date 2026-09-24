@@ -34,8 +34,6 @@ export function MestreDoMesCard() {
 
   if (loading) return null
 
-  const hasAny = Object.values(mestres).some((m) => m !== null)
-
   return (
     <div className="glass-card-accent p-5" style={{"--accent-color": "var(--gold)"} as React.CSSProperties}>
       <div className="flex items-center gap-2 mb-4">

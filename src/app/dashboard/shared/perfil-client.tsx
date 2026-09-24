@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { BackButton } from "@/components/ui/back-button"
 import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Camera, Pencil, Save, X, Download, Trash2 } from "lucide-react"
@@ -28,7 +29,8 @@ const emojis = ["🥋", "🤼", "👊", "💪", "🔥", "⚡", "🦅", "🐯", "
 
 export default function PerfilClient({ role }: { role: string }) {
   const t = useT("perfilPage")
-  const { data: session } = useSession()
+  useSession()
+  const router = useRouter()
   const [data, setData] = useState<PerfilData | null>(null)
   const [editando, setEditando] = useState(false)
   const [nome, setNome] = useState("")
@@ -154,7 +156,7 @@ export default function PerfilClient({ role }: { role: string }) {
             <button onClick={() => {
               if (window.confirm(t("confirmarExcluir"))) {
                 fetch("/api/conta", { method: "DELETE" }).then(async (res) => {
-                  if (res.ok) { window.location.href = "/" }
+                  if (res.ok) { router.replace("/") }
                   else { const d = await res.json(); alert(d.error || t("erroExcluir")) }
                 }).catch(() => alert(t("erroExcluir")))
               }

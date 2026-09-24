@@ -5,7 +5,7 @@ import { useT } from "@/lib/use-t"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { BackButton } from "@/components/ui/back-button"
-import { Clock, Flame, TrendingUp, Calendar, ChevronDown, Zap, Target, Timer, Award, Sparkles, TrendingDown } from "lucide-react"
+import { Clock, Flame, TrendingUp, Calendar, ChevronDown, Zap, Timer } from "lucide-react"
 
 type HorasData = {
   horasNoPeriodo: number
@@ -22,10 +22,11 @@ type HorasData = {
 
 function AnimatedNumber({ value, decimals = 1 }: { value: number; decimals?: number }) {
   const [display, setDisplay] = useState(0)
-  const ref = useRef<number | null>(null)
+  const valueRef = useRef(0)
+  const frameRef = useRef<number | null>(null)
 
   useEffect(() => {
-    const start = display
+    const start = valueRef.current
     const diff = value - start
     const duration = 1200
     const startTime = Date.now()
@@ -34,12 +35,14 @@ function AnimatedNumber({ value, decimals = 1 }: { value: number; decimals?: num
       const elapsed = Date.now() - startTime
       const progress = Math.min(elapsed / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 4)
-      setDisplay(+(start + diff * eased).toFixed(decimals))
-      if (progress < 1) ref.current = requestAnimationFrame(animate)
+      const next = +(start + diff * eased).toFixed(decimals)
+      valueRef.current = next
+      setDisplay(next)
+      if (progress < 1) frameRef.current = requestAnimationFrame(animate)
     }
-    ref.current = requestAnimationFrame(animate)
-    return () => { if (ref.current) cancelAnimationFrame(ref.current) }
-  }, [value])
+    frameRef.current = requestAnimationFrame(animate)
+    return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current) }
+  }, [value, decimals])
 
   return <span>{display}</span>
 }
@@ -87,20 +90,32 @@ function GlowingRing({ percent, size = 160, stroke = 10 }: { percent: number; si
 }
 
 function ParticleField() {
+  const [particles] = useState(() =>
+    Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      width: Math.random() * 4 + 1,
+      height: Math.random() * 4 + 1,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      alpha: Math.random() * 0.3 + 0.1,
+      duration: Math.random() * 8 + 6,
+      delay: Math.random() * 5,
+    }))
+  )
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {particles.map((p) => (
         <div
-          key={i}
+          key={p.id}
           className="absolute rounded-full"
           style={{
-            width: Math.random() * 4 + 1,
-            height: Math.random() * 4 + 1,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            background: `rgba(201, 168, 76, ${Math.random() * 0.3 + 0.1})`,
-            animation: `float-particle ${Math.random() * 8 + 6}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 5}s`,
+            width: p.width,
+            height: p.height,
+            left: `${p.left}%`,
+            top: `${p.top}%`,
+            background: `rgba(201, 168, 76, ${p.alpha})`,
+            animation: `float-particle ${p.duration}s ease-in-out infinite`,
+            animationDelay: `${p.delay}s`,
           }}
         />
       ))}
@@ -109,6 +124,7 @@ function ParticleField() {
 }
 
 function PulseOrb({ color, size, x, y, delay }: { color: string; size: number; x: string; y: string; delay: string }) {
+  const [duration] = useState(() => 4 + Math.random() * 3)
   return (
     <div
       className="absolute rounded-full"
@@ -118,7 +134,7 @@ function PulseOrb({ color, size, x, y, delay }: { color: string; size: number; x
         left: x,
         top: y,
         background: `radial-gradient(circle, ${color}20 0%, transparent 70%)`,
-        animation: `breathe ${4 + Math.random() * 3}s ease-in-out infinite`,
+        animation: `breathe ${duration}s ease-in-out infinite`,
         animationDelay: delay,
       }}
     />
@@ -133,11 +149,20 @@ export default function HorasPage() {
   const [showPicker, setShowPicker] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    fetch(`/api/aluno/horas?periodo=${periodo}`)
-      .then((r) => r.ok ? r.json() : null)
-      .then((d) => { setData(d); setLoading(false) })
-      .catch(() => setLoading(false))
+    let active = true
+    ;(async () => {
+      setLoading(true)
+      try {
+        const r = await fetch(`/api/aluno/horas?periodo=${periodo}`)
+        const d = r.ok ? await r.json() : null
+        if (active) setData(d)
+      } catch {
+        /* noop */
+      } finally {
+        if (active) setLoading(false)
+      }
+    })()
+    return () => { active = false }
   }, [periodo])
 
   const maxHorasMes = data ? Math.max(...data.horasPorMes.map((h) => h.horas), 1) : 1
@@ -323,7 +348,7 @@ export default function HorasPage() {
                 <h2 className="text-base font-bold">{ta("horas.horasPorSemana")}</h2>
               </div>
               <div className="flex items-end gap-1.5 h-36">
-                {data.horasPorSemana.map((h, i) => (
+                {data.horasPorSemana.map((h) => (
                   <div key={h.semana} className="flex-1 flex flex-col items-center gap-1.5 group">
                     <span className="text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">
                       {h.horas}h

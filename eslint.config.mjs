@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Artefatos/scratch e apps com toolchain própria:
+    "temp/**",
+    "apps/**",
+    "scripts/**",
+    "prisma/**/*.js",
+    "**/*.cjs",
   ]),
 ]);
 

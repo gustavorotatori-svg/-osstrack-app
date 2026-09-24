@@ -8,7 +8,7 @@ import { motion } from "framer-motion"
 import { ArrowLeft, Download, Printer } from "lucide-react"
 
 export default function EbookConteudo() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
 
   useEffect(() => {
@@ -100,13 +100,13 @@ export default function EbookConteudo() {
             </p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Rituais de entrada e saída</p>
-            <p>O cumprimento na porta, a saudação no tatame, o bate-papo pós-treino. Parece simples, mas é o que diferencia uma academia de uma "academia de musculação com kimono". Crie momentos rituais: toda sexta-feira tem um "roda de conversa" de 5 minutos depois do treino. Aniversariante do mês ganha um parabéns coletivo. Aluno que completa 10 aulas recebe um reconhecimento público.</p>
+            <p>O cumprimento na porta, a saudação no tatame, o bate-papo pós-treino. Parece simples, mas é o que diferencia uma academia de uma &ldquo;academia de musculação com kimono&rdquo;. Crie momentos rituais: toda sexta-feira tem um &ldquo;roda de conversa&rdquo; de 5 minutos depois do treino. Aniversariante do mês ganha um parabéns coletivo. Aluno que completa 10 aulas recebe um reconhecimento público.</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Espaços de convivência</p>
             <p>Se o aluno chega, treina e vai embora em 5 minutos, ele não cria laço. Incentive a permanência: um café compartilhado, um banco na área de convivência, um grupo no WhatsApp que não seja só para comunicados. O vínculo se forma nos 15 minutos pós-treino, não durante a rolagem.</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>O poder do nome</p>
-            <p>Professor que chama o aluno pelo nome causa um impacto profundo no engajamento. No OssTrack, você tem a lista completa de alunos com faixa, grau e frequência — use esses dados para personalizar a interação. "E aí, João. Vi que você fez 4 aulas essa semana, parabéns!" vale mais que qualquer desconto.</p>
+            <p>Professor que chama o aluno pelo nome causa um impacto profundo no engajamento. No OssTrack, você tem a lista completa de alunos com faixa, grau e frequência — use esses dados para personalizar a interação. &ldquo;E aí, João. Vi que você fez 4 aulas essa semana, parabéns!&rdquo; vale mais que qualquer desconto.</p>
           </Section>
 
           <Section title="3. Gamificação que funciona no Jiu-Jitsu">
@@ -115,7 +115,7 @@ export default function EbookConteudo() {
             </p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Streak de treinos (sequência)</p>
-            <p>Nada motiva mais que uma sequência. No OssTrack, o aluno vê o streak em chamas — 3 dias, 7 dias, 30 dias. Perder o streak dói mais que perder uma luta. Use isso a seu favor. Crie um mural "Streak do Mês" na academia. Aluno com maior streak ganha um destaque.</p>
+            <p>Nada motiva mais que uma sequência. No OssTrack, o aluno vê o streak em chamas — 3 dias, 7 dias, 30 dias. Perder o streak dói mais que perder uma luta. Use isso a seu favor. Crie um mural &ldquo;Streak do Mês&rdquo; na academia. Aluno com maior streak ganha um destaque.</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Ranking saudável</p>
             <p>Ranking por número de presenças no mês (não por performance técnica) incentiva frequência sem gerar intimidação. O aluno que mais treinou no mês ganha um reconhecimento — pode ser um adesivo, uma camiseta, ou simplesmente o nome no quadro. No OssTrack, o ranking é automático.</p>
@@ -137,7 +137,7 @@ export default function EbookConteudo() {
             <p>Quando o professor usa o OssTrack para dar parabéns, marcar presença e interagir no mural, o engajamento da turma dobra. O professor que publica no mural da academia — um vídeo de técnica, um aviso, um incentivo — cria um fluxo de retorno diário dos alunos.</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Feedback personalizado</p>
-            <p>Um "parabéns pela evolução" ou "ótima rolagem hoje" dito individualmente transforma a experiência do aluno. Use os dados do OssTrack para saber quem treinou, quem está chegando atrasado, quem está sumindo — e aja antes que o aluno desista.</p>
+            <p>Um &ldquo;parabéns pela evolução&rdquo; ou &ldquo;ótima rolagem hoje&rdquo; dito individualmente transforma a experiência do aluno. Use os dados do OssTrack para saber quem treinou, quem está chegando atrasado, quem está sumindo — e aja antes que o aluno desista.</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>Disponibilidade genuína</p>
             <p>O professor que responde no WhatsApp, que dá atenção individual, que lembra da vida do aluno fora do tatame — esse professor forma alunos para a vida toda. Não terceirize o acolhimento.</p>
@@ -154,7 +154,7 @@ export default function EbookConteudo() {
                 📱 <span><strong>Mural da academia (digital e físico):</strong> O OssTrack tem mural integrado. Publique técnica da semana, resultado de competições, parabéns para aluno que subiu de faixa. O mural gera engajamento passivo — o aluno abre o app para ver o que tem de novo.</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                📱 <span><strong>Desafios semanais:</strong> "Quem treina 5 dias essa semana ganha destaque no mural." "Melhor sequência de check-in do mês leva um kimono." Desafios geram movimento e conversa.</span>
+                📱 <span><strong>Desafios semanais:</strong> &ldquo;Quem treina 5 dias essa semana ganha destaque no mural.&rdquo; &ldquo;Melhor sequência de check-in do mês leva um kimono.&rdquo; Desafios geram movimento e conversa.</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
                 📱 <span><strong>Conteúdo que ensina fora do tatame:</strong> Vídeos curtos de técnica, dicas de alongamento, explicação de regras de competição. O aluno que consome conteúdo da academia fora do horário treina mais engajado.</span>
@@ -203,7 +203,7 @@ export default function EbookConteudo() {
               </table>
             </div>
 
-            <p className="text-sm mt-3">No OssTrack, você vê exatamente quem está sumindo e pode agir antes do cancelamento. Um alerta de "7 dias sem treinar" dispara uma notificação para o professor — que manda um WhatsApp na hora.</p>
+            <p className="text-sm mt-3">No OssTrack, você vê exatamente quem está sumindo e pode agir antes do cancelamento. Um alerta de &ldquo;7 dias sem treinar&rdquo; dispara uma notificação para o professor — que manda um WhatsApp na hora.</p>
           </Section>
 
           <Section title="8. O papel da tecnologia no engajamento diário">

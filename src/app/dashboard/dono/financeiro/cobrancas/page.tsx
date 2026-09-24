@@ -7,9 +7,11 @@ import { toast } from "sonner"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { BackButton } from "@/components/ui/back-button"
 
+type Cobranca = { id: string; aluno: { nome: string }; contrato?: { plano?: { nome: string } | null } | null; dataVencimento: string; dataPagamento?: string | null; observacao?: string | null; valor: number; status: string; metodo?: string | null }
+
 export default function CobrancasPage() {
   const t = useT("dono.financeiro")
-  const [cobrancas, setCobrancas] = useState<any[]>([])
+  const [cobrancas, setCobrancas] = useState<Cobranca[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState("todas")
 
