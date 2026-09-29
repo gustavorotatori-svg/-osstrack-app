@@ -15,7 +15,8 @@
     "badge": "El cuaderno de bitácora del Jiu-Jitsu",
     "statsAcademias": "Academias",
     "statsAlunos": "Alumnos activos",
-    "statsRetencao": "Retención"
+    "statsRetencao": "Retención",
+    "subtitle": "Check-in por GPS, Wellhub, progresión por cinturones, ranking, muro, finanzas y mucho más. Todo gratis."
   },
   "frases": [
     "Todo cinturón negro fue un cinturón blanco que nunca se rindió.",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Enlaces directos a WhatsApp. Comparte check-ins, invitaciones y resultados con un clic.",
     "graduacao": "Reglas de Graduación",
-    "graduacaoDesc": "Reglas claras, criterios justos y promociones automáticas. Adiós, hoja de cálculo."
+    "graduacaoDesc": "Reglas claras, criterios justos y promociones automáticas. Adiós, hoja de cálculo.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Integración con Wellhub para el check-in de alumnos socios. Registro separado para reportes financieros.",
+    "horas": "Horas de Entreno",
+    "horasDesc": "Sigue cuánto tiempo pasas en el tatami. Gráficos, metas e historial de horas por clase. Tu compromiso en números.",
+    "googleLogin": "Inicio de sesión con Google",
+    "googleLoginDesc": "Accede con un clic usando tu cuenta de Google. Sin registro complicado, sin olvidar contraseñas. Rápido y seguro.",
+    "waiver": "Consentimiento de Responsabilidad",
+    "waiverDesc": "Firma digital del waiver directamente en la app. Seguridad legal para la academia y comodidad para el alumno."
   },
   "comoFunciona": {
     "badge": "Cómo funciona",
@@ -138,7 +147,10 @@
     "modoEscuro": "Modo Oscuro",
     "regrasIbjjf": "Reglas IBJJF",
     "lgpd": "LGPD",
-    "ajuda": "Ayuda"
+    "ajuda": "Ayuda",
+    "competicoes": "Competencias",
+    "familias": "Familias",
+    "alertaEvasao": "Alerta de abandono"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "clases",
       "posicao": "Estás en la {pos}ª posición",
       "posicaoFaixa": "Estás en la {pos}ª posición en cinturón {faixa}",
-      "faltamAulas": "¡Faltan {n} clases para alcanzar el 1er lugar!"
+      "faltamAulas": "¡Faltan {n} clases para alcanzar el 1er lugar!",
+      "rankVazioDesc": "Los alumnos aparecen aquí cuando hagan sus primeros check-ins en la academia."
     },
     "agenda": {
       "title": "Agenda de Clases",
@@ -344,7 +357,16 @@
         "No se trata de cuántas veces caes. Se trata de cuántas veces te levantas y vuelves al tatami.",
         "Tu mayor oponente no está al otro lado del tatami. Está en tu cabeza diciendo mañana voy.",
         "El cinturón negro no es un destino. Es una forma de vivir."
-      ]
+      ],
+      "aulasEsteMes": "Clases este mes",
+      "meta": "Meta",
+      "streak": "Racha",
+      "totalAulas": "Total de clases",
+      "progressoFaixa": "Progreso hacia el próximo cinturón",
+      "aulasRestantes": "clases restantes",
+      "compartilharBtn": "Compartir",
+      "topo": "Top",
+      "compartilhar": "Compartir"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "Cumpleaños del Mes",
       "semAniversariantes": "Sin cumpleaños este mes",
       "alunosInativos": "Alumnos sin entrenar 7 días",
-      "alunosInativosTitle": "Alumnos Inactivos"
+      "alunosInativosTitle": "Alumnos Inactivos",
+      "prospectos": "Prospectos"
     },
     "turmas": {
       "title": "Clases",
@@ -1089,8 +1112,7 @@
     "mais": "más",
     "menos": "menos",
     "dias": "días",
-    "atleta": "Atleta"
-  ,
+    "atleta": "Atleta",
     "horas": {
       "titulo": "Horas de Entrenamiento",
       "subtitulo": "Tu tiempo en el tatami",
@@ -1114,7 +1136,9 @@
       "ano": "Este año",
       "ytd": "Año a la fecha",
       "total": "Total"
-    }},
+    },
+    "lerAssinar": "Leer y firmar"
+  },
   "compartilharPage": {
     "badge": "Comparte tu progreso",
     "card600": "Tarjeta (600x600)",
@@ -1174,6 +1198,99 @@
     "excluirConta": "Eliminar Cuenta",
     "confirmarExcluir": "¿Estás seguro? Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.",
     "erroExcluir": "Error al eliminar cuenta",
-    "erroSalvar": "Error al guardar perfil"
+    "erroSalvar": "Error al guardar perfil",
+    "melhorStreak": "Mejor racha"
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "subtitle": "Todo lo que necesitas saber sobre OssTrack.",
+    "q1": "¿OssTrack es realmente gratis?",
+    "a1": "Sí. OssTrack es 100% gratis para academias, profesores y alumnos — sin planes ocultos, sin límite de alumnos y sin tarjeta de crédito.",
+    "q2": "¿Qué hace OssTrack?",
+    "a2": "Check-in de alumnos por GPS, progresión de cinturones y graduaciones, rachas, ranking, control de asistencia, finanzas y reportes — todo en un solo lugar, en el navegador.",
+    "q3": "¿Necesito instalar una aplicación?",
+    "a3": "No. OssTrack funciona directamente en el navegador del móvil o del ordenador. Puedes añadirlo a la pantalla de inicio y usarlo como una aplicación (PWA).",
+    "q4": "¿Cómo funciona el check-in?",
+    "a4": "El alumno abre OssTrack, activa el GPS y hace el check-in. La asistencia se registra automáticamente con la hora actual y queda pendiente de confirmación del profesor.",
+    "q5": "¿Sirve para academias de cualquier tamaño?",
+    "a5": "Sí. Desde clases pequeñas hasta grandes equipos, OssTrack acompaña la asistencia, la progresión y la retención de los alumnos en tiempo real."
+  },
+  "ossinho": {
+    "title": "¡Hola, soy Ossinho!",
+    "subtitle": "Te ayudaré con tus primeros pasos por aquí.",
+    "skip": "Saltar consejo",
+    "gotIt": "¡Entendido!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "¡Bienvenido al tatami digital!",
+          "desc": "Aquí seguirás tu viaje en el Jiu-Jitsu. Haz check-in, avanza en los cinturones y desbloquea logros. ¿Entrenamos?"
+        },
+        "checkin": {
+          "title": "¡Hora del check-in!",
+          "desc": "¿Llegaste a la academia? Toca el botón grande y registra tu asistencia. El GPS confirma que estás en el lugar correcto."
+        },
+        "evolucao": {
+          "title": "Tu viaje en los cinturones",
+          "desc": "Cada clase te acerca al siguiente grado. Mira cuántas faltan y sigue tu progreso hacia el próximo cinturón."
+        },
+        "conquistas": {
+          "title": "¡Desbloquea logros!",
+          "desc": "Rachas, medallas e insignias. Entrena con constancia y colecciónalas todas. Cada logro es un hito en tu historia."
+        },
+        "mural": {
+          "title": "Muro de la academia",
+          "desc": "Mira lo que publica la comunidad. Comenta, da me gusta y comparte el progreso de tus amigos."
+        },
+        "ranking": {
+          "title": "Ranking de la academia",
+          "desc": "Mira tu posición entre los alumnos. Cuanto más entrenas, más subes. ¡El top es tuyo!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "¡Bienvenido, profesor!",
+          "desc": "Aquí confirmas asistencias, gestionas alumnos y organizas tus clases. Todo en la palma de tu mano."
+        },
+        "presencas": {
+          "title": "Confirma asistencias",
+          "desc": "Mira quién hizo check-in y confirma las asistencias. También puedes añadirlas manualmente."
+        },
+        "alunos": {
+          "title": "Tus alumnos",
+          "desc": "Sigue el progreso de cada alumno. Mira quién está cerca de graduar y promueve con un solo toque."
+        },
+        "turmas": {
+          "title": "Tus clases",
+          "desc": "Organiza los horarios de tus clases. Crea clases, define horarios y gestiona alumnos."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "¡Bienvenido, maestro!",
+          "desc": "Aquí gestionas tu academia completa: alumnos, profesores, finanzas y reportes."
+        },
+        "alunosDono": {
+          "title": "Todos los alumnos",
+          "desc": "Mira la lista completa de alumnos de tu academia. Filtra, busca y sigue el progreso de cada uno."
+        },
+        "graduacoes": {
+          "title": "Reglas de graduación",
+          "desc": "Define los criterios de evolución de cada cinturón. Clases por grado, exámenes o por tiempo — tú eliges."
+        },
+        "relatorios": {
+          "title": "Reportes de la academia",
+          "desc": "Sigue la asistencia, la retención y el compromiso de tus alumnos. Datos que ayudan a crecer."
+        },
+        "financeiro": {
+          "title": "Finanzas",
+          "desc": "Controla mensualidades, gastos y flujo de caja. Planes, contratos y cobros en un solo lugar."
+        },
+        "config": {
+          "title": "Configuración",
+          "desc": "Ajusta nombre, WhatsApp, radio de check-in y genera enlaces de invitación para profesores y alumnos."
+        }
+      }
+    }
   }
 }

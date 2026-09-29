@@ -15,7 +15,8 @@
     "badge": "",
     "statsAcademias": "Académies",
     "statsAlunos": "Élèves actifs",
-    "statsRetencao": "Rétention"
+    "statsRetencao": "Rétention",
+    "subtitle": "Check-in GPS, Wellhub, progression par ceinture, classement, mur, finances et bien plus. Tout gratuit."
   },
   "frases": [
     "Toute ceinture noire a été une ceinture blanche qui n'a jamais abandonné.",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Liens directs vers WhatsApp. Partagez check-ins, invitations et résultats en un clic.",
     "graduacao": "Règles de Graduation",
-    "graduacaoDesc": "Règles claires, critères justes et promotion automatique. Adieu, tableau Excel."
+    "graduacaoDesc": "Règles claires, critères justes et promotion automatique. Adieu, tableau Excel.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Intégration Wellhub pour le check-in des élèves partenaires. Suivi séparé pour les rapports financiers.",
+    "horas": "Heures d'entraînement",
+    "horasDesc": "Suivez le temps passé sur le tatami. Graphiques, objectifs et historique des heures par cours. Votre engagement en chiffres.",
+    "googleLogin": "Connexion avec Google",
+    "googleLoginDesc": "Connectez-vous en un clic avec votre compte Google. Sans inscription compliquée, sans mot de passe oublié. Rapide et sécurisé.",
+    "waiver": "Décharge de responsabilité",
+    "waiverDesc": "Signature numérique du waiver directement dans l'app. Sécurité juridique pour l'académie et confort pour l'élève."
   },
   "comoFunciona": {
     "badge": "Comment ça marche",
@@ -138,7 +147,10 @@
     "modoEscuro": "Mode Sombre",
     "regrasIbjjf": "Règles IBJJF",
     "lgpd": "RGPD",
-    "ajuda": "Aide"
+    "ajuda": "Aide",
+    "competicoes": "Compétitions",
+    "familias": "Familles",
+    "alertaEvasao": "Alerte abandon"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "cours",
       "posicao": "Vous êtes à la {pos}e position",
       "posicaoFaixa": "Vous êtes à la {pos}e position en ceinture {faixa}",
-      "faltamAulas": "Il reste {n} cours pour atteindre la 1re place !"
+      "faltamAulas": "Il reste {n} cours pour atteindre la 1re place !",
+      "rankVazioDesc": "Les élèves apparaissent ici dès leurs premiers check-ins à l'académie."
     },
     "agenda": {
       "title": "Agenda des Cours",
@@ -344,7 +357,16 @@
         "Il ne s'agit pas de combien de fois vous tombez. Il s'agit de combien de fois vous vous relevez et revenez sur le tatami.",
         "Votre plus grand adversaire n'est pas de l'autre côté du tatami. Il est dans votre tête à dire demain j'y vais.",
         "La ceinture noire n'est pas une destination. C'est une façon de vivre."
-      ]
+      ],
+      "aulasEsteMes": "Cours ce mois-ci",
+      "meta": "Objectif",
+      "streak": "Série",
+      "totalAulas": "Total de cours",
+      "progressoFaixa": "Progression vers la prochaine ceinture",
+      "aulasRestantes": "cours restants",
+      "compartilharBtn": "Partager",
+      "topo": "Top",
+      "compartilhar": "Partager"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "Anniversaires du Mois",
       "semAniversariantes": "Aucun anniversaire ce mois-ci",
       "alunosInativos": "Élèves sans entraînement depuis 7 jours",
-      "alunosInativosTitle": "Élèves Inactifs"
+      "alunosInativosTitle": "Élèves Inactifs",
+      "prospectos": "Prospects"
     },
     "turmas": {
       "title": "Groupes",
@@ -1109,7 +1132,8 @@
     "streakAtual": "Série Actuelle",
     "atual": "Actuelle",
     "melhor": "Meilleure",
-    "doTotal": "du Total"
+    "doTotal": "du Total",
+    "melhorStreak": "Meilleure série"
   },
   "compartilharPage": {
     "badge": "Partager",
@@ -1162,7 +1186,8 @@
       "ano": "Cette année",
       "ytd": "Depuis le début d'année",
       "total": "Total"
-    }
+    },
+    "lerAssinar": "Lire et signer"
   },
   "relatorios": {
     "subtitle": "Métriques et indicateurs de l'académie",
@@ -1175,5 +1200,97 @@
     "deAlunos": "sur {n} élèves inscrits",
     "alunos90d": "Élèves actifs (90 derniers jours)",
     "retencao": "de rétention"
+  },
+  "faq": {
+    "title": "Questions Fréquentes",
+    "subtitle": "Tout ce que vous devez savoir sur OssTrack.",
+    "q1": "OssTrack est-il vraiment gratuit ?",
+    "a1": "Oui. OssTrack est 100 % gratuit pour les académies, les professeurs et les élèves — sans abonnements cachés, sans limite d'élèves et sans carte bancaire.",
+    "q2": "Que fait OssTrack ?",
+    "a2": "Check-in GPS des élèves, progression des grades et ceintures, séries, classement, suivi de présence, finance et rapports — tout au même endroit, dans le navigateur.",
+    "q3": "Dois-je installer une application ?",
+    "a3": "Non. OssTrack fonctionne directement dans le navigateur de votre téléphone ou de votre ordinateur. Vous pouvez l'ajouter à l'écran d'accueil et l'utiliser comme une application (PWA).",
+    "q4": "Comment fonctionne le check-in ?",
+    "a4": "L'élève ouvre OssTrack, active le GPS et fait le check-in. La présence est enregistrée automatiquement avec l'heure actuelle et reste en attente de confirmation du professeur.",
+    "q5": "Est-ce adapté aux académies de toute taille ?",
+    "a5": "Oui. Des petites classes aux grandes équipes, OssTrack suit la présence, la progression et la fidélisation des élèves en temps réel."
+  },
+  "ossinho": {
+    "title": "Salut, moi c'est Ossinho !",
+    "subtitle": "Je vais t'aider à faire tes premiers pas ici.",
+    "skip": "Passer le conseil",
+    "gotIt": "Compris !",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Bienvenue sur le tatami numérique !",
+          "desc": "Ici, tu suis ton parcours en Jiu-Jitsu. Fais ton check-in, monte en ceinture et débloque des succès. On s'entraîne ?"
+        },
+        "checkin": {
+          "title": "C'est l'heure du check-in !",
+          "desc": "Arrivé à l'académie ? Touche le gros bouton et enregistre ta présence. Le GPS confirme que tu es au bon endroit."
+        },
+        "evolucao": {
+          "title": "Ton parcours en ceintures",
+          "desc": "Chaque cours te rapproche du grade suivant. Vois combien il en reste et suis ta progression vers la prochaine ceinture."
+        },
+        "conquistas": {
+          "title": "Débloque des succès !",
+          "desc": "Séries, médailles et badges. Entraîne-toi avec régularité et collectionne-les tous. Chaque succès est une étape de ton histoire."
+        },
+        "mural": {
+          "title": "Mur de l'académie",
+          "desc": "Vois ce que la communauté publie. Commente, aime et partage la progression de tes amis."
+        },
+        "ranking": {
+          "title": "Classement de l'académie",
+          "desc": "Vois ta position parmi les élèves. Plus tu t'entraînes, plus tu montes. Le sommet est à toi !"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Bienvenue, professeur !",
+          "desc": "Ici, tu confirmes les présences, gères les élèves et organises tes cours. Tout au creux de ta main."
+        },
+        "presencas": {
+          "title": "Confirme les présences",
+          "desc": "Vois qui a fait le check-in et confirme les présences. Tu peux aussi les ajouter manuellement."
+        },
+        "alunos": {
+          "title": "Tes élèves",
+          "desc": "Suis la progression de chaque élève. Vois qui est proche de passer le grade et promeus en un seul geste."
+        },
+        "turmas": {
+          "title": "Tes cours",
+          "desc": "Organise les horaires de tes cours. Crée des cours, définis les horaires et gère les élèves."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Bienvenue, maître !",
+          "desc": "Ici, tu gères toute ton académie : élèves, professeurs, finances et rapports."
+        },
+        "alunosDono": {
+          "title": "Tous les élèves",
+          "desc": "Vois la liste complète des élèves de ton académie. Filtre, recherche et suis la progression de chacun."
+        },
+        "graduacoes": {
+          "title": "Règles de progression",
+          "desc": "Définis les critères d'évolution de chaque ceinture. Cours par grade, examens ou temps — à toi de choisir."
+        },
+        "relatorios": {
+          "title": "Rapports de l'académie",
+          "desc": "Suis la présence, la fidélisation et l'engagement de tes élèves. Des données qui aident à grandir."
+        },
+        "financeiro": {
+          "title": "Finances",
+          "desc": "Gère mensualités, dépenses et flux de trésorerie. Plans, contrats et encaissements au même endroit."
+        },
+        "config": {
+          "title": "Paramètres",
+          "desc": "Modifie nom, WhatsApp, rayon de check-in et génère des liens d'invitation pour professeurs et élèves."
+        }
+      }
+    }
   }
 }

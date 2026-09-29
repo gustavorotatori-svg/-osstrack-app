@@ -15,7 +15,8 @@
     "badge": "",
     "statsAcademias": "Akademier",
     "statsAlunos": "Aktiva elever",
-    "statsRetencao": "Kvarhållning"
+    "statsRetencao": "Kvarhållning",
+    "subtitle": "GPS-incheckning, Wellhub, bältesprogression, ranking, vägg, ekonomi och mycket mer. Allt gratis."
   },
   "frases": [
     "Varje svart bälte var en gång ett vitt bälte som aldrig gav upp.",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Direktlänkar till WhatsApp. Dela incheckningar, inbjudningar och resultat med ett klick.",
     "graduacao": "Graderingsregler",
-    "graduacaoDesc": "Tydliga regler, rättvisa kriterier och automatisk befordran. Hejdå, Excel-ark."
+    "graduacaoDesc": "Tydliga regler, rättvisa kriterier och automatisk befordran. Hejdå, Excel-ark.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Wellhub-integration för incheckning av partner-elever. Separat registrering för ekonomiska rapporter.",
+    "horas": "Träningstimmar",
+    "horasDesc": "Följ hur mycket tid du spenderar på mattan. Diagram, mål och timhistorik per lektion. Ditt engagemang i siffror.",
+    "googleLogin": "Inloggning med Google",
+    "googleLoginDesc": "Logga in med ett klick med ditt Google-konto. Ingen krånglig registrering, inga glömda lösenord. Snabbt och säkert.",
+    "waiver": "Ansvarfriskrivning",
+    "waiverDesc": "Digital waiver-underskrift direkt i appen. Juridisk trygghet för akademin och enkelhet för eleven."
   },
   "comoFunciona": {
     "badge": "Hur det fungerar",
@@ -138,7 +147,10 @@
     "modoEscuro": "Mörkt Läge",
     "regrasIbjjf": "IBJJF-regler",
     "lgpd": "GDPR",
-    "ajuda": "Hjälp"
+    "ajuda": "Hjälp",
+    "competicoes": "Tävlingar",
+    "familias": "Familjer",
+    "alertaEvasao": "Avhoppsvarning"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "lektioner",
       "posicao": "Du är på {pos}:e plats",
       "posicaoFaixa": "Du är på {pos}:e plats i bältesgruppen {faixa}",
-      "faltamAulas": "Du behöver {n} lektioner för att nå 1:a plats!"
+      "faltamAulas": "Du behöver {n} lektioner för att nå 1:a plats!",
+      "rankVazioDesc": "Elever visas här när de gör sina första incheckningar i akademin."
     },
     "agenda": {
       "title": "Lektionsschema",
@@ -344,7 +357,16 @@
         "Det handlar inte om hur många gånger du faller. Det handlar om hur många gånger du reser dig och går tillbaka till mattan.",
         "Din största motståndare står inte på andra sidan mattan. Den sitter i ditt huvud och säger 'imorgon går jag'.",
         "Det svarta bältet är inte ett mål. Det är ett sätt att leva."
-      ]
+      ],
+      "aulasEsteMes": "Lektioner denna månad",
+      "meta": "Mål",
+      "streak": "Streak",
+      "totalAulas": "Totalt lektioner",
+      "progressoFaixa": "Progression mot nästa bälte",
+      "aulasRestantes": "lektioner kvar",
+      "compartilharBtn": "Dela",
+      "topo": "Toppen",
+      "compartilhar": "Dela"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "Månadens Födelsedagsbarn",
       "semAniversariantes": "Inga födelsedagsbarn denna månad",
       "alunosInativos": "Elever som inte tränat på 7 dagar",
-      "alunosInativosTitle": "Inaktiva Elever"
+      "alunosInativosTitle": "Inaktiva Elever",
+      "prospectos": "Prospects"
     },
     "turmas": {
       "title": "Klasser",
@@ -1109,7 +1132,8 @@
     "streakAtual": "Nuvarande Streak",
     "atual": "Nuvarande",
     "melhor": "Bästa",
-    "doTotal": "av Totalt"
+    "doTotal": "av Totalt",
+    "melhorStreak": "Bästa streak"
   },
   "compartilharPage": {
     "badge": "Dela",
@@ -1162,7 +1186,8 @@
       "ano": "I år",
       "ytd": "År till dato",
       "total": "Totalt"
-    }
+    },
+    "lerAssinar": "Läs och signera"
   },
   "relatorios": {
     "subtitle": "Mätvärden och indikatorer för akademin",
@@ -1175,5 +1200,97 @@
     "deAlunos": "av {n} registrerade elever",
     "alunos90d": "Aktiva elever (senaste 90 dagarna)",
     "retencao": "kvarhållning"
+  },
+  "faq": {
+    "title": "Vanliga frågor",
+    "subtitle": "Allt du behöver veta om OssTrack.",
+    "q1": "Är OssTrack verkligen gratis?",
+    "a1": "Ja. OssTrack är 100 % gratis för akademier, instruktörer och elever — utan dolda abonnemang, utan elevgräns och utan kreditkort.",
+    "q2": "Vad gör OssTrack?",
+    "a2": "GPS-incheckning för elever, bälte- och gradueringsprogression, streaks, ranking, närvarohantering, ekonomi och rapporter — allt på ett ställe, i webbläsaren.",
+    "q3": "Måste jag installera en app?",
+    "a3": "Nej. OssTrack fungerar direkt i webbläsaren på mobilen eller datorn. Du kan lägga till den på hemskärmen och använda den som en app (PWA).",
+    "q4": "Hur fungerar incheckningen?",
+    "a4": "Eleven öppnar OssTrack, aktiverar GPS och trycker på incheckning. Närvaron registreras automatiskt med aktuell tid och väntar på instruktörens bekräftelse.",
+    "q5": "Fungerar det för akademier i alla storlekar?",
+    "a5": "Ja. Från små klasser till stora team följer OssTrack närvaro, progression och retention i realtid."
+  },
+  "ossinho": {
+    "title": "Hej, jag är Ossinho!",
+    "subtitle": "Jag hjälper dig med dina första steg här.",
+    "skip": "Hoppa över tips",
+    "gotIt": "Uppfattat!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Välkommen till den digitala mattan!",
+          "desc": "Här följer du din Jiu-Jitsu-resa. Checka in, stig i bälten och lås upp prestationer. Redo att träna?"
+        },
+        "checkin": {
+          "title": "Dags för incheckning!",
+          "desc": "Framme i akademin? Tryck på den stora knappen och registrera din närvaro. GPS:en bekräftar att du är på rätt plats."
+        },
+        "evolucao": {
+          "title": "Din bältesresa",
+          "desc": "Varje lektion för dig närmare nästa grad. Se hur många som återstår och följ din progression mot nästa bälte."
+        },
+        "conquistas": {
+          "title": "Lås upp prestationer!",
+          "desc": "Streaks, medaljer och märken. Träna konsekvent och samla alla. Varje prestation är en milstolpe i din historia."
+        },
+        "mural": {
+          "title": "Akademins vägg",
+          "desc": "Se vad gruppen lägger upp. Kommentera, gilla och dela dina vänners utveckling."
+        },
+        "ranking": {
+          "title": "Akademins ranking",
+          "desc": "Se din position bland eleverna. Ju mer du tränar, desto högre klättrar du. Toppen är din!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Välkommen, instruktör!",
+          "desc": "Här bekräftar du närvaro, hanterar elever och organiserar dina klasser. Allt i din hand."
+        },
+        "presencas": {
+          "title": "Bekräfta närvaro",
+          "desc": "Se vem som checkade in och bekräfta närvaron. Du kan också lägga till den manuellt."
+        },
+        "alunos": {
+          "title": "Dina elever",
+          "desc": "Följ varje elevs utveckling. Se vem som snart ska gradera och uppgradera med en knapptryckning."
+        },
+        "turmas": {
+          "title": "Dina klasser",
+          "desc": "Organisera tiderna för dina lektioner. Skapa klasser, ställ in scheman och hantera elever."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Välkommen, mästare!",
+          "desc": "Här hanterar du hela din akademi: elever, instruktörer, ekonomi och rapporter."
+        },
+        "alunosDono": {
+          "title": "Alla elever",
+          "desc": "Se hela listan över elever i din akademi. Filtrera, sök och följ varje elevs utveckling."
+        },
+        "graduacoes": {
+          "title": "Gradueringsregler",
+          "desc": "Ställ in utvecklingskriterierna för varje bälte. Lektioner per grad, prov eller tid — du väljer."
+        },
+        "relatorios": {
+          "title": "Akademins rapporter",
+          "desc": "Följ närvaro, retention och engagemang hos dina elever. Data som hjälper dig växa."
+        },
+        "financeiro": {
+          "title": "Ekonomi",
+          "desc": "Hantera medlemsavgifter, utgifter och kassaflöde. Planer, kontrakt och fakturering på ett ställe."
+        },
+        "config": {
+          "title": "Inställningar",
+          "desc": "Justera namn, WhatsApp, incheckningsradie och generera inbjudningslänkar för instruktörer och elever."
+        }
+      }
+    }
   }
 }
