@@ -15,7 +15,8 @@
     "badge": "",
     "statsAcademias": "Akademien",
     "statsAlunos": "Aktive Schüler",
-    "statsRetencao": "Bindung"
+    "statsRetencao": "Bindung",
+    "subtitle": "GPS-Check-in, Wellhub, Gürtelfortschritt, Ranking, Pinnwand, Finanzen und vieles mehr. Alles kostenlos."
   },
   "frases": [
     "Jeder Schwarzgurt war ein Weißgurt, der nie aufgegeben hat.",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Direkte Links zu WhatsApp. Teilen Sie Check-ins, Einladungen und Ergebnisse mit einem Klick.",
     "graduacao": "Gürtelregeln",
-    "graduacaoDesc": "Klare Regeln, faire Kriterien und automatische Beförderung. Schluss mit Excel-Tabellen."
+    "graduacaoDesc": "Klare Regeln, faire Kriterien und automatische Beförderung. Schluss mit Excel-Tabellen.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Wellhub-Integration für den Check-in von Partnerschülern. Getrennte Erfassung für Finanzberichte.",
+    "horas": "Trainingsstunden",
+    "horasDesc": "Verfolge, wie viel Zeit du auf der Matte verbringst. Diagramme, Ziele und Stundenverlauf pro Kurs. Dein Einsatz in Zahlen.",
+    "googleLogin": "Login mit Google",
+    "googleLoginDesc": "Mit einem Klick und deinem Google-Konto anmelden. Keine komplizierte Registrierung, keine vergessenen Passwörter. Schnell und sicher.",
+    "waiver": "Haftungsfreistellung",
+    "waiverDesc": "Digitale Waiver-Unterschrift direkt in der App. Rechtliche Sicherheit für die Akademie und Komfort für den Schüler."
   },
   "comoFunciona": {
     "badge": "So funktioniert's",
@@ -138,7 +147,10 @@
     "modoEscuro": "Dunkler Modus",
     "regrasIbjjf": "IBJJF-Regeln",
     "lgpd": "DSGVO",
-    "ajuda": "Hilfe"
+    "ajuda": "Hilfe",
+    "competicoes": "Wettkämpfe",
+    "familias": "Familien",
+    "alertaEvasao": "Abbruch-Warnung"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "Einheiten",
       "posicao": "Sie sind auf Platz {pos}",
       "posicaoFaixa": "Sie sind auf Platz {pos} im Gürtel {faixa}",
-      "faltamAulas": "Noch {n} Einheiten, um den 1. Platz zu erreichen!"
+      "faltamAulas": "Noch {n} Einheiten, um den 1. Platz zu erreichen!",
+      "rankVazioDesc": "Schüler erscheinen hier, sobald sie ihre ersten Check-ins in der Akademie machen."
     },
     "agenda": {
       "title": "Stundenplan",
@@ -344,7 +357,16 @@
         "Es geht nicht darum, wie oft Sie fallen. Es geht darum, wie oft Sie aufstehen und zur Matte zurückkehren.",
         "Ihr größter Gegner steht nicht auf der anderen Seite der Matte. Er ist in Ihrem Kopf und sagt morgen gehe ich.",
         "Der Schwarzgurt ist kein Ziel. Es ist eine Lebenseinstellung."
-      ]
+      ],
+      "aulasEsteMes": "Kurse diesen Monat",
+      "meta": "Ziel",
+      "streak": "Serie",
+      "totalAulas": "Kurse gesamt",
+      "progressoFaixa": "Fortschritt zum nächsten Gürtel",
+      "aulasRestantes": "Kurse verbleibend",
+      "compartilharBtn": "Teilen",
+      "topo": "Top",
+      "compartilhar": "Teilen"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "Geburtstagskinder des Monats",
       "semAniversariantes": "Keine Geburtstagskinder diesen Monat",
       "alunosInativos": "Schüler, die seit 7 Tagen nicht trainiert haben",
-      "alunosInativosTitle": "Inaktive Schüler"
+      "alunosInativosTitle": "Inaktive Schüler",
+      "prospectos": "Interessenten"
     },
     "turmas": {
       "title": "Kurse",
@@ -1109,7 +1132,8 @@
     "streakAtual": "Aktueller Streak",
     "atual": "Aktuell",
     "melhor": "Bester",
-    "doTotal": "der Gesamtanzahl"
+    "doTotal": "der Gesamtanzahl",
+    "melhorStreak": "Beste Serie"
   },
   "compartilharPage": {
     "badge": "Teilen",
@@ -1162,7 +1186,8 @@
       "ano": "Dieses Jahr",
       "ytd": "Jahr bis heute",
       "total": "Gesamt"
-    }
+    },
+    "lerAssinar": "Lesen und unterschreiben"
   },
   "relatorios": {
     "subtitle": "Kennzahlen und Indikatoren der Akademie",
@@ -1175,5 +1200,97 @@
     "deAlunos": "von {n} registrierten Schülern",
     "alunos90d": "Aktive Schüler (letzte 90 Tage)",
     "retencao": "Bindungsrate"
+  },
+  "faq": {
+    "title": "Häufige Fragen",
+    "subtitle": "Alles, was du über OssTrack wissen musst.",
+    "q1": "Ist OssTrack wirklich kostenlos?",
+    "a1": "Ja. OssTrack ist zu 100 % kostenlos für Akademien, Trainer und Schüler — ohne versteckte Tarife, ohne Schülerlimit und ohne Kreditkarte.",
+    "q2": "Was macht OssTrack?",
+    "a2": "GPS-Check-in der Schüler, Gürtel- und Graduierungsfortschritt, Serien, Ranking, Anwesenheitsverfolgung, Finanzen und Berichte — alles an einem Ort, im Browser.",
+    "q3": "Muss ich eine App installieren?",
+    "a3": "Nein. OssTrack läuft direkt im Browser von Handy oder Computer. Du kannst es zum Startbildschirm hinzufügen und wie eine App nutzen (PWA).",
+    "q4": "Wie funktioniert der Check-in?",
+    "a4": "Der Schüler öffnet OssTrack, aktiviert GPS und tippt auf Check-in. Die Anwesenheit wird automatisch mit der aktuellen Uhrzeit erfasst und wartet auf die Bestätigung durch den Trainer.",
+    "q5": "Funktioniert das für Akademien jeder Größe?",
+    "a5": "Ja. Von kleinen Klassen bis zu großen Teams verfolgt OssTrack Anwesenheit, Fortschritt und Bindung der Schüler in Echtzeit."
+  },
+  "ossinho": {
+    "title": "Hi, ich bin Ossinho!",
+    "subtitle": "Ich helfe dir bei deinen ersten Schritten hier.",
+    "skip": "Tipp überspringen",
+    "gotIt": "Verstanden!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Willkommen auf der digitalen Matte!",
+          "desc": "Hier verfolgst du deine Jiu-Jitsu-Reise. Check-in machen, Gürtel erklimmen und Erfolge freischalten. Bist du bereit zu trainieren?"
+        },
+        "checkin": {
+          "title": "Zeit für den Check-in!",
+          "desc": "In der Akademie angekommen? Tippe auf den großen Button und registriere deine Anwesenheit. GPS bestätigt, dass du am richtigen Ort bist."
+        },
+        "evolucao": {
+          "title": "Deine Gürtel-Reise",
+          "desc": "Jeder Kurs bringt dich dem nächsten Grad näher. Sieh, wie viele noch fehlen, und verfolge deinen Fortschritt zum nächsten Gürtel."
+        },
+        "conquistas": {
+          "title": "Schalte Erfolge frei!",
+          "desc": "Serien, Medaillen und Badges. Trainiere konsequent und sammle sie alle. Jeder Erfolg ist ein Meilenstein in deiner Geschichte."
+        },
+        "mural": {
+          "title": "Pinnwand der Akademie",
+          "desc": "Sieh, was die Community postet. Kommentiere, like und teile den Fortschritt deiner Freunde."
+        },
+        "ranking": {
+          "title": "Ranking der Akademie",
+          "desc": "Sieh deine Platzierung unter den Schülern. Je mehr du trainierst, desto höher steigst du. Die Spitze gehört dir!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Willkommen, Trainer!",
+          "desc": "Hier bestätigst du Anwesenheiten, verwaltest Schüler und organisierst deine Kurse. Alles im Handumdrehen."
+        },
+        "presencas": {
+          "title": "Anwesenheit bestätigen",
+          "desc": "Sieh, wer eingecheckt hat, und bestätige die Anwesenheiten. Du kannst sie auch manuell hinzufügen."
+        },
+        "alunos": {
+          "title": "Deine Schüler",
+          "desc": "Verfolge den Fortschritt jedes Schülers. Sieh, wer bald graduiert, und befördere mit einem Fingertipp."
+        },
+        "turmas": {
+          "title": "Deine Kurse",
+          "desc": "Organisiere die Zeiten deiner Kurse. Erstelle Kurse, lege Zeitpläne fest und verwalte Schüler."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Willkommen, Meister!",
+          "desc": "Hier verwaltest du deine gesamte Akademie: Schüler, Trainer, Finanzen und Berichte."
+        },
+        "alunosDono": {
+          "title": "Alle Schüler",
+          "desc": "Sieh die komplette Schülerliste deiner Akademie. Filtere, suche und verfolge den Fortschritt jedes Einzelnen."
+        },
+        "graduacoes": {
+          "title": "Graduierungsregeln",
+          "desc": "Lege die Fortschrittskriterien für jeden Gürtel fest. Kurse pro Grad, Prüfungen oder Zeit — du entscheidest."
+        },
+        "relatorios": {
+          "title": "Berichte der Akademie",
+          "desc": "Verfolge Anwesenheit, Bindung und Engagement deiner Schüler. Daten, die beim Wachsen helfen."
+        },
+        "financeiro": {
+          "title": "Finanzen",
+          "desc": "Verwalte Mitgliedsbeiträge, Ausgaben und Cashflow. Tarife, Verträge und Abrechnungen an einem Ort."
+        },
+        "config": {
+          "title": "Einstellungen",
+          "desc": "Passe Name, WhatsApp, Check-in-Radius an und erstelle Einladungslink für Trainer und Schüler."
+        }
+      }
+    }
   }
 }

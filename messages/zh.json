@@ -15,7 +15,8 @@
     "badge": "",
     "statsAcademias": "道馆",
     "statsAlunos": "活跃学员",
-    "statsRetencao": "留存率"
+    "statsRetencao": "留存率",
+    "subtitle": "GPS 签到、Wellhub、腰带进度、排名、动态墙、财务等等，全部免费。"
   },
   "frases": [
     "每条黑带都曾是永不放弃的白带。",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "直接链接到WhatsApp。一键分享签到、邀请和结果。",
     "graduacao": "升级规则",
-    "graduacaoDesc": "规则清晰、标准公正、自动晋升。再见，Excel表格。"
+    "graduacaoDesc": "规则清晰、标准公正、自动晋升。再见，Excel表格。",
+    "wellhub": "Wellhub（Gympass）",
+    "wellhubDesc": "与 Wellhub 集成，用于合作伙伴学员的签到。单独记录以便生成财务报表。",
+    "horas": "训练时长",
+    "horasDesc": "记录你在垫子上的时间。用图表、目标和每节课的时长历史，把投入变成数字。",
+    "googleLogin": "Google 登录",
+    "googleLoginDesc": "用 Google 账号一键登录。无需复杂注册，也不会忘记密码。快速又安全。",
+    "waiver": "免责协议",
+    "waiverDesc": "直接在应用内进行 digital waiver 数字签名。为道馆提供法律保障，也给学员带来便利。"
   },
   "comoFunciona": {
     "badge": "使用说明",
@@ -138,7 +147,10 @@
     "modoEscuro": "深色模式",
     "regrasIbjjf": "IBJJF规则",
     "lgpd": "隐私保护",
-    "ajuda": "帮助"
+    "ajuda": "帮助",
+    "competicoes": "比赛",
+    "familias": "家人",
+    "alertaEvasao": "流失预警"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "课时",
       "posicao": "你目前排名第{pos}位",
       "posicaoFaixa": "你在{faixa}段位中排名第{pos}位",
-      "faltamAulas": "还需{n}节课才能达到第1名！"
+      "faltamAulas": "还需{n}节课才能达到第1名！",
+      "rankVazioDesc": "学员在道馆完成首次签到后就会出现在这里。"
     },
     "agenda": {
       "title": "课程安排",
@@ -344,7 +357,16 @@
         "重要的不是你跌倒多少次。而是你多少次站起来回到榻榻米上。",
         "你最大的对手不在榻榻米的另一边。而在你脑子里说明天再去的那个声音。",
         "黑带不是终点。它是一种生活方式。"
-      ]
+      ],
+      "aulasEsteMes": "本月课时",
+      "meta": "目标",
+      "streak": "连续打卡",
+      "totalAulas": "总课时",
+      "progressoFaixa": "距离下一条腰带",
+      "aulasRestantes": "剩余课时",
+      "compartilharBtn": "分享",
+      "topo": "榜首",
+      "compartilhar": "分享"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "本月生日学员",
       "semAniversariantes": "本月无生日学员",
       "alunosInativos": "超过7天未训练的学员",
-      "alunosInativosTitle": "不活跃学员"
+      "alunosInativosTitle": "不活跃学员",
+      "prospectos": "潜在学员"
     },
     "turmas": {
       "title": "班级",
@@ -1109,7 +1132,8 @@
     "streakAtual": "当前连续记录",
     "atual": "当前",
     "melhor": "最佳",
-    "doTotal": "总计"
+    "doTotal": "总计",
+    "melhorStreak": "最长连续记录"
   },
   "compartilharPage": {
     "badge": "分享",
@@ -1162,7 +1186,8 @@
       "ano": "今年",
       "ytd": "年初至今",
       "total": "总计"
-    }
+    },
+    "lerAssinar": "阅读并签名"
   },
   "relatorios": {
     "subtitle": "道馆的指标和指数",
@@ -1175,5 +1200,97 @@
     "deAlunos": "/{n}名已注册学员",
     "alunos90d": "活跃学员（过去90天）",
     "retencao": "留存率"
+  },
+  "faq": {
+    "title": "常见问题",
+    "subtitle": "关于 OssTrack 你需要知道的一切。",
+    "q1": "OssTrack 真的免费吗？",
+    "a1": "是的。OssTrack 对道馆、教练和学员完全免费——没有隐藏套餐、没有学员人数限制、也不需要信用卡。",
+    "q2": "OssTrack 是做什么的？",
+    "a2": "学员 GPS 签到、腰带与晋级进度、连续打卡、排名、出勤管理、财务和报表——全部集中在一个地方，在浏览器里就能使用。",
+    "q3": "需要安装应用吗？",
+    "a3": "不需要。OssTrack 直接在手机或电脑的浏览器里运行。你可以把它添加到主屏幕，像应用一样使用（PWA）。",
+    "q4": "签到如何运作？",
+    "a4": "学员打开 OssTrack，开启 GPS 然后点击签到。出勤会连同当前时间自动记录，并等待教练确认。",
+    "q5": "适合任何规模的道馆吗？",
+    "a5": "是的。从小组课到大赛队，OssTrack 都会实时追踪出勤、进度和学员留存。"
+  },
+  "ossinho": {
+    "title": "嗨，我是 Ossinho！",
+    "subtitle": "我来帮你迈出在这里的第一步。",
+    "skip": "跳过提示",
+    "gotIt": "明白了！",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "欢迎来到数字垫子！",
+          "desc": "在这里记录你的柔术之旅：签到、升级腰带、解锁成就。准备好训练了吗？"
+        },
+        "checkin": {
+          "title": "签到时间到！",
+          "desc": "到道馆了？点一下大按钮记录出勤。GPS 会确认你就在正确的位置。"
+        },
+        "evolucao": {
+          "title": "你的腰带之路",
+          "desc": "每次训练都让你离下一个段位更近一步。看看还剩多少，追踪到下一条腰带的进度。"
+        },
+        "conquistas": {
+          "title": "解锁成就！",
+          "desc": "连续打卡、奖牌和徽章。坚持训练，把它们全部集齐。每一个成就都是你故事里的里程碑。"
+        },
+        "mural": {
+          "title": "道馆动态墙",
+          "desc": "看看大家都在发什么。评论、点赞，分享朋友们的进步。"
+        },
+        "ranking": {
+          "title": "道馆排名",
+          "desc": "看看你在学员中的位置。练得越多，排名越高。榜首就是你的！"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "欢迎，教练！",
+          "desc": "在这里确认出勤、管理学员、安排你的课程。一切尽在手中。"
+        },
+        "presencas": {
+          "title": "确认出勤",
+          "desc": "看看谁已签到并确认出勤。也可以手动添加。"
+        },
+        "alunos": {
+          "title": "你的学员",
+          "desc": "跟踪每位学员的进度，看到谁快要晋级，一键提升。"
+        },
+        "turmas": {
+          "title": "你的课程",
+          "desc": "安排你的上课时间。创建课程、设定日程、管理学员。"
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "欢迎，馆长！",
+          "desc": "在这里管理整个道馆：学员、教练、财务和报表。"
+        },
+        "alunosDono": {
+          "title": "全部学员",
+          "desc": "查看道馆的完整学员列表，筛选、搜索并跟踪每个人的进度。"
+        },
+        "graduacoes": {
+          "title": "晋级规则",
+          "desc": "为每条腰带设定晋级标准：按段位课时、考试或时长——你来决定。"
+        },
+        "relatorios": {
+          "title": "道馆报表",
+          "desc": "追踪学员的出勤、留存和参与度。数据帮你做出更好的决策。"
+        },
+        "financeiro": {
+          "title": "财务",
+          "desc": "管理月费、支出和现金流。套餐、合同和账单集中在一个地方。"
+        },
+        "config": {
+          "title": "设置",
+          "desc": "调整名称、WhatsApp、签到半径，并生成教练和学员的邀请链接。"
+        }
+      }
+    }
   }
 }

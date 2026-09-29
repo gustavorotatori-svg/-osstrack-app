@@ -163,7 +163,8 @@
     "modoEscuro": "Dark Mode",
     "regrasIbjjf": "IBJJF Rules",
     "lgpd": "LGPD",
-    "ajuda": "Help"
+    "ajuda": "Help",
+    "familias": "Families"
   },
   "aluno": {
     "checkin": {
@@ -286,7 +287,8 @@
       "aulas": "classes",
       "posicao": "You are in {pos}th position",
       "posicaoFaixa": "You are in {pos}th position in {faixa} belt",
-      "faltamAulas": "{n} classes to reach 1st place!"
+      "faltamAulas": "{n} classes to reach 1st place!",
+      "rankVazioDesc": "Students appear here once they make their first check-ins at the academy."
     },
     "agenda": {
       "title": "Class Schedule",
@@ -369,7 +371,16 @@
         "It's not about how many times you fall. It's about how many times you get up and come back to the mats.",
         "Your biggest opponent isn't on the other side of the mats. It's in your head saying I'll go tomorrow.",
         "The black belt isn't a destination. It's a way of life."
-      ]
+      ],
+      "aulasEsteMes": "Classes This Month",
+      "meta": "Goal",
+      "streak": "Streak",
+      "totalAulas": "Total Classes",
+      "progressoFaixa": "Progress to Next Belt",
+      "aulasRestantes": "classes left",
+      "compartilharBtn": "Share",
+      "topo": "Top",
+      "compartilhar": "Share"
     }
   },
   "professor": {
@@ -542,7 +553,8 @@
       "aniversariantes": "Birthdays This Month",
       "semAniversariantes": "No birthdays this month",
       "alunosInativos": "Students inactive for 7 days",
-      "alunosInativosTitle": "Inactive Students"
+      "alunosInativosTitle": "Inactive Students",
+      "prospectos": "Leads"
     },
     "turmas": {
       "title": "Classes",
@@ -1102,8 +1114,7 @@
     "mais": "more",
     "buscarAcademia": "Find Academy",
     "conquistas": "Achievements",
-    "convidarOssTrack": "Invite to OssTrack"
-  ,
+    "convidarOssTrack": "Invite to OssTrack",
     "horas": {
       "titulo": "Training Hours",
       "subtitulo": "Your time on the mat",
@@ -1127,7 +1138,9 @@
       "ano": "This year",
       "ytd": "Year to date",
       "total": "Total"
-    }},
+    },
+    "lerAssinar": "Read and sign"
+  },
   "compartilharPage": {
     "compartilhar": "Share",
     "copiar": "Copy",
@@ -1175,7 +1188,6 @@
     "erroSalvar": "Error saving profile",
     "telefonePlaceholder": "+55 (11) 99999-9999",
     "nome": "Name",
-    "telefone": "Phone",
     "dataNascimento": "Date of Birth",
     "melhor": "best",
     "atual": "current",
@@ -1188,7 +1200,8 @@
     "fotoCarregada": "Photo loaded!",
     "streakAtual": "Current Streak",
     "presencas": "Check-ins",
-    "salvar": "Save"
+    "salvar": "Save",
+    "melhorStreak": "Best Streak"
   },
   "relatorios": {
     "subtitle": "Track your academy's performance",
@@ -1201,5 +1214,83 @@
     "erroDesc": "Could not load data. Check your connection.",
     "tentarNovamente": "Try Again",
     "deAlunos": "of students"
+  },
+  "ossinho": {
+    "title": "Hi, I'm Ossinho!",
+    "subtitle": "I'll help you take your first steps here.",
+    "skip": "Skip tip",
+    "gotIt": "Got it!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Welcome to the digital mat!",
+          "desc": "Here you can follow your Jiu-Jitsu journey. Check in, move up the belts and unlock achievements. Ready to train?"
+        },
+        "checkin": {
+          "title": "Time to Check In!",
+          "desc": "At the academy? Tap the big button and register your attendance. GPS confirms you're in the right place."
+        },
+        "evolucao": {
+          "title": "Your Belt Journey",
+          "desc": "Every class brings you closer to the next degree. See how many are left and follow your progress toward the next belt."
+        },
+        "conquistas": {
+          "title": "Unlock Achievements!",
+          "desc": "Streaks, medals and badges. Stay consistent and collect them all. Every achievement is a milestone in your story."
+        },
+        "mural": {
+          "title": "Academy Wall",
+          "desc": "See what everyone is posting. Comment, like and share your friends' progress."
+        },
+        "ranking": {
+          "title": "Academy Ranking",
+          "desc": "See your position among the students. The more you train, the higher you climb. The top is yours!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Welcome, Coach!",
+          "desc": "Here you confirm attendance, manage students and organize your classes. Everything at your fingertips."
+        },
+        "presencas": {
+          "title": "Confirm Attendance",
+          "desc": "See who checked in and confirm their attendance. You can also add it manually."
+        },
+        "alunos": {
+          "title": "Your Students",
+          "desc": "Follow each student's progress. See who's close to graduating and promote with one tap."
+        },
+        "turmas": {
+          "title": "Your Classes",
+          "desc": "Organize your class times. Create classes, set schedules and manage students."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Welcome, Master!",
+          "desc": "Here you manage your entire academy: students, coaches, finances and reports."
+        },
+        "alunosDono": {
+          "title": "All Students",
+          "desc": "See the complete list of students at your academy. Filter, search and follow each one's progress."
+        },
+        "graduacoes": {
+          "title": "Graduation Rules",
+          "desc": "Set the progression criteria for each belt. Classes per degree, exams or time — you choose."
+        },
+        "relatorios": {
+          "title": "Academy Reports",
+          "desc": "Track attendance, retention and engagement of your students. Data that helps you grow."
+        },
+        "financeiro": {
+          "title": "Finances",
+          "desc": "Manage monthly fees, expenses and cash flow. Plans, contracts and billing in one place."
+        },
+        "config": {
+          "title": "Settings",
+          "desc": "Adjust name, WhatsApp, check-in radius and generate invite links for coaches and students."
+        }
+      }
+    }
   }
 }

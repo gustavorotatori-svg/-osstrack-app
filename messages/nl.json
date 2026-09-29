@@ -15,7 +15,8 @@
     "badge": "",
     "statsAcademias": "Scholen",
     "statsAlunos": "Actieve leerlingen",
-    "statsRetencao": "Behoud"
+    "statsRetencao": "Behoud",
+    "subtitle": "GPS-check-in, Wellhub, gordelvoortgang, ranking, muur, financiën en meer. Alles gratis."
   },
   "frases": [
     "Elke zwarte band was ooit een witte band die nooit opgaf.",
@@ -39,7 +40,15 @@
     "whatsapp": "WhatsApp",
     "whatsappDesc": "Directe links naar WhatsApp. Deel check-ins, uitnodigingen en resultaten met één klik.",
     "graduacao": "Promotieregels",
-    "graduacaoDesc": "Duidelijke regels, eerlijke criteria en automatische promotie. Weg met de Excel-spreadsheet."
+    "graduacaoDesc": "Duidelijke regels, eerlijke criteria en automatische promotie. Weg met de Excel-spreadsheet.",
+    "wellhub": "Wellhub (Gympass)",
+    "wellhubDesc": "Wellhub-integratie voor de check-in van partnerstudenten. Aparte registratie voor financiële rapporten.",
+    "horas": "Trainingsuren",
+    "horasDesc": "Volg hoeveel tijd je op de mat doorbrengt. Grafieken, doelen en een urenhistorie per les. Jouw inzet in cijfers.",
+    "googleLogin": "Inloggen met Google",
+    "googleLoginDesc": "Log in met één klik via je Google-account. Geen ingewikkelde registratie, geen vergeten wachtwoorden. Snel en veilig.",
+    "waiver": "Vrijwaringsverklaring",
+    "waiverDesc": "Digitale waiver-handtekening direct in de app. Juridische zekerheid voor de academie en gemak voor de student."
   },
   "comoFunciona": {
     "badge": "Hoe het werkt",
@@ -138,7 +147,10 @@
     "modoEscuro": "Donkere Modus",
     "regrasIbjjf": "IBJJF Regels",
     "lgpd": "AVG",
-    "ajuda": "Help"
+    "ajuda": "Help",
+    "competicoes": "Wedstrijden",
+    "familias": "Families",
+    "alertaEvasao": "Uitvalwaarschuwing"
   },
   "aluno": {
     "checkin": {
@@ -261,7 +273,8 @@
       "aulas": "lessen",
       "posicao": "U staat op de {pos}e plaats",
       "posicaoFaixa": "U staat op de {pos}e plaats in de band {faixa}",
-      "faltamAulas": "Nog {n} lessen om de 1e plaats te bereiken!"
+      "faltamAulas": "Nog {n} lessen om de 1e plaats te bereiken!",
+      "rankVazioDesc": "Studenten verschijnen hier zodra ze hun eerste check-ins in de academie doen."
     },
     "agenda": {
       "title": "Lesrooster",
@@ -344,7 +357,16 @@
         "Het gaat niet om hoe vaak u valt. Het gaat om hoe vaak u opstaat en terugkeert naar de mat.",
         "Uw grootste tegenstander staat niet aan de andere kant van de mat. Hij zit in uw hoofd die zegt: morgen ga ik.",
         "De zwarte band is geen bestemming. Het is een manier van leven."
-      ]
+      ],
+      "aulasEsteMes": "Lessen deze maand",
+      "meta": "Doel",
+      "streak": "Streak",
+      "totalAulas": "Totaal lessen",
+      "progressoFaixa": "Vooruitgang naar de volgende gordel",
+      "aulasRestantes": "lessen te gaan",
+      "compartilharBtn": "Delen",
+      "topo": "Top",
+      "compartilhar": "Delen"
     }
   },
   "professor": {
@@ -517,7 +539,8 @@
       "aniversariantes": "Jarigen van de Maand",
       "semAniversariantes": "Deze maand geen jarigen",
       "alunosInativos": "Leerlingen die 7 dagen niet hebben getraind",
-      "alunosInativosTitle": "Inactieve Leerlingen"
+      "alunosInativosTitle": "Inactieve Leerlingen",
+      "prospectos": "Leads"
     },
     "turmas": {
       "title": "Klassen",
@@ -1109,7 +1132,8 @@
     "streakAtual": "Huidige Streak",
     "atual": "Huidig",
     "melhor": "Beste",
-    "doTotal": "van het Totaal"
+    "doTotal": "van het Totaal",
+    "melhorStreak": "Beste streak"
   },
   "compartilharPage": {
     "badge": "Delen",
@@ -1162,7 +1186,8 @@
       "ano": "Dit jaar",
       "ytd": "Jaar tot nu",
       "total": "Totaal"
-    }
+    },
+    "lerAssinar": "Lezen en ondertekenen"
   },
   "relatorios": {
     "subtitle": "Statistieken en indicatoren van de school",
@@ -1175,5 +1200,97 @@
     "deAlunos": "van {n} geregistreerde leerlingen",
     "alunos90d": "Actieve leerlingen (afgelopen 90 dagen)",
     "retencao": "behoud"
+  },
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "subtitle": "Alles wat je moet weten over OssTrack.",
+    "q1": "Is OssTrack echt gratis?",
+    "a1": "Ja. OssTrack is 100% gratis voor academies, trainers en studenten — zonder verborgen abonnementen, zonder studentenlimiet en zonder creditcard.",
+    "q2": "Wat doet OssTrack?",
+    "a2": "GPS-check-in voor studenten, gordel- en graduatievoortgang, streaks, ranking, aanwezigheidsregistratie, financiën en rapporten — alles op één plek, in de browser.",
+    "q3": "Moet ik een app installeren?",
+    "a3": "Nee. OssTrack werkt direct in de browser van je telefoon of computer. Je kunt het aan je startscherm toevoegen en gebruiken als een app (PWA).",
+    "q4": "Hoe werkt de check-in?",
+    "a4": "De student opent OssTrack, activeert GPS en tikt op check-in. De aanwezigheid wordt automatisch geregistreerd met de huidige tijd en wacht op bevestiging door de trainer.",
+    "q5": "Werkt het voor academies van elke grootte?",
+    "a5": "Ja. Van kleine klassen tot grote teams: OssTrack volgt aanwezigheid, voortgang en retentie van studenten in realtime."
+  },
+  "ossinho": {
+    "title": "Hoi, ik ben Ossinho!",
+    "subtitle": "Ik help je op weg met je eerste stappen hier.",
+    "skip": "Tip overslaan",
+    "gotIt": "Snap ik!",
+    "tips": {
+      "aluno": {
+        "welcome": {
+          "title": "Welkom op de digitale mat!",
+          "desc": "Hier volg je je Jiu-Jitsu-reis. Check in, groei in gordels en ontgrendel prestaties. Klaar om te trainen?"
+        },
+        "checkin": {
+          "title": "Tijd voor check-in!",
+          "desc": "Bij de academie aangekomen? Tik op de grote knop en registreer je aanwezigheid. GPS bevestigt dat je op de juiste plek bent."
+        },
+        "evolucao": {
+          "title": "Jouw gordelreis",
+          "desc": "Elke les brengt je dichter bij de volgende graad. Zie hoeveel er nog missen en volg je voortgang naar de volgende gordel."
+        },
+        "conquistas": {
+          "title": "Ontgrendel prestaties!",
+          "desc": "Streaks, medailles en badges. Train consequent en verzamel ze allemaal. Elke prestatie is een mijlpaal in jouw verhaal."
+        },
+        "mural": {
+          "title": "Muur van de academie",
+          "desc": "Zie wat de community plaatst. Reageer, like en deel de voortgang van je vrienden."
+        },
+        "ranking": {
+          "title": "Ranking van de academie",
+          "desc": "Zie je positie tussen de studenten. Hoe meer je traint, hoe hoger je klimt. De top is van jou!"
+        }
+      },
+      "professor": {
+        "welcome": {
+          "title": "Welkom, trainer!",
+          "desc": "Hier bevestig je aanwezigheden, beheer je studenten en organiseer je je lessen. Alles binnen handbereik."
+        },
+        "presencas": {
+          "title": "Bevestig aanwezigheden",
+          "desc": "Zie wie is ingecheckt en bevestig de aanwezigheden. Je kunt ze ook handmatig toevoegen."
+        },
+        "alunos": {
+          "title": "Jouw studenten",
+          "desc": "Volg de voortgang van elke student. Zie wie bijna afstudeert en promoveer met één tik."
+        },
+        "turmas": {
+          "title": "Jouw lessen",
+          "desc": "Organiseer de tijden van je lessen. Maak lessen aan, stel schema's in en beheer studenten."
+        }
+      },
+      "dono": {
+        "welcome": {
+          "title": "Welkom, meester!",
+          "desc": "Hier beheer je je hele academie: studenten, trainers, financiën en rapporten."
+        },
+        "alunosDono": {
+          "title": "Alle studenten",
+          "desc": "Zie de volledige lijst van studenten van je academie. Filter, zoek en volg de voortgang van iedereen."
+        },
+        "graduacoes": {
+          "title": "Graduatieregels",
+          "desc": "Stel de voortgangscriteria voor elke gordel in. Lessen per graad, examens of tijd — jij kiest."
+        },
+        "relatorios": {
+          "title": "Rapporten van de academie",
+          "desc": "Volg aanwezigheid, retentie en betrokkenheid van je studenten. Data die je helpen groeien."
+        },
+        "financeiro": {
+          "title": "Financiën",
+          "desc": "Beheer contributies, uitgaven en cashflow. Abonnementen, contracten en incasso's op één plek."
+        },
+        "config": {
+          "title": "Instellingen",
+          "desc": "Pas naam, WhatsApp, check-in-straal aan en genereer uitnodigingslinks voor trainers en studenten."
+        }
+      }
+    }
   }
 }
