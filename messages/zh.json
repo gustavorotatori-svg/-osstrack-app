@@ -824,7 +824,19 @@
     "erroConexao": "连接错误。请重试。",
     "semConta": "还没有账号？",
     "cadastrarSe": "注册",
-    "contasDemo": "演示账号：rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "演示账号：rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "邮箱尚未验证。请检查收件箱，或重新发送验证链接。",
+    "voltarInicio": "返回首页",
+    "roleAluno": "学员",
+    "roleProfessor": "教练",
+    "roleDono": "道馆",
+    "esconderSenha": "隐藏密码",
+    "mostrarSenha": "显示密码",
+    "esqueceuSenha": "忘记密码？",
+    "ou": "或",
+    "entrarGoogle": "使用Google登录",
+    "instalarTelaInicio": "添加到主屏幕",
+    "instalarApp": "安装应用"
   },
   "cadastro": {
     "title": "创建账号",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "账号类型",
       "donoOption": "道馆负责人",
       "professorOption": "教练",
-      "alunoOption": "学员"
+      "alunoOption": "学员",
+      "titulo": "你的信息",
+      "senhaPlaceholder8": "至少8个字符",
+      "confirmarSenhaLabel": "确认密码",
+      "confirmarSenhaPlaceholder": "再次输入密码",
+      "menoresInfo": "对于未成年人，我们需要法定监护人的同意（LGPD第14条）。"
     },
     "step2Dono": {
       "nomeAcademiaLabel": "道馆名称",
@@ -856,34 +873,50 @@
       "raioLabel": "签到半径（米）",
       "raioPlaceholder": "200",
       "convidadoProfessor": "你被一位教练邀请！",
-      "convidadoProfessorDesc": "创建账号后，该教练将被关联到你的道馆。"
+      "convidadoProfessorDesc": "创建账号后，该教练将被关联到你的道馆。",
+      "titulo": "在OssTrack注册你的道馆",
+      "raioHint": "（自动签到的最远距离，以米为单位）",
+      "geoCapturing": "正在获取位置...",
+      "geoDone": "📍 位置已自动获取",
+      "geoInfo": "位置将用于GPS签到"
     },
     "step2Professor": {
       "info": "请告知你当前的段位：",
       "faixaLabel": "段位",
       "grauLabel": "段带",
       "buscaInfo": "搜索你授课的道馆：",
-      "naoEncontrou": "没找到？可以先继续，之后再关联道馆。"
+      "naoEncontrou": "没找到？可以先继续，之后再关联道馆。",
+      "titulo": "填写你的段位和所属",
+      "vincularInfo": "关联道馆（暂为可选）",
+      "buscarAria": "搜索要关联的道馆",
+      "buscarPlaceholder": "搜索道馆..."
     },
     "step2Aluno": {
       "buscaInfo": "搜索你的道馆：",
       "placeholder": "输入道馆名称...",
       "buscando": "搜索中...",
       "academiaSelecionada": "已选道馆",
-      "naoEncontrou": "没找到？可以先继续，之后再关联道馆。"
+      "naoEncontrou": "没找到？可以先继续，之后再关联道馆。",
+      "naoEncontrei": "找不到我的道馆",
+      "skipInfo": "你可以稍后关联道馆",
+      "skipHint": "前往 个人资料 → 编辑，稍后搜索你的道馆",
+      "buscarNovamente": "重新搜索"
     },
     "step3Aluno": {
       "info": "你在柔术中的段位：",
       "faixaLabel": "段位",
       "grauLabel": "段带",
-      "grauOption": "{g}段带"
+      "grauOption": "{g}段带",
+      "titulo": "完善你的运动员资料"
     },
     "step4Aluno": {
       "info": "选择你的教练（可选）：",
       "placeholder": "输入教练姓名...",
       "buscar": "搜索",
       "professorSelecionado": "已选教练",
-      "pular": "可以跳过此步骤。"
+      "pular": "可以跳过此步骤。",
+      "professorLabel": "教练（可选）",
+      "buscarProfPlaceholder": "搜索教练..."
     },
     "grauOption": "{g}段带",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "下一步",
       "criandoConta": "创建账号中...",
       "cadastrarPagamento": "创建账号",
-      "criarGratis": "免费创建"
+      "criarGratis": "免费创建",
+      "voltarCadastro": "返回注册",
+      "voltarInicio": "返回首页"
     },
     "errors": {
       "obrigatorio": "请填写道馆名称",
       "selecioneAcademia": "请选择道馆",
       "criacao": "创建账号时出错",
-      "conexao": "连接错误。请重试。"
+      "conexao": "连接错误。请重试。",
+      "nome": "请输入你的姓名",
+      "email": "请输入你的邮箱",
+      "emailInvalido": "邮箱无效",
+      "senha8": "密码至少需要8个字符",
+      "senhaMaiuscula": "密码至少需要一个大写字母",
+      "senhaMinuscula": "密码至少需要一个小写字母",
+      "senhaNumero": "密码至少需要一个数字",
+      "senhasDiferem": "两次输入的密码不一致",
+      "dataNascimento": "请输入你的出生日期",
+      "tipoConta": "请选择账户类型",
+      "aceitarTermos": "你需要接受《使用条款》和《隐私政策》",
+      "menorNome": "未成年人：请输入法定监护人的姓名",
+      "menorCpf": "未成年人：请输入法定监护人的CPF",
+      "menorConsentimento": "未成年人：法定监护人必须同意数据处理",
+      "duplicado": "此邮箱已注册"
     },
     "jaTemConta": "已有账号？",
-    "entrar": "登录"
+    "entrar": "登录",
+    "esconderSenha": "隐藏密码",
+    "mostrarSenha": "显示密码",
+    "academia": "道馆",
+    "subtitleCriando": "不到1分钟创建你的账户",
+    "subtitleFinal": "完成注册",
+    "steps": {
+      "1": "注册",
+      "2": "完成"
+    },
+    "cards": {
+      "aluno": {
+        "title": "学员",
+        "desc": "我想训练并记录柔术的进步"
+      },
+      "professor": {
+        "title": "教练",
+        "desc": "我是黑带或有段位，想管理学员"
+      },
+      "dono": {
+        "title": "道馆主",
+        "desc": "我有自己的道馆，想管理一切"
+      }
+    },
+    "menores": {
+      "tituloAntes": "你是",
+      "tituloDestaque": "未成年人",
+      "tituloDepois": "。为遵守LGPD第14条，我们需要你法定监护人的同意：",
+      "responsavelNomeLabel": "法定监护人姓名 *",
+      "responsavelNomePlaceholder": "全名",
+      "responsavelCpfLabel": "法定监护人CPF *",
+      "consentimentoLabel": "我是法定监护人，同意按照LGPD（法律13.709/2018）处理未成年人的个人数据 *"
+    },
+    "termos": {
+      "parte1": "我接受",
+      "link1": "《使用条款》",
+      "parte2": "和",
+      "link2": "《隐私政策》"
+    },
+    "lgpd": {
+      "autorizacao": "我同意按照LGPD（法律13.709/2018）处理我的个人数据 *"
+    },
+    "marketing": {
+      "label": "我同意接收有关新功能、技巧和活动的通知（可选）"
+    },
+    "verificacao": {
+      "title": "验证你的邮箱",
+      "desc1": "我们已向以下地址发送验证链接：",
+      "desc2": "点击链接以激活你的账户。",
+      "spam": "没找到？请检查垃圾邮件文件夹。",
+      "jaVerificou": "已验证？登录"
+    },
+    "sucesso": {
+      "title": "账户创建成功！",
+      "desc": "你的账户已就绪。登录即可开启你的柔术之旅。",
+      "fazerLogin": "登录"
+    }
   },
   "perfil": {
     "title": "编辑个人资料",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "三条旅程，",
+    "destaque": "一个应用",
+    "descricao": "每种体验都独一无二。选择你的道路。",
+    "dono": {
+      "title": "道馆主",
+      "desc": "学员、签到、腰带和财务，尽在一个地方。"
+    },
+    "professor": {
+      "title": "教练",
+      "desc": "课程、出勤、晋升和动态，触手可及。"
+    },
+    "aluno": {
+      "title": "学员",
+      "desc": "进步、时长、打卡和排名，尽在掌握。"
+    },
+    "features": {
+      "financeiro": "财务",
+      "alunos": "学员",
+      "relatorios": "报表",
+      "cobrancas": "收费",
+      "waiver": "免责",
+      "turmas": "课程",
+      "presencas": "出勤",
+      "graduacoes": "晋升",
+      "mural": "动态墙",
+      "evolucao": "进步",
+      "horas": "时长",
+      "streak": "连击",
+      "ranking": "排名",
+      "googleLogin": "Google登录"
+    }
+  },
+  "faixas": {
+    "branca": "白带",
+    "azul": "蓝带",
+    "roxa": "紫带",
+    "marrom": "棕带",
+    "preta": "黑带"
+  },
+  "ebook": {
+    "baixe": "免费下载",
+    "title1": "把学员变成",
+    "title2": "真正的社区",
+    "desc": "一本实用指南，帮助你在柔术道馆中提升参与度、留存率并建立归属感。",
+    "b1Title": "日常参与",
+    "b1Desc": "让学员持续训练的策略。",
+    "b2Title": "真正的游戏化",
+    "b2Desc": "连击、成就和排名，真正激发动力。",
+    "b3Title": "强大的社区",
+    "b3Desc": "把学员变成粉丝的归属感。",
+    "b4Title": "数据落地",
+    "b4Desc": "在学员流失前行动的数据指标。",
+    "cta": "下载免费电子书",
+    "after": "创建免费账户即可访问。",
+    "bookBadge": "免费电子书",
+    "bookTitle1": "如何让柔术",
+    "bookTitle2": "学员持续参与",
+    "bookSubtitle": "并打造铁打的社区",
+    "bookMeta1": "10分钟读完",
+    "bookMeta2": "交互式PDF",
+    "free": "免费"
+  },
+  "exitPopup": {
+    "fechar": "关闭",
+    "titulo": "等等！你的道馆还需要你",
+    "descricao": "OssTrack对道馆、教练和学员完全免费。现在注册你的道馆，2分钟搞定一切。",
+    "cta": "创建免费账户",
+    "agoraNao": "暂不需要"
+  },
+  "ebookLead": {
+    "voltar": "返回",
+    "titulo": "免费电子书",
+    "subtitulo": "如何让柔术学员持续参与",
+    "descricao": "10分钟读完。关于参与度、留存和社区的实用策略。",
+    "emailPlaceholder": "你最好的邮箱",
+    "enviando": "发送中...",
+    "baixar": "下载免费电子书",
+    "semSpam": "无垃圾邮件，仅发送电子书。可随时退订。",
+    "querApp": "想要完整应用访问权限？",
+    "criarConta": "创建免费账户",
+    "enviado": "电子书已发送！",
+    "verifique": "请查看你的收件箱",
+    "linkChegou": "电子书链接即将送达。",
+    "criarEAcessar": "创建账户并进入应用"
+  },
+  "ebookContent": {
+    "gate": "创建免费账户即可阅读电子书。",
+    "gateCta": "创建免费账户",
+    "voltar": "返回",
+    "topoEbook": "免费电子书",
+    "pdf": "PDF",
+    "badge": "OssTrack · 免费电子书",
+    "titulo1": "如何让柔术学员持续参与",
+    "titulo2": "打造铁打的社区",
+    "subtitulo": "为你的柔术道馆提供的留存、归属与游戏化实用策略",
+    "s1": "1. 无声流失的问题",
+    "s2": "2. 归属感：流失的解药",
+    "s2a": "入场与离场仪式",
+    "s2b": "交流空间",
+    "s2c": "名字的力量",
+    "s3": "3. 适合柔术的游戏化方法",
+    "s3a": "训练连击（连续打卡）",
+    "s3b": "健康的排名",
+    "s3c": "成就与里程碑",
+    "s4": "4. 教练是社区的核心",
+    "s4a": "在应用中的积极存在",
+    "s4b": "个性化反馈",
+    "s4c": "真诚陪伴",
+    "s5": "5. 提高参与度的沟通策略",
+    "s6": "6. 联结人的活动与仪式",
+    "s7": "7. 参与度指标：衡量什么",
+    "s8": "8. 技术在日常参与中的角色",
+    "tabela": {
+      "metrica": "指标",
+      "revela": "显示什么",
+      "meta": "健康目标"
+    },
+    "ctaTitulo": "想看看OssTrack如何提升你道馆的参与度？",
+    "cta": "创建免费账户 — 只需2分钟",
+    "rodape": "柔术道馆的智能管理 · 100%免费",
+    "home": "首页",
+    "criarConta": "创建账户",
+    "salvarPdf": "保存为PDF"
+  },
+  "notFound": {
+    "titulo": "此页面不在地垫上",
+    "desc": "您访问的地址不存在或已被移动。回到首页看看？",
+    "voltar": "返回首页",
+    "criarConta": "创建免费账户"
   }
 }

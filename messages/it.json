@@ -824,7 +824,19 @@
     "erroConexao": "Errore di connessione. Riprova.",
     "semConta": "Non hai ancora un account?",
     "cadastrarSe": "Registrati",
-    "contasDemo": "Account demo: rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "Account demo: rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "Email non verificato. Controlla la tua casella di posta o invia di nuovo il link di verifica.",
+    "voltarInicio": "Torna alla home",
+    "roleAluno": "Allievo",
+    "roleProfessor": "Istruttore",
+    "roleDono": "Accademia",
+    "esconderSenha": "Nascondi password",
+    "mostrarSenha": "Mostra password",
+    "esqueceuSenha": "Password dimenticata?",
+    "ou": "o",
+    "entrarGoogle": "Accedi con Google",
+    "instalarTelaInicio": "Aggiungi alla schermata Home",
+    "instalarApp": "Installa app"
   },
   "cadastro": {
     "title": "Crea Account",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "Tipo di account",
       "donoOption": "Proprietario di Accademia",
       "professorOption": "Insegnante",
-      "alunoOption": "Studente"
+      "alunoOption": "Studente",
+      "titulo": "I tuoi dati",
+      "senhaPlaceholder8": "Min. 8 caratteri",
+      "confirmarSenhaLabel": "Conferma password",
+      "confirmarSenhaPlaceholder": "Ripeti la password",
+      "menoresInfo": "Per i minorenni richiediamo il consenso del tutore legale (Art. 14 della LGPD)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Nome dell'Accademia",
@@ -856,34 +873,50 @@
       "raioLabel": "Raggio check-in (metri)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "Sei stato invitato da un insegnante!",
-      "convidadoProfessorDesc": "Creando il tuo account, l'insegnante verrà collegato alla tua accademia."
+      "convidadoProfessorDesc": "Creando il tuo account, l'insegnante verrà collegato alla tua accademia.",
+      "titulo": "Registra la tua accademia su OssTrack",
+      "raioHint": "(distanza massima in metri per il check-in automatico)",
+      "geoCapturing": "Acquisizione posizione...",
+      "geoDone": "📍 Posizione acquisita automaticamente",
+      "geoInfo": "La posizione verrà usata per il check-in GPS"
     },
     "step2Professor": {
       "info": "Indica la tua graduazione attuale:",
       "faixaLabel": "Cintura",
       "grauLabel": "Grado",
       "buscaInfo": "Cerca l'accademia dove insegni:",
-      "naoEncontrou": "Non l'hai trovata? Puoi continuare senza accademia e collegarti dopo."
+      "naoEncontrou": "Non l'hai trovata? Puoi continuare senza accademia e collegarti dopo.",
+      "titulo": "Indica il tuo grado e il tuo collegamento",
+      "vincularInfo": "Collega una accademia (facoltativo per ora)",
+      "buscarAria": "Cerca una accademia da collegare",
+      "buscarPlaceholder": "Cerca accademia..."
     },
     "step2Aluno": {
       "buscaInfo": "Cerca la tua accademia:",
       "placeholder": "Digita il nome dell'accademia...",
       "buscando": "Ricerca in corso...",
       "academiaSelecionada": "Accademia selezionata",
-      "naoEncontrou": "Non l'hai trovata? Puoi continuare senza accademia e collegarti dopo."
+      "naoEncontrou": "Non l'hai trovata? Puoi continuare senza accademia e collegarti dopo.",
+      "naoEncontrei": "Non ho trovato la mia accademia",
+      "skipInfo": "Potrai collegare un'accademia più tardi",
+      "skipHint": "Vai su Profilo → Modifica per cercare la tua accademia",
+      "buscarNovamente": "Cerca di nuovo"
     },
     "step3Aluno": {
       "info": "La tua graduazione nel Jiu-Jitsu:",
       "faixaLabel": "Cintura",
       "grauLabel": "Grado",
-      "grauOption": "{g}° Grado"
+      "grauOption": "{g}° Grado",
+      "titulo": "Completa il tuo profilo da atleta"
     },
     "step4Aluno": {
       "info": "Seleziona il tuo insegnante (opzionale):",
       "placeholder": "Digita il nome dell'insegnante...",
       "buscar": "Cerca",
       "professorSelecionado": "Insegnante selezionato",
-      "pular": "Puoi saltare questo passaggio."
+      "pular": "Puoi saltare questo passaggio.",
+      "professorLabel": "Istruttore (facoltativo)",
+      "buscarProfPlaceholder": "Cerca istruttore..."
     },
     "grauOption": "{g}° Grado",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "Avanti",
       "criandoConta": "Creazione account in corso...",
       "cadastrarPagamento": "Crea Account",
-      "criarGratis": "Crea Gratis"
+      "criarGratis": "Crea Gratis",
+      "voltarCadastro": "Torna alla registrazione",
+      "voltarInicio": "Torna alla home"
     },
     "errors": {
       "obrigatorio": "Inserisci il nome dell'accademia",
       "selecioneAcademia": "Seleziona un'accademia",
       "criacao": "Errore nella creazione dell'account",
-      "conexao": "Errore di connessione. Riprova."
+      "conexao": "Errore di connessione. Riprova.",
+      "nome": "Inserisci il tuo nome",
+      "email": "Inserisci la tua email",
+      "emailInvalido": "Email non valida",
+      "senha8": "La password deve avere almeno 8 caratteri",
+      "senhaMaiuscula": "La password deve contenere almeno una lettera maiuscola",
+      "senhaMinuscula": "La password deve contenere almeno una lettera minuscola",
+      "senhaNumero": "La password deve contenere almeno un numero",
+      "senhasDiferem": "Le password non coincidono",
+      "dataNascimento": "Inserisci la tua data di nascita",
+      "tipoConta": "Seleziona un tipo di account",
+      "aceitarTermos": "Devi accettare i Termini di Utilizzo e l'Informativa sulla Privacy",
+      "menorNome": "Minorenne: inserisci il nome del tutore legale",
+      "menorCpf": "Minorenne: inserisci il CPF del tutore legale",
+      "menorConsentimento": "Minorenne: il tutore legale deve acconsentire al trattamento dei dati",
+      "duplicado": "Questa email è già registrata"
     },
     "jaTemConta": "Hai già un account?",
-    "entrar": "Accedi"
+    "entrar": "Accedi",
+    "esconderSenha": "Nascondi password",
+    "mostrarSenha": "Mostra password",
+    "academia": "Accademia",
+    "subtitleCriando": "Crea il tuo account in meno di 1 minuto",
+    "subtitleFinal": "Completa la registrazione",
+    "steps": {
+      "1": "Registrazione",
+      "2": "Completa"
+    },
+    "cards": {
+      "aluno": {
+        "title": "Allievo",
+        "desc": "Voglio allenarmi e seguire i miei progressi nel Jiu-Jitsu"
+      },
+      "professor": {
+        "title": "Istruttore",
+        "desc": "Sono cintura nera o graduato e voglio gestire gli allievi"
+      },
+      "dono": {
+        "title": "Proprietario di accademia",
+        "desc": "Ho una mia accademia e voglio amministrare tutto"
+      }
+    },
+    "menores": {
+      "tituloAntes": "Sei",
+      "tituloDestaque": "minorenne",
+      "tituloDepois": ". Per rispettare l'Art. 14 della LGPD, ci serve il consenso del tuo tutore legale:",
+      "responsavelNomeLabel": "Nome del tutore legale *",
+      "responsavelNomePlaceholder": "Nome completo",
+      "responsavelCpfLabel": "CPF del tutore legale *",
+      "consentimentoLabel": "Sono il tutore legale e acconsento al trattamento dei dati personali del minore secondo la LGPD (Legge 13.709/2018) *"
+    },
+    "termos": {
+      "parte1": "Accetto i",
+      "link1": "Termini di Utilizzo",
+      "parte2": "e l'",
+      "link2": "Informativa sulla Privacy"
+    },
+    "lgpd": {
+      "autorizacao": "Autorizzo il trattamento dei miei dati personali secondo la LGPD (Legge 13.709/2018) *"
+    },
+    "marketing": {
+      "label": "Acconsento a ricevere comunicazioni su novità, consigli e promozioni (facoltativo)"
+    },
+    "verificacao": {
+      "title": "Verifica la tua email",
+      "desc1": "Abbiamo inviato un link di verifica a",
+      "desc2": "Clicca sul link per attivare il tuo account.",
+      "spam": "Non lo trovi? Controlla la cartella spam.",
+      "jaVerificou": "Già verificato? Accedi"
+    },
+    "sucesso": {
+      "title": "Account creato con successo!",
+      "desc": "Il tuo account è pronto. Accedi per iniziare il tuo percorso nel Jiu-Jitsu.",
+      "fazerLogin": "Accedi"
+    }
   },
   "perfil": {
     "title": "Modifica Profilo",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "Tre percorsi,",
+    "destaque": "una sola app",
+    "descricao": "Ogni esperienza è unica. Scegli la tua strada.",
+    "dono": {
+      "title": "Proprietario di accademia",
+      "desc": "Allievi, check-in, cinture e finanze in un unico posto."
+    },
+    "professor": {
+      "title": "Istruttore",
+      "desc": "Lezioni, presenze, promozioni e bacheca a portata di mano."
+    },
+    "aluno": {
+      "title": "Allievo",
+      "desc": "Progressi, ore, streak e classifica in tasca."
+    },
+    "features": {
+      "financeiro": "Finanze",
+      "alunos": "Allievi",
+      "relatorios": "Report",
+      "cobrancas": "Fatturazione",
+      "waiver": "Esclusione",
+      "turmas": "Lezioni",
+      "presencas": "Presenze",
+      "graduacoes": "Promozioni",
+      "mural": "Bacheca",
+      "evolucao": "Progressi",
+      "horas": "Ore",
+      "streak": "Streak",
+      "ranking": "Classifica",
+      "googleLogin": "Google Login"
+    }
+  },
+  "faixas": {
+    "branca": "Bianca",
+    "azul": "Blu",
+    "roxa": "Viola",
+    "marrom": "Marrone",
+    "preta": "Nera"
+  },
+  "ebook": {
+    "baixe": "Scarica gratis",
+    "title1": "Trasforma gli allievi in una",
+    "title2": "vera comunità",
+    "desc": "Una guida pratica per coinvolgere, trattenere e creare appartenenza nella tua accademia di Jiu-Jitsu.",
+    "b1Title": "Coinvolgimento quotidiano",
+    "b1Desc": "Strategie per mantenere gli allievi costanti negli allenamenti.",
+    "b2Title": "Gamification vera",
+    "b2Desc": "Streak, risultati e classifiche che motivano davvero.",
+    "b3Title": "Comunità forte",
+    "b3Desc": "Appartenenza che trasforma gli allievi in fan.",
+    "b4Title": "Dati in pratica",
+    "b4Desc": "Metriche per agire prima dell'abbandono.",
+    "cta": "Scarica l'E-book Gratuito",
+    "after": "Crea il tuo account gratuito per accedervi.",
+    "bookBadge": "E-book gratuito",
+    "bookTitle1": "Come coinvolgere i tuoi",
+    "bookTitle2": "allievi nel Jiu-Jitsu",
+    "bookSubtitle": "e creare una comunità di ferro",
+    "bookMeta1": "Lettura di 10 minuti",
+    "bookMeta2": "PDF interattivo",
+    "free": "GRATIS"
+  },
+  "exitPopup": {
+    "fechar": "Chiudi",
+    "titulo": "Aspetta! La tua accademia ha ancora bisogno di te",
+    "descricao": "OssTrack è gratuito per l'accademia, gli istruttori e gli allievi. Registra la tua accademia ora e organizza tutto in 2 minuti.",
+    "cta": "Crea account gratuito",
+    "agoraNao": "Non ora"
+  },
+  "ebookLead": {
+    "voltar": "Indietro",
+    "titulo": "E-book Gratuito",
+    "subtitulo": "Come coinvolgere i tuoi allievi nel Jiu-Jitsu",
+    "descricao": "10 minuti di lettura. Strategie reali per coinvolgimento, retention e comunità.",
+    "emailPlaceholder": "La tua migliore email",
+    "enviando": "Invio in corso...",
+    "baixar": "Scarica l'E-book Gratuito",
+    "semSpam": "Niente spam. Solo l'e-book. Puoi annullare quando vuoi.",
+    "querApp": "Vuoi accesso completo all'app?",
+    "criarConta": "Crea account gratuito",
+    "enviado": "E-book inviato!",
+    "verifique": "Controlla la tua casella di posta",
+    "linkChegou": "Il link dell'e-book sta arrivando.",
+    "criarEAcessar": "Crea account e accedi all'app"
+  },
+  "ebookContent": {
+    "gate": "Crea un account gratuito per accedere all'e-book.",
+    "gateCta": "Crea account gratuito",
+    "voltar": "Indietro",
+    "topoEbook": "E-book gratuito",
+    "pdf": "PDF",
+    "badge": "OssTrack · E-book gratuito",
+    "titulo1": "Come coinvolgere i tuoi allievi",
+    "titulo2": "e creare una comunità di ferro",
+    "subtitulo": "Strategie pratiche di retention, appartenenza e gamification per la tua accademia di Jiu-Jitsu",
+    "s1": "1. Il problema dell'abbandono silenzioso",
+    "s2": "2. Appartenenza: l'antidoto contro la dispersione",
+    "s2a": "Rituali di arrivo e uscita",
+    "s2b": "Spazi di convivenza",
+    "s2c": "Il potere del nome",
+    "s3": "3. La gamification che funziona nel Jiu-Jitsu",
+    "s3a": "Streak di allenamento (sequenza)",
+    "s3b": "Classifica sana",
+    "s3c": "Risultati e traguardi",
+    "s4": "4. L'istruttore come leader della comunità",
+    "s4a": "Presenza attiva nell'app",
+    "s4b": "Feedback personalizzato",
+    "s4c": "Disponibilità genuina",
+    "s5": "5. Strategie di comunicazione che coinvolgono",
+    "s6": "6. Eventi e rituali che uniscono",
+    "s7": "7. Metriche di coinvolgimento: cosa misurare",
+    "s8": "8. Il ruolo della tecnologia nel coinvolgimento quotidiano",
+    "tabela": {
+      "metrica": "Metrica",
+      "revela": "Cosa rivela",
+      "meta": "Obiettivo sano"
+    },
+    "ctaTitulo": "Vuoi vedere come OssTrack trasforma il coinvolgimento della tua accademia?",
+    "cta": "Crea un account gratuito: richiede 2 minuti",
+    "rodape": "Gestione intelligente per accademie di Jiu-Jitsu · 100% gratuito",
+    "home": "Home",
+    "criarConta": "Crea account",
+    "salvarPdf": "Salva come PDF"
+  },
+  "notFound": {
+    "titulo": "Questa pagina non è sul tatami",
+    "desc": "L'indirizzo che hai provato non esiste o è stato spostato. Che ne dici di tornare alla home?",
+    "voltar": "Torna alla home",
+    "criarConta": "Crea account gratuito"
   }
 }

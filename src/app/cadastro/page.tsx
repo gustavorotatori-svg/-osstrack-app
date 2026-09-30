@@ -11,10 +11,10 @@ import { InstallPrompt } from "@/components/pwa/install-prompt"
 
 type RoleType = "aluno" | "professor" | "dono"
 
-const ROLE_CARDS: { role: RoleType; icon: string; title: string; desc: string; color: string }[] = [
-  { role: "aluno", icon: "🥋", title: "Aluno", desc: "Quero treinar e acompanhar minha evolução no Jiu-Jitsu", color: "#3b82f6" },
-  { role: "professor", icon: "👨‍🏫", title: "Professor", desc: "Sou faixa preta ou graduado e quero gerenciar alunos", color: "#9333ea" },
-  { role: "dono", icon: "🏛️", title: "Dono de Academia", desc: "Tenho minha própria academia e quero administrar tudo", color: "#d4a847" },
+const ROLE_CARDS: { role: RoleType; icon: string; titleKey: string; descKey: string; color: string }[] = [
+  { role: "aluno", icon: "🥋", titleKey: "cards.aluno.title", descKey: "cards.aluno.desc", color: "#3b82f6" },
+  { role: "professor", icon: "👨‍🏫", titleKey: "cards.professor.title", descKey: "cards.professor.desc", color: "#9333ea" },
+  { role: "dono", icon: "🏛️", titleKey: "cards.dono.title", descKey: "cards.dono.desc", color: "#d4a847" },
 ]
 
 function ProgressDots({ current, total, labels }: { current: number; total: number; labels: string[] }) {
@@ -86,6 +86,7 @@ function CadastroContent() {
   const buscaProfTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const t = useT("cadastro")
+  const tFaixas = useT("faixas")
   const faixas = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
   const TOTAL_STEPS = 2
 
@@ -103,7 +104,7 @@ function CadastroContent() {
     return idade < 18
   }
 
-  const stepLabels: string[] = ["Cadastro", "Finalizar"]
+  const stepLabels: string[] = [t("steps.1"), t("steps.2")]
 
   const roleColor = ROLE_CARDS.find(c => c.role === form.role)?.color || "var(--gold)"
 
@@ -198,31 +199,31 @@ function CadastroContent() {
 
     // -- Step validation (no loading for instant transitions) --
     if (step === 1) {
-      if (!form.nome.trim()) { setError("Informe seu nome"); return }
-      if (!form.email.trim()) { setError("Informe seu email"); return }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError("E-mail inválido"); return }
-      if (form.senha.length < 8) { setError("A senha deve ter no mínimo 8 caracteres"); return }
-      if (!/[A-Z]/.test(form.senha)) { setError("A senha deve conter pelo menos uma letra maiúscula"); return }
-      if (!/[a-z]/.test(form.senha)) { setError("A senha deve conter pelo menos uma letra minúscula"); return }
-      if (!/[0-9]/.test(form.senha)) { setError("A senha deve conter pelo menos um número"); return }
-      if (form.senha !== form.confirmarSenha) { setError("As senhas não conferem"); return }
-      if (!form.dataNascimento) { setError("Informe a data de nascimento"); return }
-      if (!form.role) { setError("Selecione um tipo de conta"); return }
+      if (!form.nome.trim()) { setError(t("errors.nome")); return }
+      if (!form.email.trim()) { setError(t("errors.email")); return }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError(t("errors.emailInvalido")); return }
+      if (form.senha.length < 8) { setError(t("errors.senha8")); return }
+      if (!/[A-Z]/.test(form.senha)) { setError(t("errors.senhaMaiuscula")); return }
+      if (!/[a-z]/.test(form.senha)) { setError(t("errors.senhaMinuscula")); return }
+      if (!/[0-9]/.test(form.senha)) { setError(t("errors.senhaNumero")); return }
+      if (form.senha !== form.confirmarSenha) { setError(t("errors.senhasDiferem")); return }
+      if (!form.dataNascimento) { setError(t("errors.dataNascimento")); return }
+      if (!form.role) { setError(t("errors.tipoConta")); return }
       avancarStep(); return
     }
 
     if (step === 2) {
       if (form.role === "dono" && !form.academiaNome.trim()) {
-        setError("Informe o nome da academia"); return
+        setError(t("errors.obrigatorio")); return
       }
       if (!form.consentimentoTermos || !form.consentimentoLGPD) {
-        setError("Você precisa aceitar os Termos de Uso e a Política de Privacidade")
+        setError(t("errors.aceitarTermos"))
         return
       }
       if (eMenor()) {
-        if (!form.responsavelNome.trim()) { setError("Menores de 18 anos: informe o nome do responsável legal"); return }
-        if (!form.responsavelCpf.trim()) { setError("Menores de 18 anos: informe o CPF do responsável legal"); return }
-        if (!form.consentimentoResponsavel) { setError("Menores de 18 anos: o responsável legal precisa consentir com o tratamento dos dados"); return }
+        if (!form.responsavelNome.trim()) { setError(t("errors.menorNome")); return }
+        if (!form.responsavelCpf.trim()) { setError(t("errors.menorCpf")); return }
+        if (!form.consentimentoResponsavel) { setError(t("errors.menorConsentimento")); return }
       }
     }
 
@@ -285,7 +286,7 @@ function CadastroContent() {
       })
       const data = await res.json()
       if (data.duplicate) {
-        setError("Este e-mail já está cadastrado")
+        setError(t("errors.duplicado"))
         setLoading(false)
         return
       }
@@ -319,7 +320,7 @@ function CadastroContent() {
       return (
         <div className="space-y-4">
           <div className="space-y-3">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Seus dados</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">{t("step1.titulo")}</p>
             <div>
               <label htmlFor="cad-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.nomeLabel")}</label>
               <input id="cad-nome" type="text" autoComplete="name" className="input" placeholder={t("step1.nomePlaceholder")} required value={form.nome} onChange={(e) => update("nome", e.target.value)} />
@@ -329,17 +330,17 @@ function CadastroContent() {
               <input id="cad-email" type="email" autoComplete="email" className="input" placeholder={t("step1.emailPlaceholder")} required value={form.email} onChange={(e) => update("email", e.target.value)} />
             </div>
             <div>
-              <label htmlFor="cad-nascimento" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Data de nascimento</label>
+              <label htmlFor="cad-nascimento" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.dataNascimentoLabel")}</label>
               <input id="cad-nascimento" type="date" autoComplete="bday" className="input" required value={form.dataNascimento} onChange={(e) => update("dataNascimento", e.target.value)} />
-              <p className="text-[10px] text-[var(--text-muted)] mt-1">Para menores de 18 anos, exigimos o consentimento do responsável legal (Art. 14 da LGPD).</p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-1">{t("step1.menoresInfo")}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label htmlFor="cad-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.senhaLabel")}</label>
                 <div className="relative">
-                  <input id="cad-senha" type={showPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Mín. 8 caracteres" required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
+                  <input id="cad-senha" type={showPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder={t("step1.senhaPlaceholder8")} required minLength={8} value={form.senha} onChange={(e) => update("senha", e.target.value)} />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
+                    aria-label={showPassword ? t("esconderSenha") : t("mostrarSenha")}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showPassword ? (
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -350,11 +351,11 @@ function CadastroContent() {
                 </div>
               </div>
               <div>
-                <label htmlFor="cad-confirmar-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar Senha</label>
+                <label htmlFor="cad-confirmar-senha" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step1.confirmarSenhaLabel")}</label>
                 <div className="relative">
-                  <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder="Repita a senha" required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
+                  <input id="cad-confirmar-senha" type={showConfirmPassword ? "text" : "password"} autoComplete="new-password" className="input w-full pr-9" placeholder={t("step1.confirmarSenhaPlaceholder")} required minLength={8} value={form.confirmarSenha} onChange={(e) => update("confirmarSenha", e.target.value)} />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    aria-label={showConfirmPassword ? "Esconder senha" : "Mostrar senha"}
+                    aria-label={showConfirmPassword ? t("esconderSenha") : t("mostrarSenha")}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--gold)] transition-colors">
                     {showConfirmPassword ? (
                       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -366,14 +367,14 @@ function CadastroContent() {
               </div>
             </div>
             {form.confirmarSenha && form.senha !== form.confirmarSenha && (
-              <p className="text-[10px] text-red-400 -mt-1" aria-live="polite">As senhas não conferem</p>
+              <p className="text-[10px] text-red-400 -mt-1" aria-live="polite">{t("errors.senhasDiferem")}</p>
             )}
           </div>
 
           <div className="h-px bg-[var(--border)]" />
 
           <div className="space-y-2">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">Tipo de conta</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] text-center">{t("step1.tipoContaLabel")}</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {ROLE_CARDS.map((card) => {
                 const selected = form.role === card.role
@@ -387,7 +388,7 @@ function CadastroContent() {
                       boxShadow: selected ? `0 0 20px ${card.color}15` : "none",
                     }}>
                     <div className="text-xl mb-1">{card.icon}</div>
-                    <div className="text-[10px] font-bold leading-tight" style={{ color: selected ? card.color : "var(--text)" }}>{card.title}</div>
+                    <div className="text-[10px] font-bold leading-tight" style={{ color: selected ? card.color : "var(--text)" }}>{t(card.titleKey)}</div>
                   </button>
                 )
               })}
@@ -404,7 +405,7 @@ function CadastroContent() {
           {/* DONO: Criar academia */}
           {form.role === "dono" && (
             <div className="space-y-3">
-              <p className="text-xs text-[var(--text-secondary)] text-center">Cadastre sua academia no OssTrack</p>
+              <p className="text-xs text-[var(--text-secondary)] text-center">{t("step2Dono.titulo")}</p>
               <div>
                 <label htmlFor="cad-dono-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Dono.nomeAcademiaLabel")}</label>
                 <input id="cad-dono-nome" type="text" className="input" placeholder={t("step2Dono.nomeAcademiaPlaceholder")} required value={form.academiaNome} onChange={(e) => update("academiaNome", e.target.value)} />
@@ -422,13 +423,13 @@ function CadastroContent() {
               <div>
                 <label htmlFor="cad-dono-raio" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">
                   {t("step2Dono.raioLabel")}
-                  <span className="ml-1.5 text-[10px] font-normal text-[var(--text-muted)]">(distância máxima em metros para check-in automático)</span>
+                  <span className="ml-1.5 text-[10px] font-normal text-[var(--text-muted)]">{t("step2Dono.raioHint")}</span>
                 </label>
                 <input id="cad-dono-raio" type="number" className="input" placeholder={t("step2Dono.raioPlaceholder")} value={form.academiaRaio} onChange={(e) => update("academiaRaio", Number(e.target.value))} />
               </div>
               <div className="flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="10" r="3" /><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z" /></svg>
-                {geoLoading ? "Capturando localização..." : form.academiaLat ? "📍 Localização capturada automaticamente" : "Localização será usada para check-in por GPS"}
+                {geoLoading ? t("step2Dono.geoCapturing") : form.academiaLat ? t("step2Dono.geoDone") : t("step2Dono.geoInfo")}
               </div>
               {form.professorId && (
                 <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
@@ -442,12 +443,12 @@ function CadastroContent() {
           {/* PROFESSOR: Faixa/Grau + Academia */}
           {form.role === "professor" && (
             <div className="space-y-3">
-              <p className="text-xs text-[var(--text-secondary)] text-center">Informe sua graduação e vínculo</p>
+              <p className="text-xs text-[var(--text-secondary)] text-center">{t("step2Professor.titulo")}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label htmlFor="cad-prof-faixa" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Professor.faixaLabel")}</label>
                   <select id="cad-prof-faixa" className="input" value={form.faixa} onChange={(e) => update("faixa", e.target.value)}>
-                    {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+                    {faixas.map((f) => <option key={f} value={f}>{tFaixas(f.toLowerCase())}</option>)}
                   </select>
                 </div>
                 <div>
@@ -460,10 +461,10 @@ function CadastroContent() {
               {!form.academiaId && !form.codigoConvite && (
                 <>
                   <div className="h-px bg-[var(--border)]" />
-                  <p className="text-xs text-[var(--text-secondary)] text-center">Vincule-se a uma academia (opcional agora)</p>
+                  <p className="text-xs text-[var(--text-secondary)] text-center">{t("step2Professor.vincularInfo")}</p>
                   <div className="relative">
-                    <input type="text" className="input" aria-label="Buscar academia para vínculo" placeholder="Buscar academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
-                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
+                    <input type="text" className="input" aria-label={t("step2Professor.buscarAria")} placeholder={t("step2Professor.buscarPlaceholder")} value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>{t("step2Aluno.buscando")}</span>}
                   </div>
                   {resultados.length > 0 && (
                     <div className="surface overflow-hidden">
@@ -486,7 +487,7 @@ function CadastroContent() {
                     border: "1px solid",
                   }}>
                   <p className="text-xs font-semibold"
-                    style={{ color: ROLE_CARDS.find(c => c.role === form.role)?.color }}>Academia selecionada</p>
+                    style={{ color: ROLE_CARDS.find(c => c.role === form.role)?.color }}>{t("step2Aluno.academiaSelecionada")}</p>
                   <p className="text-sm font-medium">{form.academiaNome}</p>
                 </div>
               )}
@@ -496,13 +497,13 @@ function CadastroContent() {
           {/* ALUNO: Academia + Faixa/Grau + Professor */}
           {form.role === "aluno" && (
             <div className="space-y-3">
-              <p className="text-xs text-[var(--text-secondary)] text-center">Complete seu perfil de atleta</p>
+              <p className="text-xs text-[var(--text-secondary)] text-center">{t("step3Aluno.titulo")}</p>
               {!form.academiaId && !form.codigoConvite && !form.skipAcademia ? (
                 <div>
-                  <label htmlFor="cad-aluno-academia" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Buscar academia</label>
+                  <label htmlFor="cad-aluno-academia" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step2Aluno.buscaInfo")}</label>
                   <div className="relative">
-                    <input id="cad-aluno-academia" type="text" className="input" placeholder="Digite o nome da sua academia..." value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
-                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>Buscando...</span>}
+                    <input id="cad-aluno-academia" type="text" className="input" placeholder={t("step2Aluno.placeholder")} value={busca} onChange={(e) => buscarAcademias(e.target.value)} />
+                    {buscando && <span className="absolute right-3 top-3 text-xs" style={{ color: "var(--gold)" }}>{t("step2Aluno.buscando")}</span>}
                   </div>
                   {resultados.length > 0 && (
                     <div className="surface overflow-hidden mt-2">
@@ -518,22 +519,22 @@ function CadastroContent() {
                   <p className="text-xs text-[var(--text-secondary)] text-center pt-2">
                     <button type="button" onClick={() => { setForm((f) => ({ ...f, skipAcademia: true })) }}
                       className="text-[var(--gold)] font-semibold hover:underline">
-                      Não encontrei minha academia
+                      {t("step2Aluno.naoEncontrei")}
                     </button>
                   </p>
                 </div>
               ) : !form.academiaId && !form.codigoConvite && form.skipAcademia ? (
                 <div className="bg-[rgba(255,255,255,0.02)] border border-dashed border-[var(--border)] rounded-xl px-4 py-5 text-center">
-                  <p className="text-sm font-semibold text-[var(--text-secondary)]">Você pode vincular uma academia depois</p>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">Vá em Perfil → Editar para buscar sua academia mais tarde</p>
+                  <p className="text-sm font-semibold text-[var(--text-secondary)]">{t("step2Aluno.skipInfo")}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-1">{t("step2Aluno.skipHint")}</p>
                   <button type="button" onClick={() => setForm((f) => ({ ...f, skipAcademia: false }))}
                     className="text-[10px] text-[var(--gold)] font-semibold hover:underline mt-2 inline-block">
-                    Buscar novamente
+                    {t("step2Aluno.buscarNovamente")}
                   </button>
                 </div>
               ) : (
                 <div className="bg-[var(--gold-dim)] border border-[var(--gold)]/30 rounded-xl px-4 py-3">
-                  <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>Academia</p>
+                  <p className="text-xs font-semibold" style={{ color: "var(--gold)" }}>{t("academia")}</p>
                   <p className="text-sm font-medium">{form.academiaNome}</p>
                 </div>
               )}
@@ -542,7 +543,7 @@ function CadastroContent() {
                 <div>
                   <label htmlFor="cad-aluno-faixa" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step3Aluno.faixaLabel")}</label>
                   <select id="cad-aluno-faixa" className="input" value={form.faixa} onChange={(e) => { update("faixa", e.target.value); update("grau", 0) }}>
-                    {faixas.map((f) => <option key={f} value={f}>{f}</option>)}
+                    {faixas.map((f) => <option key={f} value={f}>{tFaixas(f.toLowerCase())}</option>)}
                   </select>
                 </div>
                 <div>
@@ -556,9 +557,9 @@ function CadastroContent() {
                 <>
                   <div className="h-px bg-[var(--border)]" />
                   <div>
-                    <label htmlFor="cad-aluno-professor" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Professor (opcional)</label>
+                    <label htmlFor="cad-aluno-professor" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("step4Aluno.professorLabel")}</label>
                     <div className="relative">
-                      <input id="cad-aluno-professor" type="text" className="input" placeholder="Buscar professor..." value={buscaProf}
+                      <input id="cad-aluno-professor" type="text" className="input" placeholder={t("step4Aluno.buscarProfPlaceholder")} value={buscaProf}
                         onChange={(e) => {
                           setBuscaProf(e.target.value)
                           if (buscaProfTimer.current) clearTimeout(buscaProfTimer.current)
@@ -583,7 +584,7 @@ function CadastroContent() {
                     )}
                     {form.professorId && (
                       <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 mt-2">
-                        <p className="text-xs text-emerald-400 font-semibold">Professor selecionado</p>
+                        <p className="text-xs text-emerald-400 font-semibold">{t("step4Aluno.professorSelecionado")}</p>
                         <p className="text-sm font-medium">{buscaProf}</p>
                       </div>
                     )}
@@ -596,15 +597,15 @@ function CadastroContent() {
           {eMenor() && (
             <div className="space-y-3">
               <p className="text-xs text-[var(--text-secondary)] text-center">
-                Você é <strong>menor de 18 anos</strong>. Para atender ao Art. 14 da LGPD, precisamos do consentimento do seu responsável legal:
+                {t("menores.tituloAntes")} <strong>{t("menores.tituloDestaque")}</strong>{t("menores.tituloDepois")}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="cad-resp-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Nome do responsável legal *</label>
-                  <input id="cad-resp-nome" type="text" autoComplete="name" className="input" placeholder="Nome completo" required value={form.responsavelNome} onChange={(e) => update("responsavelNome", e.target.value)} />
+                  <label htmlFor="cad-resp-nome" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("menores.responsavelNomeLabel")}</label>
+                  <input id="cad-resp-nome" type="text" autoComplete="name" className="input" placeholder={t("menores.responsavelNomePlaceholder")} required value={form.responsavelNome} onChange={(e) => update("responsavelNome", e.target.value)} />
                 </div>
                 <div>
-                  <label htmlFor="cad-resp-cpf" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">CPF do responsável legal *</label>
+                  <label htmlFor="cad-resp-cpf" className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("menores.responsavelCpfLabel")}</label>
                   <input id="cad-resp-cpf" type="text" autoComplete="off" className="input" placeholder="000.000.000-00" required value={form.responsavelCpf} onChange={(e) => update("responsavelCpf", e.target.value)} />
                 </div>
               </div>
@@ -612,7 +613,7 @@ function CadastroContent() {
                 <input type="checkbox" checked={form.consentimentoResponsavel} onChange={(e) => update("consentimentoResponsavel", e.target.checked)}
                   className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
                 <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-                  Sou responsável legal e consinto com o tratamento dos dados pessoais do menor conforme a LGPD (Lei 13.709/2018) *
+                  {t("menores.consentimentoLabel")}
                 </span>
               </label>
             </div>
@@ -626,22 +627,22 @@ function CadastroContent() {
               <input type="checkbox" checked={form.consentimentoTermos} onChange={(e) => update("consentimentoTermos", e.target.checked)}
                 className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
               <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-                Aceito os <Link href="/termos" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">Termos de Uso</Link> e a{" "}
-                <Link href="/lgpd" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">Política de Privacidade</Link> *
+                {t("termos.parte1")} <Link href="/termos" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">{t("termos.link1")}</Link> {t("termos.parte2")}{" "}
+                <Link href="/lgpd" target="_blank" rel="noopener noreferrer" className="text-[var(--gold)] font-semibold hover:underline">{t("termos.link2")}</Link> *
               </span>
             </label>
             <label className="flex items-start gap-3 cursor-pointer group">
               <input type="checkbox" checked={form.consentimentoLGPD} onChange={(e) => update("consentimentoLGPD", e.target.checked)}
                 className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
               <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-                Autorizo o tratamento dos meus dados pessoais conforme a LGPD (Lei 13.709/2018) *
+                {t("lgpd.autorizacao")}
               </span>
             </label>
             <label className="flex items-start gap-3 cursor-pointer group">
               <input type="checkbox" checked={form.consentimentoMarketing} onChange={(e) => update("consentimentoMarketing", e.target.checked)}
                 className="mt-0.5 w-4 h-4 accent-[var(--gold)]" />
               <span className="text-xs text-[var(--text-secondary)] group-hover:text-[var(--text)] transition-colors">
-                Aceito receber comunicações sobre novidades, dicas e promoções (opcional)
+                {t("marketing.label")}
               </span>
             </label>
           </div>
@@ -659,20 +660,19 @@ function CadastroContent() {
         <div className="w-full max-w-sm relative z-10">
           <div className="glass-card p-7 text-center space-y-5">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg btn-gold">📧</div>
-            <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>Verifique seu e-mail</h1>
+            <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>{t("verificacao.title")}</h1>
             <p className="text-sm text-[var(--text-secondary)]">
-              Enviamos um link de verificação para <strong className="text-[var(--text)]">{form.email}</strong>.
-              Clique no link para ativar sua conta.
+              {t("verificacao.desc1")} <strong className="text-[var(--text)]">{form.email}</strong>. {t("verificacao.desc2")}
             </p>
             <p className="text-xs text-[var(--text-muted)]">
-              Não encontrou? Verifique a pasta de spam.
+              {t("verificacao.spam")}
             </p>
             <button onClick={() => { setVerificationPending(false); setError("") }}
               className="w-full py-3 rounded-xl text-sm font-bold btn-gold">
-              Voltar ao cadastro
+              {t("buttons.voltarCadastro")}
             </button>
             <Link href="/login" className="block text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors">
-              Já verificou? Fazer login
+              {t("verificacao.jaVerificou")}
             </Link>
           </div>
         </div>
@@ -687,12 +687,12 @@ function CadastroContent() {
         <div className="w-full max-w-sm relative z-10">
           <div className="glass-card p-7 text-center space-y-5">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-lg btn-gold">🎉</div>
-            <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>Conta criada com sucesso!</h1>
+            <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>{t("sucesso.title")}</h1>
             <p className="text-sm text-[var(--text-secondary)]">
-              Sua conta está pronta. Faça login para começar sua jornada no Jiu-Jitsu.
+              {t("sucesso.desc")}
             </p>
             <Link href="/login" className="block w-full py-3 rounded-xl text-sm font-bold btn-gold">
-              Fazer login
+              {t("sucesso.fazerLogin")}
             </Link>
           </div>
         </div>
@@ -707,7 +707,7 @@ function CadastroContent() {
         <button onClick={() => step === 1 ? router.push("/") : voltarStep()}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          {step === 1 ? "Voltar ao início" : "Voltar"}
+          {step === 1 ? t("buttons.voltarInicio") : t("buttons.voltar")}
         </button>
 
         <div className="text-center mb-6">
@@ -717,7 +717,7 @@ function CadastroContent() {
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: roleColor }}>{t("title")}</h1>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
-            {step === 1 ? "Crie sua conta em menos de 1 minuto" : "Finalize seu cadastro"}
+            {step === 1 ? t("subtitleCriando") : t("subtitleFinal")}
           </p>
         </div>
 
@@ -739,18 +739,18 @@ function CadastroContent() {
               <button type="button" onClick={voltarStep}
                 className="btn flex-1 py-3 text-sm"
                 style={{ background: "var(--bg-surface)", color: "var(--text)", border: "1px solid var(--border)" }}>
-                Voltar
+                {t("buttons.voltar")}
               </button>
             )}
             <button type="submit" disabled={loading}
               className={`btn flex-1 py-3 text-sm ${loading ? "opacity-50 cursor-not-allowed bg-[var(--border)] text-[var(--text-muted)]" : "btn-gold"}`}>
-              {loading ? "Criando conta..." : step === 1 ? "Próximo" : "Criar Conta Grátis"}
+              {loading ? t("buttons.criandoConta") : step === 1 ? t("buttons.proximo") : t("buttons.criarGratis")}
             </button>
           </div>
 
           <p className="text-center text-xs text-[var(--text-secondary)]">
-            Já tem conta?{" "}
-            <Link href="/login" style={{ color: "var(--gold)" }} className="font-semibold">Entrar</Link>
+            {t("jaTemConta")}{" "}
+            <Link href="/login" style={{ color: "var(--gold)" }} className="font-semibold">{t("entrar")}</Link>
           </p>
         </form>
 

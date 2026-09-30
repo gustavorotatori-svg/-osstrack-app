@@ -824,7 +824,19 @@
     "erroConexao": "接続エラー。もう一度お試しください。",
     "semConta": "まだアカウントをお持ちでないですか？",
     "cadastrarSe": "登録する",
-    "contasDemo": "デモアカウント：rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "デモアカウント：rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "メールアドレスが未認証です。受信トレイをご確認いただくか、認証リンクを再送してください。",
+    "voltarInicio": "ホームに戻る",
+    "roleAluno": "生徒",
+    "roleProfessor": "インストラクター",
+    "roleDono": "道場",
+    "esconderSenha": "パスワードを隠す",
+    "mostrarSenha": "パスワードを表示",
+    "esqueceuSenha": "パスワードをお忘れですか？",
+    "ou": "または",
+    "entrarGoogle": "Googleでログイン",
+    "instalarTelaInicio": "ホーム画面に追加",
+    "instalarApp": "アプリをインストール"
   },
   "cadastro": {
     "title": "アカウント作成",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "アカウントタイプ",
       "donoOption": "道場オーナー",
       "professorOption": "講師",
-      "alunoOption": "生徒"
+      "alunoOption": "生徒",
+      "titulo": "あなたの情報",
+      "senhaPlaceholder8": "8文字以上",
+      "confirmarSenhaLabel": "パスワードの確認",
+      "confirmarSenhaPlaceholder": "パスワードを再入力",
+      "menoresInfo": "未成年の場合は法定代理人の同意が必要です（LGPD第14条）。"
     },
     "step2Dono": {
       "nomeAcademiaLabel": "道場名",
@@ -856,34 +873,50 @@
       "raioLabel": "チェックイン半径（メートル）",
       "raioPlaceholder": "200",
       "convidadoProfessor": "講師から招待されました！",
-      "convidadoProfessorDesc": "アカウントを作成すると、講師があなたの道場に紐付けられます。"
+      "convidadoProfessorDesc": "アカウントを作成すると、講師があなたの道場に紐付けられます。",
+      "titulo": "OssTrackに道場を登録",
+      "raioHint": "（自動チェックインの最大距離、メートル）",
+      "geoCapturing": "位置情報を取得中...",
+      "geoDone": "📍 位置情報を自動取得しました",
+      "geoInfo": "GPSチェックインに位置情報を使用します"
     },
     "step2Professor": {
       "info": "現在の階級を入力：",
       "faixaLabel": "帯",
       "grauLabel": "級",
       "buscaInfo": "あなたが教えている道場を検索：",
-      "naoEncontrou": "見つかりませんか？道場なしで続行して後で接続することもできます。"
+      "naoEncontrou": "見つかりませんか？道場なしで続行して後で接続することもできます。",
+      "titulo": "帯と所属を入力",
+      "vincularInfo": "道場に紐付け（今は任意）",
+      "buscarAria": "紐付ける道場を検索",
+      "buscarPlaceholder": "道場を検索..."
     },
     "step2Aluno": {
       "buscaInfo": "道場を検索：",
       "placeholder": "道場名を入力...",
       "buscando": "検索中...",
       "academiaSelecionada": "選択された道場",
-      "naoEncontrou": "見つかりませんか？道場なしで続行して後で接続することもできます。"
+      "naoEncontrou": "見つかりませんか？道場なしで続行して後で接続することもできます。",
+      "naoEncontrei": "道場が見つかりませんでした",
+      "skipInfo": "後で道場を紐付けることができます",
+      "skipHint": "プロフィール → 編集から後で道場を検索してください",
+      "buscarNovamente": "もう一度検索"
     },
     "step3Aluno": {
       "info": "柔術の階級：",
       "faixaLabel": "帯",
       "grauLabel": "級",
-      "grauOption": "{g}級"
+      "grauOption": "{g}級",
+      "titulo": "選手プロフィールを完成"
     },
     "step4Aluno": {
       "info": "講師を選択（任意）：",
       "placeholder": "講師名を入力...",
       "buscar": "検索",
       "professorSelecionado": "選択された講師",
-      "pular": "このステップはスキップできます。"
+      "pular": "このステップはスキップできます。",
+      "professorLabel": "インストラクター（任意）",
+      "buscarProfPlaceholder": "インストラクターを検索..."
     },
     "grauOption": "{g}級",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "次へ",
       "criandoConta": "アカウント作成中...",
       "cadastrarPagamento": "アカウント作成",
-      "criarGratis": "無料で作成"
+      "criarGratis": "無料で作成",
+      "voltarCadastro": "登録に戻る",
+      "voltarInicio": "ホームに戻る"
     },
     "errors": {
       "obrigatorio": "道場名を入力してください",
       "selecioneAcademia": "道場を選択してください",
       "criacao": "アカウント作成エラー",
-      "conexao": "接続エラー。もう一度お試しください。"
+      "conexao": "接続エラー。もう一度お試しください。",
+      "nome": "名前を入力してください",
+      "email": "メールアドレスを入力してください",
+      "emailInvalido": "メールアドレスが無効です",
+      "senha8": "パスワードは8文字以上にしてください",
+      "senhaMaiuscula": "パスワードには大文字を1文字以上含めてください",
+      "senhaMinuscula": "パスワードには小文字を1文字以上含めてください",
+      "senhaNumero": "パスワードには数字を1つ以上含めてください",
+      "senhasDiferem": "パスワードが一致しません",
+      "dataNascimento": "生年月日を入力してください",
+      "tipoConta": "アカウントの種類を選択してください",
+      "aceitarTermos": "利用規約とプライバシーポリシーへの同意が必要です",
+      "menorNome": "未成年：法定代理人の氏名を入力してください",
+      "menorCpf": "未成年：法定代理人のCPFを入力してください",
+      "menorConsentimento": "未成年：法定代理人のデータ処理への同意が必要です",
+      "duplicado": "このメールアドレスは登録済みです"
     },
     "jaTemConta": "既にアカウントをお持ちですか？",
-    "entrar": "ログイン"
+    "entrar": "ログイン",
+    "esconderSenha": "パスワードを隠す",
+    "mostrarSenha": "パスワードを表示",
+    "academia": "道場",
+    "subtitleCriando": "1分以内にアカウントを作成",
+    "subtitleFinal": "登録を完了する",
+    "steps": {
+      "1": "登録",
+      "2": "完了"
+    },
+    "cards": {
+      "aluno": {
+        "title": "生徒",
+        "desc": "柔術を練習し、上達を記録したい"
+      },
+      "professor": {
+        "title": "インストラクター",
+        "desc": "黒帯または昇段者で、生徒を管理したい"
+      },
+      "dono": {
+        "title": "道場オーナー",
+        "desc": "自分の道場を持ち、すべてを管理したい"
+      }
+    },
+    "menores": {
+      "tituloAntes": "あなたは",
+      "tituloDestaque": "未成年",
+      "tituloDepois": "です。LGPD第14条に従うため、法定代理人の同意が必要です：",
+      "responsavelNomeLabel": "法定代理人の氏名 *",
+      "responsavelNomePlaceholder": "氏名（フルネーム）",
+      "responsavelCpfLabel": "法定代理人のCPF *",
+      "consentimentoLabel": "私は法定代理人として、LGPD（法律13.709/2018）に基づく未成年者の個人データ処理に同意します *"
+    },
+    "termos": {
+      "parte1": "",
+      "link1": "利用規約",
+      "parte2": "と",
+      "link2": "プライバシーポリシー"
+    },
+    "lgpd": {
+      "autorizacao": "LGPD（法律13.709/2018）に基づく私の個人データの処理を許可します *"
+    },
+    "marketing": {
+      "label": "新着情報、ヒント、キャンペーンの受信に同意します（任意）"
+    },
+    "verificacao": {
+      "title": "メールアドレスを認証",
+      "desc1": "認証リンクを次の宛先に送信しました：",
+      "desc2": "リンクをクリックしてアカウントを有効化してください。",
+      "spam": "見つかりませんか？スパムフォルダをご確認ください。",
+      "jaVerificou": "認証済みですか？ログイン"
+    },
+    "sucesso": {
+      "title": "アカウントが作成されました！",
+      "desc": "アカウントの準備ができました。ログインして柔術の旅を始めましょう。",
+      "fazerLogin": "ログイン"
+    }
   },
   "perfil": {
     "title": "プロフィールを編集",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "3つの道、",
+    "destaque": "1つのアプリ",
+    "descricao": "それぞれの経験は唯一無二です。あなたの道を選んでください。",
+    "dono": {
+      "title": "道場オーナー",
+      "desc": "生徒、チェックイン、帯、会計をひとつの場所で管理。"
+    },
+    "professor": {
+      "title": "インストラクター",
+      "desc": "クラス、出席、昇段、掲示板が手元に。"
+    },
+    "aluno": {
+      "title": "生徒",
+      "desc": "上達、時間、ストリーク、ランキングをポケットに。"
+    },
+    "features": {
+      "financeiro": "会計",
+      "alunos": "生徒",
+      "relatorios": "レポート",
+      "cobrancas": "請求",
+      "waiver": "免責",
+      "turmas": "クラス",
+      "presencas": "出席",
+      "graduacoes": "昇段",
+      "mural": "掲示板",
+      "evolucao": "上達",
+      "horas": "時間",
+      "streak": "ストリーク",
+      "ranking": "ランキング",
+      "googleLogin": "Googleログイン"
+    }
+  },
+  "faixas": {
+    "branca": "白帯",
+    "azul": "青帯",
+    "roxa": "紫帯",
+    "marrom": "茶帯",
+    "preta": "黒帯"
+  },
+  "ebook": {
+    "baixe": "無料ダウンロード",
+    "title1": "生徒たちを",
+    "title2": "本当のコミュニティへ",
+    "desc": "柔術道場で熱意を高め、定着させ、帰属意識を育てる実践ガイド。",
+    "b1Title": "毎日のエンゲージメント",
+    "b1Desc": "生徒が継続的に練習するための戦略。",
+    "b2Title": "本物のゲーミフィケーション",
+    "b2Desc": "ストリーク、実績、ランキングが本当にやる気を高めます。",
+    "b3Title": "強いコミュニティ",
+    "b3Desc": "生徒をファンに変える帰属意識。",
+    "b4Title": "実践で活きるデータ",
+    "b4Desc": "離脱前に動くための指標。",
+    "cta": "無料eBookをダウンロード",
+    "after": "アクセスするには無料アカウントを作成してください。",
+    "bookBadge": "無料eBook",
+    "bookTitle1": "柔術で生徒の",
+    "bookTitle2": "やる気を引き出す方法",
+    "bookSubtitle": "そして鉄のコミュニティをつくる",
+    "bookMeta1": "10分で読める",
+    "bookMeta2": "インタラクティブPDF",
+    "free": "無料"
+  },
+  "exitPopup": {
+    "fechar": "閉じる",
+    "titulo": "お待ちください！道場にはまだあなたが必要です",
+    "descricao": "OssTrackは道場・インストラクター・生徒すべて無料です。今すぐ道場を登録して、2分で全部を整理しましょう。",
+    "cta": "無料アカウントを作成",
+    "agoraNao": "今はしない"
+  },
+  "ebookLead": {
+    "voltar": "戻る",
+    "titulo": "無料eBook",
+    "subtitulo": "柔術で生徒のやる気を引き出す方法",
+    "descricao": "10分で読める。エンゲージメント、定着、コミュニティの実践戦略。",
+    "emailPlaceholder": "ご利用のメールアドレス",
+    "enviando": "送信中...",
+    "baixar": "無料eBookをダウンロード",
+    "semSpam": "スパムは送りません。eBookのみです。いつでも解除できます。",
+    "querApp": "アプリをフルに使いたいですか？",
+    "criarConta": "無料アカウントを作成",
+    "enviado": "eBookを送信しました！",
+    "verifique": "受信トレイを確認してください",
+    "linkChegou": "eBookのリンクがまもなく届きます。",
+    "criarEAcessar": "アカウントを作成してアプリへ"
+  },
+  "ebookContent": {
+    "gate": "eBookを開くには無料アカウントを作成してください。",
+    "gateCta": "無料アカウントを作成",
+    "voltar": "戻る",
+    "topoEbook": "無料eBook",
+    "pdf": "PDF",
+    "badge": "OssTrack · 無料eBook",
+    "titulo1": "柔術で生徒のやる気を引き出す方法",
+    "titulo2": "そして鉄のコミュニティをつくる",
+    "subtitulo": "柔術道場のための定着・帰属・ゲーミフィケーションの実践戦略",
+    "s1": "1. 静かに去っていく問題",
+    "s2": "2. 帰属意識：離脱を防ぐ解毒剤",
+    "s2a": "入退場の儀式",
+    "s2b": "交流の場",
+    "s2c": "名前の力",
+    "s3": "3. 柔術で効果的なゲーミフィケーション",
+    "s3a": "練習ストリーク（継続）",
+    "s3b": "健全なランキング",
+    "s3c": "実績と節目",
+    "s4": "4. コミュニティのリーダーとしてのインストラクター",
+    "s4a": "アプリでの積極的な関与",
+    "s4b": "個別フィードバック",
+    "s4c": "誠実な対応",
+    "s5": "5. やる気を生むコミュニケーション戦略",
+    "s6": "6. 人を結ぶイベントと儀式",
+    "s7": "7. エンゲージメント指標：何を測るか",
+    "s8": "8. 日々のエンゲージメントにおける技術の役割",
+    "tabela": {
+      "metrica": "指標",
+      "revela": "示すもの",
+      "meta": "健全な目標"
+    },
+    "ctaTitulo": "OssTrackが道場のエンゲージメントを変える様子を見てみませんか？",
+    "cta": "無料アカウントを作成 — 2分で完了",
+    "rodape": "柔術道場のためのスマート管理 · 100%無料",
+    "home": "ホーム",
+    "criarConta": "アカウントを作成",
+    "salvarPdf": "PDFとして保存"
+  },
+  "notFound": {
+    "titulo": "このページは畳の上にありません",
+    "desc": "アクセスしたアドレスは存在しないか、移動されました。ホームに戻ってみませんか？",
+    "voltar": "ホームに戻る",
+    "criarConta": "無料アカウントを作成"
   }
 }

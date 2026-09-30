@@ -824,7 +824,19 @@
     "erroConexao": "Anslutningsfel. Försök igen.",
     "semConta": "Har du inget konto än?",
     "cadastrarSe": "Registrera dig",
-    "contasDemo": "Demokonton: rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "Demokonton: rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "E-post inte verifierad. Kontrollera din inkorg eller skicka om verifieringslänken.",
+    "voltarInicio": "Tillbaka till start",
+    "roleAluno": "Elev",
+    "roleProfessor": "Instruktör",
+    "roleDono": "Akademi",
+    "esconderSenha": "Dölj lösenord",
+    "mostrarSenha": "Visa lösenord",
+    "esqueceuSenha": "Glömt lösenord?",
+    "ou": "eller",
+    "entrarGoogle": "Logga in med Google",
+    "instalarTelaInicio": "Lägg till på startskärmen",
+    "instalarApp": "Installera app"
   },
   "cadastro": {
     "title": "Skapa Konto",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "Kontotyp",
       "donoOption": "Akademiägare",
       "professorOption": "Instruktör",
-      "alunoOption": "Elev"
+      "alunoOption": "Elev",
+      "titulo": "Dina uppgifter",
+      "senhaPlaceholder8": "Minst 8 tecken",
+      "confirmarSenhaLabel": "Bekräfta lösenord",
+      "confirmarSenhaPlaceholder": "Upprepa lösenord",
+      "menoresInfo": "För minderåriga kräver vi vårdnadshavarens samtycke (art. 14 i LGPD)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Akademins Namn",
@@ -856,34 +873,50 @@
       "raioLabel": "Incheckningsradie (meter)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "Du har blivit inbjuden av en instruktör!",
-      "convidadoProfessorDesc": "När du skapar ditt konto kommer instruktören att kopplas till din akademi."
+      "convidadoProfessorDesc": "När du skapar ditt konto kommer instruktören att kopplas till din akademi.",
+      "titulo": "Registrera din akademi på OssTrack",
+      "raioHint": "(maxavstånd i meter för automatisk incheckning)",
+      "geoCapturing": "Hämtar plats...",
+      "geoDone": "📍 Plats hämtades automatiskt",
+      "geoInfo": "Platsen används för GPS-incheckning"
     },
     "step2Professor": {
       "info": "Ange din nuvarande grad:",
       "faixaLabel": "Bälte",
       "grauLabel": "Grad",
       "buscaInfo": "Sök efter akademin där du undervisar:",
-      "naoEncontrou": "Hittade du inte? Du kan fortsätta utan akademi och koppla senare."
+      "naoEncontrou": "Hittade du inte? Du kan fortsätta utan akademi och koppla senare.",
+      "titulo": "Ange din grad och koppling",
+      "vincularInfo": "Koppla en akademi (valfritt för nu)",
+      "buscarAria": "Sök efter en akademi att koppla",
+      "buscarPlaceholder": "Sök akademi..."
     },
     "step2Aluno": {
       "buscaInfo": "Sök din akademi:",
       "placeholder": "Skriv akademins namn...",
       "buscando": "Söker...",
       "academiaSelecionada": "Akademi vald",
-      "naoEncontrou": "Hittade du inte? Du kan fortsätta utan akademi och koppla senare."
+      "naoEncontrou": "Hittade du inte? Du kan fortsätta utan akademi och koppla senare.",
+      "naoEncontrei": "Jag hittade inte min akademi",
+      "skipInfo": "Du kan koppla en akademi senare",
+      "skipHint": "Gå till Profil → Redigera för att söka din akademi senare",
+      "buscarNovamente": "Sök igen"
     },
     "step3Aluno": {
       "info": "Din Jiu-Jitsu-grad:",
       "faixaLabel": "Bälte",
       "grauLabel": "Grad",
-      "grauOption": "{g}:e Grad"
+      "grauOption": "{g}:e Grad",
+      "titulo": "Fyll i din atletprofil"
     },
     "step4Aluno": {
       "info": "Välj din instruktör (valfritt):",
       "placeholder": "Skriv instruktörens namn...",
       "buscar": "Sök",
       "professorSelecionado": "Instruktör vald",
-      "pular": "Du kan hoppa över detta steg."
+      "pular": "Du kan hoppa över detta steg.",
+      "professorLabel": "Instruktör (valfritt)",
+      "buscarProfPlaceholder": "Sök instruktör..."
     },
     "grauOption": "{g}:e Grad",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "Nästa",
       "criandoConta": "Skapar konto...",
       "cadastrarPagamento": "Skapa Konto",
-      "criarGratis": "Skapa Gratis"
+      "criarGratis": "Skapa Gratis",
+      "voltarCadastro": "Tillbaka till registrering",
+      "voltarInicio": "Tillbaka till start"
     },
     "errors": {
       "obrigatorio": "Ange akademins namn",
       "selecioneAcademia": "Välj en akademi",
       "criacao": "Fel vid skapande av konto",
-      "conexao": "Anslutningsfel. Försök igen."
+      "conexao": "Anslutningsfel. Försök igen.",
+      "nome": "Ange ditt namn",
+      "email": "Ange din e-post",
+      "emailInvalido": "Ogiltig e-post",
+      "senha8": "Lösenordet måste vara minst 8 tecken",
+      "senhaMaiuscula": "Lösenordet måste innehålla minst en versal",
+      "senhaMinuscula": "Lösenordet måste innehålla minst en gemen",
+      "senhaNumero": "Lösenordet måste innehålla minst en siffra",
+      "senhasDiferem": "Lösenorden matchar inte",
+      "dataNascimento": "Ange ditt födelsedatum",
+      "tipoConta": "Välj en kontotyp",
+      "aceitarTermos": "Du måste godkänna Användarvillkoren och Integritetspolicyn",
+      "menorNome": "Minderårig: ange vårdnadshavarens namn",
+      "menorCpf": "Minderårig: ange vårdnadshavarens CPF",
+      "menorConsentimento": "Minderårig: vårdnadshavaren måste godkänna datahanteringen",
+      "duplicado": "Den här e-postadressen är redan registrerad"
     },
     "jaTemConta": "Har du redan ett konto?",
-    "entrar": "Logga in"
+    "entrar": "Logga in",
+    "esconderSenha": "Dölj lösenord",
+    "mostrarSenha": "Visa lösenord",
+    "academia": "Akademi",
+    "subtitleCriando": "Skapa ditt konto på under 1 minut",
+    "subtitleFinal": "Slutför din registrering",
+    "steps": {
+      "1": "Registrering",
+      "2": "Slutföra"
+    },
+    "cards": {
+      "aluno": {
+        "title": "Elev",
+        "desc": "Jag vill träna och följa min utveckling i jiu-jitsu"
+      },
+      "professor": {
+        "title": "Instruktör",
+        "desc": "Jag är svart bälte eller graderad och vill hantera elever"
+      },
+      "dono": {
+        "title": "Akademiägare",
+        "desc": "Jag har min egen akademi och vill sköta allt"
+      }
+    },
+    "menores": {
+      "tituloAntes": "Du är",
+      "tituloDestaque": "minderårig",
+      "tituloDepois": ". Enligt art. 14 i LGPD behöver vi din vårdnadshavares samtycke:",
+      "responsavelNomeLabel": "Vårdnadshavarens namn *",
+      "responsavelNomePlaceholder": "Fullständigt namn",
+      "responsavelCpfLabel": "Vårdnadshavarens CPF *",
+      "consentimentoLabel": "Jag är vårdnadshavare och samtycker till behandlingen av den minderåriges personuppgifter enligt LGPD (lag 13.709/2018) *"
+    },
+    "termos": {
+      "parte1": "Jag godkänner",
+      "link1": "Användarvillkoren",
+      "parte2": "och",
+      "link2": "Integritetspolicyn"
+    },
+    "lgpd": {
+      "autorizacao": "Jag godkänner behandlingen av mina personuppgifter enligt LGPD (lag 13.709/2018) *"
+    },
+    "marketing": {
+      "label": "Jag samtycker till att få nyheter, tips och erbjudanden (valfritt)"
+    },
+    "verificacao": {
+      "title": "Verifiera din e-post",
+      "desc1": "Vi skickade en verifieringslänk till",
+      "desc2": "Klicka på länken för att aktivera ditt konto.",
+      "spam": "Hittade du den inte? Kolla skräpposten.",
+      "jaVerificou": "Redan verifierad? Logga in"
+    },
+    "sucesso": {
+      "title": "Kontot skapades!",
+      "desc": "Ditt konto är redo. Logga in för att påbörja din jiu-jitsu-resa.",
+      "fazerLogin": "Logga in"
+    }
   },
   "perfil": {
     "title": "Redigera Profil",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "Tre resor,",
+    "destaque": "en app",
+    "descricao": "Varje upplevelse är unik. Välj din väg.",
+    "dono": {
+      "title": "Akademiägare",
+      "desc": "Elever, incheckningar, bälten och ekonomi på ett ställe."
+    },
+    "professor": {
+      "title": "Instruktör",
+      "desc": "Pass, närvaro, graderingar och flöde till hands."
+    },
+    "aluno": {
+      "title": "Elev",
+      "desc": "Utveckling, timmar, streak och ranking i fickan."
+    },
+    "features": {
+      "financeiro": "Ekonomi",
+      "alunos": "Elever",
+      "relatorios": "Rapporter",
+      "cobrancas": "Fakturering",
+      "waiver": "Friskrivning",
+      "turmas": "Pass",
+      "presencas": "Närvaro",
+      "graduacoes": "Graderingar",
+      "mural": "Flöde",
+      "evolucao": "Utveckling",
+      "horas": "Timmar",
+      "streak": "Streak",
+      "ranking": "Ranking",
+      "googleLogin": "Google Login"
+    }
+  },
+  "faixas": {
+    "branca": "Vit",
+    "azul": "Blå",
+    "roxa": "Lila",
+    "marrom": "Brun",
+    "preta": "Svart"
+  },
+  "ebook": {
+    "baixe": "Ladda ner gratis",
+    "title1": "Förvandla elever till en",
+    "title2": "riktig gemenskap",
+    "desc": "En praktisk guide för att engagera, behålla och skapa samhörighet på din jiu-jitsu-akademi.",
+    "b1Title": "Dagligt engagemang",
+    "b1Desc": "Strategier för att hålla elever konsekvent tränande.",
+    "b2Title": "Äkta gamification",
+    "b2Desc": "Streaks, prestationer och ranking som verkligen motiverar.",
+    "b3Title": "Stark gemenskap",
+    "b3Desc": "Samhörighet som gör elever till fans.",
+    "b4Title": "Data i praktiken",
+    "b4Desc": "Mätetal för att agera innan elever slutar.",
+    "cta": "Ladda ner gratis e-bok",
+    "after": "Skapa ett gratis konto för att få tillgång.",
+    "bookBadge": "Gratis e-bok",
+    "bookTitle1": "Så engagerar du dina",
+    "bookTitle2": "elever i jiu-jitsu",
+    "bookSubtitle": "och bygger en järngemenskap",
+    "bookMeta1": "10 minuters läsning",
+    "bookMeta2": "Interaktiv PDF",
+    "free": "GRATIS"
+  },
+  "exitPopup": {
+    "fechar": "Stäng",
+    "titulo": "Vänta! Din akademi behöver dig fortfarande",
+    "descricao": "OssTrack är gratis för akademin, instruktörerna och eleverna. Registrera din akademi nu och organisera allt på 2 minuter.",
+    "cta": "Skapa gratis konto",
+    "agoraNao": "Inte nu"
+  },
+  "ebookLead": {
+    "voltar": "Tillbaka",
+    "titulo": "Gratis e-bok",
+    "subtitulo": "Så engagerar du dina elever i jiu-jitsu",
+    "descricao": "10 minuters läsning. Verkliga strategier för engagemang, behållande och gemenskap.",
+    "emailPlaceholder": "Din bästa e-post",
+    "enviando": "Skickar...",
+    "baixar": "Ladda ner gratis e-bok",
+    "semSpam": "Ingen skräppost. Bara e-boken. Du kan avsluta när som helst.",
+    "querApp": "Vill du ha full appåtkomst?",
+    "criarConta": "Skapa gratis konto",
+    "enviado": "E-boken är skickad!",
+    "verifique": "Kontrollera din inkorg",
+    "linkChegou": "E-bokslänken är på väg.",
+    "criarEAcessar": "Skapa konto och öppna appen"
+  },
+  "ebookContent": {
+    "gate": "Skapa ett gratis konto för att öppna e-boken.",
+    "gateCta": "Skapa gratis konto",
+    "voltar": "Tillbaka",
+    "topoEbook": "Gratis e-bok",
+    "pdf": "PDF",
+    "badge": "OssTrack · Gratis e-bok",
+    "titulo1": "Så engagerar du dina elever",
+    "titulo2": "och bygger en järngemenskap",
+    "subtitulo": "Praktiska strategier för behållande, samhörighet och gamification för din jiu-jitsu-akademi",
+    "s1": "1. Problemet med det tysta avhoppet",
+    "s2": "2. Samhörighet: motgiftet mot avhopp",
+    "s2a": "Ritualer vid ankomst och avslut",
+    "s2b": "Platser för gemenskap",
+    "s2c": "Namnets kraft",
+    "s3": "3. Gamification som fungerar i jiu-jitsu",
+    "s3a": "Träningsstreak (serie)",
+    "s3b": "Frisk ranking",
+    "s3c": "Prestationer och milstolpar",
+    "s4": "4. Instruktören som gemenskapens ledare",
+    "s4a": "Aktiv närvaro i appen",
+    "s4b": "Personlig återkoppling",
+    "s4c": "Äkta tillgänglighet",
+    "s5": "5. Kommunikationsstrategier som engagerar",
+    "s6": "6. Evenemang och ritualer som förenar",
+    "s7": "7. Engagemangsmätetal – vad du ska mäta",
+    "s8": "8. Teknikens roll i vardagligt engagemang",
+    "tabela": {
+      "metrica": "Mätetal",
+      "revela": "Vad det visar",
+      "meta": "Sunt mål"
+    },
+    "ctaTitulo": "Vill du se hur OssTrack förändrar engagemanget på din akademi?",
+    "cta": "Skapa ett gratis konto – tar 2 minuter",
+    "rodape": "Smart hantering för jiu-jitsu-akademier · 100% gratis",
+    "home": "Hem",
+    "criarConta": "Skapa konto",
+    "salvarPdf": "Spara som PDF"
+  },
+  "notFound": {
+    "titulo": "Den här sidan finns inte på mattan",
+    "desc": "Adressen du försökte nå finns inte eller har flyttats. Varför inte gå tillbaka till start?",
+    "voltar": "Tillbaka till start",
+    "criarConta": "Skapa gratis konto"
   }
 }

@@ -824,7 +824,19 @@
     "erroConexao": "Erreur de connexion. Veuillez réessayer.",
     "semConta": "Vous n'avez pas encore de compte ?",
     "cadastrarSe": "Inscrivez-vous",
-    "contasDemo": "Comptes démo : rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "Comptes démo : rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "Email non vérifié. Vérifiez votre boîte de réception ou renvoyez le lien de vérification.",
+    "voltarInicio": "Retour à l'accueil",
+    "roleAluno": "Élève",
+    "roleProfessor": "Professeur",
+    "roleDono": "Académie",
+    "esconderSenha": "Masquer le mot de passe",
+    "mostrarSenha": "Afficher le mot de passe",
+    "esqueceuSenha": "Mot de passe oublié ?",
+    "ou": "ou",
+    "entrarGoogle": "Se connecter avec Google",
+    "instalarTelaInicio": "Ajouter à l'écran d'accueil",
+    "instalarApp": "Installer l'app"
   },
   "cadastro": {
     "title": "Créer un Compte",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "Type de compte",
       "donoOption": "Propriétaire d'Académie",
       "professorOption": "Professeur",
-      "alunoOption": "Élève"
+      "alunoOption": "Élève",
+      "titulo": "Vos informations",
+      "senhaPlaceholder8": "Min. 8 caractères",
+      "confirmarSenhaLabel": "Confirmer le mot de passe",
+      "confirmarSenhaPlaceholder": "Répétez le mot de passe",
+      "menoresInfo": "Pour les mineurs, nous exigeons le consentement du responsable légal (Art. 14 de la LGPD)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Nom de l'Académie",
@@ -856,34 +873,50 @@
       "raioLabel": "Rayon pour le check-in (mètres)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "Vous avez été invité par un professeur !",
-      "convidadoProfessorDesc": "En créant votre compte, le professeur sera lié à votre académie."
+      "convidadoProfessorDesc": "En créant votre compte, le professeur sera lié à votre académie.",
+      "titulo": "Enregistrez votre académie sur OssTrack",
+      "raioHint": "(distance maximale en mètres pour le check-in automatique)",
+      "geoCapturing": "Capture de la position...",
+      "geoDone": "📍 Position capturée automatiquement",
+      "geoInfo": "La position sera utilisée pour le check-in GPS"
     },
     "step2Professor": {
       "info": "Informez votre graduation actuelle :",
       "faixaLabel": "Ceinture",
       "grauLabel": "Grade",
       "buscaInfo": "Recherchez l'académie où vous donnez des cours :",
-      "naoEncontrou": "Vous ne trouvez pas ? Vous pouvez continuer sans académie et vous connecter plus tard."
+      "naoEncontrou": "Vous ne trouvez pas ? Vous pouvez continuer sans académie et vous connecter plus tard.",
+      "titulo": "Indiquez votre grade et votre affiliation",
+      "vincularInfo": "Associez une académie (facultatif pour l'instant)",
+      "buscarAria": "Rechercher une académie à associer",
+      "buscarPlaceholder": "Rechercher une académie..."
     },
     "step2Aluno": {
       "buscaInfo": "Recherchez votre académie :",
       "placeholder": "Tapez le nom de l'académie...",
       "buscando": "Recherche...",
       "academiaSelecionada": "Académie sélectionnée",
-      "naoEncontrou": "Vous ne trouvez pas ? Vous pouvez continuer sans académie et vous connecter plus tard."
+      "naoEncontrou": "Vous ne trouvez pas ? Vous pouvez continuer sans académie et vous connecter plus tard.",
+      "naoEncontrei": "Je n'ai pas trouvé mon académie",
+      "skipInfo": "Vous pourrez associer une académie plus tard",
+      "skipHint": "Allez dans Profil → Modifier pour rechercher votre académie",
+      "buscarNovamente": "Rechercher à nouveau"
     },
     "step3Aluno": {
       "info": "Votre graduation au Jiu-Jitsu :",
       "faixaLabel": "Ceinture",
       "grauLabel": "Grade",
-      "grauOption": "{g}e Grade"
+      "grauOption": "{g}e Grade",
+      "titulo": "Complétez votre profil d'athlète"
     },
     "step4Aluno": {
       "info": "Sélectionnez votre professeur (optionnel) :",
       "placeholder": "Tapez le nom du professeur...",
       "buscar": "Rechercher",
       "professorSelecionado": "Professeur sélectionné",
-      "pular": "Vous pouvez passer cette étape."
+      "pular": "Vous pouvez passer cette étape.",
+      "professorLabel": "Professeur (facultatif)",
+      "buscarProfPlaceholder": "Rechercher un professeur..."
     },
     "grauOption": "{g}e Grade",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "Suivant",
       "criandoConta": "Création du compte...",
       "cadastrarPagamento": "Créer un Compte",
-      "criarGratis": "Créer Gratuitement"
+      "criarGratis": "Créer Gratuitement",
+      "voltarCadastro": "Retour à l'inscription",
+      "voltarInicio": "Retour à l'accueil"
     },
     "errors": {
       "obrigatorio": "Veuillez indiquer le nom de l'académie",
       "selecioneAcademia": "Sélectionnez une académie",
       "criacao": "Erreur lors de la création du compte",
-      "conexao": "Erreur de connexion. Veuillez réessayer."
+      "conexao": "Erreur de connexion. Veuillez réessayer.",
+      "nome": "Saisissez votre nom",
+      "email": "Saisissez votre email",
+      "emailInvalido": "Email invalide",
+      "senha8": "Le mot de passe doit contenir au moins 8 caractères",
+      "senhaMaiuscula": "Le mot de passe doit contenir au moins une majuscule",
+      "senhaMinuscula": "Le mot de passe doit contenir au moins une minuscule",
+      "senhaNumero": "Le mot de passe doit contenir au moins un chiffre",
+      "senhasDiferem": "Les mots de passe ne correspondent pas",
+      "dataNascimento": "Saisissez votre date de naissance",
+      "tipoConta": "Sélectionnez un type de compte",
+      "aceitarTermos": "Vous devez accepter les Conditions d'utilisation et la Politique de confidentialité",
+      "menorNome": "Mineur : saisissez le nom du responsable légal",
+      "menorCpf": "Mineur : saisissez le CPF du responsable légal",
+      "menorConsentimento": "Mineur : le responsable légal doit consentir au traitement des données",
+      "duplicado": "Cet email est déjà enregistré"
     },
     "jaTemConta": "Vous avez déjà un compte ?",
-    "entrar": "Se connecter"
+    "entrar": "Se connecter",
+    "esconderSenha": "Masquer le mot de passe",
+    "mostrarSenha": "Afficher le mot de passe",
+    "academia": "Académie",
+    "subtitleCriando": "Créez votre compte en moins d'une minute",
+    "subtitleFinal": "Terminez votre inscription",
+    "steps": {
+      "1": "Inscription",
+      "2": "Finaliser"
+    },
+    "cards": {
+      "aluno": {
+        "title": "Élève",
+        "desc": "Je veux m'entraîner et suivre ma progression en Jiu-Jitsu"
+      },
+      "professor": {
+        "title": "Professeur",
+        "desc": "Je suis ceinture noire ou gradué et je veux gérer mes élèves"
+      },
+      "dono": {
+        "title": "Propriétaire d'académie",
+        "desc": "J'ai ma propre académie et je veux tout administrer"
+      }
+    },
+    "menores": {
+      "tituloAntes": "Vous êtes",
+      "tituloDestaque": "mineur",
+      "tituloDepois": ". Pour respecter l'Art. 14 de la LGPD, nous avons besoin du consentement de votre responsable légal :",
+      "responsavelNomeLabel": "Nom du responsable légal *",
+      "responsavelNomePlaceholder": "Nom complet",
+      "responsavelCpfLabel": "CPF du responsable légal *",
+      "consentimentoLabel": "Je suis le responsable légal et je consens au traitement des données personnelles du mineur conformément à la LGPD (loi 13.709/2018) *"
+    },
+    "termos": {
+      "parte1": "J'accepte les",
+      "link1": "Conditions d'utilisation",
+      "parte2": "et la",
+      "link2": "Politique de confidentialité"
+    },
+    "lgpd": {
+      "autorizacao": "J'autorise le traitement de mes données personnelles conformément à la LGPD (loi 13.709/2018) *"
+    },
+    "marketing": {
+      "label": "J'accepte de recevoir des communications sur les nouveautés, conseils et promotions (facultatif)"
+    },
+    "verificacao": {
+      "title": "Vérifiez votre email",
+      "desc1": "Nous avons envoyé un lien de vérification à",
+      "desc2": "Cliquez sur le lien pour activer votre compte.",
+      "spam": "Vous ne le trouvez pas ? Vérifiez votre dossier spam.",
+      "jaVerificou": "Déjà vérifié ? Se connecter"
+    },
+    "sucesso": {
+      "title": "Compte créé avec succès !",
+      "desc": "Votre compte est prêt. Connectez-vous pour commencer votre parcours en Jiu-Jitsu.",
+      "fazerLogin": "Se connecter"
+    }
   },
   "perfil": {
     "title": "Modifier le Profil",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "Trois parcours,",
+    "destaque": "une seule app",
+    "descricao": "Chaque expérience est unique. Choisissez votre voie.",
+    "dono": {
+      "title": "Propriétaire d'académie",
+      "desc": "Gérez élèves, check-ins, ceintures et finances au même endroit."
+    },
+    "professor": {
+      "title": "Professeur",
+      "desc": "Cours, présences, graduations et mur à portée de main."
+    },
+    "aluno": {
+      "title": "Élève",
+      "desc": "Progression, heures, série et classement dans la poche."
+    },
+    "features": {
+      "financeiro": "Finances",
+      "alunos": "Élèves",
+      "relatorios": "Rapports",
+      "cobrancas": "Facturation",
+      "waiver": "Décharge",
+      "turmas": "Cours",
+      "presencas": "Présences",
+      "graduacoes": "Graduations",
+      "mural": "Mur",
+      "evolucao": "Progression",
+      "horas": "Heures",
+      "streak": "Série",
+      "ranking": "Classement",
+      "googleLogin": "Google Login"
+    }
+  },
+  "faixas": {
+    "branca": "Blanche",
+    "azul": "Bleue",
+    "roxa": "Violette",
+    "marrom": "Marron",
+    "preta": "Noire"
+  },
+  "ebook": {
+    "baixe": "Télécharger gratuit",
+    "title1": "Transformez vos élèves en",
+    "title2": "une vraie communauté",
+    "desc": "Un guide pratique pour motiver, retenir et créer de l'appartenance dans votre académie de Jiu-Jitsu.",
+    "b1Title": "Engagement quotidien",
+    "b1Desc": "Des stratégies pour garder vos élèves constants.",
+    "b2Title": "Gamification réelle",
+    "b2Desc": "Séries, succès et classements qui motivent vraiment.",
+    "b3Title": "Communauté solide",
+    "b3Desc": "L'appartenance qui transforme les élèves en fans.",
+    "b4Title": "Des données concrètes",
+    "b4Desc": "Des métriques pour agir avant le départ.",
+    "cta": "Télécharger l'E-book Gratuit",
+    "after": "Créez votre compte gratuit pour y accéder.",
+    "bookBadge": "E-book gratuit",
+    "bookTitle1": "Comment motiver vos",
+    "bookTitle2": "élèves en Jiu-Jitsu",
+    "bookSubtitle": "et créer une communauté en béton",
+    "bookMeta1": "Lecture de 10 minutes",
+    "bookMeta2": "PDF interactif",
+    "free": "GRATUIT"
+  },
+  "exitPopup": {
+    "fechar": "Fermer",
+    "titulo": "Attendez ! Votre académie a encore besoin de vous",
+    "descricao": "OssTrack est gratuit pour l'académie, les professeurs et les élèves. Enregistrez votre académie maintenant et organisez tout en 2 minutes.",
+    "cta": "Créer un compte gratuit",
+    "agoraNao": "Pas maintenant"
+  },
+  "ebookLead": {
+    "voltar": "Retour",
+    "titulo": "E-book Gratuit",
+    "subtitulo": "Comment motiver vos élèves en Jiu-Jitsu",
+    "descricao": "10 minutes de lecture. De vraies stratégies d'engagement, de rétention et de communauté.",
+    "emailPlaceholder": "Votre meilleur email",
+    "enviando": "Envoi en cours...",
+    "baixar": "Télécharger l'E-book Gratuit",
+    "semSpam": "Pas de spam. Juste l'e-book. Vous pouvez vous désinscrire à tout moment.",
+    "querApp": "Vous voulez un accès complet à l'app ?",
+    "criarConta": "Créer un compte gratuit",
+    "enviado": "E-book envoyé !",
+    "verifique": "Vérifiez votre boîte de réception",
+    "linkChegou": "Le lien de l'e-book arrive dans quelques instants.",
+    "criarEAcessar": "Créer un compte et accéder à l'app"
+  },
+  "ebookContent": {
+    "gate": "Créez un compte gratuit pour accéder à l'e-book.",
+    "gateCta": "Créer un compte gratuit",
+    "voltar": "Retour",
+    "topoEbook": "E-book gratuit",
+    "pdf": "PDF",
+    "badge": "OssTrack · E-book gratuit",
+    "titulo1": "Comment motiver vos élèves",
+    "titulo2": "et créer une communauté en béton",
+    "subtitulo": "Stratégies pratiques de rétention, d'appartenance et de gamification pour votre académie de Jiu-Jitsu",
+    "s1": "1. Le problème du départ silencieux",
+    "s2": "2. L'appartenance : l'antidote à l'abandon",
+    "s2a": "Rituels d'arrivée et de départ",
+    "s2b": "Espaces de convivialité",
+    "s2c": "Le pouvoir du prénom",
+    "s3": "3. La gamification qui fonctionne en Jiu-Jitsu",
+    "s3a": "Série d'entraînements (enchaînement)",
+    "s3b": "Classement sain",
+    "s3c": "Succès et jalons",
+    "s4": "4. Le professeur, leader de la communauté",
+    "s4a": "Présence active dans l'app",
+    "s4b": "Feedback personnalisé",
+    "s4c": "Disponibilité authentique",
+    "s5": "5. Stratégies de communication qui engagent",
+    "s6": "6. Événements et rituels qui unissent",
+    "s7": "7. Métriques d'engagement : quoi mesurer",
+    "s8": "8. Le rôle de la technologie dans l'engagement quotidien",
+    "tabela": {
+      "metrica": "Métrique",
+      "revela": "Ce qu'elle révèle",
+      "meta": "Objectif sain"
+    },
+    "ctaTitulo": "Envie de voir comment OssTrack transforme l'engagement de votre académie ?",
+    "cta": "Créez un compte gratuit : 2 minutes",
+    "rodape": "Gestion intelligente pour académies de Jiu-Jitsu · 100% gratuit",
+    "home": "Accueil",
+    "criarConta": "Créer un compte",
+    "salvarPdf": "Enregistrer en PDF"
+  },
+  "notFound": {
+    "titulo": "Cette page n'est pas sur le tatami",
+    "desc": "L'adresse que vous avez essayée n'existe pas ou a été déplacée. Pourquoi ne pas revenir à l'accueil ?",
+    "voltar": "Retour à l'accueil",
+    "criarConta": "Créer un compte gratuit"
   }
 }

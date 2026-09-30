@@ -824,7 +824,19 @@
     "erroConexao": "Verbindingsfout. Probeer het opnieuw.",
     "semConta": "Nog geen account?",
     "cadastrarSe": "Registreren",
-    "contasDemo": "Demo-accounts: rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "Demo-accounts: rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "E-mail niet geverifieerd. Controleer je inbox of verstuur de verificatielink opnieuw.",
+    "voltarInicio": "Terug naar home",
+    "roleAluno": "Leerling",
+    "roleProfessor": "Instructeur",
+    "roleDono": "Academie",
+    "esconderSenha": "Wachtwoord verbergen",
+    "mostrarSenha": "Wachtwoord tonen",
+    "esqueceuSenha": "Wachtwoord vergeten?",
+    "ou": "of",
+    "entrarGoogle": "Inloggen met Google",
+    "instalarTelaInicio": "Toevoegen aan beginscherm",
+    "instalarApp": "App installeren"
   },
   "cadastro": {
     "title": "Account Aanmaken",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "Accounttype",
       "donoOption": "Schooleigenaar",
       "professorOption": "Leraar",
-      "alunoOption": "Leerling"
+      "alunoOption": "Leerling",
+      "titulo": "Jouw gegevens",
+      "senhaPlaceholder8": "Min. 8 tekens",
+      "confirmarSenhaLabel": "Bevestig wachtwoord",
+      "confirmarSenhaPlaceholder": "Herhaal wachtwoord",
+      "menoresInfo": "Voor minderjarigen vragen we toestemming van de wettelijke vertegenwoordiger (Art. 14 van de LGPD)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Schoolnaam",
@@ -856,34 +873,50 @@
       "raioLabel": "Check-in straal (meters)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "U bent uitgenodigd door een leraar!",
-      "convidadoProfessorDesc": "Bij het aanmaken van uw account wordt de leraar aan uw school gekoppeld."
+      "convidadoProfessorDesc": "Bij het aanmaken van uw account wordt de leraar aan uw school gekoppeld.",
+      "titulo": "Registreer je academie op OssTrack",
+      "raioHint": "(maximale afstand in meters voor automatische incheck)",
+      "geoCapturing": "Locatie vastleggen...",
+      "geoDone": "📍 Locatie automatisch vastgelegd",
+      "geoInfo": "De locatie wordt gebruikt voor GPS-incheck"
     },
     "step2Professor": {
       "info": "Geef uw huidige graduatie op:",
       "faixaLabel": "Band",
       "grauLabel": "Streep",
       "buscaInfo": "Zoek de school waar u lesgeeft:",
-      "naoEncontrou": "Niet gevonden? U kunt doorgaan zonder school en later koppelen."
+      "naoEncontrou": "Niet gevonden? U kunt doorgaan zonder school en later koppelen.",
+      "titulo": "Geef je graad en verbinding op",
+      "vincularInfo": "Koppel een academie (optioneel voor nu)",
+      "buscarAria": "Zoek een academie om te koppelen",
+      "buscarPlaceholder": "Academie zoeken..."
     },
     "step2Aluno": {
       "buscaInfo": "Zoek uw school:",
       "placeholder": "Voer de schoolnaam in...",
       "buscando": "Zoeken...",
       "academiaSelecionada": "School geselecteerd",
-      "naoEncontrou": "Niet gevonden? U kunt doorgaan zonder school en later koppelen."
+      "naoEncontrou": "Niet gevonden? U kunt doorgaan zonder school en later koppelen.",
+      "naoEncontrei": "Ik vond mijn academie niet",
+      "skipInfo": "Je kunt later een academie koppelen",
+      "skipHint": "Ga naar Profiel → Bewerken om later je academie te zoeken",
+      "buscarNovamente": "Opnieuw zoeken"
     },
     "step3Aluno": {
       "info": "Uw graduatie in Jiu-Jitsu:",
       "faixaLabel": "Band",
       "grauLabel": "Streep",
-      "grauOption": "{g}e Streep"
+      "grauOption": "{g}e Streep",
+      "titulo": "Vul je atleteprofiel aan"
     },
     "step4Aluno": {
       "info": "Selecteer uw leraar (optioneel):",
       "placeholder": "Voer de naam van de leraar in...",
       "buscar": "Zoeken",
       "professorSelecionado": "Leraar geselecteerd",
-      "pular": "Deze stap kunt u overslaan."
+      "pular": "Deze stap kunt u overslaan.",
+      "professorLabel": "Instructeur (optioneel)",
+      "buscarProfPlaceholder": "Instructeur zoeken..."
     },
     "grauOption": "{g}e Streep",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "Volgende",
       "criandoConta": "Account aanmaken...",
       "cadastrarPagamento": "Account Aanmaken",
-      "criarGratis": "Gratis Aanmaken"
+      "criarGratis": "Gratis Aanmaken",
+      "voltarCadastro": "Terug naar registratie",
+      "voltarInicio": "Terug naar home"
     },
     "errors": {
       "obrigatorio": "Voer de schoolnaam in",
       "selecioneAcademia": "Selecteer een school",
       "criacao": "Fout bij aanmaken account",
-      "conexao": "Verbindingsfout. Probeer het opnieuw."
+      "conexao": "Verbindingsfout. Probeer het opnieuw.",
+      "nome": "Vul je naam in",
+      "email": "Vul je e-mail in",
+      "emailInvalido": "Ongeldige e-mail",
+      "senha8": "Het wachtwoord moet minimaal 8 tekens bevatten",
+      "senhaMaiuscula": "Het wachtwoord moet minimaal één hoofdletter bevatten",
+      "senhaMinuscula": "Het wachtwoord moet minimaal één kleine letter bevatten",
+      "senhaNumero": "Het wachtwoord moet minimaal één cijfer bevatten",
+      "senhasDiferem": "De wachtwoorden komen niet overeen",
+      "dataNascimento": "Vul je geboortedatum in",
+      "tipoConta": "Selecteer een accounttype",
+      "aceitarTermos": "Je moet de Gebruiksvoorwaarden en het Privacybeleid accepteren",
+      "menorNome": "Minderjarig: vul de naam van de wettelijke vertegenwoordiger in",
+      "menorCpf": "Minderjarig: vul de CPF van de wettelijke vertegenwoordiger in",
+      "menorConsentimento": "Minderjarig: de wettelijke vertegenwoordiger moet toestemming geven voor gegevensverwerking",
+      "duplicado": "Dit e-mailadres is al geregistreerd"
     },
     "jaTemConta": "Al een account?",
-    "entrar": "Inloggen"
+    "entrar": "Inloggen",
+    "esconderSenha": "Wachtwoord verbergen",
+    "mostrarSenha": "Wachtwoord tonen",
+    "academia": "Academie",
+    "subtitleCriando": "Maak je account in minder dan 1 minuut",
+    "subtitleFinal": "Rond je registratie af",
+    "steps": {
+      "1": "Registratie",
+      "2": "Afronden"
+    },
+    "cards": {
+      "aluno": {
+        "title": "Leerling",
+        "desc": "Ik wil trainen en mijn Jiu-Jitsu-vooruitgang bijhouden"
+      },
+      "professor": {
+        "title": "Instructeur",
+        "desc": "Ik ben zwarte band of gegradueerd en wil leerlingen beheren"
+      },
+      "dono": {
+        "title": "Academie-eigenaar",
+        "desc": "Ik heb een eigen academie en wil alles beheren"
+      }
+    },
+    "menores": {
+      "tituloAntes": "Je bent",
+      "tituloDestaque": "minderjarig",
+      "tituloDepois": ". Volgens Art. 14 van de LGPD hebben we toestemming van je wettelijke vertegenwoordiger nodig:",
+      "responsavelNomeLabel": "Naam wettelijke vertegenwoordiger *",
+      "responsavelNomePlaceholder": "Volledige naam",
+      "responsavelCpfLabel": "CPF wettelijke vertegenwoordiger *",
+      "consentimentoLabel": "Ik ben de wettelijke vertegenwoordiger en geef toestemming voor de verwerking van de persoonsgegevens van de minderjarige volgens de LGPD (Wet 13.709/2018) *"
+    },
+    "termos": {
+      "parte1": "Ik accepteer de",
+      "link1": "Gebruiksvoorwaarden",
+      "parte2": "en het",
+      "link2": "Privacybeleid"
+    },
+    "lgpd": {
+      "autorizacao": "Ik autoriseer de verwerking van mijn persoonsgegevens volgens de LGPD (Wet 13.709/2018) *"
+    },
+    "marketing": {
+      "label": "Ik wil nieuws, tips en acties ontvangen (optioneel)"
+    },
+    "verificacao": {
+      "title": "Verifieer je e-mail",
+      "desc1": "We stuurden een verificatielink naar",
+      "desc2": "Klik op de link om je account te activeren.",
+      "spam": "Niet gevonden? Controleer je spammap.",
+      "jaVerificou": "Al geverifieerd? Inloggen"
+    },
+    "sucesso": {
+      "title": "Account succesvol aangemaakt!",
+      "desc": "Je account is klaar. Log in om je Jiu-Jitsu-reis te starten.",
+      "fazerLogin": "Inloggen"
+    }
   },
   "perfil": {
     "title": "Profiel Bewerken",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "Drie trajecten,",
+    "destaque": "één app",
+    "descricao": "Elke ervaring is uniek. Kies jouw pad.",
+    "dono": {
+      "title": "Academie-eigenaar",
+      "desc": "Leerlingen, inchecks, banden en financiën op één plek."
+    },
+    "professor": {
+      "title": "Instructeur",
+      "desc": "Lessen, aanwezigheid, promoties en muur binnen handbereik."
+    },
+    "aluno": {
+      "title": "Leerling",
+      "desc": "Vooruitgang, uren, streak en ranking in je zak."
+    },
+    "features": {
+      "financeiro": "Financiën",
+      "alunos": "Leerlingen",
+      "relatorios": "Rapporten",
+      "cobrancas": "Facturatie",
+      "waiver": "Vrijwaring",
+      "turmas": "Lessen",
+      "presencas": "Aanwezigheid",
+      "graduacoes": "Promoties",
+      "mural": "Muur",
+      "evolucao": "Vooruitgang",
+      "horas": "Uren",
+      "streak": "Streak",
+      "ranking": "Ranking",
+      "googleLogin": "Google Login"
+    }
+  },
+  "faixas": {
+    "branca": "Wit",
+    "azul": "Blauw",
+    "roxa": "Paars",
+    "marrom": "Bruin",
+    "preta": "Zwart"
+  },
+  "ebook": {
+    "baixe": "Gratis downloaden",
+    "title1": "Maak van leerlingen een",
+    "title2": "echte community",
+    "desc": "Een praktische gids om te motiveren, te behouden en verbondenheid te creëren in je Jiu-Jitsu-academie.",
+    "b1Title": "Dagelijkse betrokkenheid",
+    "b1Desc": "Strategieën om leerlingen consistent te laten trainen.",
+    "b2Title": "Echte gamification",
+    "b2Desc": "Streaks, prestaties en rankings die echt motiveren.",
+    "b3Title": "Sterke community",
+    "b3Desc": "Verbinding die van leerlingen fans maakt.",
+    "b4Title": "Data in de praktijk",
+    "b4Desc": "Metrieken om te handelen vóór uitval.",
+    "cta": "Gratis e-book downloaden",
+    "after": "Maak een gratis account om toegang te krijgen.",
+    "bookBadge": "Gratis e-book",
+    "bookTitle1": "Zo motiveer je je",
+    "bookTitle2": "leerlingen in Jiu-Jitsu",
+    "bookSubtitle": "en bouw je een ijzersterke community",
+    "bookMeta1": "10 minuten leestijd",
+    "bookMeta2": "Interactieve PDF",
+    "free": "GRATIS"
+  },
+  "exitPopup": {
+    "fechar": "Sluiten",
+    "titulo": "Moment! Je academie heeft je nog nodig",
+    "descricao": "OssTrack is gratis voor de academie, de instructeurs en de leerlingen. Registreer nu je academie en organiseer alles in 2 minuten.",
+    "cta": "Gratis account maken",
+    "agoraNao": "Niet nu"
+  },
+  "ebookLead": {
+    "voltar": "Terug",
+    "titulo": "Gratis e-book",
+    "subtitulo": "Zo motiveer je je leerlingen in Jiu-Jitsu",
+    "descricao": "10 minuten leestijd. Echte strategieën voor betrokkenheid, retentie en community.",
+    "emailPlaceholder": "Je beste e-mail",
+    "enviando": "Verzenden...",
+    "baixar": "Gratis e-book downloaden",
+    "semSpam": "Geen spam. Alleen het e-book. Je kunt je altijd uitschrijven.",
+    "querApp": "Volledige app-toegang?",
+    "criarConta": "Gratis account maken",
+    "enviado": "E-book verzonden!",
+    "verifique": "Controleer je inbox",
+    "linkChegou": "De e-booklink is onderweg.",
+    "criarEAcessar": "Account maken en app openen"
+  },
+  "ebookContent": {
+    "gate": "Maak een gratis account om het e-book te openen.",
+    "gateCta": "Gratis account maken",
+    "voltar": "Terug",
+    "topoEbook": "Gratis e-book",
+    "pdf": "PDF",
+    "badge": "OssTrack · Gratis e-book",
+    "titulo1": "Zo motiveer je je leerlingen",
+    "titulo2": "en bouw je een ijzersterke community",
+    "subtitulo": "Praktische strategieën voor retentie, verbondenheid en gamification voor je Jiu-Jitsu-academie",
+    "s1": "1. Het probleem van stille uitval",
+    "s2": "2. Verbondenheid: het tegengif voor uitval",
+    "s2a": "Rituelen bij binnenkomst en vertrek",
+    "s2b": "Ruimtes om samen te zijn",
+    "s2c": "De kracht van de naam",
+    "s3": "3. Gamification die werkt in Jiu-Jitsu",
+    "s3a": "Trainingsstreak (serie)",
+    "s3b": "Gezonde ranking",
+    "s3c": "Prestaties en mijlpalen",
+    "s4": "4. De instructeur als leider van de community",
+    "s4a": "Actieve aanwezigheid in de app",
+    "s4b": "Persoonlijke feedback",
+    "s4c": "Echte beschikbaarheid",
+    "s5": "5. Communicatiestrategieën die binden",
+    "s6": "6. Evenementen en rituelen die verbinden",
+    "s7": "7. Betrokkenheidsmetrieken: wat meten",
+    "s8": "8. De rol van technologie in dagelijkse betrokkenheid",
+    "tabela": {
+      "metrica": "Metriek",
+      "revela": "Wat het onthult",
+      "meta": "Gezond doel"
+    },
+    "ctaTitulo": "Wil je zien hoe OssTrack de betrokkenheid van je academie verandert?",
+    "cta": "Maak een gratis account — duurt 2 minuten",
+    "rodape": "Slim beheer voor Jiu-Jitsu-academies · 100% gratis",
+    "home": "Home",
+    "criarConta": "Account maken",
+    "salvarPdf": "Opslaan als PDF"
+  },
+  "notFound": {
+    "titulo": "Deze pagina ligt niet op de mat",
+    "desc": "Het adres dat je probeerde bestaat niet of is verplaatst. Wat dacht je van terug naar home?",
+    "voltar": "Terug naar home",
+    "criarConta": "Gratis account maken"
   }
 }

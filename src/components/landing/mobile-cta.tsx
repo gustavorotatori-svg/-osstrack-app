@@ -3,10 +3,12 @@
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
+import { useT } from "@/lib/use-t"
 
 export function MobileCta() {
   const { data: session } = useSession()
   const [show, setShow] = useState(false)
+  const t = useT("nav")
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 600)
@@ -27,7 +29,7 @@ export function MobileCta() {
           href="/cadastro"
           className="btn-gold w-full py-3.5 text-center block font-bold text-sm"
         >
-          Começar Grátis
+          {t("cadastro")}
         </Link>
       </div>
     </div>
