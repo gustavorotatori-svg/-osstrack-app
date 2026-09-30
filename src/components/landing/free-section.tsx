@@ -2,8 +2,10 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
+import { useT } from "@/lib/use-t"
 
 export function FreeSection() {
+  const t = useT("gratuito")
   return (
     <section id="gratis" className="py-32 px-5 relative overflow-hidden">
       <div className="max-w-4xl mx-auto text-center relative">
@@ -14,12 +16,12 @@ export function FreeSection() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-[clamp(2rem,5vw,3.5rem)] font-extrabold tracking-tight leading-tight mb-4">
-            Sem mensalidade.{" "}
-            <span className="gradient-gold-text">Sem pegadinha.</span>
+            {t("titulo")}{" "}
+            <span className="gradient-gold-text">{t("tituloDestaque")}</span>
           </h2>
 
           <p className="text-[var(--white-muted)] text-lg leading-relaxed max-w-2xl mx-auto mb-12">
-            Academia, professor e aluno: R$ 0. O OssTrack é completamente gratuito.
+            {t("descricao")}
           </p>
         </motion.div>
 
@@ -33,7 +35,7 @@ export function FreeSection() {
             href="/cadastro"
             className="btn-gold px-12 py-5 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95 shadow-[0_8px_40px_rgba(212,168,71,0.2)]"
           >
-            Comece agora — é grátis
+            {t("cta")}
           </Link>
         </motion.div>
       </div>

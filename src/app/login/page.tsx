@@ -11,9 +11,8 @@ import { GoogleIcon } from "@/components/ui/google-icon"
 
 type Role = "aluno" | "professor" | "dono"
 
-const ROLE_CONFIG: Record<Role, { label: string; icon: string; color: string; gradient: string; orb: string; belt: string }> = {
+const ROLE_CONFIG: Record<Role, { icon: string; color: string; gradient: string; orb: string; belt: string }> = {
   aluno: {
-    label: "Aluno",
     icon: "🥋",
     color: "#3b82f6",
     gradient: "rgba(59,130,246,0.06)",
@@ -21,7 +20,6 @@ const ROLE_CONFIG: Record<Role, { label: string; icon: string; color: string; gr
     belt: "var(--belt-azul)",
   },
   professor: {
-    label: "Professor",
     icon: "👨‍🏫",
     color: "#9333ea",
     gradient: "rgba(147,51,234,0.06)",
@@ -29,7 +27,6 @@ const ROLE_CONFIG: Record<Role, { label: string; icon: string; color: string; gr
     belt: "var(--belt-roxa)",
   },
   dono: {
-    label: "Academia",
     icon: "🏛️",
     color: "#d4a847",
     gradient: "rgba(212,168,71,0.06)",
@@ -73,7 +70,7 @@ function LoginContent() {
         })
         const verificationData = await verificationRes.json()
         if (verificationData.verified === false) {
-          setError("E-mail não verificado. Verifique sua caixa de entrada ou reenvie o link de verificação.")
+          setError(t("erroVerificacao"))
           setLoading(false)
           return
         }
@@ -137,7 +134,7 @@ function LoginContent() {
       <div className="w-full max-w-sm relative z-10">
         <button onClick={() => router.push("/")} className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          Voltar ao início
+          {t("voltarInicio")}
         </button>
 
         <div className="text-center mb-8">
@@ -178,7 +175,7 @@ function LoginContent() {
                 }}
               >
                 <span className="mr-1">{c.icon}</span>
-                {c.label}
+                {t(`role${key === "dono" ? "Dono" : key.charAt(0).toUpperCase() + key.slice(1)}`)}
                 {role === key && (
                   <span
                     className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-300"
@@ -220,7 +217,7 @@ function LoginContent() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors p-1"
                 style={{ color: "var(--text-muted)" }}
-                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
+                aria-label={showPassword ? t("esconderSenha") : t("mostrarSenha")}
               >
                 {showPassword ? (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -233,7 +230,7 @@ function LoginContent() {
 
           <div className="flex justify-end">
             <Link href="/recuperar-senha" className="text-xs transition-colors" style={{ color: "var(--text-muted)" }}>
-              Esqueceu a senha?
+              {t("esqueceuSenha")}
             </Link>
           </div>
 
@@ -257,7 +254,7 @@ function LoginContent() {
               <div className="w-full border-t border-[var(--border)]" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-3 text-[var(--text-muted)]" style={{ background: "var(--bg-card)" }}>ou</span>
+              <span className="px-3 text-[var(--text-muted)]" style={{ background: "var(--bg-card)" }}>{t("ou")}</span>
             </div>
           </div>
 
@@ -268,7 +265,7 @@ function LoginContent() {
             style={{ color: "var(--text)" }}
           >
             <GoogleIcon className="w-5 h-5" />
-            Entrar com Google
+            {t("entrarGoogle")}
           </button>
 
           <p className="text-center text-xs text-[var(--text-secondary)]">
@@ -287,7 +284,7 @@ function LoginContent() {
           <div className="text-center mt-6">
             <button onClick={install} className="inline-flex items-center gap-2 text-xs text-[var(--text-secondary)] hover:opacity-80 transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              {isIOS ? "Instalar na Tela de Início" : "Instalar App"}
+              {isIOS ? t("instalarTelaInicio") : t("instalarApp")}
             </button>
           </div>
         )}

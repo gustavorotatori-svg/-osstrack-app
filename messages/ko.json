@@ -824,7 +824,19 @@
     "erroConexao": "연결 오류. 다시 시도하세요.",
     "semConta": "아직 계정이 없으신가요?",
     "cadastrarSe": "가입하기",
-    "contasDemo": "데모 계정: rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "데모 계정: rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "이메일이 인증되지 않았습니다. 받은편지함을 확인하거나 인증 링크를 다시 보내세요.",
+    "voltarInicio": "홈으로 돌아가기",
+    "roleAluno": "학생",
+    "roleProfessor": "교관",
+    "roleDono": "도장",
+    "esconderSenha": "비밀번호 숨기기",
+    "mostrarSenha": "비밀번호 표시",
+    "esqueceuSenha": "비밀번호를 잊으셨나요?",
+    "ou": "또는",
+    "entrarGoogle": "Google로 로그인",
+    "instalarTelaInicio": "홈 화면에 추가",
+    "instalarApp": "앱 설치"
   },
   "cadastro": {
     "title": "계정 만들기",
@@ -843,7 +855,12 @@
       "tipoContaLabel": "계정 유형",
       "donoOption": "도장 운영자",
       "professorOption": "교수",
-      "alunoOption": "학생"
+      "alunoOption": "학생",
+      "titulo": "내 정보",
+      "senhaPlaceholder8": "최소 8자",
+      "confirmarSenhaLabel": "비밀번호 확인",
+      "confirmarSenhaPlaceholder": "비밀번호 반복 입력",
+      "menoresInfo": "미성년자의 경우 법정대리인의 동의가 필요합니다 (LGPD 제14조)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "도장 이름",
@@ -856,34 +873,50 @@
       "raioLabel": "체크인 반경 (미터)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "교수님께서 초대하셨습니다!",
-      "convidadoProfessorDesc": "계정을 만들면 교수가 귀하의 도장에 연결됩니다."
+      "convidadoProfessorDesc": "계정을 만들면 교수가 귀하의 도장에 연결됩니다.",
+      "titulo": "OssTrack에 도장을 등록하세요",
+      "raioHint": "(자동 체크인을 위한 최대 거리, 미터 단위)",
+      "geoCapturing": "위치를 가져오는 중...",
+      "geoDone": "📍 위치가 자동으로 가져와졌습니다",
+      "geoInfo": "GPS 체크인에 위치가 사용됩니다"
     },
     "step2Professor": {
       "info": "현재 승급 정보를 입력하세요:",
       "faixaLabel": "띠",
       "grauLabel": "그레이드",
       "buscaInfo": "귀하가 가르치는 도장을 검색하세요:",
-      "naoEncontrou": "찾지 못하셨나요? 도장 없이 계속하고 나중에 연결할 수 있습니다."
+      "naoEncontrou": "찾지 못하셨나요? 도장 없이 계속하고 나중에 연결할 수 있습니다.",
+      "titulo": "승단과 소속을 입력하세요",
+      "vincularInfo": "도장 연결 (지금은 선택 사항)",
+      "buscarAria": "연결할 도장 검색",
+      "buscarPlaceholder": "도장 검색..."
     },
     "step2Aluno": {
       "buscaInfo": "도장을 검색하세요:",
       "placeholder": "도장 이름을 입력하세요...",
       "buscando": "검색 중...",
       "academiaSelecionada": "선택된 도장",
-      "naoEncontrou": "찾지 못하셨나요? 도장 없이 계속하고 나중에 연결할 수 있습니다."
+      "naoEncontrou": "찾지 못하셨나요? 도장 없이 계속하고 나중에 연결할 수 있습니다.",
+      "naoEncontrei": "내 도장을 찾지 못했습니다",
+      "skipInfo": "나중에 도장을 연결할 수 있습니다",
+      "skipHint": "프로필 → 편집으로 이동해 나중에 도장을 검색하세요",
+      "buscarNovamente": "다시 검색"
     },
     "step3Aluno": {
       "info": "주짓수 승급 정보:",
       "faixaLabel": "띠",
       "grauLabel": "그레이드",
-      "grauOption": "{g}그레이드"
+      "grauOption": "{g}그레이드",
+      "titulo": "운동선수 프로필을 완성하세요"
     },
     "step4Aluno": {
       "info": "교수를 선택하세요 (선택사항):",
       "placeholder": "교수 이름을 입력하세요...",
       "buscar": "검색",
       "professorSelecionado": "선택된 교수",
-      "pular": "이 단계를 건너뛸 수 있습니다."
+      "pular": "이 단계를 건너뛸 수 있습니다.",
+      "professorLabel": "교관 (선택 사항)",
+      "buscarProfPlaceholder": "교관 검색..."
     },
     "grauOption": "{g}그레이드",
     "buttons": {
@@ -891,16 +924,89 @@
       "proximo": "다음",
       "criandoConta": "계정 생성 중...",
       "cadastrarPagamento": "계정 만들기",
-      "criarGratis": "무료 만들기"
+      "criarGratis": "무료 만들기",
+      "voltarCadastro": "가입으로 돌아가기",
+      "voltarInicio": "홈으로 돌아가기"
     },
     "errors": {
       "obrigatorio": "도장 이름을 입력하세요",
       "selecioneAcademia": "도장을 선택하세요",
       "criacao": "계정 생성 오류",
-      "conexao": "연결 오류. 다시 시도하세요."
+      "conexao": "연결 오류. 다시 시도하세요.",
+      "nome": "이름을 입력하세요",
+      "email": "이메일을 입력하세요",
+      "emailInvalido": "잘못된 이메일입니다",
+      "senha8": "비밀번호는 최소 8자 이상이어야 합니다",
+      "senhaMaiuscula": "비밀번호는 대문자를 최소 1개 포함해야 합니다",
+      "senhaMinuscula": "비밀번호는 소문자를 최소 1개 포함해야 합니다",
+      "senhaNumero": "비밀번호는 숫자를 최소 1개 포함해야 합니다",
+      "senhasDiferem": "비밀번호가 일치하지 않습니다",
+      "dataNascimento": "생년월일을 입력하세요",
+      "tipoConta": "계정 유형을 선택하세요",
+      "aceitarTermos": "이용약관과 개인정보처리방침에 동의해야 합니다",
+      "menorNome": "미성년자: 법정대리인의 이름을 입력하세요",
+      "menorCpf": "미성년자: 법정대리인의 CPF를 입력하세요",
+      "menorConsentimento": "미성년자: 법정대리인이 데이터 처리에 동의해야 합니다",
+      "duplicado": "이 이메일은 이미 등록되어 있습니다"
     },
     "jaTemConta": "이미 계정이 있으신가요?",
-    "entrar": "로그인"
+    "entrar": "로그인",
+    "esconderSenha": "비밀번호 숨기기",
+    "mostrarSenha": "비밀번호 표시",
+    "academia": "도장",
+    "subtitleCriando": "1분 이내에 계정을 만드세요",
+    "subtitleFinal": "가입을 완료하세요",
+    "steps": {
+      "1": "가입",
+      "2": "완료"
+    },
+    "cards": {
+      "aluno": {
+        "title": "학생",
+        "desc": "주짓수에서 훈련하고 발전을 추적하고 싶습니다"
+      },
+      "professor": {
+        "title": "교관",
+        "desc": "블랙벨트 또는 승단자이며 학생을 관리하고 싶습니다"
+      },
+      "dono": {
+        "title": "도장 대표",
+        "desc": "내 도장을 가지고 있으며 모든 것을 관리하고 싶습니다"
+      }
+    },
+    "menores": {
+      "tituloAntes": "당신은",
+      "tituloDestaque": "미성년자",
+      "tituloDepois": "입니다. LGPD 제14조를 준수하기 위해 법정대리인의 동의가 필요합니다:",
+      "responsavelNomeLabel": "법정대리인 이름 *",
+      "responsavelNomePlaceholder": "전체 이름",
+      "responsavelCpfLabel": "법정대리인 CPF *",
+      "consentimentoLabel": "저는 법정대리인이며 LGPD(법률 13.709/2018)에 따라 미성년자의 개인정보 처리에 동의합니다 *"
+    },
+    "termos": {
+      "parte1": "이용약관과",
+      "link1": "이용약관",
+      "parte2": "및",
+      "link2": "개인정보처리방침"
+    },
+    "lgpd": {
+      "autorizacao": "LGPD(법률 13.709/2018)에 따라 내 개인정보 처리에 동의합니다 *"
+    },
+    "marketing": {
+      "label": "새 소식, 팁, 프로모션 수신에 동의합니다 (선택 사항)"
+    },
+    "verificacao": {
+      "title": "이메일을 인증하세요",
+      "desc1": "다음 주소로 인증 링크를 보냈습니다:",
+      "desc2": "링크를 클릭해 계정을 활성화하세요.",
+      "spam": "못 찾으셨나요? 스팸 폴더를 확인하세요.",
+      "jaVerificou": "이미 인증했나요? 로그인"
+    },
+    "sucesso": {
+      "title": "계정이 성공적으로 생성되었습니다!",
+      "desc": "계정이 준비되었습니다. 로그인하여 주짓수 여정을 시작하세요.",
+      "fazerLogin": "로그인"
+    }
   },
   "perfil": {
     "title": "프로필 편집",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "세 가지 여정,",
+    "destaque": "하나의 앱",
+    "descricao": "각 경험은 고유합니다. 자신의 길을 선택하세요.",
+    "dono": {
+      "title": "도장 대표",
+      "desc": "학생, 체크인, 벨트, 재정을 한곳에서 관리하세요."
+    },
+    "professor": {
+      "title": "교관",
+      "desc": "수업, 출석, 승단, 게시판을 한눈에."
+    },
+    "aluno": {
+      "title": "학생",
+      "desc": "발전, 시간, 스트릭, 랭킹을 주머니에."
+    },
+    "features": {
+      "financeiro": "재정",
+      "alunos": "학생",
+      "relatorios": "보고서",
+      "cobrancas": "청구",
+      "waiver": "면책",
+      "turmas": "수업",
+      "presencas": "출석",
+      "graduacoes": "승단",
+      "mural": "게시판",
+      "evolucao": "발전",
+      "horas": "시간",
+      "streak": "스트릭",
+      "ranking": "랭킹",
+      "googleLogin": "Google 로그인"
+    }
+  },
+  "faixas": {
+    "branca": "화이트",
+    "azul": "블루",
+    "roxa": "퍼플",
+    "marrom": "브라운",
+    "preta": "블랙"
+  },
+  "ebook": {
+    "baixe": "무료로 다운로드",
+    "title1": "학생들을",
+    "title2": "진짜 커뮤니티로",
+    "desc": "주짓수 도장에서 몰입, 유지, 소속감을 만드는 실용 가이드입니다.",
+    "b1Title": "매일의 몰입",
+    "b1Desc": "학생들이 꾸준히 훈련하게 하는 전략.",
+    "b2Title": "진짜 게이미피케이션",
+    "b2Desc": "스트릭, 업적, 랭킹이 진짜 동기를 만듭니다.",
+    "b3Title": "강한 커뮤니티",
+    "b3Desc": "학생을 팬으로 만드는 소속감.",
+    "b4Title": "실전 데이터",
+    "b4Desc": "이탈 전에 행동할 수 있는 지표.",
+    "cta": "무료 eBook 다운로드",
+    "after": "접근하려면 무료 계정을 만드세요.",
+    "bookBadge": "무료 eBook",
+    "bookTitle1": "주짓수에서 학생을",
+    "bookTitle2": "몰입시키는 방법",
+    "bookSubtitle": "그리고 철통 커뮤니티 만들기",
+    "bookMeta1": "10분 분량",
+    "bookMeta2": "인터랙티브 PDF",
+    "free": "무료"
+  },
+  "exitPopup": {
+    "fechar": "닫기",
+    "titulo": "잠깐! 도장에는 아직 당신이 필요합니다",
+    "descricao": "OssTrack은 도장, 교관, 학생 모두 무료입니다. 지금 도장을 등록하고 2분 만에 모든 것을 정리하세요.",
+    "cta": "무료 계정 만들기",
+    "agoraNao": "나중에"
+  },
+  "ebookLead": {
+    "voltar": "뒤로",
+    "titulo": "무료 eBook",
+    "subtitulo": "주짓수에서 학생을 몰입시키는 방법",
+    "descricao": "10분 분량. 몰입, 유지, 커뮤니티의 실제 전략.",
+    "emailPlaceholder": "가장 좋은 이메일",
+    "enviando": "보내는 중...",
+    "baixar": "무료 eBook 다운로드",
+    "semSpam": "스팸 없음. eBook만 발송합니다. 언제든 구독 해지 가능.",
+    "querApp": "앱 전체 접근을 원하세요?",
+    "criarConta": "무료 계정 만들기",
+    "enviado": "eBook이 전송되었습니다!",
+    "verifique": "받은편지함을 확인하세요",
+    "linkChegou": "eBook 링크가 곧 도착합니다.",
+    "criarEAcessar": "계정을 만들고 앱 접속"
+  },
+  "ebookContent": {
+    "gate": "eBook에 접근하려면 무료 계정을 만드세요.",
+    "gateCta": "무료 계정 만들기",
+    "voltar": "뒤로",
+    "topoEbook": "무료 eBook",
+    "pdf": "PDF",
+    "badge": "OssTrack · 무료 eBook",
+    "titulo1": "학생을 몰입시키는 방법",
+    "titulo2": "철통 커뮤니티 만들기",
+    "subtitulo": "주짓수 도장을 위한 유지, 소속감, 게이미피케이션의 실용 전략",
+    "s1": "1. 조용한 이탈의 문제",
+    "s2": "2. 소속감: 이탈의 해독제",
+    "s2a": "오고 가는 의식",
+    "s2b": "교류의 공간",
+    "s2c": "이름의 힘",
+    "s3": "3. 주짓수에서 효과적인 게이미피케이션",
+    "s3a": "훈련 스트릭 (연속)",
+    "s3b": "건강한 랭킹",
+    "s3c": "업적과 이정표",
+    "s4": "4. 커뮤니티 리더로서의 교관",
+    "s4a": "앱에서의 적극적 참여",
+    "s4b": "개인 맞춤 피드백",
+    "s4c": "진정한 관심",
+    "s5": "5. 몰입을 만드는 커뮤니케이션 전략",
+    "s6": "6. 사람을 하나로 묶는 이벤트와 의식",
+    "s7": "7. 몰입 지표: 무엇을 측정할까",
+    "s8": "8. 일상적 몰입에서 기술의 역할",
+    "tabela": {
+      "metrica": "지표",
+      "revela": "의미",
+      "meta": "건강한 목표"
+    },
+    "ctaTitulo": "OssTrack이 도장의 몰입도를 바꾸는 모습을 보고 싶으세요?",
+    "cta": "무료 계정 만들기 — 2분 소요",
+    "rodape": "주짓수 도장을 위한 스마트 관리 · 100% 무료",
+    "home": "홈",
+    "criarConta": "계정 만들기",
+    "salvarPdf": "PDF로 저장"
+  },
+  "notFound": {
+    "titulo": "이 페이지는 매트 위에 없습니다",
+    "desc": "입력한 주소가 존재하지 않거나 이동되었습니다. 홈으로 돌아가시겠어요?",
+    "voltar": "홈으로 돌아가기",
+    "criarConta": "무료 계정 만들기"
   }
 }

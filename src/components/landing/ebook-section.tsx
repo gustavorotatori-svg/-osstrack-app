@@ -2,16 +2,18 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useT } from "@/lib/use-t"
 import { BookOpen, Download, Heart, Zap, Users, Award } from "lucide-react"
 
 const benefits = [
-  { icon: Heart, title: "Pertencimento real", desc: "Estratégias para transformar alunos avulsos em uma comunidade unida que se apoia dentro e fora do tatame." },
-  { icon: Zap, title: "Gamificação prática", desc: "Como usar streak, rankings e conquistas para criar o hábito diário de treinar — sem depender de sorteio." },
-  { icon: Users, title: "Retenção de verdade", desc: "Técnicas comprovadas para reduzir a evasão e fazer o aluno sentir falta quando não treina." },
-  { icon: Award, title: "Liderança do professor", desc: "O papel do sensei como líder da comunidade e como formar multiplicadores dentro da academia." },
+  { icon: Heart, tKey: "b1Title", dKey: "b1Desc" },
+  { icon: Zap, tKey: "b2Title", dKey: "b2Desc" },
+  { icon: Users, tKey: "b3Title", dKey: "b3Desc" },
+  { icon: Award, tKey: "b4Title", dKey: "b4Desc" },
 ]
 
 export function EbookSection() {
+  const t = useT("ebook")
   return (
     <section className="relative py-24 px-5 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[rgba(212,168,71,0.03)] via-[rgba(212,168,71,0.01)] to-[rgba(212,168,71,0.03)]" />
@@ -45,19 +47,19 @@ export function EbookSection() {
                 <div className="w-14 h-14 rounded-full bg-[rgba(212,168,71,0.12)] flex items-center justify-center mb-5">
                   <BookOpen className="w-7 h-7" style={{ color: "var(--gold)" }} />
                 </div>
-                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--gold)] mb-3">Ebook gratuito</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--gold)] mb-3">{t("bookBadge")}</span>
                 <h3 className="text-xl font-extrabold leading-tight mb-3 text-white">
-                  Como engajar seus<br />alunos no Jiu-Jitsu
+                  {t("bookTitle1")}<br />{t("bookTitle2")}
                 </h3>
                 <p className="text-xs leading-relaxed text-white/70">
-                  e criar uma comunidade de ferro
+                  {t("bookSubtitle")}
                 </p>
 
                 <div className="mt-6 flex items-center gap-2 text-[10px] text-white/60">
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
-                  <span>Leitura de 10 minutos</span>
+                  <span>{t("bookMeta1")}</span>
                   <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
-                  <span>PDF interativo</span>
+                  <span>{t("bookMeta2")}</span>
                 </div>
               </div>
             </div>
@@ -70,7 +72,7 @@ export function EbookSection() {
               className="absolute -bottom-3 -right-3 bg-[var(--gold)] text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-lg flex items-center gap-1.5"
             >
               <Download className="w-3.5 h-3.5" />
-              GRÁTIS
+              {t("free")}
             </motion.div>
           </motion.div>
 
@@ -85,24 +87,24 @@ export function EbookSection() {
             <span className="inline-block px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-widest mb-4"
               style={{ background: "rgba(212,168,71,0.08)", color: "var(--gold)", border: "1px solid rgba(212,168,71,0.2)" }}
             >
-              BAIXE GRÁTIS
+              {t("baixe")}
             </span>
 
             <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-extrabold tracking-tight leading-tight mb-4">
-              Transforme alunos em<br />
-              <span className="gradient-gold-text">verdadeira comunidade</span>
+              {t("title1")}<br />
+              <span className="gradient-gold-text">{t("title2")}</span>
             </h2>
 
             <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0" style={{ color: "var(--text-secondary)" }}>
-              Um ebook prático com estratégias reais de engajamento, retenção e construção de comunidade para sua academia de Jiu-Jitsu. Baseado em experiências de academias que usam o OssTrack.
+              {t("desc")}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {benefits.map((b) => (
-                <div key={b.title} className="glass-card p-4 text-left">
+                <div key={b.tKey} className="glass-card p-4 text-left">
                   <b.icon className="w-4 h-4 mb-2" style={{ color: "var(--gold)" }} />
-                  <h4 className="text-sm font-bold mb-0.5">{b.title}</h4>
-                  <p className="text-[11px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>{b.desc}</p>
+                  <h4 className="text-sm font-bold mb-0.5">{t(b.tKey)}</h4>
+                  <p className="text-[11px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>{t(b.dKey)}</p>
                 </div>
               ))}
             </div>
@@ -112,10 +114,10 @@ export function EbookSection() {
               className="inline-flex items-center gap-2 btn-gold px-8 py-3.5 text-sm font-bold hover:scale-105 transition-transform active:scale-95"
             >
               <Download className="w-4 h-4" />
-              Baixar Ebook Grátis
+              {t("cta")}
             </Link>
 
-            <p className="mt-3 text-[11px] text-[var(--text-muted)]">Crie sua conta gratuita para acessar.</p>
+            <p className="mt-3 text-[11px] text-[var(--text-muted)]">{t("after")}</p>
           </motion.div>
         </div>
       </div>

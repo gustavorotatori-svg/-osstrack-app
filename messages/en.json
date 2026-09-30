@@ -838,7 +838,19 @@
     "erroConexao": "Connection error. Try again.",
     "semConta": "Don't have an account?",
     "cadastrarSe": "Sign Up",
-    "contasDemo": "Demo accounts: rafael@email.com / carlos@email.com / leandro@email.com"
+    "contasDemo": "Demo accounts: rafael@email.com / carlos@email.com / leandro@email.com",
+    "erroVerificacao": "Email not verified. Check your inbox or resend the verification link.",
+    "voltarInicio": "Back to home",
+    "roleAluno": "Student",
+    "roleProfessor": "Coach",
+    "roleDono": "Gym",
+    "esconderSenha": "Hide password",
+    "mostrarSenha": "Show password",
+    "esqueceuSenha": "Forgot password?",
+    "ou": "or",
+    "entrarGoogle": "Sign in with Google",
+    "instalarTelaInicio": "Add to Home Screen",
+    "instalarApp": "Install App"
   },
   "cadastro": {
     "title": "Create Account",
@@ -857,7 +869,12 @@
       "tipoContaLabel": "Account Type",
       "donoOption": "Academy Owner",
       "professorOption": "Professor",
-      "alunoOption": "Student"
+      "alunoOption": "Student",
+      "titulo": "Your details",
+      "senhaPlaceholder8": "Min. 8 characters",
+      "confirmarSenhaLabel": "Confirm Password",
+      "confirmarSenhaPlaceholder": "Repeat password",
+      "menoresInfo": "For under-18s, we require the legal guardian's consent (Art. 14 of the LGPD)."
     },
     "step2Dono": {
       "nomeAcademiaLabel": "Academy Name",
@@ -870,34 +887,50 @@
       "raioLabel": "Check-in Radius (meters)",
       "raioPlaceholder": "200",
       "convidadoProfessor": "You were invited by a professor!",
-      "convidadoProfessorDesc": "When you create your account, the professor will be linked to your academy."
+      "convidadoProfessorDesc": "When you create your account, the professor will be linked to your academy.",
+      "titulo": "Register your gym on OssTrack",
+      "raioHint": "(maximum distance in meters for automatic check-in)",
+      "geoCapturing": "Capturing location...",
+      "geoDone": "📍 Location captured automatically",
+      "geoInfo": "Location will be used for GPS check-in"
     },
     "step2Professor": {
       "info": "Enter your current belt:",
       "faixaLabel": "Belt",
       "grauLabel": "Degree",
       "buscaInfo": "Search for the academy where you teach:",
-      "naoEncontrou": "Didn't find it? You can continue without an academy and connect later."
+      "naoEncontrou": "Didn't find it? You can continue without an academy and connect later.",
+      "titulo": "Tell us your rank and affiliation",
+      "vincularInfo": "Link to a gym (optional for now)",
+      "buscarAria": "Search for a gym to link",
+      "buscarPlaceholder": "Search gym..."
     },
     "step2Aluno": {
       "buscaInfo": "Search for your academy:",
       "placeholder": "Type the academy name...",
       "buscando": "Searching...",
       "academiaSelecionada": "Selected academy",
-      "naoEncontrou": "Didn't find it? You can continue without an academy and connect later."
+      "naoEncontrou": "Didn't find it? You can continue without an academy and connect later.",
+      "naoEncontrei": "I didn't find my gym",
+      "skipInfo": "You can link a gym later",
+      "skipHint": "Go to Profile → Edit to search for your gym later",
+      "buscarNovamente": "Search again"
     },
     "step3Aluno": {
       "info": "Your Jiu-Jitsu belt:",
       "faixaLabel": "Belt",
       "grauLabel": "Degree",
-      "grauOption": "{g}th Degree"
+      "grauOption": "{g}th Degree",
+      "titulo": "Complete your athlete profile"
     },
     "step4Aluno": {
       "info": "Select your professor (optional):",
       "placeholder": "Type the professor's name...",
       "buscar": "Search",
       "professorSelecionado": "Selected professor",
-      "pular": "You can skip this step."
+      "pular": "You can skip this step.",
+      "professorLabel": "Coach (optional)",
+      "buscarProfPlaceholder": "Search coach..."
     },
     "grauOption": "{g}th Degree",
     "buttons": {
@@ -905,16 +938,89 @@
       "proximo": "Next",
       "criandoConta": "Creating account...",
       "cadastrarPagamento": "Create Account",
-      "criarGratis": "Create Free Account"
+      "criarGratis": "Create Free Account",
+      "voltarCadastro": "Back to sign-up",
+      "voltarInicio": "Back to home"
     },
     "errors": {
       "obrigatorio": "Enter the academy name",
       "selecioneAcademia": "Select an academy",
       "criacao": "Error creating account",
-      "conexao": "Connection error. Try again."
+      "conexao": "Connection error. Try again.",
+      "nome": "Enter your name",
+      "email": "Enter your email",
+      "emailInvalido": "Invalid email",
+      "senha8": "Password must be at least 8 characters",
+      "senhaMaiuscula": "Password must contain at least one uppercase letter",
+      "senhaMinuscula": "Password must contain at least one lowercase letter",
+      "senhaNumero": "Password must contain at least one number",
+      "senhasDiferem": "Passwords don't match",
+      "dataNascimento": "Enter your date of birth",
+      "tipoConta": "Select an account type",
+      "aceitarTermos": "You must accept the Terms of Use and Privacy Policy",
+      "menorNome": "Under 18: enter the legal guardian's name",
+      "menorCpf": "Under 18: enter the legal guardian's CPF",
+      "menorConsentimento": "Under 18: the legal guardian must consent to data processing",
+      "duplicado": "This email is already registered"
     },
     "jaTemConta": "Already have an account?",
-    "entrar": "Sign In"
+    "entrar": "Sign In",
+    "esconderSenha": "Hide password",
+    "mostrarSenha": "Show password",
+    "academia": "Gym",
+    "subtitleCriando": "Create your account in under 1 minute",
+    "subtitleFinal": "Finish your sign-up",
+    "steps": {
+      "1": "Sign-up",
+      "2": "Finish"
+    },
+    "cards": {
+      "aluno": {
+        "title": "Student",
+        "desc": "I want to train and track my Jiu-Jitsu progress"
+      },
+      "professor": {
+        "title": "Coach",
+        "desc": "I'm a black belt or ranked and want to manage students"
+      },
+      "dono": {
+        "title": "Gym Owner",
+        "desc": "I own my gym and want to run everything"
+      }
+    },
+    "menores": {
+      "tituloAntes": "You are",
+      "tituloDestaque": "under 18",
+      "tituloDepois": ". To comply with Art. 14 of the LGPD, we need your legal guardian's consent:",
+      "responsavelNomeLabel": "Legal guardian's name *",
+      "responsavelNomePlaceholder": "Full name",
+      "responsavelCpfLabel": "Legal guardian's CPF *",
+      "consentimentoLabel": "I am the legal guardian and consent to the processing of the minor's personal data in accordance with the LGPD (Law 13.709/2018) *"
+    },
+    "termos": {
+      "parte1": "I accept the",
+      "link1": "Terms of Use",
+      "parte2": "and the",
+      "link2": "Privacy Policy"
+    },
+    "lgpd": {
+      "autorizacao": "I authorize the processing of my personal data in accordance with the LGPD (Law 13.709/2018) *"
+    },
+    "marketing": {
+      "label": "I agree to receive news, tips and promotions (optional)"
+    },
+    "verificacao": {
+      "title": "Verify your email",
+      "desc1": "We sent a verification link to",
+      "desc2": "Click the link to activate your account.",
+      "spam": "Didn't find it? Check your spam folder.",
+      "jaVerificou": "Already verified? Sign in"
+    },
+    "sucesso": {
+      "title": "Account created successfully!",
+      "desc": "Your account is ready. Sign in to start your Jiu-Jitsu journey.",
+      "fazerLogin": "Sign in"
+    }
   },
   "perfil": {
     "title": "Edit Profile",
@@ -1292,5 +1398,136 @@
         }
       }
     }
+  },
+  "perfis": {
+    "titulo": "Three journeys,",
+    "destaque": "one app",
+    "descricao": "Every experience is unique. Choose your path.",
+    "dono": {
+      "title": "Gym Owner",
+      "desc": "Manage students, check-ins, belts and finances in one place."
+    },
+    "professor": {
+      "title": "Coach",
+      "desc": "Classes, attendance, promotions and wall feed at hand."
+    },
+    "aluno": {
+      "title": "Student",
+      "desc": "Progress, hours, streak and ranking in your pocket."
+    },
+    "features": {
+      "financeiro": "Finance",
+      "alunos": "Students",
+      "relatorios": "Reports",
+      "cobrancas": "Billing",
+      "waiver": "Waiver",
+      "turmas": "Classes",
+      "presencas": "Attendance",
+      "graduacoes": "Promotions",
+      "mural": "Wall",
+      "evolucao": "Progress",
+      "horas": "Hours",
+      "streak": "Streak",
+      "ranking": "Ranking",
+      "googleLogin": "Google Login"
+    }
+  },
+  "faixas": {
+    "branca": "White",
+    "azul": "Blue",
+    "roxa": "Purple",
+    "marrom": "Brown",
+    "preta": "Black"
+  },
+  "ebook": {
+    "baixe": "Download Free",
+    "title1": "Turn students into a",
+    "title2": "real community",
+    "desc": "A practical guide to engage, retain and build belonging at your Jiu-Jitsu gym.",
+    "b1Title": "Daily engagement",
+    "b1Desc": "Strategies to keep students training consistently.",
+    "b2Title": "Real gamification",
+    "b2Desc": "Streaks, achievements and rankings that truly motivate.",
+    "b3Title": "Strong community",
+    "b3Desc": "Belonging that turns students into fans.",
+    "b4Title": "Data in practice",
+    "b4Desc": "Metrics to act before churn.",
+    "cta": "Download Free E-book",
+    "after": "Create your free account to access it.",
+    "bookBadge": "Free e-book",
+    "bookTitle1": "How to engage your",
+    "bookTitle2": "students in Jiu-Jitsu",
+    "bookSubtitle": "and build an iron community",
+    "bookMeta1": "10-minute read",
+    "bookMeta2": "Interactive PDF",
+    "free": "FREE"
+  },
+  "exitPopup": {
+    "fechar": "Close",
+    "titulo": "Wait! Your gym still needs you",
+    "descricao": "OssTrack is free for the gym, the coaches and the students. Register your gym now and start organizing everything in 2 minutes.",
+    "cta": "Create Free Account",
+    "agoraNao": "Not now"
+  },
+  "ebookLead": {
+    "voltar": "Back",
+    "titulo": "Free E-book",
+    "subtitulo": "How to engage your students in Jiu-Jitsu",
+    "descricao": "A 10-minute read. Real engagement, retention and community strategies.",
+    "emailPlaceholder": "Your best email",
+    "enviando": "Sending...",
+    "baixar": "Download Free E-book",
+    "semSpam": "No spam. Just the e-book. Unsubscribe anytime.",
+    "querApp": "Want full app access?",
+    "criarConta": "Create free account",
+    "enviado": "E-book sent!",
+    "verifique": "Check your inbox",
+    "linkChegou": "The e-book link is on its way.",
+    "criarEAcessar": "Create account and access the app"
+  },
+  "ebookContent": {
+    "gate": "Create a free account to access the e-book.",
+    "gateCta": "Create Free Account",
+    "voltar": "Back",
+    "topoEbook": "Free E-book",
+    "pdf": "PDF",
+    "badge": "OssTrack · Free e-book",
+    "titulo1": "How to engage your students",
+    "titulo2": "and create an iron community",
+    "subtitulo": "Practical retention, belonging and gamification strategies for your Jiu-Jitsu gym",
+    "s1": "1. The problem of silent churn",
+    "s2": "2. Belonging: the antidote to churn",
+    "s2a": "Entry and exit rituals",
+    "s2b": "Social spaces",
+    "s2c": "The power of names",
+    "s3": "3. Gamification that works in Jiu-Jitsu",
+    "s3a": "Training streak (sequence)",
+    "s3b": "Healthy ranking",
+    "s3c": "Achievements and milestones",
+    "s4": "4. The coach as community leader",
+    "s4a": "Active presence in the app",
+    "s4b": "Personalized feedback",
+    "s4c": "Genuine availability",
+    "s5": "5. Communication strategies that engage",
+    "s6": "6. Events and rituals that unite",
+    "s7": "7. Engagement metrics — what to measure",
+    "s8": "8. The role of technology in daily engagement",
+    "tabela": {
+      "metrica": "Metric",
+      "revela": "What it reveals",
+      "meta": "Healthy target"
+    },
+    "ctaTitulo": "Want to see how OssTrack boosts your gym's engagement?",
+    "cta": "Create a free account — takes 2 minutes",
+    "rodape": "Smart management for Jiu-Jitsu gyms · 100% free",
+    "home": "Home",
+    "criarConta": "Create Account",
+    "salvarPdf": "Save as PDF"
+  },
+  "notFound": {
+    "titulo": "This page is not on the mats",
+    "desc": "The address you tried doesn't exist or was moved. How about heading back home?",
+    "voltar": "Back to home",
+    "criarConta": "Create free account"
   }
 }
