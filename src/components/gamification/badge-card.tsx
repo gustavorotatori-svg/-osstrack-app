@@ -80,7 +80,7 @@ export function BadgeCard({
             />
           </div>
           <div className="text-[9px] text-[var(--gray)] mt-0.5">
-            {progresso}/{progressoMax}
+            {t("badgeCard.progresso").replace("{atual}", String(progresso)).replace("{max}", String(progressoMax))}
           </div>
         </div>
       )}

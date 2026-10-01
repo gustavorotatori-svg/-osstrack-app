@@ -5,6 +5,9 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { MessageCircle, Users } from "lucide-react"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 
 type AlunoDetalheData = {
   id: string
@@ -32,15 +35,18 @@ type AlunoDetalheData = {
 }
 
 export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; role: "dono" | "professor" }) {
+  const t = useT("alunoDetalhe")
+  const { locale } = useLocale()
+
   function formatarData(iso: string) {
     const d = new Date(iso)
-    return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric" })
+    return d.toLocaleDateString(intlLocales[locale], { day: "2-digit", month: "2-digit", year: "numeric" })
   }
 
   function abrirWhatsApp() {
     if (!aluno.telefone) return
     const num = aluno.telefone.replace(/\D/g, "")
-    const msg = `Olá ${aluno.nome}, tudo bem? Aqui é da academia! 🥋`
+    const msg = t("msgWhats").replace("{nome}", aluno.nome)
     window.open(`https://wa.me/55${num}?text=${encodeURIComponent(msg)}`, "_blank")
   }
 
@@ -54,7 +60,7 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
             </div>
             <h2 className="text-xl font-extrabold tracking-tight mt-4">{aluno.nome}</h2>
             <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2 ${getBeltColor(aluno.faixa)}`}>
-              {getBeltEmoji(aluno.faixa)} {aluno.faixa} · {aluno.grau + 1}º Grau
+              {getBeltEmoji(aluno.faixa)} {aluno.faixa} · {t("grau").replace("{grau}", String(aluno.grau + 1))}
             </span>
             <div className="mt-2">
               <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold capitalize"
@@ -65,26 +71,26 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
             <p className="text-xs text-[var(--text-secondary)] mt-3">{aluno.academia}</p>
             <p className="text-xs text-[var(--text-muted)] mt-1">{aluno.email}</p>
             {aluno.dataInicio && (
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">🥋 Desde {formatarData(aluno.dataInicio)}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">{t("desde").replace("{data}", formatarData(aluno.dataInicio))}</p>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="stat-glass">
               <div className="stat-glass-value"><span>{aluno.totalAulas}</span></div>
-              <div className="stat-glass-label">Aulas</div>
+              <div className="stat-glass-label">{t("aulas")}</div>
             </div>
             <div className="stat-glass">
               <div className="stat-glass-value"><span>{aluno.totalPresencas}</span></div>
-              <div className="stat-glass-label">Presenças</div>
+              <div className="stat-glass-label">{t("presencas")}</div>
             </div>
             <div className="stat-glass">
               <div className="stat-glass-value"><span>{aluno.currentStreak}</span></div>
-              <div className="stat-glass-label">Streak</div>
+              <div className="stat-glass-label">{t("streak")}</div>
             </div>
             <div className="stat-glass">
               <div className="stat-glass-value"><span>{aluno.bestStreak}</span></div>
-              <div className="stat-glass-label">Melhor</div>
+              <div className="stat-glass-label">{t("melhor")}</div>
             </div>
           </div>
 
@@ -94,7 +100,7 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
                 <Users className="w-4 h-4 inline -mt-0.5 mr-1" />{aluno.familia.nome}
               </h3>
               <p className="text-xs text-[var(--text-secondary)] mb-3">
-                Desconto familiar de <span className="text-[var(--gold)] font-bold">{aluno.familia.desconto}%</span>
+                {t("descontoFamiliar")} <span className="text-[var(--gold)] font-bold">{aluno.familia.desconto}%</span>
               </p>
               <div className="space-y-1.5">
                 {aluno.familia.membros
@@ -108,16 +114,16 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
                     </div>
                   ))}
                 {aluno.familia.membros.filter((m) => m.id !== aluno.id).length === 0 && (
-                  <p className="text-xs text-[var(--text-muted)]">Único membro desta família</p>
+                  <p className="text-xs text-[var(--text-muted)]">{t("unicoMembro")}</p>
                 )}
               </div>
             </div>
           )}
 
           <div className="glass-card p-5">
-            <div className="section-header">Últimos check-ins</div>
+            <div className="section-header">{t("ultimosCheckins")}</div>
             {aluno.ultimosCheckins.length === 0 ? (
-              <p className="text-xs text-[var(--text-muted)] text-center py-3">Nenhum check-in registrado</p>
+              <p className="text-xs text-[var(--text-muted)] text-center py-3">{t("nenhumCheckin")}</p>
             ) : (
               <div className="space-y-1.5">
                 {aluno.ultimosCheckins.slice(0, 5).map((c, i) => (
@@ -136,7 +142,7 @@ export function AlunoDetalheClient({ aluno, role }: { aluno: AlunoDetalheData; r
           {aluno.telefone && (
             <button onClick={abrirWhatsApp}
               className="w-full py-3.5 rounded-xl text-sm font-bold bg-green-600/15 text-green-400 hover:bg-green-600/25 transition-all active:scale-[0.97] min-h-[44px]">
-              <MessageCircle className="w-4 h-4 inline mr-2" />Chamar no WhatsApp
+              <MessageCircle className="w-4 h-4 inline mr-2" />{t("chamarWhatsApp")}
             </button>
           )}
         </div>

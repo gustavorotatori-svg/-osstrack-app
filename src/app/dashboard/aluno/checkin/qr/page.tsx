@@ -6,8 +6,10 @@ import QRCode from "qrcode"
 import { toast } from "sonner"
 import { PageTransition } from "@/components/ui/page-transition"
 import { BackButton } from "@/components/ui/back-button"
+import { useT } from "@/lib/use-t"
 
 export default function AlunoQRPage() {
+  const t = useT("aluno.qrcode")
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [, setQrData] = useState("")
   const [loading, setLoading] = useState(true)
@@ -28,8 +30,8 @@ export default function AlunoQRPage() {
         await renderQR(data.qrData, canvasRef.current)
         setLoading(false)
       })
-      .catch(() => { toast.error("Erro ao carregar QR Code"); setLoading(false) })
-  }, [])
+      .catch(() => { toast.error(t("erroCarregar")); setLoading(false) })
+  }, [t])
 
   async function regenerarQR() {
     try {
@@ -37,9 +39,9 @@ export default function AlunoQRPage() {
       const data = await r.json()
       setQrData(data.qrData)
       await renderQR(data.qrData, canvasRef.current)
-      toast.success("QR Code atualizado")
+      toast.success(t("atualizado"))
     } catch {
-      toast.error("Erro ao atualizar QR Code")
+      toast.error(t("erroAtualizar"))
     }
   }
 
@@ -50,8 +52,8 @@ export default function AlunoQRPage() {
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-5 text-center">
             <div className="text-3xl mb-2">📱</div>
-            <h3 className="font-bold text-lg">Meu QR Code</h3>
-            <p className="text-xs text-[var(--text-secondary)]">Mostre ao professor para fazer check-in</p>
+            <h3 className="font-bold text-lg">{t("title")}</h3>
+            <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
           </div>
 
           <div className="glass-card p-4 sm:p-8 flex flex-col items-center">
@@ -64,15 +66,15 @@ export default function AlunoQRPage() {
             )}
 
             <p className="text-xs text-[var(--text-secondary)] mt-4 text-center max-w-xs">
-              Seu QR Code é único e temporário. O professor escaneia e confirma sua presença automaticamente.
+              {t("descricao")}
             </p>
 
             <button
               onClick={regenerarQR}
-              aria-label="Atualizar QR Code"
+              aria-label={t("atualizar")}
               className="mt-5 btn btn-ghost text-xs px-4 py-2"
             >
-              🔄 Atualizar QR Code
+              🔄 {t("atualizar")}
             </button>
           </div>
         </div>

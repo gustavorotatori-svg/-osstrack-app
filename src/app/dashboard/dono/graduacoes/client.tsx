@@ -67,9 +67,9 @@ export default function GraduacoesClient({ role }: { role: string }) {
       fetch("/api/graduacoes")
         .then(r => { if (!r.ok) throw new Error("Erro ao carregar"); return r.json() })
         .then((d) => { setGraduacoes(d); setLoading(false) })
-        .catch(() => { toast.error("Erro ao carregar regras de graduação"); setError("Erro ao carregar regras de graduação"); setLoading(false) })
+        .catch(() => { toast.error(t("erroCarregar")); setError(t("erroCarregar")); setLoading(false) })
     })()
-  }, [])
+  }, [t])
 
   const filtered = graduacoes.filter(g => g.categoria === categoria)
 
@@ -96,10 +96,10 @@ export default function GraduacoesClient({ role }: { role: string }) {
       setGraduacoes(prev => prev.map(g => g.id === updated.id ? updated : g))
       setEditing(null)
       setEditForm(null)
-      toast.success("Regra atualizada")
+      toast.success(t("regraAtualizada"))
     } else {
       const err = await res.json().catch(() => ({}))
-      toast.error(err.error || "Erro ao salvar regra")
+      toast.error(err.error || t("erroSalvar"))
     }
     setSaving(false)
   }
@@ -130,14 +130,14 @@ export default function GraduacoesClient({ role }: { role: string }) {
           ) : error ? (
             <div className="glass-card text-center py-12">
               <p className="text-sm text-[var(--text-secondary)]">{error}</p>
-              <button onClick={() => window.location.reload()} className="mt-4 px-6 py-2 rounded-xl text-xs font-bold btn-gold">
-                Tentar novamente
-              </button>
+<button onClick={() => window.location.reload()} className="mt-4 px-6 py-2 rounded-xl text-xs font-bold btn-gold">
+                 {t("tentarNovamente")}
+               </button>
             </div>
           ) : (
           <>
-          <h3 className="font-bold text-lg mb-1">🥋 Regras de Graduação</h3>
-          <p className="text-xs text-[var(--text-secondary)] mb-4">Defina os critérios de evolução para cada faixa</p>
+<h3 className="font-bold text-lg mb-1">🥋 {t("title")}</h3>
+           <p className="text-xs text-[var(--text-secondary)] mb-4">{t("subtitle")}</p>
 
           <div className="flex gap-1 bg-[var(--border)] rounded-lg p-1 mb-5">
             {categorias.map(c => (
@@ -150,11 +150,11 @@ export default function GraduacoesClient({ role }: { role: string }) {
           <div className="flex gap-2 mb-4">
             <button onClick={() => setShowCriar(!showCriar)}
               className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">
-              {showCriar ? "− Cancelar" : "+ Criar Regra"}
+              {showCriar ? `− ${t("cancelar")}` : `+ ${t("criarRegra")}`}
             </button>
             <button onClick={() => setShowShare(true)}
               className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-[rgba(201,168,76,0.08)] text-[var(--gold)] border border-[rgba(201,168,76,0.15)] hover:bg-[rgba(201,168,76,0.15)] transition-all">
-              📋 Compartilhar
+              📋 {t("compartilhar")}
             </button>
           </div>
 
@@ -162,19 +162,19 @@ export default function GraduacoesClient({ role }: { role: string }) {
           {showShare && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowShare(false)}>
               <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-              <div className="relative glass-card max-w-sm w-full p-6" role="dialog" aria-modal="true" aria-label="Compartilhar Regras de Graduação" onClick={e => e.stopPropagation()}>
+              <div className="relative glass-card max-w-sm w-full p-6" role="dialog" aria-modal="true" aria-label={t("compartilharTitle")} onClick={e => e.stopPropagation()}>
                 <div className="text-center mb-4">
                   <div className="text-2xl mb-2">📋</div>
-                  <h4 className="font-bold text-sm">Compartilhar Regras de Graduação</h4>
+                  <h4 className="font-bold text-sm">{t("compartilharTitle")}</h4>
                   <p className="text-[10px] text-[var(--text-secondary)] mt-1">
-                    Envie este link para seus alunos verem os requisitos de cada faixa
+                    {t("compartilharDesc")}
                   </p>
                 </div>
 
                 <div className="bg-black/40 border border-[var(--border)] rounded-xl p-3 mb-4">
-                  <div className="text-[10px] text-[var(--text-muted)] mb-1">Link compartilhável</div>
+                  <div className="text-[10px] text-[var(--text-muted)] mb-1">{t("linkCompartilhavel")}</div>
                   <div className="text-xs text-[var(--text-secondary)] break-all font-mono bg-black/40 rounded-lg px-3 py-2 border border-[var(--border)]">
-                    {shareLink || "Carregando..."}
+                    {shareLink || t("carregando")}
                   </div>
                   <div className="flex gap-2 mt-2">
                     <button
@@ -183,27 +183,27 @@ export default function GraduacoesClient({ role }: { role: string }) {
                         setCopying(true)
                         try {
                           await navigator.clipboard.writeText(shareLink)
-                          toast.success("Link copiado!")
-                        } catch {
-                          toast.error("Erro ao copiar")
+toast.success(t("linkCopiado"))
+                         } catch {
+                           toast.error(t("erroCopiar"))
                         }
                         setCopying(false)
                       }}
                       disabled={copying}
                       className="flex-1 py-2 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all"
                     >
-                      {copying ? "Copiando..." : "📋 Copiar Link"}
+                      {copying ? t("copiando") : `📋 ${t("copiarLink")}`}
                     </button>
                     {shareLink && (
                       <a
                         href={`https://wa.me/?text=${encodeURIComponent(
-                          `🥋 Confira as regras de graduação da academia!\n\n${shareLink}`
+                          `🥋 ${t("compartilharWhatsMsg").replace("{link}", shareLink)}`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 py-2 rounded-lg text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all text-center"
                       >
-                        📲 WhatsApp
+                        📲 {t("whatsapp")}
                       </a>
                     )}
                   </div>
@@ -213,7 +213,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                   onClick={() => setShowShare(false)}
                   className="w-full mt-4 py-2.5 rounded-xl text-xs font-bold border border-[var(--border)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
-                  Fechar
+                  {t("fechar")}
                 </button>
               </div>
             </div>
@@ -223,36 +223,36 @@ export default function GraduacoesClient({ role }: { role: string }) {
             <div className="bg-black/40 border border-[var(--border)] rounded-2xl p-4 mb-4 space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Faixa</label>
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("faixa")}</label>
                   <select className="input-field text-sm mt-1" value={novo.faixa} onChange={e => setNovo({ ...novo, faixa: e.target.value })}>
                     {Object.keys(beltIcons).map(f => <option key={f} value={f}>{beltIcons[f]} {f}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Graus</label>
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("graus")}</label>
                   <input type="number" className="input-field text-sm mt-1" value={novo.graus} onChange={e => setNovo({ ...novo, graus: Number(e.target.value) })} min={1} max={10} />
                 </div>
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas por Grau</label>
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasPorGrau")}</label>
                   <input type="number" className="input-field text-sm mt-1" value={novo.aulasPorGrau} onChange={e => setNovo({ ...novo, aulasPorGrau: Number(e.target.value) })} min={1} />
                 </div>
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas p/ próx. faixa</label>
-                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasProxFx} onChange={e => setNovo({ ...novo, aulasProxFx: e.target.value })} placeholder="Automático" />
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasProxFaixa")}</label>
+                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasProxFx} onChange={e => setNovo({ ...novo, aulasProxFx: e.target.value })} placeholder={t("automatico")} />
                 </div>
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas mín/ano</label>
-                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasMinimasAno} onChange={e => setNovo({ ...novo, aulasMinimasAno: e.target.value })} placeholder="Opcional" />
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasMinAno")}</label>
+                  <input type="number" className="input-field text-sm mt-1" value={novo.aulasMinimasAno} onChange={e => setNovo({ ...novo, aulasMinimasAno: e.target.value })} placeholder={t("opcional")} />
                 </div>
                 <div>
-                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Regra</label>
+                  <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("regra")}</label>
                   <select className="input-field text-sm mt-1" value={novo.regraTroca} onChange={e => setNovo({ ...novo, regraTroca: e.target.value })}>
-                    {regrasTroca.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                    {regrasTroca.map((r, i) => <option key={r.value} value={r.value}>{t(`regrasTroca.${i}.label`)}</option>)}
                   </select>
                 </div>
               </div>
               <div>
-                <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Data do exame</label>
+                <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("dataExame")}</label>
                 <input type="date" className="input-field text-sm mt-1" value={novo.dataProva} onChange={e => setNovo({ ...novo, dataProva: e.target.value })} />
               </div>
               <button onClick={async () => {
@@ -267,14 +267,14 @@ export default function GraduacoesClient({ role }: { role: string }) {
                   setGraduacoes(prev => [...prev, created])
                   setShowCriar(false)
                   setNovo({ faixa: "Branca", graus: 4, aulasPorGrau: 20, aulasProxFx: "", aulasMinimasAno: "", dataProva: "", regraTroca: "graus" })
-                  toast.success("Regra criada!")
-                } else {
-                  const err = await res.json().catch(() => ({}))
-                  toast.error(err.error || "Erro ao criar regra")
+toast.success(t("regraCriada"))
+                 } else {
+                   const err = await res.json().catch(() => ({}))
+                   toast.error(err.error || t("erroCriar"))
                 }
                 setCriando(false)
               }} disabled={criando}
-                className="w-full py-2.5 rounded-xl text-xs font-bold btn-gold">{criando ? "Criando..." : "Criar Regra"}</button>
+                className="w-full py-2.5 rounded-xl text-xs font-bold btn-gold">{criando ? t("criando") : t("criarRegra")}</button>
             </div>
           )}
 
@@ -289,44 +289,44 @@ export default function GraduacoesClient({ role }: { role: string }) {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Graus</label>
+                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("graus")}</label>
                         <input type="number" className="input-field text-sm mt-1" value={editForm.graus}
                           onChange={e => updateField("graus", Number(e.target.value))} />
                       </div>
                       <div>
-                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas por Grau</label>
+                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasPorGrau")}</label>
                         <input type="number" className="input-field text-sm mt-1" value={editForm.aulasPorGrau}
                           onChange={e => updateField("aulasPorGrau", Number(e.target.value))} />
                       </div>
                       <div>
-                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas p/ próx. faixa</label>
+                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasProxFaixa")}</label>
                         <input type="number" className="input-field text-sm mt-1" value={editForm.aulasProxFx ?? ""}
-                          onChange={e => updateField("aulasProxFx", e.target.value ? Number(e.target.value) : null)} placeholder="Automático" />
+                          onChange={e => updateField("aulasProxFx", e.target.value ? Number(e.target.value) : null)} placeholder={t("automatico")} />
                       </div>
                       <div>
-                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Aulas mín/ano</label>
+                        <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("aulasMinAno")}</label>
                         <input type="number" className="input-field text-sm mt-1" value={editForm.aulasMinimasAno ?? ""}
-                          onChange={e => updateField("aulasMinimasAno", e.target.value ? Number(e.target.value) : null)} placeholder="Opcional" />
+                          onChange={e => updateField("aulasMinimasAno", e.target.value ? Number(e.target.value) : null)} placeholder={t("opcional")} />
                       </div>
                     </div>
                     <div>
-                      <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Regra de troca</label>
+                      <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("regraTrocaLabel")}</label>
                       <select className="input-field text-sm mt-1" value={editForm.regraTroca}
                         onChange={e => updateField("regraTroca", e.target.value)}>
 {regrasTroca.map((r, i) => <option key={r.value} value={r.value}>{t(`regrasTroca.${i}.label`)}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">Data do exame</label>
+                      <label className="text-[9px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">{t("dataExame")}</label>
                       <input type="date" className="input-field text-sm mt-1"
                         value={editForm.dataProva ? editForm.dataProva.split("T")[0] : ""}
                         onChange={e => updateField("dataProva", e.target.value || null)} />
                     </div>
                     <div className="flex gap-2 pt-1">
                       <button onClick={saveEdit} disabled={saving}
-                        className="btn-gold px-5 py-2 text-xs font-bold">{saving ? "Salvando..." : "Salvar"}</button>
+                        className="btn-gold px-5 py-2 text-xs font-bold">{saving ? t("salvando") : t("salvar")}</button>
                       <button onClick={cancelEdit}
-                        className="px-5 py-2 rounded-xl text-xs font-bold border border-[var(--border)] text-[var(--text-secondary)] hover:text-white transition-all">Cancelar</button>
+                        className="px-5 py-2 rounded-xl text-xs font-bold border border-[var(--border)] text-[var(--text-secondary)] hover:text-white transition-all">{t("cancelar")}</button>
                     </div>
                   </div>
                 ) : (
@@ -339,16 +339,16 @@ export default function GraduacoesClient({ role }: { role: string }) {
                       {(role === "dono" || role === "professor") && (
                         <div className="flex gap-1.5">
                           <button onClick={() => startEdit(g)}
-                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ Editar</button>
-                          <button aria-label={`Excluir regra da faixa ${g.faixa}`} onClick={async () => {
-                            if (!confirm(`Excluir regra da faixa ${g.faixa}?`)) return
+                            className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-[rgba(201,168,76,0.12)] text-[var(--gold)] border border-[rgba(201,168,76,0.2)] hover:bg-[rgba(201,168,76,0.2)] transition-all">✏️ {t("editar")}</button>
+                          <button aria-label={t("excluirAria").replace("{faixa}", g.faixa)} onClick={async () => {
+                            if (!confirm(t("confirmarExcluir").replace("{faixa}", g.faixa))) return
                             const r = await fetch("/api/graduacoes", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: g.id }) })
                             if (r.ok) {
                               setGraduacoes(prev => prev.filter(x => x.id !== g.id))
-                              toast.success("Regra excluída")
+                              toast.success(t("regraExcluida"))
                             } else {
                               const err = await r.json().catch(() => ({}))
-                              toast.error(err.error || "Erro ao excluir regra")
+                              toast.error(err.error || t("erroExcluir"))
                             }
                           }}
                             className="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-red-900/30 text-red-400 border border-red-800/30 hover:bg-red-800/40 transition-all">🗑️</button>
@@ -357,19 +357,19 @@ export default function GraduacoesClient({ role }: { role: string }) {
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
                       <div className="bg-black/30 rounded-lg px-3 py-2 text-center">
-                        <div className="text-[9px] text-[var(--text-muted)] uppercase">Graus</div>
+                        <div className="text-[9px] text-[var(--text-muted)] uppercase">{t("labelGraus")}</div>
                         <div className="text-xs font-bold text-[var(--gold)]">{g.graus}</div>
                       </div>
                       <div className="bg-black/30 rounded-lg px-3 py-2 text-center">
-                        <div className="text-[9px] text-[var(--text-muted)] uppercase">Aulas/Grau</div>
+                        <div className="text-[9px] text-[var(--text-muted)] uppercase">{t("labelAulasGrau")}</div>
                         <div className="text-xs font-bold text-[var(--gold)]">{g.aulasPorGrau}</div>
                       </div>
                       <div className="bg-black/30 rounded-lg px-3 py-2 text-center">
-                        <div className="text-[9px] text-[var(--text-muted)] uppercase">Próx. Faixa</div>
-                        <div className="text-xs font-bold text-[var(--gold)]">{g.aulasProxFx ? `${g.aulasProxFx} aulas` : "—"}</div>
+                        <div className="text-[9px] text-[var(--text-muted)] uppercase">{t("proxFaixa")}</div>
+                        <div className="text-xs font-bold text-[var(--gold)]">{g.aulasProxFx ? `${g.aulasProxFx} ${t("aulas")}` : "—"}</div>
                       </div>
                       <div className="bg-black/30 rounded-lg px-3 py-2 text-center">
-                        <div className="text-[9px] text-[var(--text-muted)] uppercase">Mín/Ano</div>
+                        <div className="text-[9px] text-[var(--text-muted)] uppercase">{t("minAno")}</div>
                         <div className="text-xs font-bold text-[var(--gold)]">{g.aulasMinimasAno ? `${g.aulasMinimasAno}` : "—"}</div>
                       </div>
                     </div>
@@ -379,7 +379,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
                       </span>
                       {g.dataProva && (
                         <span className="text-[9px] px-2 py-0.5 rounded-full bg-[rgba(139,26,26,0.1)] text-[var(--red)]">
-                          Prova: {new Date(g.dataProva).toLocaleDateString("pt-BR")}
+                          {t("provaData").replace("{data}", new Date(g.dataProva).toLocaleDateString("pt-BR"))}
                         </span>
                       )}
                     </div>
@@ -388,7 +388,7 @@ export default function GraduacoesClient({ role }: { role: string }) {
               </div>
             ))}
             {filtered.length === 0 && (
-              <p className="text-sm text-[var(--text-secondary)] text-center py-6">Nenhuma regra cadastrada para esta categoria</p>
+              <p className="text-sm text-[var(--text-secondary)] text-center py-6">{t("nenhumaRegra")}</p>
             )}
           </div>
         </>
@@ -397,13 +397,13 @@ export default function GraduacoesClient({ role }: { role: string }) {
 
         {!loading && !error && (
           <div className="bg-gradient-to-br from-[var(--dark-card)] to-black/40 border border-[var(--border)] rounded-2xl p-6">
-            <h3 className="font-bold text-sm mb-3">📖 Legenda</h3>
+            <h3 className="font-bold text-sm mb-3">📖 {t("legenda")}</h3>
             <div className="space-y-2 text-xs text-[var(--text-secondary)]">
-              <p><span className="text-[var(--gold)] font-semibold">Graus:</span> Quantidade de graus (stripes) na faixa atual</p>
-              <p><span className="text-[var(--gold)] font-semibold">Aulas por Grau:</span> Check-ins necessários para cada grau</p>
-              <p><span className="text-[var(--gold)] font-semibold">Próx. Faixa:</span> Total de aulas para mudar de faixa (em branco = automático = graus × aulasPorGrau)</p>
-              <p><span className="text-[var(--gold)] font-semibold">Mín/Ano:</span> Mínimo de aulas no ano para ser elegível à próxima faixa</p>
-              <p><span className="text-[var(--gold)] font-semibold">Regra:</span> &ldquo;Por graus&rdquo; = sobe ao completar graus | &ldquo;Por aulas&rdquo; = sobe ao atingir total de aulas | &ldquo;Por exame&rdquo; = sobe apenas na data do exame</p>
+              <p><span className="text-[var(--gold)] font-semibold">{t("labelGraus")}:</span> {t("legendaGraus")}</p>
+              <p><span className="text-[var(--gold)] font-semibold">{t("aulasPorGrau")}:</span> {t("legendaAulasPorGrau")}</p>
+              <p><span className="text-[var(--gold)] font-semibold">{t("proxFaixa")}:</span> {t("legendaProxFaixa")}</p>
+              <p><span className="text-[var(--gold)] font-semibold">{t("minAno")}:</span> {t("legendaMinAno")}</p>
+              <p><span className="text-[var(--gold)] font-semibold">{t("regra")}:</span> {t("legendaRegra")}</p>
             </div>
           </div>
         )}

@@ -64,7 +64,7 @@ export default function CheckinPage() {
       const res = await fetch("/api/metasemanal")
       if (res.ok) setMetaSemanal(await res.json())
     } catch {
-      toast.error(t("erroCarregar") || "Erro ao carregar meta semanal")
+      toast.error(t("erroConexao"))
     }
   }, [t])
 
@@ -77,7 +77,7 @@ export default function CheckinPage() {
         setStreak(d.currentStreak)
       }
     } catch {
-      toast.error(t("erroCarregar") || "Erro ao carregar streak")
+      toast.error(t("erroConexao"))
     }
   }, [t])
 
@@ -113,7 +113,7 @@ export default function CheckinPage() {
         setMetaSemanal(data)
       }
     } catch {
-      toast.error(t("erroRegistrar") || "Erro ao registrar meta semanal")
+      toast.error(t("erroRegistrar"))
     }
 
     try {
@@ -130,7 +130,7 @@ export default function CheckinPage() {
         }
       }
     } catch {
-      toast.error(t("erroRegistrar") || "Erro ao atualizar streak")
+      toast.error(t("erroRegistrar"))
     }
 
     try {
@@ -145,7 +145,7 @@ export default function CheckinPage() {
         }
       }
     } catch {
-      toast.error(t("erroRegistrar") || "Erro ao verificar conquistas")
+      toast.error(t("erroRegistrar"))
     }
 
     try {
@@ -155,13 +155,13 @@ export default function CheckinPage() {
         body: JSON.stringify({ tipo: "checkin", conteudo: `${t("checkinFeito")} 🥋` }),
       })
     } catch {
-      toast.error(t("erroRegistrar") || "Erro ao publicar no mural")
+      toast.error(t("erroConexao"))
     }
 
     try {
       await fetch("/api/missoes")
     } catch {
-      toast.error(t("erroRegistrar") || "Erro ao verificar missões")
+      toast.error(t("erroConexao"))
     }
 
     setLocationStatus(t("checkinRegistrado"))
@@ -231,7 +231,7 @@ export default function CheckinPage() {
       })
       if (!codigoRes.ok) {
         const errData = await codigoRes.json()
-        setLocationStatus(errData.error || "Código inválido")
+        setLocationStatus(errData.error || t("codigoInvalido"))
         setLocationType("error")
         setStatus("idle"); setShowConfetti(false)
         return
@@ -282,7 +282,7 @@ export default function CheckinPage() {
       <BackButton href="/dashboard/aluno" />
       {showConfetti && <Confetti />}
       <CelebrationOverlay show={showCelebration} message={celebrationMsg} submessage={`${t("continueAssim")} 🥋`} />
-      <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("progressoSemanalConcluida")}`} submessage={`${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo} aulas`} />
+      <CelebrationOverlay show={showMetaCelebration} message={`🎯 ${t("progressoSemanalConcluida")}`} submessage={t("progressoMeta").replace("{atual}", String(metaSemanal.aulasFeitas)).replace("{total}", String(metaSemanal.aulasAlvo))} />
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="glass-card p-6 text-center">
@@ -346,7 +346,7 @@ export default function CheckinPage() {
 
             {modoCodigo && status === "idle" && (
               <div className="mt-4 space-y-3">
-                <p className="text-xs text-[var(--text-secondary)]">Peça o código de 4 dígitos ao professor ou à recepção</p>
+                <p className="text-xs text-[var(--text-secondary)]">{t("pedirCodigo")}</p>
                 <div className="flex items-center justify-center gap-2">
                   <input
                     type="text"
@@ -371,7 +371,7 @@ export default function CheckinPage() {
                   onClick={() => { setModoCodigo(false); setLocationStatus(""); setLocationType("") }}
                   className="text-xs text-[var(--text-secondary)] hover:text-white transition-colors"
                 >
-                  Tentar GPS novamente
+                  {t("tentarGps")}
                 </button>
               </div>
             )}
@@ -385,15 +385,19 @@ export default function CheckinPage() {
 
             {status === "done" && (
               <button onClick={() => {
-                const texto = `🥋 Acabei de treinar no ${session?.user?.academiaNome || "OssTrack"}!\n🔥 Streak: ${streak} dias\n📊 Meta semanal: ${metaSemanal.aulasFeitas}/${metaSemanal.aulasAlvo}\n\nBaixe o OssTrack e acompanhe sua evolução no Jiu-Jitsu!`
+                const texto = t("shareTexto")
+                  .replace("{academia}", session?.user?.academiaNome || "OssTrack")
+                  .replace("{dias}", String(streak))
+                  .replace("{feitas}", String(metaSemanal.aulasFeitas))
+                  .replace("{total}", String(metaSemanal.aulasAlvo))
                 if (navigator.share) {
-                  navigator.share({ title: "OssTrack - Minha Evolução no Jiu-Jitsu", text: texto })
+                  navigator.share({ title: t("shareTitulo"), text: texto })
                 } else {
                   navigator.clipboard.writeText(texto)
-                  toast.success("Texto copiado! Cole no WhatsApp ou Instagram")
+                  toast.success(t("textoCopiado"))
                 }
               }} className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-[var(--gold)] hover:text-amber-400 transition-colors px-4 py-2 rounded-lg border border-[rgba(212,168,71,0.15)] hover:bg-[rgba(212,168,71,0.06)]">
-                <Share2Icon className="w-3.5 h-3.5" /> Compartilhar evolução
+                <Share2Icon className="w-3.5 h-3.5" /> {t("compartilharEvolucao")}
               </button>
             )}
           </div>

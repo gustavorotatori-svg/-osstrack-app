@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { BackButton } from "@/components/ui/back-button"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 
 interface Competicao {
   id: string
@@ -23,10 +26,18 @@ interface Competicao {
 interface Aluno { id: string; nome: string; faixa: string }
 
 const medalhas = { ouro: "🥇", prata: "🥈", bronze: "🥉", participou: "🏅" }
+const posicoes = [
+  { value: "ouro", label: "posOuro" },
+  { value: "prata", label: "posPrata" },
+  { value: "bronze", label: "posBronze" },
+  { value: "participou", label: "posParticipou" },
+] as const
 
 export default function ProfessorCompeticoesPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const t = useT("professor.competicoes")
+  const { locale } = useLocale()
   const [competicoes, setCompeticoes] = useState<Competicao[]>([])
   const [alunos, setAlunos] = useState<Aluno[]>([])
   const [showForm, setShowForm] = useState(false)
@@ -84,27 +95,27 @@ export default function ProfessorCompeticoesPage() {
         <BackButton href="/dashboard/professor" />
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-black tracking-tight gradient-gold-text">Competições & Torneios</h1>
-            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>Registre competições e acompanhe resultados</p>
+            <h1 className="text-2xl font-black tracking-tight gradient-gold-text">{t("title")}</h1>
+            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>{t("subtitle")}</p>
           </div>
-          <button onClick={() => setShowForm(!showForm)} className="btn-gold text-sm px-5 py-2.5">{showForm ? "Cancelar" : "+ Nova Competição"}</button>
+          <button onClick={() => setShowForm(!showForm)} className="btn-gold text-sm px-5 py-2.5">{showForm ? t("cancelar") : t("novaCompeticao")}</button>
         </div>
 
         {showForm && (
           <form onSubmit={criarCompeticao} className="glass-card p-6 mb-8 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input name="nome" placeholder="Nome do torneio" required className="input-field" />
+              <input name="nome" placeholder={t("placeholderNome")} required className="input-field" />
               <input name="data" type="date" required className="input-field" />
-              <input name="local" placeholder="Local" className="input-field" />
-              <select name="faixa" aria-label="Faixa" className="input-field"><option value="">Todas as faixas</option><option value="Branca">Branca</option><option value="Azul">Azul</option><option value="Roxa">Roxa</option><option value="Marrom">Marrom</option><option value="Preta">Preta</option></select>
-              <select name="categoria" aria-label="Categoria" className="input-field"><option value="">Todas</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Master</option></select>
+              <input name="local" placeholder={t("placeholderLocal")} className="input-field" />
+              <select name="faixa" aria-label={t("faixa")} className="input-field"><option value="">{t("todasFaixas")}</option><option value="Branca">Branca</option><option value="Azul">Azul</option><option value="Roxa">Roxa</option><option value="Marrom">Marrom</option><option value="Preta">Preta</option></select>
+              <select name="categoria" aria-label={t("categoria")} className="input-field"><option value="">{t("todasCategorias")}</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Master</option></select>
             </div>
-            <button type="submit" className="btn-gold text-sm px-6 py-2.5">Salvar</button>
+            <button type="submit" className="btn-gold text-sm px-6 py-2.5">{t("salvar")}</button>
           </form>
         )}
 
         {competicoes.length === 0 ? (
-          <div className="text-center py-16"><div className="text-5xl mb-4">🏆</div><h2 className="text-lg font-bold" style={{ color: "var(--text)" }}>Nenhuma competição registrada</h2></div>
+          <div className="text-center py-16"><div className="text-5xl mb-4">🏆</div><h2 className="text-lg font-bold" style={{ color: "var(--text)" }}>{t("nenhumaCompeticao")}</h2></div>
         ) : (
           <div className="space-y-4">
             {competicoes.map((comp) => (
@@ -113,7 +124,7 @@ export default function ProfessorCompeticoesPage() {
                   <div>
                     <h3 className="text-base font-bold" style={{ color: "var(--text)" }}>{comp.nome}</h3>
                     <div className="flex items-center gap-2 mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
-                      <span>📅 {new Date(comp.data).toLocaleDateString("pt-BR")}</span>
+                      <span>📅 {new Date(comp.data).toLocaleDateString(intlLocales[locale])}</span>
                       {comp.local && <span>• 📍 {comp.local}</span>}
                     </div>
                   </div>
@@ -127,15 +138,15 @@ export default function ProfessorCompeticoesPage() {
                       </div>
                     ))}
                   </div>
-                ) : <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>Nenhum participante</p>}
+                ) : <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>{t("nenhumParticipante")}</p>}
 
                 <div className="mt-3 pt-3 border-t border-[var(--border)]">
                   <div className="flex flex-wrap gap-1.5">
                     {alunos.filter((a) => !comp.participacoes.find((p) => p.aluno.id === a.id)).slice(0, 6).map((aluno) => (
                       <div key={aluno.id} className="flex gap-1">
-                        {(["ouro", "prata", "bronze", "participou"] as const).map((pos) => (
-                          <button key={pos} onClick={() => adicionarParticipacao(comp.id, aluno.id, pos)} className="text-[10px] px-2 py-1 rounded border border-[var(--border)] hover:border-[var(--gold)] transition-colors" title={`${aluno.nome} - ${pos}`}>
-                            {medalhas[pos]} {aluno.nome.split(" ")[0]}
+                        {posicoes.map((pos) => (
+                          <button key={pos.value} onClick={() => adicionarParticipacao(comp.id, aluno.id, pos.value)} className="text-[10px] px-2 py-1 rounded border border-[var(--border)] hover:border-[var(--gold)] transition-colors" title={t("posicaoAria").replace("{nome}", aluno.nome).replace("{posicao}", t(pos.label))}>
+                            {medalhas[pos.value]} {aluno.nome.split(" ")[0]}
                           </button>
                         ))}
                       </div>

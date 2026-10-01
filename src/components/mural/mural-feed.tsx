@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { DashboardShell } from "@/components/dashboard/shell"
 import { Avatar } from "@/components/ui/avatar"
 import { useSession } from "next-auth/react"
+import { useT } from "@/lib/use-t"
 
 const beltColors: Record<string, string> = {
   Branca: "belt-white", Azul: "belt-blue",
@@ -23,17 +24,18 @@ type Comentario = {
   conteudo: string; createdAt: string
 }
 
-function LiveBadge() {
+function LiveBadge({ label }: { label: string }) {
   return (
     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/15 border border-red-600/20 text-[10px] font-bold text-red-500 uppercase tracking-wider">
       <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-      Ao Vivo
+      {label}
     </div>
   )
 }
 
 export default function MuralFeed({ role }: { role: string }) {
   useSession()
+  const t = useT("aluno.mural")
   const [now] = useState(() => Date.now())
   const [postagens, setPostagens] = useState<Postagem[]>([])
   const [comentariosAbertos, setComentariosAbertos] = useState<Record<string, boolean>>({})
@@ -90,12 +92,12 @@ export default function MuralFeed({ role }: { role: string }) {
   function timeAgo(date: string) {
     const diff = now - new Date(date).getTime()
     const mins = Math.floor(diff / 60000)
-    if (mins < 1) return "agora"
-    if (mins < 60) return `${mins}m atrás`
+    if (mins < 1) return t("agora")
+    if (mins < 60) return t("minAtras").replace("{n}", String(mins))
     const hours = Math.floor(mins / 60)
-    if (hours < 24) return `${hours}h atrás`
+    if (hours < 24) return t("hAtras").replace("{n}", String(hours))
     const days = Math.floor(hours / 24)
-    return `${days}d atrás`
+    return t("dAtras").replace("{n}", String(days))
   }
 
   const checkinsHoje = feed.filter((p) => p.tipo === "checkin")
@@ -106,17 +108,17 @@ export default function MuralFeed({ role }: { role: string }) {
       <div className="max-w-5xl mx-auto space-y-4">
         <div className="surface p-5 text-center">
           <div className="text-3xl mb-2">📢</div>
-          <h3 className="font-bold">Mural da Academia</h3>
-          <p className="text-xs text-[var(--text-secondary)]">Acompanhe as conquistas dos colegas</p>
+          <h3 className="font-bold">{t("title")}</h3>
+          <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
         </div>
 
         {treinandoAgora.length > 0 && (
           <div className="surface p-5" style={{borderColor: 'rgba(220,38,38,0.12)'}}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-sm tracking-tight">
-                Treinando agora
+                {t("treinandoAgora")}
               </h3>
-              <LiveBadge />
+              <LiveBadge label={t("aoVivo")} />
             </div>
             <div className="flex flex-wrap gap-2">
               {treinandoAgora.map((p, i) => (
@@ -133,7 +135,7 @@ export default function MuralFeed({ role }: { role: string }) {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)] font-semibold tracking-wide uppercase px-1">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-              Check-ins recentes
+              {t("checkinsRecentes")}
             </div>
             {checkinsHoje.slice(0, 5).map((item) => (
               <div key={item.id} className="surface p-3 flex items-center gap-3" style={{ borderColor: 'rgba(16,185,129,0.1)' }}>
@@ -145,7 +147,7 @@ export default function MuralFeed({ role }: { role: string }) {
                       {item.aluno.faixa}
                     </span>
                   </div>
-                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">chegou para treinar! 🥋</p>
+                  <p className="text-[11px] text-[var(--text-secondary)] mt-0.5">{t("chegouTreinar")} 🥋</p>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-emerald-500 font-semibold">
                   {timeAgo(item.createdAt)}
@@ -176,7 +178,7 @@ export default function MuralFeed({ role }: { role: string }) {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => toggleCurtida(item.id)}
-                        aria-label={item.curtido ? `Descurtir publicação de ${item.aluno.nome}` : `Curtir publicação de ${item.aluno.nome}`}
+                        aria-label={item.curtido ? t("descurtirPublicacao").replace("{nome}", item.aluno.nome) : t("curtirPublicacao").replace("{nome}", item.aluno.nome)}
                         aria-pressed={item.curtido}
                         className={`text-xs font-semibold transition-all micro-press flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px] ${
                           item.curtido ? "text-red-400" : "text-[var(--text-muted)] hover:text-red-400"
@@ -189,7 +191,7 @@ export default function MuralFeed({ role }: { role: string }) {
                       </button>
                       <button
                         onClick={() => setComentariosAbertos((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
-                        aria-label={`Comentários da publicação de ${item.aluno.nome}`}
+                        aria-label={t("comentariosPublicacao").replace("{nome}", item.aluno.nome)}
                         aria-expanded={!!comentariosAbertos[item.id]}
                         className="text-xs text-[var(--red)] hover:text-[var(--red)] transition-colors font-semibold flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px]"
                       >
@@ -218,7 +220,7 @@ export default function MuralFeed({ role }: { role: string }) {
                       <div className="flex gap-2 pt-1">
                         <input
                           className="input flex-1"
-                          placeholder="Escreva um comentário..."
+                          placeholder={t("escrevaComentario")}
                           value={novoComentario[item.id] || ""}
                           onChange={(e) => setNovoComentario((prev) => ({ ...prev, [item.id]: e.target.value }))}
                           onKeyDown={(e) => e.key === "Enter" && enviarComentario(item.id)}
@@ -227,7 +229,7 @@ export default function MuralFeed({ role }: { role: string }) {
                           onClick={() => enviarComentario(item.id)}
                           className="btn-primary px-3 py-2 text-xs shrink-0"
                         >
-                          Enviar
+                          {t("enviar")}
                         </button>
                       </div>
                     </div>
@@ -241,9 +243,9 @@ export default function MuralFeed({ role }: { role: string }) {
         {feed.length === 0 && (
           <div className="glass-card p-10 text-center">
             <div className="text-4xl mb-4">📢</div>
-            <h4 className="font-bold mb-1.5">O mural está em silêncio</h4>
+            <h4 className="font-bold mb-1.5">{t("feedSilencio")}</h4>
             <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
-              Assim que os alunos fizerem check-in, conquistarem marcos ou subirem de faixa, as conquistas aparecem aqui.
+              {t("feedSilencioDesc")}
             </p>
           </div>
         )}

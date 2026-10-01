@@ -3,10 +3,12 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { useT } from "@/lib/use-t"
 
 export default function DashboardRedirect() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const t = useT("shared")
 
   useEffect(() => {
     if (status === "loading") return
@@ -25,7 +27,7 @@ export default function DashboardRedirect() {
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
       <div className="flex flex-col items-center gap-3">
         <div className="w-10 h-10 gradient-gold rounded-xl animate-pulse" />
-        <p className="text-sm text-[var(--white-muted)]">Redirecionando...</p>
+        <p className="text-sm text-[var(--white-muted)]">{t("redirecionando")}</p>
       </div>
     </div>
   )

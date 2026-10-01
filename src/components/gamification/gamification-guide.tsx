@@ -4,36 +4,47 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, HelpCircle, Flame, Zap, Trophy, Target, ChevronRight } from "lucide-react"
 import { useEscape } from "@/lib/use-escape"
+import { useT } from "@/lib/use-t"
 
-const steps = [
-  {
-    icon: Zap,
-    title: "O que é XP?",
-    desc: "XP (pontos de experiência) é como você evolui no OssTrack. Cada check-in, missão completa e conquista desbloqueada te dá XP. Quanto mais XP, maior seu nível!",
-  },
-  {
-    icon: Flame,
-    title: "Streak (Sequência)",
-    desc: "O streak conta quantos dias seguidos você treina. Manter uma sequência ativa te dá bônus e mostra sua dedicação. Se você faltar um dia, a sequência reinicia.",
-  },
-  {
-    icon: Trophy,
-    title: "Níveis (1 a 12)",
-    desc: "São 12 níveis no total: Iniciante → Guerreiro → Lutador → Faixa Azul → Competidor → Atleta → Graduado → Expert → Mestre → Grão-Mestre → Lenda → Kami. Cada nível exige mais XP que o anterior.",
-  },
-  {
-    icon: Target,
-    title: "Missões Diárias",
-    desc: "Todo dia você recebe missões como 'Treinar Hoje' ou 'Madrugador'. Completá-las garante XP extra. As missões semanais são mais desafiadoras mas valem mais pontos.",
-  },
-  {
-    icon: Trophy,
-    title: "Conquistas",
-    desc: "Conquistas são marcos especiais: treinar 30 dias, streak de 7 dias, ser Mestre do Mês, etc. Cada conquista desbloqueada rende 50 XP de bônus!",
-  },
-]
+type GuideStep = {
+  icon: typeof Zap
+  title: string
+  desc: string
+}
+
+function buildSteps(t: (key: string) => string): GuideStep[] {
+  return [
+    {
+      icon: Zap,
+      title: t("guideStep1Title"),
+      desc: t("guideStep1Desc"),
+    },
+    {
+      icon: Flame,
+      title: t("guideStep2Title"),
+      desc: t("guideStep2Desc"),
+    },
+    {
+      icon: Trophy,
+      title: t("guideStep3Title"),
+      desc: t("guideStep3Desc"),
+    },
+    {
+      icon: Target,
+      title: t("guideStep4Title"),
+      desc: t("guideStep4Desc"),
+    },
+    {
+      icon: Trophy,
+      title: t("guideStep5Title"),
+      desc: t("guideStep5Desc"),
+    },
+  ]
+}
 
 export function GamificationGuide() {
+  const t = useT("gamification")
+  const steps = buildSteps(t)
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState(0)
 
@@ -45,7 +56,7 @@ export function GamificationGuide() {
         onClick={() => { setOpen(true); setStep(0) }}
         className="fixed bottom-24 right-4 z-40 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 active:scale-[0.97]"
         style={{ background: "var(--gold)", color: "#000" }}
-        title="Como funciona a gamificação"
+        title={t("guideTooltip")}
       >
         <HelpCircle className="w-5 h-5" />
       </button>
@@ -66,12 +77,12 @@ export function GamificationGuide() {
               className="glass-card p-6 w-full max-w-sm mx-auto"
               role="dialog"
               aria-modal="true"
-              aria-label="Como funciona a gamificação"
+              aria-label={t("guideTooltip")}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <span className="section-header mb-0">🎮 Como funciona</span>
-                <button onClick={() => setOpen(false)} aria-label="Fechar guia" className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
+                <span className="section-header mb-0">{t("guideTitle")}</span>
+                <button onClick={() => setOpen(false)} aria-label={t("guideFechar")} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"><X className="w-4 h-4" style={{ color: "var(--text-muted)" }} /></button>
               </div>
 
               <div className="space-y-5 min-h-[200px]">
@@ -99,7 +110,7 @@ export function GamificationGuide() {
                 <div className="flex items-center justify-center gap-1.5 pt-2">
                   {steps.map((_, i) => (
                     <button key={i} onClick={() => setStep(i)}
-                      aria-label={`Passo ${i + 1} de ${steps.length}`}
+                      aria-label={t("guidePasso").replace("{n}", String(i + 1)).replace("{total}", String(steps.length))}
                       className={`w-3 h-3 rounded-full transition-all ${i === step ? "w-6" : ""}`}
                       style={{ background: i === step ? "var(--gold)" : "var(--border)" }}
                     />
@@ -112,20 +123,20 @@ export function GamificationGuide() {
                   <button onClick={() => setStep(step - 1)}
                     className="flex-1 py-2.5 rounded-xl text-xs font-semibold"
                     style={{ border: "1px solid var(--border)", color: "var(--text-secondary)" }}>
-                    Anterior
+                    {t("guideAnterior")}
                   </button>
                 )}
                 {step < steps.length - 1 ? (
                   <button onClick={() => setStep(step + 1)}
                     className="flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1"
                     style={{ background: "var(--gold)", color: "#000" }}>
-                    Próximo <ChevronRight className="w-3.5 h-3.5" />
+                    {t("guideProximo")} <ChevronRight className="w-3.5 h-3.5" />
                   </button>
                 ) : (
                   <button onClick={() => setOpen(false)}
                     className="flex-1 py-2.5 rounded-xl text-xs font-bold"
                     style={{ background: "var(--gold)", color: "#000" }}>
-                    Entendi! 🥋
+                    {t("guideEntendi")}
                   </button>
                 )}
               </div>

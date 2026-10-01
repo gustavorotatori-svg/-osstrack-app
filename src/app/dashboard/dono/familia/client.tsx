@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { toast } from "sonner"
 import { PencilIcon, Trash2Icon, UsersIcon, XIcon, SearchIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
 import { getBeltColor } from "@/lib/utils"
 
 type Familia = {
@@ -18,6 +19,7 @@ type AlunoItem = { id: string; nome: string; faixa: string; grau: number }
 type Membro = { id: string; alunoId: string }
 
 export function FamiliaClient() {
+  const t = useT("dono.familia")
   const [familias, setFamilias] = useState<Familia[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -67,7 +69,7 @@ export function FamiliaClient() {
           body: JSON.stringify({ nome, desconto }),
         })
         if (!res.ok) throw new Error()
-        toast.success("Família atualizada")
+        toast.success(t("atualizada"))
       } else {
         const res = await fetch("/api/familia", {
           method: "POST",
@@ -75,26 +77,26 @@ export function FamiliaClient() {
           body: JSON.stringify({ nome, desconto }),
         })
         if (!res.ok) throw new Error()
-        toast.success("Família criada")
+        toast.success(t("criada"))
       }
       setShowForm(false)
       resetForm()
       fetchFamilias()
     } catch {
-      toast.error("Erro ao salvar")
+      toast.error(t("erroSalvar"))
     }
     setSaving(false)
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Excluir esta família?")) return
+    if (!confirm(t("confirmarExcluir"))) return
     try {
       const res = await fetch(`/api/familia/${id}`, { method: "DELETE" })
       if (!res.ok) throw new Error()
       setFamilias((prev) => prev.filter((f) => f.id !== id))
-      toast.success("Família excluída")
+      toast.success(t("excluida"))
     } catch {
-      toast.error("Erro ao excluir")
+      toast.error(t("erroExcluir"))
     }
   }
 
@@ -126,15 +128,15 @@ export function FamiliaClient() {
       })
       if (!res.ok) {
         const data = await res.json()
-        toast.error(data.error || "Erro ao adicionar")
+        toast.error(data.error || t("erroAdicionar"))
         return
       }
-      toast.success("Membro adicionado")
+      toast.success(t("membroAdicionado"))
       setMembrosNaFamilia((prev) => [...prev, todosAlunos.find((a) => a.id === alunoId)!])
       setTodosAlunos((prev) => prev.filter((a) => a.id !== alunoId))
       fetchFamilias()
     } catch {
-      toast.error("Erro ao adicionar")
+      toast.error(t("erroAdicionar"))
     }
   }
 
@@ -142,12 +144,12 @@ export function FamiliaClient() {
     try {
       const res = await fetch(`/api/familia/${familiaId}/membros/${membroId}`, { method: "DELETE" })
       if (!res.ok) throw new Error()
-      toast.success("Membro removido")
+      toast.success(t("membroRemovido"))
       setMembrosNaFamilia((prev) => prev.filter((a) => a.id !== aluno.id))
       setTodosAlunos((prev) => [...prev, aluno].sort((a, b) => a.nome.localeCompare(b.nome)))
       fetchFamilias()
     } catch {
-      toast.error("Erro ao remover")
+      toast.error(t("erroRemover"))
     }
   }
 
@@ -172,24 +174,24 @@ export function FamiliaClient() {
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="text-center">
-            <h3 className="font-bold text-lg">Famílias</h3>
-            <p className="text-xs text-[var(--text-secondary)]">Grupos familiares com desconto</p>
+            <h3 className="font-bold text-lg">{t("title")}</h3>
+            <p className="text-xs text-[var(--text-secondary)]">{t("subtitle")}</p>
             <button onClick={() => { resetForm(); setShowForm(!showForm) }}
               className="btn-primary px-4 py-2 text-sm mt-3">
-              {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> Fechar</> : "Nova Família"}
+              {showForm ? <><XIcon className="w-4 h-4 inline -mt-0.5" /> {t("fechar")}</> : t("novaFamilia")}
             </button>
           </div>
 
           {showForm && (
             <form onSubmit={handleSave} className="glass-card p-5 space-y-4">
-              <h4 className="font-bold text-sm">{editingId ? "Editar Família" : "Nova Família"}</h4>
+              <h4 className="font-bold text-sm">{editingId ? t("editarFamilia") : t("novaFamilia")}</h4>
               <div>
-                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">Nome</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{t("nome")}</label>
                 <input value={nome} onChange={(e) => setNome(e.target.value)}
-                  className="input-field w-full text-sm mt-1" placeholder="Ex: Família Silva" required />
+                  className="input-field w-full text-sm mt-1" placeholder={t("placeholderNome")} required />
               </div>
               <div>
-                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">Desconto (%)</label>
+                <label className="text-[10px] text-[var(--text-secondary)] uppercase tracking-wide font-semibold">{t("desconto")}</label>
                 <input type="number" min={0} max={100} value={desconto}
                   onChange={(e) => setDesconto(Number(e.target.value))}
                   className="input-field w-full text-sm mt-1" />
@@ -197,11 +199,11 @@ export function FamiliaClient() {
               <div className="flex gap-3">
                 <button type="submit" disabled={saving}
                   className="btn-gold px-6 py-2.5 text-sm font-bold">
-                  {saving ? "Salvando..." : editingId ? "Atualizar" : "Criar Família"}
+                  {saving ? t("salvando") : editingId ? t("atualizar") : t("criarFamilia")}
                 </button>
                 <button type="button" onClick={() => { setShowForm(false); resetForm() }}
                   className="px-4 py-2.5 text-sm text-[var(--text-secondary)] border border-[var(--border)] rounded-xl">
-                  Cancelar
+                  {t("cancelar")}
                 </button>
               </div>
             </form>
@@ -220,9 +222,9 @@ export function FamiliaClient() {
           ) : familias.length === 0 ? (
             <div className="glass-card text-center py-12">
               <UsersIcon className="w-10 h-10 mb-3 opacity-30 mx-auto" />
-              <div className="text-base font-bold">Nenhuma família</div>
+              <div className="text-base font-bold">{t("nenhumaFamilia")}</div>
               <div className="text-sm text-[var(--text-secondary)] mt-1">
-                Crie grupos familiares para oferecer descontos
+                {t("descEmpty")}
               </div>
             </div>
           ) : (
@@ -237,15 +239,15 @@ export function FamiliaClient() {
                     <div className="flex-1 min-w-0">
                       <div className="text-base font-bold truncate">{f.nome}</div>
                       <div className="text-xs text-[var(--text-secondary)]">
-                        {f.desconto}% de desconto • {f._count.membros} {f._count.membros === 1 ? "membro" : "membros"}
+                        {t("descontoResumo").replace("{v}", String(f.desconto))} • {t(f._count.membros === 1 ? "membroUm" : "membroVarios").replace("{n}", String(f._count.membros))}
                       </div>
                     </div>
                     <div className="flex gap-1">
-                      <button onClick={() => openEdit(f)} aria-label={`Editar família ${f.nome}`} title="Editar família"
+                      <button onClick={() => openEdit(f)} aria-label={t("editarFamiliaAria").replace("{nome}", f.nome)} title={t("editarFamilia")}
                         className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-[var(--gold)] border border-transparent transition-all">
                         <PencilIcon className="w-4 h-4" />
                       </button>
-                      <button onClick={() => handleDelete(f.id)} aria-label={`Excluir família ${f.nome}`} title="Excluir família"
+                      <button onClick={() => handleDelete(f.id)} aria-label={t("excluirFamiliaAria").replace("{nome}", f.nome)} title={t("excluirFamilia")}
                         className="w-10 h-10 rounded-lg bg-[var(--border)] flex items-center justify-center hover:border-red-500 border border-transparent transition-all">
                         <Trash2Icon className="w-4 h-4" />
                       </button>
@@ -254,21 +256,21 @@ export function FamiliaClient() {
                   <button onClick={() => openMembrosPanel(f.id)}
                     className="w-full py-2.5 rounded-xl text-xs font-semibold bg-[var(--border)] hover:bg-[rgba(201,168,76,0.1)] hover:text-[var(--gold)] transition-all min-h-[44px]">
                     <UsersIcon className="w-3.5 h-3.5 inline -mt-0.5 mr-1" />
-                    {expandedId === f.id ? "Fechar" : "Gerenciar Membros"}
+                    {expandedId === f.id ? t("fechar") : t("gerenciarMembros")}
                   </button>
 
                   {expandedId === f.id && (
                     <div className="mt-3 pt-3 border-t border-[var(--border)] space-y-3">
                       <h4 className="text-sm font-bold">
-                        <UsersIcon className="w-4 h-4 inline -mt-0.5 mr-1" />Membros
+                        <UsersIcon className="w-4 h-4 inline -mt-0.5 mr-1" />{t("membros")}
                       </h4>
 
                       {loadingMembros ? (
-                        <p className="text-xs text-[var(--text-secondary)] text-center py-4">Carregando...</p>
+                        <p className="text-xs text-[var(--text-secondary)] text-center py-4">{t("carregando")}</p>
                       ) : (
                         <>
                           {membrosNaFamilia.length === 0 ? (
-                            <p className="text-xs text-[var(--text-secondary)] text-center py-3">Nenhum membro</p>
+                            <p className="text-xs text-[var(--text-secondary)] text-center py-3">{t("nenhumMembro")}</p>
                           ) : (
                             <div className="space-y-1 max-h-40 overflow-y-auto">
                               {membrosNaFamilia.map((a) => (
@@ -282,7 +284,7 @@ export function FamiliaClient() {
                                   <button onClick={async () => {
                                     const membroId = await getMembroIdByAlunoId(f.id, a.id)
                                     if (membroId) removerMembro(f.id, membroId, a)
-                                  }} aria-label={`Remover ${a.nome} da família`} title="Remover da família"
+                                  }} aria-label={t("removerMembroAria").replace("{nome}", a.nome)} title={t("removerDaFamilia")}
                                     className="text-xs text-red-400 hover:text-red-300 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center">
                                     <XIcon className="w-3.5 h-3.5" />
                                   </button>
@@ -297,20 +299,20 @@ export function FamiliaClient() {
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                               className="input-field w-full text-sm pl-9"
-                              placeholder="Buscar aluno..."
-                              aria-label="Buscar aluno"
+                              placeholder={t("buscarAluno")}
+                              aria-label={t("buscarAlunoAria")}
                             />
                           </div>
 
-                          <h4 className="text-sm font-bold mt-2">Adicionar Membros</h4>
+                          <h4 className="text-sm font-bold mt-2">{t("adicionarMembros")}</h4>
                           {filteredAlunos.length === 0 ? (
                             <p className="text-xs text-[var(--text-secondary)] text-center py-3">
-                              {searchTerm ? "Nenhum aluno encontrado" : "Nenhum aluno disponível"}
+                              {searchTerm ? t("nenhumAlunoEncontrado") : t("nenhumAlunoDisponivel")}
                             </p>
                           ) : (
                             <div className="space-y-1 max-h-40 overflow-y-auto">
                               {filteredAlunos.filter((a) => !membrosNaFamilia.find((m) => m.id === a.id)).map((a) => (
-                                <button type="button" key={a.id} onClick={() => adicionarMembro(f.id, a.id)} aria-label={`Adicionar ${a.nome} à família`}
+                                <button type="button" key={a.id} onClick={() => adicionarMembro(f.id, a.id)} aria-label={t("adicionarMembroAria").replace("{nome}", a.nome)}
                                   className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--border)] transition-all cursor-pointer text-left">
                                   <div className="flex items-center gap-2">
                                     <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-semibold ${getBeltColor(a.faixa)}`}>

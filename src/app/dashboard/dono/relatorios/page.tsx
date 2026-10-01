@@ -35,6 +35,8 @@ const fmt = (v: number) => (v / 100).toLocaleString("pt-BR", { style: "currency"
 
 export default function RelatoriosPage() {
   const t = useT("dono.relatorios")
+  const tr = useT("relatorios")
+  const tFaixas = useT("faixas")
   const [data, setData] = useState<RelatoriosData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -51,34 +53,41 @@ export default function RelatoriosPage() {
 
   const maxPresencas = data ? Math.max(...data.presencasPorMes.map((p) => p.total), 1) : 1
   const maxTurma = data ? Math.max(...data.presencasPorTurma.map((p) => p.total), 1) : 1
+  const totalPresencasTexto = tr("totalPresencas").split("{n}")
+
+  function faixaLabel(faixa: string) {
+    const key = faixa.toLowerCase()
+    const translated = tFaixas(key)
+    return translated === key ? faixa : translated
+  }
 
   function exportarCSV() {
     if (!data) return
     const linhas: string[] = []
-    linhas.push("Métricas gerais")
-    linhas.push(`Presenças hoje,${data.presencasHoje}`)
-    linhas.push(`Total de presenças,${data.totalPresencas}`)
-    linhas.push(`Total de alunos,${data.totalAlunos}`)
-    linhas.push(`Engajamento (7 dias),${data.engajamento}%`)
-    linhas.push(`Retenção (6 meses),${data.retencao6m}%`)
-    linhas.push(`Churn no mês,${data.churn}%`)
+    linhas.push(t("csvSecaoMetricas"))
+    linhas.push(`${t("csvPresencasHoje")},${data.presencasHoje}`)
+    linhas.push(`${t("csvTotalPresencas")},${data.totalPresencas}`)
+    linhas.push(`${t("csvTotalAlunos")},${data.totalAlunos}`)
+    linhas.push(`${t("csvEngajamento")},${data.engajamento}%`)
+    linhas.push(`${t("csvRetencao")},${data.retencao6m}%`)
+    linhas.push(`${t("csvChurn")},${data.churn}%`)
     linhas.push("")
-    linhas.push("Financeiro")
-    linhas.push(`Receitas do mês,${data.financeiro.receitaMes / 100}`)
-    linhas.push(`Despesas do mês,${data.financeiro.despesasMes / 100}`)
-    linhas.push(`Lucro do mês,${data.financeiro.lucroMes / 100}`)
-    linhas.push(`Ticket médio,${data.financeiro.ticketMedio / 100}`)
-    linhas.push(`Cobranças pagas no mês,${data.financeiro.pagasMes}`)
-    linhas.push(`Inadimplentes,${data.financeiro.inadimplentes}`)
-    linhas.push(`Inadimplência,${data.financeiro.inadimplencia}%`)
+    linhas.push(t("csvSecaoFinanceiro"))
+    linhas.push(`${t("csvReceitas")},${data.financeiro.receitaMes / 100}`)
+    linhas.push(`${t("csvDespesas")},${data.financeiro.despesasMes / 100}`)
+    linhas.push(`${t("csvLucro")},${data.financeiro.lucroMes / 100}`)
+    linhas.push(`${t("ticketMedio")},${data.financeiro.ticketMedio / 100}`)
+    linhas.push(`${t("csvCobrancas")},${data.financeiro.pagasMes}`)
+    linhas.push(`${t("csvInadimplentes")},${data.financeiro.inadimplentes}`)
+    linhas.push(`${t("csvInadimplencia")},${data.financeiro.inadimplencia}%`)
     linhas.push("")
-    linhas.push("Presenças por mês")
+    linhas.push(t("csvPresencasPorMes"))
     data.presencasPorMes.forEach((p) => linhas.push(`${p.mes},${p.total}`))
     linhas.push("")
-    linhas.push("Presenças por turma (30 dias)")
+    linhas.push(t("presencasPorTurma"))
     data.presencasPorTurma.forEach((p) => linhas.push(`${p.turma},${p.total}`))
     linhas.push("")
-    linhas.push("Alunos por faixa")
+    linhas.push(t("alunosPorFaixa"))
     data.porFaixa.forEach((f) => linhas.push(`${f.faixa},${f.total}`))
 
     const blob = new Blob(["\uFEFF" + linhas.join("\n")], { type: "text/csv;charset=utf-8" })
@@ -138,14 +147,14 @@ export default function RelatoriosPage() {
             <div className="flex items-center gap-4 py-4">
               <div>
                 <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
-                <p className="text-sm text-[var(--text-secondary)]">Métricas e indicadores da academia</p>
+                <p className="text-sm text-[var(--text-secondary)]">{tr("subtitle")}</p>
               </div>
             </div>
             <div className="glass-card p-12 text-center">
               <div className="text-5xl mb-4">⚠️</div>
-              <h2 className="text-lg font-bold mb-2">Erro ao carregar relatórios</h2>
+              <h2 className="text-lg font-bold mb-2">{tr("erroCarregar")}</h2>
               <p className="text-sm text-[var(--text-secondary)] mb-6">
-                Não foi possível carregar os dados. Verifique sua conexão e tente novamente.
+                {tr("erroDesc")}
               </p>
               <button
                 onClick={() => {
@@ -161,7 +170,7 @@ export default function RelatoriosPage() {
                 }}
                 className="px-6 py-2 bg-[var(--red)] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
               >
-                Tentar novamente
+                {tr("tentarNovamente")}
               </button>
             </div>
           </div>
@@ -179,13 +188,13 @@ export default function RelatoriosPage() {
           <div className="flex items-center justify-between gap-4 py-4 flex-wrap">
             <div>
               <h1 className="text-2xl font-extrabold tracking-tight">{t("title")}</h1>
-              <p className="text-sm text-[var(--text-secondary)]">Métricas e indicadores da academia</p>
+              <p className="text-sm text-[var(--text-secondary)]">{tr("subtitle")}</p>
             </div>
             <button
               onClick={exportarCSV}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95"
             >
-              <Download className="w-3.5 h-3.5" /> Exportar CSV
+              <Download className="w-3.5 h-3.5" /> {t("exportarCsv")}
             </button>
           </div>
 
@@ -197,7 +206,7 @@ export default function RelatoriosPage() {
             </div>
             <div className="glass-card p-5">
               <div className="text-3xl font-extrabold text-blue-500">{data?.totalAlunos || 0}</div>
-              <div className="text-sm text-[var(--text-secondary)] mt-1">Total de Alunos</div>
+              <div className="text-sm text-[var(--text-secondary)] mt-1">{tr("totalAlunos")}</div>
             </div>
             <div className="glass-card p-5">
               <div className="text-3xl font-extrabold text-amber-500">{data?.engajamento || 0}%</div>
@@ -212,31 +221,31 @@ export default function RelatoriosPage() {
           {/* Financeiro */}
           <div className="glass-card p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold flex items-center gap-2"><Wallet className="w-4 h-4" /> Financeiro do mês</h2>
+              <h2 className="text-lg font-bold flex items-center gap-2"><Wallet className="w-4 h-4" /> {t("financeiroMes")}</h2>
               <span className={`text-xs px-2.5 py-1 rounded-full font-bold ${(data?.financeiro.lucroMes || 0) >= 0 ? "bg-green-900/40 text-green-400" : "bg-red-900/40 text-red-400"}`}>
-                Lucro {fmt(data?.financeiro.lucroMes || 0)}
+                {t("lucro")} {fmt(data?.financeiro.lucroMes || 0)}
               </span>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
               <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
                 <div className="text-lg font-extrabold text-emerald-500">{fmt(data?.financeiro.receitaMes || 0)}</div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">Receitas</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{t("receitas")}</div>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
                 <div className="text-lg font-extrabold text-red-400">{fmt(data?.financeiro.despesasMes || 0)}</div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">Despesas</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{t("despesas")}</div>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
                 <div className="text-lg font-extrabold text-blue-400">{fmt(data?.financeiro.ticketMedio || 0)}</div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">Ticket médio</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{t("ticketMedio")}</div>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
                 <div className="text-lg font-extrabold text-amber-400">{data?.financeiro.inadimplencia || 0}%</div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">Inadimplência ({data?.financeiro.inadimplentes || 0})</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{t("inadimplencia").replace("{n}", String(data?.financeiro.inadimplentes || 0))}</div>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
                 <div className="text-lg font-extrabold text-purple-400">{data?.churn || 0}%</div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">Churn ({data?.canceladosMes || 0} cancelamentos)</div>
+                <div className="text-xs text-[var(--text-muted)] mt-0.5">{t("churn").replace("{n}", String(data?.canceladosMes || 0))}</div>
               </div>
             </div>
           </div>
@@ -246,7 +255,9 @@ export default function RelatoriosPage() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold">{t("frequenciaMes")}</h2>
               <span className="text-sm text-[var(--text-secondary)]">
-                Total: <strong className="text-[var(--red)]">{data?.totalPresencas || 0}</strong> presenças
+                {totalPresencasTexto[0]}
+                <strong className="text-[var(--red)]">{data?.totalPresencas || 0}</strong>
+                {totalPresencasTexto[1]}
               </span>
             </div>
             <div className="flex items-end gap-3 h-48">
@@ -272,9 +283,9 @@ export default function RelatoriosPage() {
           {/* Por turma + por faixa */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="glass-card p-6">
-              <h3 className="text-lg font-bold mb-4">Presenças por turma (30 dias)</h3>
+              <h3 className="text-lg font-bold mb-4">{t("presencasPorTurma")}</h3>
               {data && data.presencasPorTurma.length === 0 ? (
-                <p className="text-sm text-[var(--text-muted)]">Nenhuma presença registrada ainda.</p>
+                <p className="text-sm text-[var(--text-muted)]">{t("nenhumaPresenca")}</p>
               ) : (
                 <div className="space-y-3">
                   {data?.presencasPorTurma.map((p) => (
@@ -292,15 +303,15 @@ export default function RelatoriosPage() {
               )}
             </div>
             <div className="glass-card p-6">
-              <h3 className="text-lg font-bold mb-4">Alunos por faixa</h3>
+              <h3 className="text-lg font-bold mb-4">{t("alunosPorFaixa")}</h3>
               {data && data.porFaixa.length === 0 ? (
-                <p className="text-sm text-[var(--text-muted)]">Nenhum aluno cadastrado ainda.</p>
+                <p className="text-sm text-[var(--text-muted)]">{t("nenhumAluno")}</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {data?.porFaixa.map((f) => (
                     <div key={f.faixa} className="rounded-xl px-4 py-3 text-center min-w-[96px]" style={{ background: "var(--bg-surface)" }}>
                       <div className="text-xl font-extrabold">{f.total}</div>
-                      <div className="text-[10px] text-[var(--text-muted)] mt-0.5">{f.faixa}</div>
+                      <div className="text-[10px] text-[var(--text-muted)] mt-0.5">{faixaLabel(f.faixa)}</div>
                     </div>
                   ))}
                 </div>
@@ -311,14 +322,14 @@ export default function RelatoriosPage() {
           {/* Stats extras */}
           <div className="grid grid-cols-2 gap-4">
             <div className="glass-card p-6">
-              <div className="text-sm text-[var(--text-secondary)] mb-1">Alunos que treinaram nos últimos 7 dias</div>
+              <div className="text-sm text-[var(--text-secondary)] mb-1">{tr("alunos7d")}</div>
               <div className="text-3xl font-extrabold text-[var(--red)]">{data?.alunosSemana || 0}</div>
               <div className="text-sm text-[var(--text-muted)] mt-1">
-                de {data?.totalAlunos || 0} alunos cadastrados
+                {tr("deAlunos").replace("{n}", String(data?.totalAlunos || 0))}
               </div>
             </div>
             <div className="glass-card p-6">
-              <div className="text-sm text-[var(--text-secondary)] mb-1">Alunos ativos (últimos 90 dias)</div>
+              <div className="text-sm text-[var(--text-secondary)] mb-1">{tr("alunos90d")}</div>
               <div className="text-3xl font-extrabold text-emerald-500">{data?.alunosAtivos || 0}</div>
             </div>
           </div>

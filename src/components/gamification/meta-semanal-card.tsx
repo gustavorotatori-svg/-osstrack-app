@@ -5,7 +5,7 @@ import { CheckCircle, Target, TrendingUp } from "lucide-react"
 import { useT } from "@/lib/use-t"
 
 export function MetaSemanalCard() {
-  const t = useT("gamification.progressoSemanal")
+  const t = useT("gamification")
   const [meta, setMeta] = useState<{ aulasFeitas: number; aulasAlvo: number; concluida: boolean } | null>(null)
 
   useEffect(() => {
@@ -21,9 +21,9 @@ export function MetaSemanalCard() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4 text-[var(--gold)]" />
-          <span className="section-header mb-0">{t("titulo")}</span>
+          <span className="section-header mb-0">{t("progressoSemanal.title")}</span>
         </div>
-        <span className="badge">{t("semanal")}</span>
+        <span className="badge">{t("metaSemanalBadge")}</span>
       </div>
 
       <div className={`relative overflow-hidden rounded-xl border p-3.5 transition-all ${meta.concluida ? "border-emerald-500/30 bg-emerald-500/5" : "border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.02)]"}`}>
@@ -34,7 +34,7 @@ export function MetaSemanalCard() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
               <span className={`font-semibold text-sm ${meta.concluida ? "text-emerald-400 line-through" : ""}`}>
-                {meta.aulasFeitas}/{meta.aulasAlvo} aulas
+                {t("metaSemanalAulas").replace("{atual}", String(meta.aulasFeitas)).replace("{max}", String(meta.aulasAlvo))}
               </span>
             </div>
             <div className="mt-2 progress">

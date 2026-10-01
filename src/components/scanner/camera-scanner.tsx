@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import jsQR from "jsqr"
+import { useT } from "@/lib/use-t"
 
 interface CameraScannerProps {
   onScan: (data: string) => void
@@ -9,6 +10,7 @@ interface CameraScannerProps {
 }
 
 export function CameraScanner({ onScan, onError }: CameraScannerProps) {
+  const t = useT("scanner")
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [active, setActive] = useState(false)
@@ -72,11 +74,11 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
     } catch (err) {
       setLoading(false)
       const msg = err instanceof DOMException && err.name === "NotAllowedError"
-        ? "Permissão de câmera negada. Verifique as configurações do navegador."
-        : "Não foi possível acessar a câmera."
+        ? t("permissaoNegada")
+        : t("semCamera")
       onError?.(msg)
     }
-  }, [facingMode, onError, scanFrame])
+  }, [facingMode, onError, scanFrame, t])
 
   useEffect(() => {
     return () => { scanningRef.current = false; if (streamRef.current) { streamRef.current.getTracks().forEach((t) => t.stop()) } }
@@ -97,9 +99,9 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
               <circle cx="12" cy="13" r="4" />
             </svg>
           </div>
-          <p className="text-sm text-[var(--white-muted)]">Aponte a câmera para o QR Code do aluno</p>
+          <p className="text-sm text-[var(--white-muted)]">{t("apontar")}</p>
           <button onClick={startCamera} className="btn-gold px-6 py-3 text-sm">
-            Ativar Câmera
+            {t("ativarCamera")}
           </button>
         </div>
       )}
@@ -111,7 +113,7 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" />
               <path d="M12 2a10 10 0 0 1 10 10" />
             </svg>
-            <span className="text-xs text-[var(--white-muted)]">Acessando câmera...</span>
+            <span className="text-xs text-[var(--white-muted)]">{t("acessando")}</span>
           </div>
         </div>
       )}
@@ -134,13 +136,13 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
           </div>
 
           <p className="absolute bottom-3 left-0 right-0 text-center text-[10px] text-white/60 bg-black/50 py-1.5 mx-4 rounded-lg">
-            Aproxime o QR Code do aluno
+            {t("aproximar")}
           </p>
 
           <button
             onClick={stopCamera}
-            aria-label="Fechar câmera"
-            title="Fechar câmera"
+            aria-label={t("fecharCamera")}
+            title={t("fecharCamera")}
             className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white text-lg"
           >
             ✕
@@ -149,7 +151,7 @@ export function CameraScanner({ onScan, onError }: CameraScannerProps) {
           <button
             onClick={toggleCamera}
             className="absolute top-3 left-3 w-11 h-11 rounded-full bg-black/60 flex items-center justify-center text-white/70 hover:text-white"
-            title="Virar câmera"
+            title={t("virarCamera")}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="1 4 1 10 7 10" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />

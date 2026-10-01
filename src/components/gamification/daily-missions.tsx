@@ -16,7 +16,7 @@ type Mission = {
 }
 
 export function DailyMissions() {
-  const t = useT("gamification.missoes")
+  const t = useT("gamification.dailyMissions")
   const [missions, setMissions] = useState<Mission[]>([])
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function DailyMissions() {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Target className="w-4 h-4 text-[var(--gold)]" />
-          <span className="section-header mb-0">{t("titulo")}</span>
+          <span className="section-header mb-0">{t("title")}</span>
         </div>
         <span className="badge">{missions.filter(m => m.concluida).length}/{missions.length}</span>
       </div>
