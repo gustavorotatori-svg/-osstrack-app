@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { UsersIcon, GraduationIcon, CheckIcon, MapPinIcon, DumbbellIcon, XIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
 
 type StepKey = "turma" | "professor" | "aluno" | "presenca"
 
@@ -16,46 +17,49 @@ type StepDef = {
   icon: React.ReactNode
 }
 
-const STEPS: StepDef[] = [
-  {
-    key: "turma",
-    title: "Crie sua primeira turma",
-    desc: "Ex.: \"Adultos\", \"Kids\", \"Iniciantes\". É o primeiro passo para organizar seu Jiu-Jitsu.",
-    href: "/dashboard/dono/turmas",
-    cta: "Criar turma",
-    icon: <DumbbellIcon className="w-5 h-5" />,
-  },
-  {
-    key: "professor",
-    title: "Adicione um professor",
-    desc: "Vincule um professor para ajudar a gerenciar alunos e turmas.",
-    href: "/dashboard/dono/professores",
-    cta: "Adicionar professor",
-    icon: <GraduationIcon className="w-5 h-5" />,
-  },
-  {
-    key: "aluno",
-    title: "Adicione seu primeiro aluno",
-    desc: "Cadastre um aluno para começar a registrar presenças e evolução.",
-    href: "/dashboard/dono/alunos",
-    cta: "Adicionar aluno",
-    icon: <UsersIcon className="w-5 h-5" />,
-  },
-  {
-    key: "presenca",
-    title: "Teste o check-in",
-    desc: "Confirme uma presença para ver o sistema funcionando de verdade.",
-    href: "/dashboard/dono",
-    cta: "Ver presenças",
-    icon: <MapPinIcon className="w-5 h-5" />,
-  },
-]
+function buildSteps(t: (key: string) => string): StepDef[] {
+  return [
+    {
+      key: "turma",
+      title: t("setupStep1Title"),
+      desc: t("setupStep1Desc"),
+      href: "/dashboard/dono/turmas",
+      cta: t("setupStep1Cta"),
+      icon: <DumbbellIcon className="w-5 h-5" />,
+    },
+    {
+      key: "professor",
+      title: t("setupStep2Title"),
+      desc: t("setupStep2Desc"),
+      href: "/dashboard/dono/professores",
+      cta: t("setupStep2Cta"),
+      icon: <GraduationIcon className="w-5 h-5" />,
+    },
+    {
+      key: "aluno",
+      title: t("setupStep3Title"),
+      desc: t("setupStep3Desc"),
+      href: "/dashboard/dono/alunos",
+      cta: t("setupStep3Cta"),
+      icon: <UsersIcon className="w-5 h-5" />,
+    },
+    {
+      key: "presenca",
+      title: t("setupStep4Title"),
+      desc: t("setupStep4Desc"),
+      href: "/dashboard/dono",
+      cta: t("setupStep4Cta"),
+      icon: <MapPinIcon className="w-5 h-5" />,
+    },
+  ]
+}
 
 function isMobile() {
   return typeof window !== "undefined" && window.innerWidth < 768
 }
 
 export function OnboardingSetup({ role }: { role: string }) {
+  const t = useT("onboarding")
   const pathname = usePathname()
   const [progress, setProgress] = useState<Record<StepKey, boolean>>({
     turma: false,
@@ -97,6 +101,7 @@ export function OnboardingSetup({ role }: { role: string }) {
     }
   }, [role, pathname])
 
+  const STEPS = buildSteps(t)
   const doneCount = Object.values(progress).filter(Boolean).length
   const total = STEPS.length
   const percent = Math.round((doneCount / total) * 100)
@@ -117,15 +122,15 @@ export function OnboardingSetup({ role }: { role: string }) {
             <CheckIcon className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-base font-extrabold text-white">Sua academia está no ar! 🎉</h3>
+            <h3 className="text-base font-extrabold text-white">{t("setupCompletoTitulo")}</h3>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Checklist de boas-vindas concluído. Explore o painel para acompanhar turmas, alunos e financeiro.
+              {t("setupCompletoDesc")}
             </p>
           </div>
         </div>
         <button
           onClick={handleDismiss}
-          aria-label="Fechar"
+          aria-label={t("setupFechar")}
           className="hidden md:inline-flex p-2 text-[var(--text-muted)] hover:text-white transition-colors shrink-0"
         >
           <XIcon className="w-5 h-5" />
@@ -139,16 +144,16 @@ export function OnboardingSetup({ role }: { role: string }) {
       <div className="p-5 md:p-6">
         <div className="flex items-start justify-between gap-3 mb-1">
           <div>
-            <h3 className="text-lg font-extrabold text-white">Bem-vindo(a) ao OssTrack! 👋</h3>
+            <h3 className="text-lg font-extrabold text-white">{t("setupBemVindo")}</h3>
             <p className="text-sm text-[var(--text-secondary)] mt-0.5">
-              Configure sua academia em poucos passos para começar.
+              {t("setupSubtitulo")}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold" style={{ color: "var(--gold)" }}>{percent}%</span>
             <button
               onClick={() => (collapsed ? setCollapsed(false) : setCollapsed(true))}
-              aria-label={collapsed ? "Expandir" : "Recolher"}
+              aria-label={collapsed ? t("setupExpandir") : t("setupRecolher")}
               className="p-2 text-[var(--text-muted)] hover:text-white transition-colors shrink-0"
             >
               {collapsed ? (

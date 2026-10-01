@@ -6,6 +6,7 @@ import { Avatar } from "@/components/ui/avatar"
 import { getBeltColor, getBeltEmoji } from "@/lib/utils"
 import { useEscape } from "@/lib/use-escape"
 import { toast } from "sonner"
+import { useT } from "@/lib/use-t"
 
 type Aluno = {
   id: string
@@ -25,9 +26,10 @@ type MestreData = {
 } | null
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
-const CATEGORIA_LABELS: Record<string, string> = { adulto: "🥋 Adulto", master: "🏆 Master", infantil: "⭐ Infantil" }
+const CATEGORIA_LABEL_KEYS: Record<string, string> = { adulto: "mestreDoMesCatAdulto", master: "mestreDoMesCatMaster", infantil: "mestreDoMesCatInfantil" }
 
 export function MestreDoMesSelector() {
+  const t = useT("gamification")
   const [mestres, setMestres] = useState<Record<string, MestreData>>({})
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
@@ -70,9 +72,9 @@ export function MestreDoMesSelector() {
       const data = await res.json()
       setMestres((prev) => ({ ...prev, [categoriaAtiva]: data.mestre }))
       setOpen(false)
-      toast.success(`${CATEGORIA_LABELS[categoriaAtiva]} — Aluno do Mês atualizado!`)
+      toast.success(t("mestreDoMesAtualizado").replace("{categoria}", t(CATEGORIA_LABEL_KEYS[categoriaAtiva])))
     } catch {
-      toast.error("Erro ao selecionar aluno")
+      toast.error(t("mestreDoMesErro"))
     } finally {
       setSaving(false)
     }
@@ -94,7 +96,7 @@ export function MestreDoMesSelector() {
           <div className="w-12 h-12 rounded-2xl bg-[var(--gold)]/10 flex items-center justify-center mx-auto mb-2">
             <CrownIcon className="w-6 h-6 text-[var(--gold)]" />
           </div>
-          <h3 className="font-bold text-base text-center">Aluno do Mês</h3>
+          <h3 className="font-bold text-base text-center">{t("alunoDoMes.title")}</h3>
 
           <div className="grid grid-cols-3 gap-2 mt-4">
             {CATEGORIAS.map((cat) => {
@@ -102,7 +104,7 @@ export function MestreDoMesSelector() {
               return (
                 <div key={cat} className="rounded-xl p-3 text-center border border-[rgba(255,255,255,0.04)]" style={{ background: "rgba(255,255,255,0.02)" }}>
                   <div className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: cat === "adulto" ? "#60a5fa" : cat === "master" ? "#a855f7" : "#f97316" }}>
-                    {CATEGORIA_LABELS[cat]}
+                    {t(CATEGORIA_LABEL_KEYS[cat])}
                   </div>
                   {m ? (
                     <>
@@ -112,7 +114,7 @@ export function MestreDoMesSelector() {
                       </span>
                     </>
                   ) : (
-                    <p className="text-[10px] text-[var(--text-muted)]">Vazio</p>
+                    <p className="text-[10px] text-[var(--text-muted)]">{t("mestreDoMesVazio")}</p>
                   )}
                 </div>
               )
@@ -124,7 +126,7 @@ export function MestreDoMesSelector() {
             disabled={saving}
             className="mt-4 w-full py-2.5 rounded-xl text-xs font-bold bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20 hover:bg-[var(--gold)]/20 transition-all active:scale-[0.97]"
           >
-            Gerenciar Alunos do Mês
+            {t("mestreDoMesGerenciar")}
           </button>
         </div>
       </div>
@@ -135,13 +137,13 @@ export function MestreDoMesSelector() {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Selecionar Aluno do Mês"
+            aria-label={t("mestreDoMesSelecionar")}
             className="relative w-full max-w-sm glass-card p-5 animate-slide-up max-h-[70vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-3">
-              <h4 className="font-bold text-sm">Selecionar Aluno do Mês</h4>
-              <button onClick={() => setOpen(false)} aria-label="Fechar" className="p-2.5 rounded-lg hover:bg-[var(--surface)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
+              <h4 className="font-bold text-sm">{t("mestreDoMesSelecionar")}</h4>
+              <button onClick={() => setOpen(false)} aria-label={t("mestreDoMesFechar")} className="p-2.5 rounded-lg hover:bg-[var(--surface)] transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center">
                 <XIcon className="w-4 h-4" />
               </button>
             </div>
@@ -158,7 +160,7 @@ export function MestreDoMesSelector() {
                       : "bg-[var(--surface)] text-[var(--text-muted)]"
                   }`}
                 >
-                  {CATEGORIA_LABELS[cat]}
+                  {t(CATEGORIA_LABEL_KEYS[cat])}
                 </button>
               ))}
             </div>
@@ -167,7 +169,7 @@ export function MestreDoMesSelector() {
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
               <input
                 type="text"
-                placeholder="Buscar aluno..."
+                placeholder={t("mestreDoMesBuscar")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="input-field w-full pl-9 pr-3 py-2.5 text-sm"
@@ -176,7 +178,7 @@ export function MestreDoMesSelector() {
 
             <div className="flex-1 overflow-y-auto space-y-1 scrollbar-none">
               {filtered.length === 0 ? (
-                <p className="text-sm text-[var(--text-secondary)] text-center py-8">Nenhum aluno encontrado nesta categoria</p>
+                <p className="text-sm text-[var(--text-secondary)] text-center py-8">{t("mestreDoMesNenhumEncontrado")}</p>
               ) : (
                 filtered.map((a) => {
                   const isSelected = mestres[categoriaAtiva]?.nome === a.nome
@@ -193,7 +195,7 @@ export function MestreDoMesSelector() {
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-semibold truncate flex items-center gap-1.5">
                           {a.nome}
-                          {isSelected && <span className="text-[10px] text-[var(--gold)] font-bold">(atual)</span>}
+                          {isSelected && <span className="text-[10px] text-[var(--gold)] font-bold">{t("mestreDoMesAtual")}</span>}
                         </div>
                         <div className="text-[11px] text-[var(--text-secondary)]">{a.faixa} · {'★'.repeat(a.grau + 1)}</div>
                       </div>

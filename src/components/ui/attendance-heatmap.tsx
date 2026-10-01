@@ -1,6 +1,9 @@
 "use client"
 
 import { useMemo } from "react"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 
 interface PresencaData {
   data: string
@@ -13,8 +16,14 @@ interface Props {
   dayLabels?: string[]
 }
 
-const MONTHS_PT = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-const DAYS_PT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
+function buildDefaultLabels(tShort: (k: string) => string, tDias: (k: string) => string) {
+  const m = []
+  for (let i = 0; i < 12; i++) m.push(tShort(String(i)))
+  return {
+    months: m,
+    dayLabels: [tDias("dom"), tDias("seg"), tDias("ter"), tDias("qua"), tDias("qui"), tDias("sex"), tDias("sab")],
+  }
+}
 
 interface CellData {
   date: Date
@@ -31,7 +40,15 @@ function getLevel(count: number): number {
   return 5
 }
 
-export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = DAYS_PT }: Props) {
+export function AttendanceHeatmap({ presencas, months, dayLabels }: Props) {
+  const t = useT("heatmap")
+  const tShort = useT("mesesShort")
+  const tDias = useT("agendaDias")
+  const { locale } = useLocale()
+  const defaults = buildDefaultLabels(tShort, tDias)
+  const resolvedMonths = months || defaults.months
+  const resolvedDays = dayLabels || defaults.dayLabels
+
   const { cells, monthLabels } = useMemo(() => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -60,7 +77,7 @@ export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = D
       cells.push({ date: new Date(current), count, level: getLevel(count) })
 
       if (current.getMonth() !== lastMonth) {
-        monthLabels.push({ index: cellIndex, label: months[current.getMonth()] })
+        monthLabels.push({ index: cellIndex, label: resolvedMonths[current.getMonth()] })
         lastMonth = current.getMonth()
       }
 
@@ -69,7 +86,7 @@ export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = D
     }
 
     return { cells, monthLabels }
-  }, [presencas, months])
+  }, [presencas, resolvedMonths])
 
   const weeks: CellData[][] = []
   let currentWeek: CellData[] = []
@@ -101,7 +118,7 @@ export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = D
             )
           })}
         </div>
-        {dayLabels.map((day, dayIdx) => (
+        {resolvedDays.map((day, dayIdx) => (
           <div key={day} className="flex items-center gap-0.5">
             <span className="w-7 text-right text-[0.5rem] text-[var(--text-muted)] font-medium pr-1 leading-none">
               {dayIdx % 2 === 0 ? day : ""}
@@ -119,14 +136,14 @@ export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = D
                       ? "rgba(255,255,255,0.03)"
                       : `rgba(34,197,94,${0.1 + cell.level * 0.16})`,
                   }}
-                  title={`${cell.date.toLocaleDateString("pt-BR")} - ${cell.count} check-in${cell.count !== 1 ? "s" : ""}`}
+                  title={`${cell.date.toLocaleDateString(intlLocales[locale])} - ${cell.count} ${cell.count !== 1 ? t("checkins") : t("checkin1")}`}
                 />
               )
             })}
           </div>
         ))}
         <div className="flex items-center gap-1 justify-end mt-1">
-          <span className="text-[0.45rem] text-[var(--text-muted)]">Menos</span>
+          <span className="text-[0.45rem] text-[var(--text-muted)]">{t("menos")}</span>
           {[0, 1, 2, 3, 4, 5].map((l) => (
             <div
               key={l}
@@ -136,7 +153,7 @@ export function AttendanceHeatmap({ presencas, months = MONTHS_PT, dayLabels = D
               }}
             />
           ))}
-          <span className="text-[0.45rem] text-[var(--text-muted)]">Mais</span>
+          <span className="text-[0.45rem] text-[var(--text-muted)]">{t("mais")}</span>
         </div>
       </div>
     </div>

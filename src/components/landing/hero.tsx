@@ -83,7 +83,7 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
           <Link href="/screenshot/demo"
             className="px-5 py-2.5 rounded-lg text-sm font-semibold inline-flex items-center gap-2 border border-[var(--dark-border)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300" style={{ color: "var(--text-secondary)" }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Ver demonstração completa
+            {t("verDemo")}
           </Link>
         </div>
 

@@ -3,8 +3,10 @@
 import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { useT } from "@/lib/use-t"
 
 function RedefinirSenhaContent() {
+  const t = useT("redefinirSenha")
   const searchParams = useSearchParams()
   const token = searchParams.get("token") || ""
 
@@ -29,8 +31,8 @@ function RedefinirSenhaContent() {
     setLoading(true)
     setError("")
 
-    if (senha !== confirmar) { setError("Senhas não conferem"); setLoading(false); return }
-    if (senha.length < 8) { setError("Senha deve ter no mínimo 8 caracteres"); setLoading(false); return }
+    if (senha !== confirmar) { setError(t("senhasDiferentes")); setLoading(false); return }
+    if (senha.length < 8) { setError(t("senhaCurta")); setLoading(false); return }
 
     try {
       let recaptchaToken = ""
@@ -61,7 +63,7 @@ function RedefinirSenhaContent() {
       if (!res.ok) { setError(data.error); return }
       setSuccess(true)
     } catch {
-      setError("Erro de conexão")
+      setError(t("erroConexao"))
     } finally {
       setLoading(false)
     }
@@ -73,10 +75,10 @@ function RedefinirSenhaContent() {
         <div className="w-full max-w-sm">
           <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            Voltar ao login
+            {t("voltarLogin")}
           </Link>
-          <div className="text-center"><p className="text-[var(--text-secondary)]">Link inválido. Solicite um novo link de recuperação.</p>
-            <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">Tentar novamente</Link>
+          <div className="text-center"><p className="text-[var(--text-secondary)]">{t("linkInvalido")}</p>
+            <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">{t("tentarNovamente")}</Link>
           </div>
         </div>
       </div>
@@ -88,7 +90,7 @@ function RedefinirSenhaContent() {
       <div className="min-h-screen flex items-center justify-center p-6">
         <div className="w-full max-w-sm text-center">
           <div className="w-10 h-10 border-2 border-[var(--gold)] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm text-[var(--text-secondary)] mt-3">Validando link...</p>
+          <p className="text-sm text-[var(--text-secondary)] mt-3">{t("validando")}</p>
         </div>
       </div>
     )
@@ -100,11 +102,11 @@ function RedefinirSenhaContent() {
         <div className="w-full max-w-sm">
           <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-            Voltar ao login
+            {t("voltarLogin")}
           </Link>
           <div className="text-center glass-card p-7">
-            <p className="text-[var(--text-secondary)]">Link expirado ou inválido.</p>
-            <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">Solicitar novo link</Link>
+            <p className="text-[var(--text-secondary)]">{t("linkExpirado")}</p>
+            <Link href="/recuperar-senha" className="text-[var(--gold)] font-semibold text-sm mt-2 inline-block">{t("solicitarNovo")}</Link>
           </div>
         </div>
       </div>
@@ -117,7 +119,7 @@ function RedefinirSenhaContent() {
       <div className="w-full max-w-sm relative z-10">
         <Link href="/login" className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          Voltar ao login
+          {t("voltarLogin")}
         </Link>
         <div className="text-center mb-8">
           <div className="relative inline-flex mb-4">
@@ -133,21 +135,21 @@ function RedefinirSenhaContent() {
           <p className="text-[10px] font-semibold uppercase tracking-[0.25em] mt-1" style={{ color: "var(--gold)" }}>
             The Jiu Jitsu Revolution
           </p>
-          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>Escolha uma nova senha</p>
+          <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>{t("titulo")}</p>
         </div>
 
         {success ? (
           <div className="glass-card p-7 text-center space-y-4">
-            <p className="text-emerald-500 font-semibold">Senha redefinida com sucesso!</p>
+            <p className="text-emerald-500 font-semibold">{t("sucesso")}</p>
             <Link href="/login"
               className="block w-full py-3.5 rounded-xl text-sm font-bold btn-gold">
-              Fazer login
+              {t("fazerLogin")}
             </Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="glass-card p-7 space-y-4">
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Nova senha</label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("novaSenha")}</label>
               <div className="relative">
                 <input type={showPassword ? "text" : "password"} value={senha}
                   onChange={(e) => setSenha(e.target.value)} className="input-field w-full pr-10" required minLength={8} />
@@ -162,7 +164,7 @@ function RedefinirSenhaContent() {
               </div>
             </div>
             <div>
-              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Confirmar senha</label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("confirmarSenha")}</label>
               <input type="password" value={confirmar} onChange={(e) => setConfirmar(e.target.value)}
                 className="input-field" required minLength={8} />
             </div>
@@ -173,7 +175,7 @@ function RedefinirSenhaContent() {
 
             <button type="submit" disabled={loading}
               className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
-              {loading ? "Redefinindo..." : "Redefinir senha"}
+              {loading ? t("redefinindo") : t("redefinir")}
             </button>
           </form>
         )}

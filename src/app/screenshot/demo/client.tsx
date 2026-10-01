@@ -10,6 +10,7 @@ import { AttendanceHeatmap } from "@/components/ui/attendance-heatmap"
 import { ConviteSection } from "@/components/convites/convite-section"
 import { AnimatedCounter } from "@/components/ui/animated-counter"
 import { CrownIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
 
 const faixa = "Azul"
 const grau = 2
@@ -23,10 +24,10 @@ const academiaNome = "Academia Modelo"
 const nivelDisciplina = "guerreiro"
 
 const gamificationLevels = [
-  { pontos: 0, title: "Iniciante" }, { pontos: 500, title: "Guerreiro" }, { pontos: 1500, title: "Lutador" },
-  { pontos: 3000, title: "Faixa Azul" }, { pontos: 5000, title: "Competidor" }, { pontos: 7500, title: "Atleta" },
-  { pontos: 10500, title: "Graduado" }, { pontos: 14000, title: "Expert" }, { pontos: 18000, title: "Mestre" },
-  { pontos: 22500, title: "Grão-Mestre" }, { pontos: 28000, title: "Lenda" }, { pontos: 35000, title: "Kami" },
+  { pontos: 0, titleKey: "gamificacao.1" }, { pontos: 500, titleKey: "gamificacao.2" }, { pontos: 1500, titleKey: "gamificacao.3" },
+  { pontos: 3000, titleKey: "gamificacao.4" }, { pontos: 5000, titleKey: "gamificacao.5" }, { pontos: 7500, titleKey: "gamificacao.6" },
+  { pontos: 10500, titleKey: "gamificacao.7" }, { pontos: 14000, titleKey: "gamificacao.8" }, { pontos: 18000, titleKey: "gamificacao.9" },
+  { pontos: 22500, titleKey: "gamificacao.10" }, { pontos: 28000, titleKey: "gamificacao.11" }, { pontos: 35000, titleKey: "gamificacao.12" },
 ]
 
 function getGamificationLevel(pontos: number) {
@@ -35,27 +36,24 @@ function getGamificationLevel(pontos: number) {
       const current = pontos - gamificationLevels[i].pontos
       const nextLevel = gamificationLevels[i + 1]
       const nextThreshold = nextLevel ? nextLevel.pontos - gamificationLevels[i].pontos : Infinity
-      return { level: i + 1, current, next: nextThreshold, progress: Math.min((current / nextThreshold) * 100, 100), title: gamificationLevels[i].title }
+      return { level: i + 1, current, next: nextThreshold, progress: Math.min((current / nextThreshold) * 100, 100), titleKey: gamificationLevels[i].titleKey }
     }
   }
-  return { level: 1, current: 0, next: 500, progress: 0, title: "Iniciante" }
+  return { level: 1, current: 0, next: 500, progress: 0, titleKey: "gamificacao.1" }
 }
 
-function getLevelInfo(totalAulas: number) {
+function getLevelInfo(total: number) {
   const thresholds = [0, 50, 150, 300, 500, 800, 1200]
-  const titles = ["Iniciante", "Regular", "Dedicado", "Experiente", "Avançado", "Elite", "Master"]
+  const titleKeys = ["aulas.1", "aulas.2", "aulas.3", "aulas.4", "aulas.5", "aulas.6", "aulas.7"]
   for (let i = thresholds.length - 1; i >= 0; i--) {
-    if (totalAulas >= thresholds[i]) {
-      const current = totalAulas - thresholds[i]
+    if (total >= thresholds[i]) {
+      const current = total - thresholds[i]
       const next = thresholds[i + 1] ? thresholds[i + 1] - thresholds[i] : thresholds[i] - thresholds[i - 1]
-      return { level: i + 1, current, next, progress: Math.min((current / next) * 100, 100), title: titles[i] }
+      return { level: i + 1, current, next, progress: Math.min((current / next) * 100, 100), titleKey: titleKeys[i] }
     }
   }
-  return { level: 1, current: 0, next: 50, progress: 0, title: "Iniciante" }
+  return { level: 1, current: 0, next: 50, progress: 0, titleKey: "aulas.1" }
 }
-
-const gl = getGamificationLevel(pontosVal)
-const levelInfo = getLevelInfo(totalAulas)
 
 const allBelts = ["Branca", "Azul", "Roxa", "Marrom", "Preta"]
 const beltColors = ["#e5e5e5", "#2563eb", "#9333ea", "#92400e", "#222"]
@@ -63,12 +61,12 @@ const currentStep = allBelts.indexOf(faixa)
 const progressoGrau = (grau + 1) / maxGraus
 
 const quickActions = [
-  { label: "Treinos", icon: Calendar, href: "/dashboard/aluno/treino" },
-  { label: "Evolução", icon: Target, href: "/dashboard/aluno/evolucao" },
-  { label: "Conquistas", icon: Medal, href: "/dashboard/aluno/conquistas" },
-  { label: "Ranking", icon: TrendingUp, href: "/dashboard/aluno/ranking" },
-  { label: "Horas", icon: Clock, href: "/dashboard/aluno/horas" },
-  { label: "Convidar", icon: UserPlus, href: "#convites" },
+  { labelKey: "acaoTreinos", icon: Calendar, href: "/dashboard/aluno/treino" },
+  { labelKey: "acaoEvolucao", icon: Target, href: "/dashboard/aluno/evolucao" },
+  { labelKey: "acaoConquistas", icon: Medal, href: "/dashboard/aluno/conquistas" },
+  { labelKey: "acaoRanking", icon: TrendingUp, href: "/dashboard/aluno/ranking" },
+  { labelKey: "acaoHoras", icon: Clock, href: "/dashboard/aluno/horas" },
+  { labelKey: "acaoConvidar", icon: UserPlus, href: "#convites" },
 ]
 
 const mockPresencas = Array.from({ length: 60 }, (_, i) => {
@@ -101,7 +99,13 @@ const mockConquistas = [
 const conquistasUnlocked = mockConquistas.filter(c => c.desbloqueada).length
 
 export function ScreenshotDemo() {
+  const t = useT("pagDemo")
+  const tMeses = useT("meses")
   const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
+
+  const gl = getGamificationLevel(pontosVal)
+  const levelInfo = getLevelInfo(totalAulas)
+  const proximoTitulo = gamificationLevels[gl.level]?.titleKey ?? "nivelProximo"
 
   return (
     <div className="h-full flex flex-col bg-[#0a0a0a] text-white overflow-hidden">
@@ -128,13 +132,13 @@ export function ScreenshotDemo() {
                   {getBeltEmoji(faixa)} {faixa} {grau > 0 && '★'.repeat(grau + 1)}
                 </span>
                 <span className="text-[0.625rem] text-[var(--text-muted)]">{academiaNome}</span>
-                <span className="text-[0.625rem] text-[var(--text-muted)]">· Lv.{levelInfo.level}</span>
+                <span className="text-[0.625rem] text-[var(--text-muted)]">· {t("nivelLv").replace("{n}", String(levelInfo.level))}</span>
               </div>
             </div>
           </div>
           <div className="text-right shrink-0">
             <div className="text-2xl font-black" style={{ color: "#f97316" }}>{streakVal}</div>
-            <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">streak</div>
+            <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("streak")}</div>
           </div>
         </div>
       </div>
@@ -143,19 +147,19 @@ export function ScreenshotDemo() {
       <div className="grid grid-cols-4 gap-2.5 px-4 mb-6 enter-stagger">
         <div className="stat-glass px-3 py-3.5 text-center">
           <div className="text-lg font-black" style={{ color: "#60a5fa" }}><AnimatedCounter value={aulasEsteMes} /></div>
-          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">Aulas/mês</div>
+          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("statAulasMes")}</div>
         </div>
         <div className="stat-glass px-3 py-3.5 text-center">
           <div className="text-lg font-black" style={{ color: "#a855f7" }}><AnimatedCounter value={totalAulas} /></div>
-          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">Total</div>
+          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("statTotal")}</div>
         </div>
         <div className="stat-glass px-3 py-3.5 text-center">
           <div className="text-lg font-black" style={{ color: streakVal >= 3 ? "#f97316" : "#22c55e" }}><AnimatedCounter value={streakVal} /></div>
-          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">Streak</div>
+          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("statStreak")}</div>
         </div>
         <div className="stat-glass px-3 py-3.5 text-center">
           <div className="text-lg font-black" style={{ color: "var(--gold)" }}>{Math.round((aulasEsteMes / Math.max(8, 1)) * 100)}%</div>
-          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">Meta</div>
+          <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("statMeta")}</div>
         </div>
       </div>
 
@@ -164,27 +168,33 @@ export function ScreenshotDemo() {
         <div className="flex items-center justify-between gap-3 mb-1.5">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-black text-[10px] font-black">{gl.level}</div>
-            <span className="text-xs font-bold">{gl.title}</span>
+            <span className="text-xs font-bold">{t(gl.titleKey)}</span>
           </div>
-          <span className="text-[10px] text-[var(--text-muted)]">{pontosVal.toLocaleString()} / {gl.next.toLocaleString()} XP</span>
+          <span className="text-[10px] text-[var(--text-muted)]">
+            {t("xpBarra").replace("{atual}", pontosVal.toLocaleString()).replace("{faltam}", gl.next.toLocaleString())}
+          </span>
         </div>
         <div className="h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
           <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${gl.progress}%` }} />
         </div>
         <div className="flex items-center justify-between mt-1.5">
           <span className="text-[10px] text-[var(--text-muted)]">
-            {gl.next === Infinity ? "Nível máximo!" : `Faltam ${Math.ceil((gl.next - gl.current) / 50)} check-ins para ${gamificationLevels[gl.level]?.title || "próximo nível"}`}
+            {gl.next === Infinity
+              ? t("nivelMaximo")
+              : t("faltam").replace("{n}", String(Math.ceil((gl.next - gl.current) / 50))).replace("{nivel}", t(proximoTitulo))}
           </span>
-          <span className="text-[10px] text-[var(--text-muted)]">8 aulas/grau · 200 aulas p/ próx. faixa</span>
+          <span className="text-[10px] text-[var(--text-muted)]">
+            {t("aulasGrau").replace("{aulas}", "8").replace("{proxFaixa}", "200")}
+          </span>
         </div>
       </div>
 
       {/* TABS */}
       <div className="mx-4 mb-5 flex gap-1 p-1 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
         {[
-          { key: "jornada" as const, label: "Jornada", icon: "🥋" },
-          { key: "atividade" as const, label: "Atividade", icon: "🔥" },
-          { key: "social" as const, label: "Social", icon: "👥" },
+          { key: "jornada" as const, labelKey: "tabJornada", icon: "🥋" },
+          { key: "atividade" as const, labelKey: "tabAtividade", icon: "🔥" },
+          { key: "social" as const, labelKey: "tabSocial", icon: "👥" },
         ].map((tab) => (
           <button key={tab.key} onClick={() => setSection(tab.key)}
             className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
@@ -192,7 +202,7 @@ export function ScreenshotDemo() {
                 ? "bg-[rgba(212,168,71,0.12)] text-[var(--gold)] shadow-sm"
                 : "text-[var(--text-muted)] hover:text-[var(--text-secondary)]"
             }`}>
-            {tab.icon} {tab.label}
+            {tab.icon} {t(tab.labelKey)}
           </button>
         ))}
       </div>
@@ -204,7 +214,7 @@ export function ScreenshotDemo() {
             <motion.div key="jornada" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="space-y-4">
               {/* Belt Journey */}
               <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-coral)"} as React.CSSProperties}>
-                <span className="section-header mb-4 block">Jornada das Faixas</span>
+                <span className="section-header mb-4 block">{t("jornadaFaixas")}</span>
                 <div className="flex items-center justify-center gap-1 mb-5">
                   {allBelts.map((s, i) => {
                     const isReached = i < currentStep
@@ -228,15 +238,15 @@ export function ScreenshotDemo() {
                   <div className="flex items-center gap-3 p-3.5 rounded-xl" style={{ background: "rgba(255,255,255,0.02)" }}>
                     <ProgressRing progress={progressoGrau * 100} size={64} strokeWidth={6} />
                     <div className="min-w-0">
-                      <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Progresso</div>
+                      <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("progresso")}</div>
                       <div className="font-black text-lg mt-0.5 truncate">{getBeltEmoji(faixa)} {faixa}</div>
-                      <div className="text-[11px] text-[var(--text-secondary)]">{grau + 1}/{maxGraus} graus</div>
+                      <div className="text-[11px] text-[var(--text-secondary)]">{t("grausProgresso").replace("{atual}", String(grau + 1)).replace("{total}", String(maxGraus))}</div>
                     </div>
                   </div>
                   <div className="p-3.5 rounded-xl flex flex-col justify-center" style={{ background: "rgba(255,255,255,0.02)" }}>
-                    <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Próxima Faixa</div>
+                    <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("proximaFaixa")}</div>
                     <div className="font-black text-lg mt-1">{getBeltEmoji("Roxa")} Roxa</div>
-                    <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">200 aulas restantes</div>
+                    <div className="text-[11px] text-[var(--text-secondary)] mt-0.5">{t("aulasRestantes").replace("{n}", "200")}</div>
                   </div>
                 </div>
               </div>
@@ -246,13 +256,13 @@ export function ScreenshotDemo() {
                 <div className="absolute top-[-30px] right-[-30px] w-32 h-32 bg-[var(--gold)]/5 rounded-full blur-3xl" />
                 <div className="relative p-5">
                   <CrownIcon className="w-8 h-8 mx-auto mb-1 text-[var(--gold)]" />
-                  <h3 className="font-bold text-base tracking-tight">Mestre do Mês</h3>
+                  <h3 className="font-bold text-base tracking-tight">{t("mestreDoMes")}</h3>
                   <p className="text-2xl font-extrabold text-[var(--gold)] mt-2">Carlos Silva</p>
-                  <p className="text-xs text-[var(--text-secondary)]">Roxa · 18 aulas</p>
-                  <p className="text-[10px] text-[var(--text-muted)] mt-1">Julho de 2026</p>
+                  <p className="text-xs text-[var(--text-secondary)]">{t("mestreSub").replace("{faixa}", "Roxa").replace("{aulas}", "18")}</p>
+                  <p className="text-[10px] text-[var(--text-muted)] mt-1">{t("mestrePeriodo").replace("{mes}", tMeses("6")).replace("{ano}", "2026")}</p>
                   <div className="mt-4 pt-4 border-t border-[rgba(255,255,255,0.05)]">
                     <button className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline">
-                      Ver ranking completo →
+                      {t("verRanking")}
                     </button>
                   </div>
                 </div>
@@ -263,9 +273,9 @@ export function ScreenshotDemo() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <TrendingUp className="w-4 h-4 text-[var(--gold)]" />
-                    <span className="section-header mb-0">Progresso Semanal</span>
+                    <span className="section-header mb-0">{t("progressoSemanal")}</span>
                   </div>
-                  <span className="badge" style={{ background: "rgba(201,168,76,0.1)", color: "var(--gold)" }}>Semanal</span>
+                  <span className="badge" style={{ background: "rgba(201,168,76,0.1)", color: "var(--gold)" }}>{t("semanal")}</span>
                 </div>
                 <div className="relative overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.02)] p-3.5">
                   <div className="flex items-start gap-3">
@@ -274,7 +284,7 @@ export function ScreenshotDemo() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-sm">4/5 aulas</span>
+                        <span className="font-semibold text-sm">{t("semanalAulas").replace("{feitas}", "4").replace("{total}", "5")}</span>
                       </div>
                       <div className="mt-2 progress">
                         <div className="progress-gold-fill" style={{ width: "80%" }} />
@@ -289,18 +299,18 @@ export function ScreenshotDemo() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Target className="w-4 h-4 text-[var(--gold)]" />
-                    <span className="section-header mb-0">Missões Diárias</span>
+                    <span className="section-header mb-0">{t("missoesDiarias")}</span>
                   </div>
                   <span className="badge" style={{ background: "rgba(201,168,76,0.1)", color: "var(--gold)" }}>2/4</span>
                 </div>
                 <div className="space-y-2">
                   {[
-                    { titulo: "Fazer check-in", pontos: 50, concluida: true },
-                    { titulo: "Treinar 1h", pontos: 30, concluida: true },
-                    { titulo: "Compartilhar evolução", pontos: 20, concluida: false },
-                    { titulo: "Convidar um amigo", pontos: 40, concluida: false },
+                    { tituloKey: "missao1", pontos: 50, concluida: true },
+                    { tituloKey: "missao2", pontos: 30, concluida: true },
+                    { tituloKey: "missao3", pontos: 20, concluida: false },
+                    { tituloKey: "missao4", pontos: 40, concluida: false },
                   ].map((m) => (
-                    <div key={m.titulo}
+                    <div key={m.tituloKey}
                       className={`relative overflow-hidden rounded-xl border p-3.5 transition-all ${
                         m.concluida ? "border-emerald-500/30 bg-emerald-500/5" : "border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.02)]"
                       }`}
@@ -313,10 +323,10 @@ export function ScreenshotDemo() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
-                            <span className={`font-semibold text-sm ${m.concluida ? "text-emerald-400 line-through" : ""}`}>{m.titulo}</span>
-                            <span className="text-[10px] font-bold text-[var(--gold)]">+{m.pontos}XP</span>
+                            <span className={`font-semibold text-sm ${m.concluida ? "text-emerald-400 line-through" : ""}`}>{t(m.tituloKey)}</span>
+                            <span className="text-[10px] font-bold text-[var(--gold)]">{t("xpMissao").replace("{pontos}", String(m.pontos))}</span>
                           </div>
-                          {!m.concluida && <p className="text-xs text-[var(--text-secondary)] mt-0.5">Ganhe XP e mantenha sua sequência</p>}
+                          {!m.concluida && <p className="text-xs text-[var(--text-secondary)] mt-0.5">{t("missaoDesc")}</p>}
                         </div>
                       </div>
                     </div>
@@ -332,13 +342,13 @@ export function ScreenshotDemo() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-sm">{levelInfo.title}</span>
-                      <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Lv.{levelInfo.level}</span>
+                      <span className="font-bold text-sm">{t(levelInfo.titleKey)}</span>
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">{t("nivelLv").replace("{n}", String(levelInfo.level))}</span>
                     </div>
                     <div className="flex items-center gap-3 mt-2 text-xs">
-                      <span className="text-[var(--text-secondary)]">{totalAulas} aulas</span>
+                      <span className="text-[var(--text-secondary)]">{t("totalAulas").replace("{n}", String(totalAulas))}</span>
                       <span className="w-1 h-1 rounded-full bg-[var(--text-muted)]" />
-                      <span className="text-[var(--text-secondary)]">{levelInfo.next.toLocaleString()} XP p/ próximo</span>
+                      <span className="text-[var(--text-secondary)]">{t("xpProximo").replace("{xp}", levelInfo.next.toLocaleString())}</span>
                     </div>
                     <div className="mt-2 h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
                       <div className="h-full rounded-full bg-gradient-to-r from-[var(--gold)] to-amber-500 transition-all duration-500" style={{ width: `${levelInfo.progress}%` }} />
@@ -356,8 +366,8 @@ export function ScreenshotDemo() {
                       <Clock className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-[var(--text-secondary)]">Horas de treino</p>
-                      <p className="text-lg font-black" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Ver suas horas →</p>
+                      <p className="text-xs font-bold text-[var(--text-secondary)]">{t("horasTreino")}</p>
+                      <p className="text-lg font-black" style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{t("verHoras")}</p>
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
@@ -370,21 +380,21 @@ export function ScreenshotDemo() {
             <motion.div key="atividade" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="space-y-4">
               {/* Heatmap — componente real */}
               <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-azul)"} as React.CSSProperties}>
-                <span className="section-header mb-3 block">Presenças Recentes</span>
+                <span className="section-header mb-3 block">{t("presencasRecentes")}</span>
                 <AttendanceHeatmap presencas={mockPresencas} />
               </div>
 
               {/* Conquistas preview — mesmas classes do real */}
               <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-roxa)"} as React.CSSProperties}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="section-header mb-0">Conquistas</span>
+                  <span className="section-header mb-0">{t("conquistas")}</span>
                   <span className="text-[9px] font-bold text-[var(--gold)] flex items-center gap-0.5">
-                    Ver todas <ChevronRight className="w-3 h-3" />
+                    {t("verTodas")} <ChevronRight className="w-3 h-3" />
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 mb-3">
                   <Trophy className="w-3.5 h-3.5 text-[var(--gold)]" />
-                  <span className="text-xs text-[var(--text-secondary)]">{conquistasUnlocked}/{mockConquistas.length} desbloqueadas</span>
+                  <span className="text-xs text-[var(--text-secondary)]">{t("desbloqueadas").replace("{n}", String(conquistasUnlocked)).replace("{total}", String(mockConquistas.length))}</span>
                 </div>
                 <div className="achievement-grid">
                   {mockConquistas.map((c) => (
@@ -400,9 +410,9 @@ export function ScreenshotDemo() {
                 {quickActions.map((action) => {
                   const Icon = action.icon
                   return (
-                    <button key={action.label} className="quick-action">
+                    <button key={action.labelKey} className="quick-action">
                       <Icon className="quick-action-icon" />
-                      <span className="quick-action-label">{action.label}</span>
+                      <span className="quick-action-label">{t(action.labelKey)}</span>
                     </button>
                   )
                 })}
@@ -414,7 +424,7 @@ export function ScreenshotDemo() {
             <motion.div key="social" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.2 }} className="space-y-4">
               {/* Share card — mesma estrutura do real */}
               <div className="glass-card-accent-left p-5" style={{"--accent-color": "var(--belt-coral)"} as React.CSSProperties}>
-                <span className="section-header">Compartilhar</span>
+                <span className="section-header">{t("compartilharTitulo")}</span>
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--gold)]/10 to-transparent border border-[rgba(212,168,71,0.08)] flex items-center justify-center">
@@ -422,18 +432,20 @@ export function ScreenshotDemo() {
                     </div>
                     <div>
                       <div className="font-bold text-sm">{faixa} · {'★'.repeat(grau + 1)}</div>
-                      <div className="text-[10px] text-[var(--text-secondary)]">{totalAulas} aulas · Nv.{levelInfo.level}</div>
+                      <div className="text-[10px] text-[var(--text-secondary)]">
+                        {t("totalAulas").replace("{n}", String(totalAulas))} · {t("nivelNv").replace("{n}", String(levelInfo.level))}
+                      </div>
                     </div>
                   </div>
                   <button className="flex items-center gap-1.5 text-[10px] font-bold px-3.5 py-2 rounded-lg border border-[rgba(212,168,71,0.15)] text-[var(--gold)]">
-                    <Share2 className="w-3.5 h-3.5" /> Compartilhar
+                    <Share2 className="w-3.5 h-3.5" /> {t("compartilharAcao")}
                   </button>
                 </div>
               </div>
 
               {/* Convites — componentes reais */}
               <div id="convites" className="space-y-4">
-                <span className="section-header">Convide para o OssTrack</span>
+                <span className="section-header">{t("convideOssTrack")}</span>
                 <div className="grid grid-cols-1 gap-3">
                   <ConviteSection tipo="aluno" />
                 </div>

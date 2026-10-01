@@ -82,109 +82,103 @@ export default function EbookConteudo() {
           style={{ color: "var(--text-secondary)" }}
         >
           <Section title={t("s1")}>
+            <p>{t("corpo.s1p1")}</p>
             <p>
-              Toda academia de Jiu-Jitsu conhece esse fenômeno: o aluno que chega empolgado, treina feito um leão por duas semanas, e de repente desaparece. A mensagem no WhatsApp fica no vácuo. O kimono encosta no armário.
+              {t("corpo.s1p2a")}<strong>{t("corpo.s1p2Strong")}</strong>{t("corpo.s1p2b")}
             </p>
             <p>
-              Não é falta de vontade. É falta de <strong>vínculo</strong>. O aluno não se sentiu parte de algo maior. Ele veio pelo Jiu-Jitsu, mas ficaria pela comunidade — e comunidade não foi construída.
-            </p>
-            <p>
-              Estudos de retenção em artes marciais mostram que um aluno que desenvolve vínculo com o grupo nos primeiros 30 dias tem <strong>87% mais chances</strong> de permanecer ativo após 6 meses. O segredo não está no preço da mensalidade — está no engajamento diário.
+              {t("corpo.s1p3a")}<strong>{t("corpo.s1p3Strong")}</strong>{t("corpo.s1p3b")}
             </p>
             <p className="p-4 rounded-xl font-semibold text-sm" style={{ background: "rgba(212,168,71,0.06)", borderLeft: "3px solid var(--gold)", color: "var(--gold)" }}>
-              💡 Alunos não cancelam porque está caro. Eles cancelam porque não se sentem parte de algo.
+              {t("corpo.s1Tip")}
             </p>
           </Section>
 
           <Section title={t("s2")}>
-            <p>
-              Comunidade não acontece por acaso. Ela precisa ser cultivada com intenção. Aqui estão as estratégias que academias de alto engajamento usam para criar pertencimento:
-            </p>
+            <p>{t("corpo.s2Intro")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s2a")}</p>
-            <p>O cumprimento na porta, a saudação no tatame, o bate-papo pós-treino. Parece simples, mas é o que diferencia uma academia de uma &ldquo;academia de musculação com kimono&rdquo;. Crie momentos rituais: toda sexta-feira tem um &ldquo;roda de conversa&rdquo; de 5 minutos depois do treino. Aniversariante do mês ganha um parabéns coletivo. Aluno que completa 10 aulas recebe um reconhecimento público.</p>
+            <p>{t("corpo.s2aBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s2b")}</p>
-            <p>Se o aluno chega, treina e vai embora em 5 minutos, ele não cria laço. Incentive a permanência: um café compartilhado, um banco na área de convivência, um grupo no WhatsApp que não seja só para comunicados. O vínculo se forma nos 15 minutos pós-treino, não durante a rolagem.</p>
+            <p>{t("corpo.s2bBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s2c")}</p>
-            <p>Professor que chama o aluno pelo nome causa um impacto profundo no engajamento. No OssTrack, você tem a lista completa de alunos com faixa, grau e frequência — use esses dados para personalizar a interação. &ldquo;E aí, João. Vi que você fez 4 aulas essa semana, parabéns!&rdquo; vale mais que qualquer desconto.</p>
+            <p>{t("corpo.s2cBody")}</p>
           </Section>
 
           <Section title={t("s3")}>
-            <p>
-              Gamificação não é transformar tudo em jogo. É usar elementos de jogo para motivar comportamentos reais. No Jiu-Jitsu, isso é natural — a faixa já é uma gamificação intrínseca. Mas dá para ir além:
-            </p>
+            <p>{t("corpo.s3Intro")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s3a")}</p>
-            <p>Nada motiva mais que uma sequência. No OssTrack, o aluno vê o streak em chamas — 3 dias, 7 dias, 30 dias. Perder o streak dói mais que perder uma luta. Use isso a seu favor. Crie um mural &ldquo;Streak do Mês&rdquo; na academia. Aluno com maior streak ganha um destaque.</p>
+            <p>{t("corpo.s3aBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s3b")}</p>
-            <p>Ranking por número de presenças no mês (não por performance técnica) incentiva frequência sem gerar intimidação. O aluno que mais treinou no mês ganha um reconhecimento — pode ser um adesivo, uma camiseta, ou simplesmente o nome no quadro. No OssTrack, o ranking é automático.</p>
+            <p>{t("corpo.s3bBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s3c")}</p>
-            <p>Celebre pequenas vitórias: primeira semana sem faltar, primeira finalização no roll-livre, 30 aulas completadas. Cada conquista vira uma notificação no app do aluno. Ele se sente visto. No OssTrack, as conquistas são automáticas e o aluno recebe uma badge virtual.</p>
+            <p>{t("corpo.s3cBody")}</p>
 
             <p className="p-4 rounded-xl font-semibold text-sm mt-3" style={{ background: "rgba(212,168,71,0.06)", borderLeft: "3px solid var(--gold)", color: "var(--gold)" }}>
-              🥋 O OssTrack foi construído com gamificação de verdade: XP, níveis de 1 a 12, streak com fogo, conquistas, ranking e Mestre do Mês. Tudo gratuito.
+              {t("corpo.s3Tip")}
             </p>
           </Section>
 
           <Section title={t("s4")}>
-            <p>
-              O maior fator de retenção de uma academia de Jiu-Jitsu é o professor. Não é a estrutura, não é o preço, não é a localização. É a relação professor-aluno.
-            </p>
+            <p>{t("corpo.s4Intro")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s4a")}</p>
-            <p>Quando o professor usa o OssTrack para dar parabéns, marcar presença e interagir no mural, o engajamento da turma dobra. O professor que publica no mural da academia — um vídeo de técnica, um aviso, um incentivo — cria um fluxo de retorno diário dos alunos.</p>
+            <p>{t("corpo.s4aBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s4b")}</p>
-            <p>Um &ldquo;parabéns pela evolução&rdquo; ou &ldquo;ótima rolagem hoje&rdquo; dito individualmente transforma a experiência do aluno. Use os dados do OssTrack para saber quem treinou, quem está chegando atrasado, quem está sumindo — e aja antes que o aluno desista.</p>
+            <p>{t("corpo.s4bBody")}</p>
 
             <p className="font-semibold mt-3" style={{ color: "var(--text-primary)" }}>{t("s4c")}</p>
-            <p>O professor que responde no WhatsApp, que dá atenção individual, que lembra da vida do aluno fora do tatame — esse professor forma alunos para a vida toda. Não terceirize o acolhimento.</p>
+            <p>{t("corpo.s4cBody")}</p>
           </Section>
 
           <Section title={t("s5")}>
-            <p>Não basta ter alunos — é preciso manter a chama acesa entre os treinos. Aqui estão estratégias de comunicação que funcionam:</p>
+            <p>{t("corpo.s5Intro")}</p>
 
             <ul className="space-y-3 pl-5">
               <li className="flex items-start gap-2 text-sm">
-                📱 <span><strong>Grupo de WhatsApp bem gerido:</strong> Regras claras, conteúdo de valor, fotos dos treinos, avisos com antecedência. Nada de corrente ou mensagem irrelevante. Uma mensagem por dia, no máximo.</span>
+                📱 <span><strong>{t("corpo.s5i1Label")}</strong> {t("corpo.s5i1Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                📱 <span><strong>Mural da academia (digital e físico):</strong> O OssTrack tem mural integrado. Publique técnica da semana, resultado de competições, parabéns para aluno que subiu de faixa. O mural gera engajamento passivo — o aluno abre o app para ver o que tem de novo.</span>
+                📱 <span><strong>{t("corpo.s5i2Label")}</strong> {t("corpo.s5i2Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                📱 <span><strong>Desafios semanais:</strong> &ldquo;Quem treina 5 dias essa semana ganha destaque no mural.&rdquo; &ldquo;Melhor sequência de check-in do mês leva um kimono.&rdquo; Desafios geram movimento e conversa.</span>
+                📱 <span><strong>{t("corpo.s5i3Label")}</strong> {t("corpo.s5i3Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                📱 <span><strong>Conteúdo que ensina fora do tatame:</strong> Vídeos curtos de técnica, dicas de alongamento, explicação de regras de competição. O aluno que consome conteúdo da academia fora do horário treina mais engajado.</span>
+                📱 <span><strong>{t("corpo.s5i4Label")}</strong> {t("corpo.s5i4Text")}</span>
               </li>
             </ul>
           </Section>
 
           <Section title={t("s6")}>
-            <p>Academias com alto engajamento têm uma coisa em comum: <strong>eventos recorrentes</strong> que criam expectativa e pertencimento.</p>
+            <p>
+              {t("corpo.s6IntroA")}<strong>{t("corpo.s6IntroStrong")}</strong>{t("corpo.s6IntroB")}
+            </p>
 
             <ul className="space-y-3 pl-5">
               <li className="flex items-start gap-2 text-sm">
-                🎉 <span><strong>Graduação coletiva:</strong> Cerimônia bimestral com entrega de faixas, presença da família, fotos. É o momento mais emocionante do calendário da academia.</span>
+                🎉 <span><strong>{t("corpo.s6i1Label")}</strong> {t("corpo.s6i1Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                🎉 <span><strong>Mestre do Mês:</strong> Aluno com mais presenças no mês ganha destaque no mural, no app e nas redes sociais da academia. No OssTrack, o Mestre do Mês é automático.</span>
+                🎉 <span><strong>{t("corpo.s6i2Label")}</strong> {t("corpo.s6i2Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                🎉 <span><strong>Aulas abertas e palestras:</strong> Convidar um faixa-preta de fora, fazer um seminário, um aulão de imersão no sábado. Quebra a rotina e renova o entusiasmo.</span>
+                🎉 <span><strong>{t("corpo.s6i3Label")}</strong> {t("corpo.s6i3Text")}</span>
               </li>
               <li className="flex items-start gap-2 text-sm">
-                🎉 <span><strong>Confraternização de fim de ano:</strong> Churrasco, amigo secreto, entrega de prêmios. A academia que celebra junto fortalece os laços para o ano seguinte.</span>
+                🎉 <span><strong>{t("corpo.s6i4Label")}</strong> {t("corpo.s6i4Text")}</span>
               </li>
             </ul>
           </Section>
 
           <Section title={t("s7")}>
-            <p>O que não é medido não é gerenciado. Para melhorar o engajamento, você precisa saber onde está. No OssTrack, todas essas métricas estão disponíveis em tempo real:</p>
+            <p>{t("corpo.s7Intro")}</p>
 
             <div className="overflow-x-auto">
               <table className="w-full text-sm border-collapse">
@@ -196,29 +190,27 @@ export default function EbookConteudo() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border)]">
-                  <tr><td className="py-2.5 px-3">Frequência semanal</td><td className="py-2.5 px-3">Quantas aulas o aluno faz por semana</td><td className="py-2.5 px-3">3+ aulas/semana</td></tr>
-                  <tr><td className="py-2.5 px-3">Streak médio</td><td className="py-2.5 px-3">Dias consecutivos de treino</td><td className="py-2.5 px-3">7+ dias</td></tr>
-                  <tr><td className="py-2.5 px-3">Taxa de evasão</td><td className="py-2.5 px-3">% de alunos que param sem avisar</td><td className="py-2.5 px-3">&lt; 10% ao mês</td></tr>
-                  <tr><td className="py-2.5 px-3">Dias desde último treino</td><td className="py-2.5 px-3">Alunos inativos por período</td><td className="py-2.5 px-3">Alerta com 7+ dias</td></tr>
-                  <tr><td className="py-2.5 px-3">Engajamento no mural</td><td className="py-2.5 px-3">Curtidas e comentários</td><td className="py-2.5 px-3">50% dos alunos ativos</td></tr>
+                  <tr><td className="py-2.5 px-3">{t("corpo.tabela.f1")}</td><td className="py-2.5 px-3">{t("corpo.tabela.r1")}</td><td className="py-2.5 px-3">{t("corpo.tabela.m1")}</td></tr>
+                  <tr><td className="py-2.5 px-3">{t("corpo.tabela.f2")}</td><td className="py-2.5 px-3">{t("corpo.tabela.r2")}</td><td className="py-2.5 px-3">{t("corpo.tabela.m2")}</td></tr>
+                  <tr><td className="py-2.5 px-3">{t("corpo.tabela.f3")}</td><td className="py-2.5 px-3">{t("corpo.tabela.r3")}</td><td className="py-2.5 px-3">{t("corpo.tabela.m3")}</td></tr>
+                  <tr><td className="py-2.5 px-3">{t("corpo.tabela.f4")}</td><td className="py-2.5 px-3">{t("corpo.tabela.r4")}</td><td className="py-2.5 px-3">{t("corpo.tabela.m4")}</td></tr>
+                  <tr><td className="py-2.5 px-3">{t("corpo.tabela.f5")}</td><td className="py-2.5 px-3">{t("corpo.tabela.r5")}</td><td className="py-2.5 px-3">{t("corpo.tabela.m5")}</td></tr>
                 </tbody>
               </table>
             </div>
 
-            <p className="text-sm mt-3">No OssTrack, você vê exatamente quem está sumindo e pode agir antes do cancelamento. Um alerta de &ldquo;7 dias sem treinar&rdquo; dispara uma notificação para o professor — que manda um WhatsApp na hora.</p>
+            <p className="text-sm mt-3">{t("corpo.s7Outro")}</p>
           </Section>
 
           <Section title={t("s8")}>
-            <p>
-              Engajamento não se sustenta no esforço manual. Você precisa de ferramentas que trabalhem por você 24 horas por dia. O OssTrack foi construído para ser o centro de engajamento da sua academia:
-            </p>
+            <p>{t("corpo.s8Intro")}</p>
 
             <ul className="space-y-2 pl-5">
-              <li className="flex items-start gap-2 text-sm">✅ <span><strong>Check-in com streak:</strong> O aluno faz check-in, o app registra, o streak aumenta, o fogo acende. Sem esforço do professor.</span></li>
-              <li className="flex items-start gap-2 text-sm">✅ <span><strong>Mural da academia:</strong> Professor publica, aluno comenta, curtidas aparecem. A comunidade interage mesmo fora do tatame.</span></li>
-              <li className="flex items-start gap-2 text-sm">✅ <span><strong>Notificações inteligentes:</strong> Lembrete de treino, conquista desbloqueada, Mestre do Mês, level up. O aluno recebe estímulo positivo todo dia.</span></li>
-              <li className="flex items-start gap-2 text-sm">✅ <span><strong>Ranking e competição saudável:</strong> Alunos competem por presença, não por performance. Todo mundo pode ganhar.</span></li>
-              <li className="flex items-start gap-2 text-sm">✅ <span><strong>100% gratuito:</strong> Sem mensalidade, sem limite de alunos, sem plano premium. Engajamento de verdade não deveria ter barreira de entrada.</span></li>
+              <li className="flex items-start gap-2 text-sm">✅ <span><strong>{t("corpo.s8i1Label")}</strong> {t("corpo.s8i1Text")}</span></li>
+              <li className="flex items-start gap-2 text-sm">✅ <span><strong>{t("corpo.s8i2Label")}</strong> {t("corpo.s8i2Text")}</span></li>
+              <li className="flex items-start gap-2 text-sm">✅ <span><strong>{t("corpo.s8i3Label")}</strong> {t("corpo.s8i3Text")}</span></li>
+              <li className="flex items-start gap-2 text-sm">✅ <span><strong>{t("corpo.s8i4Label")}</strong> {t("corpo.s8i4Text")}</span></li>
+              <li className="flex items-start gap-2 text-sm">✅ <span><strong>{t("corpo.s8i5Label")}</strong> {t("corpo.s8i5Text")}</span></li>
             </ul>
 
             <div className="mt-4 p-4 rounded-xl text-center" style={{ background: "rgba(212,168,71,0.06)", border: "1px solid rgba(212,168,71,0.15)" }}>

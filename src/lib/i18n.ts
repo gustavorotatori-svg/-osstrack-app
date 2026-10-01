@@ -40,6 +40,23 @@ export function useTranslations(locale: Locale) {
   return (key: string) => t(locale, key)
 }
 
+export const intlLocales: Record<Locale, string> = {
+  pt: "pt-BR",
+  en: "en-US",
+  es: "es",
+  fr: "fr",
+  de: "de",
+  nl: "nl",
+  sv: "sv",
+  ja: "ja",
+  ar: "ar",
+  zh: "zh-CN",
+  hi: "hi",
+  it: "it",
+  ru: "ru",
+  ko: "ko",
+}
+
 export const localeLabels: Record<Locale, string> = {
   pt: "PT",
   en: "EN",

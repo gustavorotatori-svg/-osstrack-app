@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { SmartphoneIcon, BellIcon, BellOffIcon } from "@/components/ui/icons"
 import { usePushNotifications } from "@/lib/use-push"
+import { useT } from "@/lib/use-t"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -47,6 +48,7 @@ function registerSw() {
 }
 
 export function InstallPrompt() {
+  const t = useT("pwa.installPrompt")
   const { install, canInstall, isIOS, isStandalone } = useInstall()
   const { permission, subscribed, loading, subscribe, unsubscribe } = usePushNotifications()
   const [showPrompt, setShowPrompt] = useState(false)
@@ -109,20 +111,20 @@ export function InstallPrompt() {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--gold)]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold">Instalar OssTrack</p>
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">Adicione à tela inicial para acesso rápido</p>
+              <p className="text-sm font-bold">{t("title")}</p>
+              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{t("subtitle")}</p>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={handleInstall}
                   className="flex-1 py-2 rounded-lg text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95"
                 >
-                  Instalar
+                  {t("instalar")}
                 </button>
                 <button
                   onClick={() => { setShowPrompt(false); handleDismiss() }}
                   className="py-2 px-3 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
-                  Agora não
+                  {t("agoraNao")}
                 </button>
               </div>
             </div>
@@ -137,15 +139,15 @@ export function InstallPrompt() {
               <SmartphoneIcon className="w-5 h-5 text-[var(--gold)]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold">Instalar OssTrack</p>
+              <p className="text-sm font-bold">{t("title")}</p>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                No Safari, toque em <strong>Compartilhar</strong> <span className="text-[var(--gold)]">↑</span> e depois <strong>&ldquo;Adicionar à Tela de Início&rdquo;</strong>
+                {t("safariPrefix").replace("{compartilhar}", t("compartilhar"))} <span className="text-[var(--gold)]">↑</span> {t("safariSuffix").replace("{adicionar}", t("adicionarHome"))}
               </p>
               <button
                 onClick={() => handleDismiss()}
                 className="mt-3 py-2 px-4 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
               >
-                Entendi
+                {t("entendi")}
               </button>
             </div>
           </div>
@@ -159,9 +161,9 @@ export function InstallPrompt() {
               {subscribed ? <BellIcon className="w-5 h-5 text-[var(--gold)]" /> : <BellOffIcon className="w-5 h-5 text-[var(--text-secondary)]" />}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold">{subscribed ? "Notificações ativadas" : "Ativar notificações"}</p>
+              <p className="text-sm font-bold">{subscribed ? t("notifTitle") : t("notifTitleOff")}</p>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                {subscribed ? "Você receberá alertas de streak e lembretes" : "Receba lembretes de treino e alertas"}
+                {subscribed ? t("notifDescOn") : t("notifDescOff")}
               </p>
               <div className="flex gap-2 mt-3">
                 <button
@@ -169,13 +171,13 @@ export function InstallPrompt() {
                   disabled={loading}
                   className="flex-1 py-2 rounded-lg text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95 disabled:opacity-50"
                 >
-                  {loading ? "..." : subscribed ? "Desativar" : "Ativar"}
+                  {loading ? "..." : subscribed ? t("desativar") : t("ativar")}
                 </button>
                 <button
                   onClick={() => handlePushDismiss()}
                   className="py-2 px-3 rounded-lg text-xs font-semibold border border-[rgba(255,255,255,0.06)] text-[var(--text-secondary)] hover:text-white transition-all"
                 >
-                  {subscribed ? "OK" : "Agora não"}
+                  {subscribed ? t("ok") : t("agoraNao")}
                 </button>
               </div>
             </div>

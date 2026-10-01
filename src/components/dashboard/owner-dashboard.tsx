@@ -29,6 +29,8 @@ type Props = {
 
 export function OwnerDashboardClient({ role, academia, stats, presencasMensais, alunosPorCategoria, alunos, presencas, graduacoes, familias = [] }: Props) {
   const t = useT("dono.dashboard")
+  const td = useT("donoDashboard")
+  const tFaixas = useT("faixas")
   const router = useRouter()
   const [tab, setTab] = useState<"geral" | "alunos" | "graduacoes" | "ranking" | "prospectos">("geral")
   const [prospectStats, setProspectStats] = useState<{ stats: { total: number; usados: number; pendentes: number; expirados: number; conversao: number }; porTipo: { tipo: string; total: number }[]; ultimos: { id: string; tipo: string; codigo: string; usado: boolean; createdAt: string; expiresAt: string | null }[] } | null>(null)
@@ -45,6 +47,12 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
   const [rankingVisivel, setRankingVisivel] = useState(academia.rankingVisivel)
   const [toggling, setToggling] = useState(false)
+
+  function faixaLabel(faixa: string) {
+    const key = faixa.toLowerCase()
+    const translated = tFaixas(key)
+    return translated === key ? faixa : translated
+  }
 
   async function toggleRanking() {
     setToggling(true)
@@ -77,20 +85,20 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   function getQuickActions() {
     const prefix = role === "dono" ? "dono" : "professor"
     const base = [
-      { label: "Turmas", icon: CalendarIcon, href: `/dashboard/${prefix}/turmas` },
-      { label: "Alunos", icon: UsersIcon, href: `/dashboard/${prefix}/alunos` },
-      { label: "Presenças", icon: ClipboardList, href: `/dashboard/${prefix}/presencas` },
-      { label: "Graduações", icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes` },
+      { label: td("acaoTurmas"), icon: CalendarIcon, href: `/dashboard/${prefix}/turmas` },
+      { label: td("acaoAlunos"), icon: UsersIcon, href: `/dashboard/${prefix}/alunos` },
+      { label: td("acaoPresencas"), icon: ClipboardList, href: `/dashboard/${prefix}/presencas` },
+      { label: td("acaoGraduacoes"), icon: GraduationCap, href: `/dashboard/${prefix}/graduacoes` },
     ]
     base.push(
-      { label: "Financeiro", icon: Wallet, href: `/dashboard/${role}/financeiro` },
-      { label: "Agenda", icon: Calendar, href: `/dashboard/${role}/agenda` },
+      { label: td("acaoFinanceiro"), icon: Wallet, href: `/dashboard/${role}/financeiro` },
+      { label: td("acaoAgenda"), icon: Calendar, href: `/dashboard/${role}/agenda` },
     )
     if (role === "dono") {
       base.push(
-        { label: "Famílias", icon: Users, href: "/dashboard/dono/familia" },
-        { label: "Relatórios", icon: FileText, href: "/dashboard/dono/relatorios" },
-        { label: "Config", icon: Settings, href: "/dashboard/dono/config" },
+        { label: td("acaoFamilias"), icon: Users, href: "/dashboard/dono/familia" },
+        { label: td("acaoRelatorios"), icon: FileText, href: "/dashboard/dono/relatorios" },
+        { label: td("acaoConfig"), icon: Settings, href: "/dashboard/dono/config" },
       )
     }
     return base
@@ -114,7 +122,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span className="font-semibold">{growth > 0 ? "+" : ""}{growth}%</span>
-                  <span className="text-emerald-400/60">vs mês anterior</span>
+                  <span className="text-emerald-400/60">{td("vsMesAnterior")}</span>
                 </div>
               )}
             </div>
@@ -125,21 +133,21 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
             <div className="bg-gradient-to-r from-[var(--gold)]/10 to-amber-600/5 border border-[var(--gold)]/20 rounded-2xl p-6 text-center space-y-4">
               <div className="text-4xl">🥋</div>
               <h2 className="text-lg font-black" style={{ color: "var(--gold)" }}>
-                Bem-vindo ao OssTrack!
+                {td("bemVindo")}
               </h2>
               <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
-                Sua academia está cadastrada. O próximo passo é criar sua primeira turma e convidar seus alunos.
+                {td("bemVindoDesc")}
               </p>
               <div className="flex items-center justify-center gap-3 flex-wrap">
                 <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role === "dono" ? "dono" : "professor"}/turmas`) }}
                   className="btn-gold px-6 py-3 text-sm font-bold inline-flex items-center gap-2">
                   <CalendarIcon className="w-4 h-4" />
-                  Criar primeira turma
+                  {td("criarPrimeiraTurma")}
                 </button>
                 <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role}/config`) }}
                   className="px-6 py-3 rounded-xl text-sm font-bold border border-[var(--border)] text-[var(--text)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all inline-flex items-center gap-2">
                   <Settings className="w-4 h-4" />
-                  Configurar academia
+                  {td("configurarAcademia")}
                 </button>
               </div>
             </div>
@@ -195,13 +203,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-coral)"} as React.CSSProperties}>
             <div className="flex items-center justify-between mb-4">
               <div className="section-header mb-0">{t("presencasPorMes")}</div>
-              <span className="label">Últimos 6 meses</span>
+              <span className="label">{td("ultimos6Meses")}</span>
             </div>
             {maxPresencasMes === 0 ? (
               <div className="text-center py-6">
                 <BarChart3 className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2" />
-                <p className="text-xs text-[var(--text-secondary)]">Nenhuma presença registrada ainda</p>
-                <p className="text-[10px] text-[var(--text-muted)] mt-1">Os dados aparecerão aqui conforme os alunos fizerem check-in</p>
+                <p className="text-xs text-[var(--text-secondary)]">{td("nenhumaPresencaGrafico")}</p>
+                <p className="text-[10px] text-[var(--text-muted)] mt-1">{td("descVazioPresencas")}</p>
               </div>
             ) : (
             <div className="flex items-end gap-2 h-24">
@@ -238,7 +246,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               <AwardIcon className="w-4 h-4" /> {t("ranking")}
             </button>
             <button className={`tab-btn gap-1.5 ${tab === "prospectos" ? "active" : ""}`} onClick={() => setTab("prospectos")}>
-              <Target className="w-4 h-4" /> Prospectos
+              <Target className="w-4 h-4" /> {t("prospectos")}
             </button>
           </div>
 
@@ -272,28 +280,28 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               {role === "dono" && familias.length > 0 && (
                 <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-dourada)"} as React.CSSProperties}>
                   <div className="flex items-center justify-between mb-3">
-                    <div className="section-header mb-0">👨‍👩‍👧 Famílias</div>
+                    <div className="section-header mb-0">👨‍👩‍👧 {td("familias")}</div>
                     <button onClick={async () => { await triggerOssTransition(); router.push("/dashboard/dono/familia") }}
                       className="text-xs font-semibold text-[var(--gold)] hover:underline inline-flex items-center gap-1">
-                      Gerenciar <ArrowUpRight className="w-3.5 h-3.5" />
+                      {td("gerenciar")} <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-center flex-1">
                       <div className="text-lg font-bold" style={{ color: "var(--gold)" }}>{familias.length}</div>
-                      <div className="text-[10px] text-[var(--text-muted)]">famílias</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">{td("familiasCount")}</div>
                     </div>
                     <div className="h-10 w-px" style={{ background: "var(--border)" }} />
                     <div className="text-center flex-1">
                       <div className="text-lg font-bold text-emerald-400">{familias.reduce((acc, f) => acc + f.membros, 0)}</div>
-                      <div className="text-[10px] text-[var(--text-muted)]">membros</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">{td("membros")}</div>
                     </div>
                     <div className="h-10 w-px" style={{ background: "var(--border)" }} />
                     <div className="text-center flex-1">
                       <div className="text-lg font-bold text-[var(--text)]">
                         {familias.length > 0 ? Math.round(familias.reduce((acc, f) => acc + f.desconto, 0) / familias.length) : 0}%
                       </div>
-                      <div className="text-[10px] text-[var(--text-muted)]">desconto médio</div>
+                      <div className="text-[10px] text-[var(--text-muted)]">{td("descontoMedio")}</div>
                     </div>
                   </div>
                   <div className="space-y-1.5 max-h-36 overflow-y-auto">
@@ -301,7 +309,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                       <div key={f.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-[var(--dark-card)]">
                         <span className="text-sm font-medium truncate">{f.nome}</span>
                         <span className="text-xs text-[var(--text-secondary)] shrink-0 ml-2">
-                          {f.membros} {f.membros === 1 ? "membro" : "membros"} · {f.desconto}%
+                          {f.membros} {f.membros === 1 ? td("membroSingular") : td("membros")} · {f.desconto}%
                         </span>
                       </div>
                     ))}
@@ -321,7 +329,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                       if (count === 0) return null
                       return (
                         <div key={faixa} className="flex items-center gap-3">
-                          <span className="text-xs font-semibold w-16 shrink-0">{getBeltEmoji(faixa)} {faixa}</span>
+                          <span className="text-xs font-semibold w-16 shrink-0">{getBeltEmoji(faixa)} {faixaLabel(faixa)}</span>
                           <div className="progress flex-1">
                             <div className="progress-fill-gold" style={{ width: `${pct}%` }} />
                           </div>
@@ -336,7 +344,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               {/* Retention Metrics */}
               <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-vermelha)"} as React.CSSProperties}>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="section-header mb-0">Retenção por Coorte</div>
+                  <div className="section-header mb-0">{td("retencaoPorCoorte")}</div>
                   {retention?.lastCohort && (
                     <span className="badge font-mono">
                       D1 {retention.lastCohort.d1}% · D7 {retention.lastCohort.d7}% · D30 {retention.lastCohort.d30}%
@@ -344,17 +352,17 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                   )}
                 </div>
                 {!retention ? (
-                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">{td("carregando")}</p>
                 ) : retention.cohorts.length === 0 ? (
-                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Nenhuma coorte disponível</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">{td("nenhumaCoorte")}</p>
                 ) : (
                   <>
                     <div className="overflow-x-auto pb-2">
                       <table className="w-full text-xs">
                         <thead>
                           <tr className="text-[var(--text-muted)]">
-                            <th className="text-left py-2 pr-3 font-semibold">Mês</th>
-                            <th className="text-right px-2 py-2 font-semibold">Alunos</th>
+                            <th className="text-left py-2 pr-3 font-semibold">{td("colMes")}</th>
+                            <th className="text-right px-2 py-2 font-semibold">{td("colAlunos")}</th>
                             <th className="text-right px-2 py-2 font-semibold">D1</th>
                             <th className="text-right px-2 py-2 font-semibold">D7</th>
                             <th className="text-right px-2 py-2 font-semibold">D30</th>
@@ -415,7 +423,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                       <div key={a.id} className="surface px-3 py-2 flex items-center gap-2">
                         <span className="text-xs opacity-60">{a.dia}</span>
                         <span className="text-sm font-semibold">{a.nome}</span>
-                        <span className="text-[10px] text-[var(--gold)]">{a.faixa}</span>
+                        <span className="text-[10px] text-[var(--gold)]">{faixaLabel(a.faixa)}</span>
                       </div>
                     ))}
                   </div>
@@ -429,13 +437,13 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                     <div className="section-header mb-0">{t("alunosInativosTitle")}</div>
                     <span className="badge ml-auto">{inativos.length}</span>
                   </div>
-                  <p className="text-xs text-[var(--text-secondary)] mb-3">7 dias sem treinar</p>
+                  <p className="text-xs text-[var(--text-secondary)] mb-3">{td("dias7SemTreinar")}</p>
                   <div className="space-y-1">
                     {inativos.slice(0, 10).map((a) => (
                       <div key={a.id} className="flex items-center gap-3 py-2 border-b border-[rgba(255,255,255,0.03)] last:border-0">
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-semibold truncate">{a.nome}</div>
-                          <div className="text-xs text-[var(--text-secondary)]">{a.faixa} · {a.diasSemTreinar} dias sem treinar</div>
+                          <div className="text-xs text-[var(--text-secondary)]">{faixaLabel(a.faixa)} · {td("diasSemTreinar").replace("{n}", String(a.diasSemTreinar))}</div>
                         </div>
                       </div>
                     ))}
@@ -456,7 +464,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                       <div key={p.id} className="flex items-center gap-3 py-2.5 border-b border-[rgba(255,255,255,0.03)] last:border-0">
                         <div className="flex-1 min-w-0">
                           <div className="text-base font-semibold truncate">{p.aluno}</div>
-                          <div className="text-sm text-[var(--text-secondary)]">{new Date(p.data).toLocaleDateString("pt-BR")} às {p.horario}</div>
+                          <div className="text-sm text-[var(--text-secondary)]">{new Date(p.data).toLocaleDateString("pt-BR")} {td("asHorario").replace("{horario}", p.horario)}</div>
                         </div>
                         <span className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold ${
                           p.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
@@ -489,10 +497,10 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                     <div key={a.id} className="surface p-4 text-center">
                       <Avatar name={a.nome} faixa={a.faixa} size={44} />
                       <div className="text-base font-semibold mt-1.5 truncate">{a.nome}</div>
-                      <div className="text-xs text-[var(--text-secondary)]">{a.faixa} · {'★'.repeat(a.grau + 1)}</div>
+                      <div className="text-xs text-[var(--text-secondary)]">{faixaLabel(a.faixa)} · {'★'.repeat(a.grau + 1)}</div>
                       <span className="inline-block mt-1 text-[10px] text-[var(--text-muted)] capitalize">{a.categoria}</span>
                       <span className={`inline-block mt-2 text-xs font-semibold px-3 py-1 rounded-full ${getBeltColor(a.faixa)}`}>
-                        {getBeltEmoji(a.faixa)} {a.faixa}
+                        {getBeltEmoji(a.faixa)} {faixaLabel(a.faixa)}
                       </span>
                     </div>
                   ))}
@@ -514,11 +522,11 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                 <div className="grid-modern">
                   {graduacoes.map((g) => (
                     <div key={g.faixa} className="surface p-4">
-                      <div className="font-bold text-base">{getBeltEmoji(g.faixa)} {g.faixa}</div>
+                      <div className="font-bold text-base">{getBeltEmoji(g.faixa)} {faixaLabel(g.faixa)}</div>
                       <div className="space-y-1 mt-2">
-                        <div className="text-sm text-[var(--text-secondary)]">{g.graus} graus · {g.aulasPorGrau} aulas/grau</div>
+                        <div className="text-sm text-[var(--text-secondary)]">{td("grausAulas").replace("{graus}", String(g.graus)).replace("{aulas}", String(g.aulasPorGrau))}</div>
                         {g.aulasProxFx && (
-                          <div className="text-sm text-[var(--gold)] font-semibold">{g.aulasProxFx} aulas p/ próx. faixa</div>
+                          <div className="text-sm text-[var(--gold)] font-semibold">{td("aulasProxFaixa").replace("{n}", String(g.aulasProxFx))}</div>
                         )}
                       </div>
                     </div>
@@ -532,33 +540,33 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           {tab === "prospectos" && (
             <div className="space-y-3 enter-stagger">
               <div className="glass-card p-5">
-                <div className="section-header">Funil de Prospecção</div>
+                <div className="section-header">{td("funilProspeccao")}</div>
                 {!prospectStats ? (
-                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">Carregando...</p>
+                  <p className="text-sm text-[var(--text-secondary)] text-center py-4">{td("carregando")}</p>
                 ) : (
                   <>
                     <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 mb-4">
                       <div className="stat-glass">
                         <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.total} /></div>
-                        <div className="stat-glass-label">Total</div>
+                        <div className="stat-glass-label">{td("total")}</div>
                       </div>
                       <div className="stat-glass">
                         <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.usados} /></div>
-                        <div className="stat-glass-label">Convertidos</div>
+                        <div className="stat-glass-label">{td("convertidos")}</div>
                       </div>
                       <div className="stat-glass">
                         <div className="stat-glass-value"><AnimatedCounter value={prospectStats.stats.pendentes} /></div>
-                        <div className="stat-glass-label">Pendentes</div>
+                        <div className="stat-glass-label">{td("pendentes")}</div>
                       </div>
                       <div className="stat-glass">
                         <div className="stat-glass-value">{prospectStats.stats.conversao}%</div>
-                        <div className="stat-glass-label">Conversão</div>
+                        <div className="stat-glass-label">{td("conversao")}</div>
                       </div>
                     </div>
 
                     {prospectStats.porTipo.length > 0 && (
                       <div className="space-y-2 mb-4">
-                        <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wide">Convites por tipo</div>
+                        <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wide">{td("convitesPorTipo")}</div>
                         {prospectStats.porTipo.map((t) => (
                           <div key={t.tipo} className="flex items-center gap-3">
                             <span className="text-xs font-semibold w-20 shrink-0 capitalize">{t.tipo}</span>
@@ -576,7 +584,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
 
               {prospectStats && prospectStats.ultimos.length > 0 && (
                 <div className="glass-card p-5">
-                  <div className="section-header">Últimos Convites</div>
+                  <div className="section-header">{td("ultimosConvites")}</div>
                   <div className="space-y-1">
                     {prospectStats.ultimos.map((c) => (
                       <div key={c.id} className="flex items-center justify-between py-2">

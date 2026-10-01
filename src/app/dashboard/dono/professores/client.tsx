@@ -5,6 +5,7 @@ import { DashboardShell } from "@/components/dashboard/shell"
 import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
 import { Search, X, Trash2 } from "lucide-react"
+import { useT } from "@/lib/use-t"
 import { getBeltColor } from "@/lib/utils"
 
 type ProfessorData = {
@@ -22,6 +23,7 @@ type ProfessorData = {
 }
 
 export function ProfessoresClient() {
+  const t = useT("dono.professores")
   const [professores, setProfessores] = useState<ProfessorData[]>([])
   const [loading, setLoading] = useState(true)
   const [busca, setBusca] = useState("")
@@ -39,7 +41,7 @@ export function ProfessoresClient() {
   }, [])
 
   async function handleRemover(id: string, nome: string) {
-    if (!confirm(`Remover ${nome} da academia? Ele perderá acesso às turmas e dados da academia.`)) return
+    if (!confirm(t("confirmarRemover").replace("{nome}", nome))) return
     setRemovendo(id)
     const res = await fetch("/api/professores/remover-vinculo", {
       method: "POST",
@@ -62,9 +64,9 @@ export function ProfessoresClient() {
       <PageTransition>
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="text-center">
-            <h3 className="font-bold text-lg">Professores</h3>
+            <h3 className="font-bold text-lg">{t("title")}</h3>
             <p className="text-xs text-[var(--text-secondary)]">
-              {professores.length} professor{professores.length !== 1 ? "es" : ""} vinculado{professores.length !== 1 ? "s" : ""}
+              {t(professores.length === 1 ? "contagemUm" : "contagemVarios").replace("{n}", String(professores.length))}
             </p>
           </div>
 
@@ -72,14 +74,14 @@ export function ProfessoresClient() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
             <input
               type="text"
-              placeholder="Buscar professor..."
-              aria-label="Buscar professor"
+              placeholder={t("buscarProfessor")}
+              aria-label={t("buscarProfessorAria")}
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
               className="input-field w-full text-sm pl-9"
             />
             {busca && (
-              <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label="Limpar busca">
+              <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label={t("limparBusca")}>
                 <X className="w-4 h-4 text-[var(--text-muted)]" />
               </button>
             )}
@@ -100,7 +102,7 @@ export function ProfessoresClient() {
           ) : filtrados.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-sm text-[var(--text-secondary)]">
-                {busca ? "Nenhum professor encontrado" : "Nenhum professor vinculado ainda"}
+                {busca ? t("nenhumEncontrado") : t("nenhumVinculado")}
               </p>
             </div>
           ) : (
@@ -127,17 +129,17 @@ export function ProfessoresClient() {
                     <button
                       onClick={() => handleRemover(p.id, p.nome)}
                       disabled={removendo === p.id}
-                      aria-label={`Remover professor ${p.nome}`}
+                      aria-label={t("removerAria").replace("{nome}", p.nome)}
                       className="text-red-400 hover:text-red-300 p-2.5 rounded-lg hover:bg-white/5 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-                      title="Remover professor"
+                      title={t("remover")}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
                   <div className="flex gap-4 mt-3 pt-3 border-t border-white/5 text-xs text-[var(--text-secondary)]">
-                    <span><strong className="text-[var(--text)]">{p.totalAlunos}</strong> alunos</span>
-                    <span><strong className="text-[var(--text)]">{p.totalTurmas}</strong> turmas</span>
-                    <span><strong className="text-[var(--text)]">{p.totalPresencas}</strong> presenças</span>
+                    <span><strong className="text-[var(--text)]">{p.totalAlunos}</strong> {t("alunos")}</span>
+                    <span><strong className="text-[var(--text)]">{p.totalTurmas}</strong> {t("turmas")}</span>
+                    <span><strong className="text-[var(--text)]">{p.totalPresencas}</strong> {t("presencas")}</span>
                   </div>
                 </div>
               ))}

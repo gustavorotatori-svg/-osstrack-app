@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useT } from "@/lib/use-t"
 
 const CONFETTI = ["🥋", "✨", "🔥", "🎉", "⭐", "💪", "👊", "🏆"]
 
 type CelebrationProps = { show: boolean; title?: string; message?: string; submessage?: string; onDone?: () => void }
 
 export function Celebration({ show, title, message, submessage, onDone }: CelebrationProps) {
+  const t = useT("shared")
   const [particles, setParticles] = useState<{ id: number; emoji: string; x: number; delay: number }[]>([])
   const onDoneRef = useRef(onDone)
 
@@ -50,7 +52,7 @@ export function Celebration({ show, title, message, submessage, onDone }: Celebr
             <div className="text-5xl mb-3">🎉</div>
             <h3 className="text-lg font-extrabold text-white mb-1">{title || message || ""}</h3>
             {submessage && <p className="text-xs text-[var(--white-muted)]">{submessage}</p>}
-            {!submessage && <p className="text-xs text-[var(--white-muted)]">Continue evoluindo!</p>}
+            {!submessage && <p className="text-xs text-[var(--white-muted)]">{t("continueEvoluindo")}</p>}
           </motion.div>
 
           {particles.map((p) => (

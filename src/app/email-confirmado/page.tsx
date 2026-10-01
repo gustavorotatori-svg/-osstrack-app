@@ -3,8 +3,10 @@
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Suspense } from "react"
+import { useT } from "@/lib/use-t"
 
 function EmailConfirmadoContent() {
+  const t = useT("emailConfirmado")
   const searchParams = useSearchParams()
   const success = searchParams.get("success") === "true"
   const error = searchParams.get("error")
@@ -19,28 +21,28 @@ function EmailConfirmadoContent() {
           </div>
 
           <h1 className="text-xl font-extrabold tracking-tight" style={{ color: "var(--gold)" }}>
-            {success ? "E-mail verificado!" : "Falha na verificação"}
+            {success ? t("sucesso") : t("falha")}
           </h1>
 
           {success ? (
             <p className="text-sm text-[var(--text-secondary)]">
-              Seu e-mail foi confirmado com sucesso. Agora você pode acessar sua conta.
+              {t("confirmadoDesc")}
             </p>
           ) : (
             <p className="text-sm text-[var(--text-secondary)]">
               {error === "expired"
-                ? "O link de verificação expirou. Solicite um novo link."
-                : "Link de verificação inválido. Solicite um novo link."}
+                ? t("expirado")
+                : t("invalido")}
             </p>
           )}
 
           <div className="space-y-2">
             <Link href="/login" className="block w-full py-3 rounded-xl text-sm font-bold btn-gold">
-              Fazer login
+              {t("fazerLogin")}
             </Link>
             {!success && (
               <Link href="/cadastro" className="block text-xs text-[var(--text-secondary)] hover:text-[var(--gold)] transition-colors">
-                Criar nova conta
+                {t("criarConta")}
               </Link>
             )}
           </div>

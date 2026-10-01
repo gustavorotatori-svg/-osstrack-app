@@ -65,23 +65,20 @@ type Props = {
   nivelDisciplina: string | null
 }
 
-const gamificationLevels = [
-  { pontos: 0, title: "Iniciante" }, { pontos: 500, title: "Guerreiro" }, { pontos: 1500, title: "Lutador" },
-  { pontos: 3000, title: "Faixa Azul" }, { pontos: 5000, title: "Competidor" }, { pontos: 7500, title: "Atleta" },
-  { pontos: 10500, title: "Graduado" }, { pontos: 14000, title: "Expert" }, { pontos: 18000, title: "Mestre" },
-  { pontos: 22500, title: "Grão-Mestre" }, { pontos: 28000, title: "Lenda" }, { pontos: 35000, title: "Kami" },
+const gamificationThresholds = [
+  0, 500, 1500, 3000, 5000, 7500, 10500, 14000, 18000, 22500, 28000, 35000,
 ]
 
 function getGamificationLevel(pontos: number) {
-  for (let i = gamificationLevels.length - 1; i >= 0; i--) {
-    if (pontos >= gamificationLevels[i].pontos) {
-      const current = pontos - gamificationLevels[i].pontos
-      const nextLevel = gamificationLevels[i + 1]
-      const nextThreshold = nextLevel ? nextLevel.pontos - gamificationLevels[i].pontos : Infinity
-      return { level: i + 1, current, next: nextThreshold, progress: Math.min((current / nextThreshold) * 100, 100), title: gamificationLevels[i].title }
+  for (let i = gamificationThresholds.length - 1; i >= 0; i--) {
+    if (pontos >= gamificationThresholds[i]) {
+      const current = pontos - gamificationThresholds[i]
+      const nextLevel = gamificationThresholds[i + 1]
+      const nextThreshold = nextLevel ? nextLevel - gamificationThresholds[i] : Infinity
+      return { level: i + 1, current, next: nextThreshold, progress: Math.min((current / nextThreshold) * 100, 100) }
     }
   }
-  return { level: 1, current: 0, next: 500, progress: 0, title: "Iniciante" }
+  return { level: 1, current: 0, next: 500, progress: 0 }
 }
 
 function getLevelInfo(totalAulas: number) {
@@ -110,6 +107,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
   const { nome, faixa, grau, totalAulas, pontos } = aluno
   const levelInfo = getLevelInfo(totalAulas)
+  const td = useT("pagDemo")
 
   const steps = allBelts
   const currentStep = steps.indexOf(faixa)
@@ -178,19 +176,19 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
 
           {/* STATS ROW — 4 compact visual cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 enter-stagger">
-            <div className="stat-glass px-3 py-3.5 text-center" title="Aulas com check-in confirmado neste mês">
+            <div className="stat-glass px-3 py-3.5 text-center" title={t("titleAulasMes")}>
               <div className="text-lg font-black" style={{ color: "var(--blue)" }}><AnimatedCounter value={aulasEsteMes} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("aulasEsteMes")}</div>
             </div>
-            <div className="stat-glass px-3 py-3.5 text-center" title="Total de aulas desde o primeiro check-in">
+            <div className="stat-glass px-3 py-3.5 text-center" title={t("titleTotalAulas")}>
               <div className="text-lg font-black" style={{ color: "var(--purple)" }}><AnimatedCounter value={totalAulas} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("totalAulas")}</div>
             </div>
-            <div className="stat-glass px-3 py-3.5 text-center" title="Dias consecutivos com check-in. Não perca sua sequência!">
+            <div className="stat-glass px-3 py-3.5 text-center" title={t("titleStreak")}>
               <div className="text-lg font-black" style={{ color: streak >= 3 ? "var(--orange)" : "var(--green)" }}><AnimatedCounter value={streak} /></div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("streak")}</div>
             </div>
-            <div className="stat-glass px-3 py-3.5 text-center" title="Percentual da meta semanal de 8 aulas">
+            <div className="stat-glass px-3 py-3.5 text-center" title={t("titleMeta")}>
               <div className="text-lg font-black" style={{ color: "var(--gold)" }}>{Math.round((aulasEsteMes / Math.max(8, 1)) * 100)}%</div>
               <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-0.5">{t("meta")}</div>
             </div>
@@ -204,7 +202,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                   <Clock className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-base font-bold">Horas de treino →</p>
+                  <p className="text-base font-bold">{t("horasTreino")}</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-[var(--text-muted)] group-hover:translate-x-1 transition-transform" />
@@ -215,11 +213,11 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {(() => {
             const gl = getGamificationLevel(pontos)
             return (
-              <div className="mb-6" title="Cada check-in vale 50 XP. Treine mais para subir de nível!">
+              <div className="mb-6" title={t("xpTooltip").replace("{xp}", "50")}>
                 <div className="flex items-center justify-between gap-3 mb-1.5">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[var(--gold)] to-amber-600 flex items-center justify-center text-black text-[10px] font-black">{gl.level}</div>
-                    <span className="text-xs font-bold">{gl.title}</span>
+                    <span className="text-xs font-bold">{td(`gamificacao.${gl.level}`)}</span>
                   </div>
                   <span className="text-[10px] text-[var(--text-muted)]">{pontos.toLocaleString()} / {gl.next.toLocaleString()} XP</span>
                 </div>
@@ -228,11 +226,13 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                 </div>
                 <div className="flex items-center justify-between mt-1.5">
                   <span className="text-[10px] text-[var(--text-muted)]">
-                    {gl.next === Infinity ? "Nível máximo!" : `Faltam ${Math.ceil((gl.next - gl.current) / 50)} check-ins para ${gamificationLevels[gl.level]?.title || "próximo nível"}`}
+                    {gl.next === Infinity ? td("nivelMaximo") : td("faltam").replace("{n}", String(Math.ceil((gl.next - gl.current) / 50))).replace("{nivel}", td(`gamificacao.${gl.level + 1}`))}
                   </span>
                   {graduacao && (
                     <span className="text-[10px] text-[var(--text-muted)]">
-                      {`${graduacao.aulasPorGrau} aulas/grau · ${graduacao.aulasProxFx ? graduacao.aulasProxFx + " aulas p/ próx. faixa" : "Faixa máxima"}`}
+                      {graduacao.aulasProxFx
+                        ? td("aulasGrau").replace("{aulas}", String(graduacao.aulasPorGrau)).replace("{proxFaixa}", String(graduacao.aulasProxFx))
+                        : t("faixaMaxima")}
                     </span>
                   )}
                 </div>
@@ -243,7 +243,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {/* SEM ACADEMIA BANNER (persistent across tabs) */}
           {!aluno.academia && !bannerDismissed && (
             <div className="mb-4 p-4 rounded-2xl border border-[rgba(212,168,71,0.1)] relative" style={{ background: "linear-gradient(135deg, rgba(212,168,71,0.06) 0%, rgba(212,168,71,0.02) 100%)" }}>
-              <button onClick={() => setBannerDismissed(true)} aria-label="Fechar aviso"
+              <button onClick={() => setBannerDismissed(true)} aria-label={t("fecharAviso")}
                 className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-white hover:bg-[var(--bg-surface)] transition-all">
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -271,9 +271,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                   <FileText className="w-5 h-5 text-[var(--gold)]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-sm">Assine o termo de responsabilidade</h3>
+                  <h3 className="font-bold text-sm">{t("assineTermo")}</h3>
                   <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                    Sua academia publicou o termo (versão {waiver.termo.versao}). A assinatura é obrigatória e fica registrada digitalmente.
+                    {t("assineTermoDesc").replace("{v}", String(waiver.termo.versao))}
                   </p>
                   <button onClick={() => router.push("/dashboard/aluno/waiver")}
                     className="inline-flex items-center gap-1.5 px-4 py-2 mt-2.5 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
@@ -287,9 +287,9 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
           {/* SECTION TABS */}
           <div className="flex gap-1 mb-5 p-1 rounded-xl" style={{ background: "var(--bg-surface)" }}>
             {[
-              { key: "jornada", label: "Jornada", icon: "🥋" },
-              { key: "atividade", label: "Atividade", icon: "🔥" },
-              { key: "social", label: "Social", icon: "👥" },
+              { key: "jornada", label: t("tabJornada"), icon: "🥋" },
+              { key: "atividade", label: t("tabAtividade"), icon: "🔥" },
+              { key: "social", label: t("tabSocial"), icon: "👥" },
             ].map((tab) => (
               <button key={tab.key} onClick={() => setSection(tab.key as typeof section)}
                 className={`flex-1 py-2.5 rounded-lg text-xs font-bold transition-all ${
@@ -372,13 +372,13 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                     <div className="w-12 h-12 rounded-xl bg-[rgba(212,168,71,0.06)] border border-[rgba(212,168,71,0.08)] flex items-center justify-center mx-auto mb-3">
                       <Calendar className="w-6 h-6 text-[var(--gold)]" />
                     </div>
-                    <p className="text-sm font-bold text-[var(--gold)] mb-1">Nenhuma presença ainda</p>
+                    <p className="text-sm font-bold text-[var(--gold)] mb-1">{t("nenhumaPresenca")}</p>
                     <p className="text-xs text-[var(--text-secondary)] max-w-xs mx-auto">
-                      Vá até a academia e faça seu primeiro check-in — sua localização será validada automaticamente.
+                      {t("nenhumaPresencaDesc")}
                     </p>
                     <button onClick={() => router.push("/dashboard/aluno/checkin")}
                       className="inline-flex items-center gap-1.5 px-5 py-2.5 mt-4 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
-                      Ir para Check-in
+                      {t("fazerCheckin2")}
                     </button>
                   </div>
                 ) : (

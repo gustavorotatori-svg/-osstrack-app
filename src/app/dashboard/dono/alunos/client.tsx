@@ -7,6 +7,9 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { Avatar } from "@/components/ui/avatar"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Search, ChevronDown, X } from "lucide-react"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 import { getBeltColor } from "@/lib/utils"
 
 type AlunoData = {
@@ -30,6 +33,8 @@ const CATEGORIAS = ["adulto", "infantil", "iniciante", "master"]
 
 export function AlunosClient() {
   const router = useRouter()
+  const t = useT("dono.alunos")
+  const { locale } = useLocale()
   const [alunos, setAlunos] = useState<AlunoData[]>([])
   const [loading, setLoading] = useState(true)
   const [busca, setBusca] = useState("")
@@ -52,14 +57,14 @@ export function AlunosClient() {
   }, [])
 
   function getUltimaPresenca(p: string | null) {
-    if (!p) return "Nunca"
+    if (!p) return t("nunca")
     const d = new Date(p)
     const hoje = new Date()
     const diff = Math.floor((hoje.getTime() - d.getTime()) / (1000 * 60 * 60 * 24))
-    if (diff === 0) return "Hoje"
-    if (diff === 1) return "Ontem"
-    if (diff < 7) return `Há ${diff} dias`
-    return d.toLocaleDateString("pt-BR")
+    if (diff === 0) return t("hoje")
+    if (diff === 1) return t("ontem")
+    if (diff < 7) return t("haDias").replace("{n}", String(diff))
+    return d.toLocaleDateString(intlLocales[locale])
   }
 
   const filtrados = alunos
@@ -93,50 +98,50 @@ export function AlunosClient() {
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
           <div className="text-center">
-            <h3 className="font-bold text-lg">Alunos</h3>
+            <h3 className="font-bold text-lg">{t("title")}</h3>
             <p className="text-xs text-[var(--text-secondary)]">
-              {filtrados.length} de {alunos.length} alunos
+              {t("contagem").replace("{n}", String(filtrados.length)).replace("{total}", String(alunos.length))}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2 items-center">
             <div className="relative flex-1 min-w-[200px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-              <label htmlFor="busca-alunos" className="sr-only">Buscar alunos</label>
+              <label htmlFor="busca-alunos" className="sr-only">{t("buscarAlunos")}</label>
               <input
                 id="busca-alunos"
                 type="text"
-                placeholder="Buscar por nome..."
+                placeholder={t("placeholderBusca")}
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
                 className="input-field w-full text-sm pl-9"
               />
               {busca && (
-                <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label="Limpar busca">
+                <button onClick={() => setBusca("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5" aria-label={t("limparBusca")}>
                   <X className="w-4 h-4 text-[var(--text-muted)]" />
                 </button>
               )}
             </div>
 
             <select
-              aria-label="Filtrar por faixa"
+              aria-label={t("filtrarFaixa")}
               value={filtroFaixa}
               onChange={(e) => setFiltroFaixa(e.target.value)}
               className="input-field text-sm w-[130px] flex-1 md:flex-none"
             >
-              <option value="">Todas faixas</option>
+              <option value="">{t("todasFaixas")}</option>
               {FAIXAS.map((f) => (
                 <option key={f} value={f}>{f}</option>
               ))}
             </select>
 
             <select
-              aria-label="Filtrar por categoria"
+              aria-label={t("filtrarCategoria")}
               value={filtroCategoria}
               onChange={(e) => setFiltroCategoria(e.target.value)}
               className="input-field text-sm w-[130px] flex-1 md:flex-none"
             >
-              <option value="">Todas categorias</option>
+              <option value="">{t("todasCategorias")}</option>
               {CATEGORIAS.map((c) => (
                 <option key={c} value={c}>{c}</option>
               ))}
@@ -158,17 +163,17 @@ export function AlunosClient() {
           ) : filtrados.length === 0 ? (
             <EmptyState
               icon="checkin"
-              title={busca || filtroFaixa || filtroCategoria ? "Nenhum aluno encontrado" : "Nenhum aluno cadastrado"}
+              title={busca || filtroFaixa || filtroCategoria ? t("nenhumEncontrado") : t("nenhumCadastrado")}
               description={
                 busca || filtroFaixa || filtroCategoria
-                  ? "Ajuste os filtros ou o termo de busca para encontrar seus alunos."
-                  : "Compartilhe o link de convite para seus alunos se cadastrarem e começarem a evoluir na academia."
+                  ? t("descEmptyFiltros")
+                  : t("descEmpty")
               }
               action={
                 busca || filtroFaixa || filtroCategoria
                   ? undefined
                   : {
-                      label: "Compartilhar convite",
+                      label: t("compartilharConvite"),
                       onClick: () => router.push("/dashboard/dono"),
                     }
               }
@@ -177,19 +182,19 @@ export function AlunosClient() {
             <div className="space-y-1">
               <div className="hidden md:grid grid-cols-12 gap-2 px-4 py-2 text-[10px] text-[var(--text-muted)] uppercase tracking-wide font-semibold">
                 <button type="button" className="col-span-3 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("nome")}>
-                  Nome {ordenarPor === "nome" && (ordemAsc ? "▲" : "▼")}
+                  {t("colNome")} {ordenarPor === "nome" && (ordemAsc ? "▲" : "▼")}
                 </button>
                 <button type="button" className="col-span-2 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("faixa")}>
-                  Faixa {ordenarPor === "faixa" && (ordemAsc ? "▲" : "▼")}
+                  {t("colFaixa")} {ordenarPor === "faixa" && (ordemAsc ? "▲" : "▼")}
                 </button>
-                <div className="col-span-1 text-center">Grau</div>
-                <div className="col-span-2">Família</div>
-                <div className="col-span-2">Telefone</div>
+                <div className="col-span-1 text-center">{t("colGrau")}</div>
+                <div className="col-span-2">{t("colFamilia")}</div>
+                <div className="col-span-2">{t("colTelefone")}</div>
                 <button type="button" className="col-span-1 cursor-pointer select-none flex items-center gap-1 text-left" onClick={() => toggleOrdem("ultimaPresenca")}>
-                  Última Aula {ordenarPor === "ultimaPresenca" && (ordemAsc ? "▲" : "▼")}
+                  {t("colUltimaAula")} {ordenarPor === "ultimaPresenca" && (ordemAsc ? "▲" : "▼")}
                 </button>
                 <button type="button" className="col-span-1 text-right cursor-pointer select-none flex items-center gap-1 justify-end" onClick={() => toggleOrdem("pontos")}>
-                  Pontos {ordenarPor === "pontos" && (ordemAsc ? "▲" : "▼")}
+                  {t("colPontos")} {ordenarPor === "pontos" && (ordemAsc ? "▲" : "▼")}
                 </button>
               </div>
 
@@ -222,7 +227,7 @@ export function AlunosClient() {
                       <span className="text-xs text-[var(--text-secondary)]">{a.telefone || "—"}</span>
                     </div>
                     <div className="hidden md:block md:col-span-1">
-                      <span className={`text-xs ${getUltimaPresenca(a.ultimaPresenca) === "Nunca" ? "text-red-400" : "text-[var(--text-secondary)]"}`}>
+                      <span className={`text-xs ${!a.ultimaPresenca ? "text-red-400" : "text-[var(--text-secondary)]"}`}>
                         {getUltimaPresenca(a.ultimaPresenca)}
                       </span>
                     </div>

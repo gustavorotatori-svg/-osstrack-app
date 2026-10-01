@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { CrownIcon, SparklesIcon } from "@/components/ui/icons"
+import { useT } from "@/lib/use-t"
 
-const LEVEL_TITLES = ["", "Iniciante", "Guerreiro", "Lutador", "Faixa Azul", "Competidor", "Atleta", "Graduado", "Expert", "Mestre", "Grão-Mestre", "Lenda", "Kami"]
+const LEVEL_TITLE_KEYS = ["", "levelUpNivel1", "levelUpNivel2", "levelUpNivel3", "levelUpNivel4", "levelUpNivel5", "levelUpNivel6", "levelUpNivel7", "levelUpNivel8", "levelUpNivel9", "levelUpNivel10", "levelUpNivel11", "levelUpNivel12"]
 
 function createConfetti() {
   const particles = []
@@ -25,6 +26,7 @@ function createConfetti() {
 }
 
 export function LevelUpCelebration({ currentLevel, pontos }: { currentLevel: number; pontos: number }) {
+  const t = useT("gamification")
   const [show, setShow] = useState(false)
   const [levelInfo, setLevelInfo] = useState<{ from: number; to: number; title: string } | null>(null)
   const [confetti, setConfetti] = useState<ReturnType<typeof createConfetti>>([])
@@ -43,14 +45,15 @@ export function LevelUpCelebration({ currentLevel, pontos }: { currentLevel: num
       try {
         const lastLevel = parseInt(localStorage.getItem("oss_last_level") || "0", 10)
         if (currentLevel > lastLevel && lastLevel > 0) {
-          setLevelInfo({ from: lastLevel, to: currentLevel, title: LEVEL_TITLES[currentLevel] || "" })
+          const titleKey = LEVEL_TITLE_KEYS[currentLevel]
+          setLevelInfo({ from: lastLevel, to: currentLevel, title: titleKey ? t(titleKey) : "" })
           setConfetti(createConfetti())
           setShow(true)
         }
         localStorage.setItem("oss_last_level", String(currentLevel))
       } catch {}
     })()
-  }, [currentLevel])
+  }, [currentLevel, t])
 
   return (
     <AnimatePresence>
@@ -114,15 +117,15 @@ export function LevelUpCelebration({ currentLevel, pontos }: { currentLevel: num
 
               <h2 className="text-2xl font-black mb-1">{levelInfo.title}</h2>
               <p className="text-sm text-[var(--text-secondary)]">
-                Você subiu do nível {levelInfo.from} para o nível {levelInfo.to}!
+                {t("levelUpSubiuDe").replace("{from}", String(levelInfo.from)).replace("{to}", String(levelInfo.to))}
               </p>
-              <p className="text-xs text-[var(--text-muted)] mt-1">{pontos.toLocaleString()} XP totais</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">{t("levelUpXpTotais").replace("{xp}", pontos.toLocaleString())}</p>
 
               <button
                 onClick={dismiss}
                 className="mt-6 px-8 py-3 rounded-xl text-sm font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95"
               >
-                Continuar
+                {t("levelUpContinuar")}
               </button>
             </motion.div>
           </motion.div>

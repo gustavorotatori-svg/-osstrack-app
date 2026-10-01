@@ -2,9 +2,11 @@
 
 import { useState, useRef, ReactNode } from "react"
 import { useRouter } from "next/navigation"
+import { useT } from "@/lib/use-t"
 
 export function PullToRefresh({ children, className = "" }: { children: ReactNode; className?: string }) {
   const router = useRouter()
+  const t = useT("shared")
   const startY = useRef(0)
   const [pulling, setPulling] = useState(false)
   const [pullDist, setPullDist] = useState(0)
@@ -46,7 +48,7 @@ export function PullToRefresh({ children, className = "" }: { children: ReactNod
           style={{ height: Math.min(pullDist, 80) }}
         >
           <span className={`text-sm font-semibold text-[var(--gold)] ${pullDist > 60 ? "" : "animate-spin"}`}>
-            {pullDist > 60 ? "↻ Solte para atualizar" : "↓"}
+            {pullDist > 60 ? t("solteParaAtualizar") : "↓"}
           </span>
         </div>
       )}

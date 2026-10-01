@@ -120,7 +120,7 @@ export default function TreinoPage() {
           <div className="hero-gradient p-5 md:p-6">
             <div className="relative z-10 flex items-start justify-between">
               <div>
-                <span className="label" style={{ color: "var(--gold)" }}>Diário de Treino</span>
+                <span className="label" style={{ color: "var(--gold)" }}>{t("diarioTreino")}</span>
                 <h1 className="hero-title">{t("title")}</h1>
                 <p className="hero-sub">{t("subtitle")}</p>
               </div>
@@ -128,7 +128,7 @@ export default function TreinoPage() {
                 <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-3 py-1.5">
                   <Flame className="w-3.5 h-3.5" />
                   <span className="font-semibold">{streak}</span>
-                  <span className="text-emerald-400/60">dias com treino</span>
+                  <span className="text-emerald-400/60">{t("diasComTreino")}</span>
                 </div>
               )}
             </div>
@@ -137,21 +137,21 @@ export default function TreinoPage() {
           <div className="grid grid-cols-3 gap-2">
             <div className="stat-glass">
               <div className="stat-glass-value text-lg"><span>{totalTreinos}</span></div>
-              <div className="stat-glass-label">Treinos</div>
+              <div className="stat-glass-label">{t("treinos")}</div>
             </div>
             <div className="stat-glass">
               <div className="stat-glass-value text-lg"><span>{totalExercicios}</span></div>
-              <div className="stat-glass-label">Exercícios</div>
+              <div className="stat-glass-label">{t("exercicios")}</div>
             </div>
             <div className="stat-glass">
-              <div className="stat-glass-value text-lg"><span>{totalTreinos > 0 ? Math.round(historico.reduce((a, s) => a + s.duracao, 0) / totalTreinos) : 0}</span><span className="text-xs text-[var(--text-muted)] ml-0.5">min</span></div>
-              <div className="stat-glass-label">Média</div>
+              <div className="stat-glass-value text-lg"><span>{totalTreinos > 0 ? Math.round(historico.reduce((a, s) => a + s.duracao, 0) / totalTreinos) : 0}</span><span className="text-xs text-[var(--text-muted)] ml-0.5">{t("min")}</span></div>
+              <div className="stat-glass-label">{t("media")}</div>
             </div>
           </div>
 
           {!showTimer && (
             <button onClick={iniciarTreino} className="w-full py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-[0.97] btn-gold">
-              <Play className="w-5 h-5" /> Iniciar Treino
+              <Play className="w-5 h-5" /> {t("iniciarTreino")}
             </button>
           )}
 
@@ -161,7 +161,7 @@ export default function TreinoPage() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" style={{ color: "var(--gold)" }} />
-                    <span className="section-header mb-0">Timer</span>
+                    <span className="section-header mb-0">{t("timer")}</span>
                   </div>
                 </div>
                 <TreinoTimer />
@@ -171,7 +171,7 @@ export default function TreinoPage() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Dumbbell className="w-4 h-4" style={{ color: "var(--gold)" }} />
-                    <span className="section-header mb-0">Exercícios</span>
+                    <span className="section-header mb-0">{t("exercicios")}</span>
                   </div>
                   <span className="badge">{exercicios.length}</span>
                 </div>
@@ -198,10 +198,10 @@ export default function TreinoPage() {
                     <div className="flex gap-1 text-xs">
                       <input type="number" min={1} max={20} value={series} onChange={e => setSeries(+e.target.value)} className="w-10 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                       <span className="self-center" style={{ color: "var(--text-secondary)" }}>x</span>
-                      <input type="text" placeholder="reps" value={repeticoes} onChange={e => setRepeticoes(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
-                      <input type="text" placeholder="carga" value={carga} onChange={e => setCarga(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
+                      <input type="text" placeholder={t("placeholderReps")} value={repeticoes} onChange={e => setRepeticoes(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
+                      <input type="text" placeholder={t("placeholderCarga")} value={carga} onChange={e => setCarga(e.target.value)} className="w-14 text-center bg-transparent rounded-lg p-1" style={{ border: "1px solid rgba(255,255,255,0.1)", color: "var(--text)" }} />
                     </div>
-                    <button onClick={addExercicio} aria-label="Adicionar exercício" title="Adicionar exercício" className="text-xs font-bold px-3 py-1.5 rounded-lg btn-gold">
+                    <button onClick={addExercicio} aria-label={t("adicionarExercicioAria")} title={t("adicionarExercicioAria")} className="text-xs font-bold px-3 py-1.5 rounded-lg btn-gold">
                       <Check className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -221,12 +221,12 @@ export default function TreinoPage() {
                     </div>
                   ))}
                   {exercicios.length === 0 && (
-                    <p className="text-xs text-center py-4" style={{ color: "var(--text-muted)" }}>Selecione os exercícios acima</p>
+                    <p className="text-xs text-center py-4" style={{ color: "var(--text-muted)" }}>{t("selecioneExercicios")}</p>
                   )}
                 </div>
 
                 <button onClick={finalizarTreino} disabled={exercicios.length === 0} className="w-full mt-3 py-2.5 rounded-xl font-bold text-xs bg-emerald-600/80 text-white hover:bg-emerald-600 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-                  Finalizar Treino ({exercicios.length} exercícios)
+                  {t("finalizarTreino").replace("{n}", String(exercicios.length))}
                 </button>
               </div>
             </div>
@@ -236,19 +236,19 @@ export default function TreinoPage() {
             <>
               <button onClick={() => setShowHistorico(!showHistorico)} className="flex items-center gap-2 text-xs transition-colors" style={{ color: "var(--text-secondary)" }}>
                 <History className="w-3.5 h-3.5" />
-                Histórico ({historico.length} treinos)
+                {t("historico").replace("{n}", String(historico.length))}
                 {showHistorico ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
 
               {showHistorico && (
                 <div className="glass-card p-5">
-                  <div className="section-header">Últimos Treinos</div>
+                  <div className="section-header">{t("ultimosTreinos")}</div>
                   <div className="space-y-2">
                     {historico.slice(0, 10).map(s => (
                       <div key={s.id} className="flex items-center justify-between py-2" style={{ borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
                         <div>
                           <span className="text-xs font-semibold">{new Date(s.data).toLocaleDateString("pt-BR")}</span>
-                          <span className="text-[10px] ml-2" style={{ color: "var(--text-secondary)" }}>{s.exercicios.length} ex · {s.duracao}min</span>
+                          <span className="text-[10px] ml-2" style={{ color: "var(--text-secondary)" }}>{t("resumoSessao").replace("{n}", String(s.exercicios.length)).replace("{d}", String(s.duracao))}</span>
                         </div>
                         <div className="flex gap-1">
                           {s.exercicios.slice(0, 3).map((ex, i) => (

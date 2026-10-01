@@ -29,6 +29,7 @@ const emojis = ["🥋", "🤼", "👊", "💪", "🔥", "⚡", "🦅", "🐯", "
 
 export default function PerfilClient({ role }: { role: string }) {
   const t = useT("perfilPage")
+  const tp = useT("perfil")
   useSession()
   const router = useRouter()
   const [data, setData] = useState<PerfilData | null>(null)
@@ -108,7 +109,7 @@ export default function PerfilClient({ role }: { role: string }) {
           <div className="glass-card p-6 text-center relative overflow-hidden">
             <div className="relative inline-block group">
               <Avatar name={data.nome} faixa={data.faixa} size={88} src={data.avatar} />
-              <button onClick={() => setEditando(!editando)} aria-label="Editar perfil" title="Editar perfil"
+              <button onClick={() => setEditando(!editando)} aria-label={t("editarPerfil")} title={t("editarPerfil")}
                 className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-xs text-black font-bold shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ background: "var(--gold)" }}>
                 <Pencil className="w-3.5 h-3.5" />
@@ -118,7 +119,7 @@ export default function PerfilClient({ role }: { role: string }) {
             <h2 className="text-xl font-extrabold tracking-tight mt-4">{data.nome}</h2>
             {isAluno && (
               <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold mt-2 ${getBeltColor(data.faixa)}`}>
-                {getBeltEmoji(data.faixa)} {data.faixa} · {data.grau + 1}º Grau
+                {getBeltEmoji(data.faixa)} {data.faixa} · {tp("grau").replace("{grau}", String(data.grau + 1))}
               </span>
             )}
             {isAluno && getNivelInfo(data.nivelDisciplina) && (
@@ -132,7 +133,7 @@ export default function PerfilClient({ role }: { role: string }) {
             <p className="text-xs text-[var(--text-secondary)] mt-3">{data.academia || t("semAcademia")}</p>
             <p className="text-xs text-[var(--text-muted)] mt-1">{data.email}</p>
             {data.dataInicio && (
-              <p className="text-xs text-[var(--text-muted)] mt-0.5">🥋 Desde {new Date(data.dataInicio).toLocaleDateString("pt-BR")}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5">{t("desde")} {new Date(data.dataInicio).toLocaleDateString("pt-BR")}</p>
             )}
           </div>
 
@@ -195,7 +196,7 @@ export default function PerfilClient({ role }: { role: string }) {
                 <div className="flex flex-wrap gap-2 mb-3">
                   {emojis.map((emoji) => (
                     <button key={emoji} type="button" onClick={() => selecionarAvatar(emoji)}
-                      aria-label={`Usar emoji ${emoji} como avatar`}
+                      aria-label={tp("usarEmojiAvatar").replace("{emoji}", emoji)}
                       aria-pressed={avatarUrl === emoji}
                       className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-all ${avatarUrl === emoji ? "scale-110" : "border hover:border-[var(--gold)]"}`}
                       style={avatarUrl === emoji ? { background: "var(--gold)", outline: "2px solid var(--gold)" } : { background: "rgba(255,255,255,0.03)", borderColor: "var(--border)" }}
@@ -261,7 +262,7 @@ export default function PerfilClient({ role }: { role: string }) {
                     </span>
                   </h3>
                   <p className="text-xs text-[var(--text-secondary)] mb-3">
-                    Desconto familiar de <span className="text-[var(--gold)] font-bold">{data.familia.desconto}%</span>
+                    {tp("descontoFamiliar")} <span className="text-[var(--gold)] font-bold">{data.familia.desconto}%</span>
                   </p>
                   <div className="space-y-1.5">
                     {data.familia.membros
@@ -275,7 +276,7 @@ export default function PerfilClient({ role }: { role: string }) {
                         </div>
                       ))}
                     {data.familia.membros.filter((m) => m.id !== data.id).length === 0 && (
-                      <p className="text-xs text-[var(--text-muted)]">Você é o único membro desta família</p>
+                      <p className="text-xs text-[var(--text-muted)]">{tp("unicoMembro")}</p>
                     )}
                   </div>
                 </div>

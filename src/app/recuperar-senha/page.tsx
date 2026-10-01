@@ -3,8 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useT } from "@/lib/use-t"
 
 export default function RecuperarSenha() {
+  const t = useT("recuperarSenha")
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
@@ -45,7 +47,7 @@ export default function RecuperarSenha() {
       if (!res.ok) { setError(data.error); return }
       setSent(true)
     } catch {
-      setError("Erro de conexão")
+      setError(t("erroConexao"))
     } finally {
       setLoading(false)
     }
@@ -57,7 +59,7 @@ export default function RecuperarSenha() {
       <div className="w-full max-w-sm relative z-10">
         <button onClick={() => router.push("/")} className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--gold)] bg-[var(--bg-surface)] hover:bg-[var(--border)] px-3 py-1.5 rounded-full transition-all mb-6">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-          Voltar ao início
+          {t("voltarInicio")}
         </button>
         <div className="text-center mb-8">
           <div className="relative inline-flex mb-4">
@@ -75,7 +77,7 @@ export default function RecuperarSenha() {
             The Jiu Jitsu Revolution
           </p>
           <p className="text-sm mt-1.5" style={{ color: "var(--gold)" }}>
-            {sent ? "Verifique seu e-mail" : "Digite seu email para receber o link"}
+            {sent ? t("tituloEnviado") : t("tituloDigite")}
           </p>
         </div>
 
@@ -86,20 +88,20 @@ export default function RecuperarSenha() {
                 📧
               </div>
               <p className="text-sm text-[var(--text-secondary)]">
-                Se <strong className="text-[var(--text)]">{email}</strong> estiver cadastrado, você receberá um link para redefinir sua senha.
+                {t("emailEnviado").replace("{email}", email)}
               </p>
               <p className="text-xs text-[var(--text-muted)]">
-                Não encontrou? Verifique a pasta de spam.
+                {t("verificarSpam")}
               </p>
               <button onClick={() => setSent(false)}
                 className="w-full py-3 rounded-xl text-sm font-bold btn-gold">
-                Tentar com outro e-mail
+                {t("tentarOutro")}
               </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">Email</label>
+                <label className="text-xs font-semibold text-[var(--text-secondary)] block mb-1.5 tracking-wide">{t("emailLabel")}</label>
                 <input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" required />
               </div>
 
@@ -109,14 +111,14 @@ export default function RecuperarSenha() {
 
               <button type="submit" disabled={loading}
                 className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] btn-gold">
-                {loading ? "Enviando..." : "Enviar link"}
+                {loading ? t("enviando") : t("enviarLink")}
               </button>
             </form>
           )}
 
           <p className="text-center text-xs text-[var(--text-secondary)]">
-            Lembrou?{" "}
-            <Link href="/login" style={{ color: "var(--gold)" }} className="font-semibold">Fazer login</Link>
+            {t("lembrou")}{" "}
+            <Link href="/login" style={{ color: "var(--gold)" }} className="font-semibold">{t("fazerLogin")}</Link>
           </p>
         </div>
       </div>

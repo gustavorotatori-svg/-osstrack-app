@@ -6,12 +6,17 @@ import { PageTransition } from "@/components/ui/page-transition"
 import { BackButton } from "@/components/ui/back-button"
 import { CardSkeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 import { FileText, CheckCircle2, Clock } from "lucide-react"
 
 type WaiverTermo = { versao: number; titulo: string; conteudo: string }
 type WaiverAssinatura = { assinadoEm: string; nomeCompleto: string; cpf: string }
 
 export default function AlunoWaiverPage() {
+  const t = useT("aluno.waiver")
+  const { locale } = useLocale()
   const [loading, setLoading] = useState(true)
   const [termo, setTermo] = useState<WaiverTermo | null>(null)
   const [minhaAssinatura, setMinhaAssinatura] = useState<WaiverAssinatura | null>(null)
@@ -42,13 +47,13 @@ export default function AlunoWaiverPage() {
       if (r.ok) {
         const assinatura = await r.json()
         setMinhaAssinatura(assinatura)
-        toast.success("Termo assinado com sucesso!")
+        toast.success(t("toastAssinado"))
       } else {
         const err = await r.json().catch(() => null)
-        toast.error(err?.error || "Não foi possível assinar o termo")
+        toast.error(err?.error || t("erroAssinar"))
       }
     } catch {
-      toast.error("Erro de conexão. Tente novamente.")
+      toast.error(t("erroConexao"))
     } finally {
       setAssinando(false)
     }
@@ -64,8 +69,8 @@ export default function AlunoWaiverPage() {
               <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Termo de Responsabilidade</h3>
-              <p className="text-xs text-[var(--text-secondary)]">Termo da academia {termo ? "" : "— carregando..."}</p>
+              <h3 className="font-bold text-lg">{t("titulo")}</h3>
+              <p className="text-xs text-[var(--text-secondary)]">{t("subtitulo")} {termo ? "" : t("carregando")}</p>
             </div>
           </div>
 
@@ -76,9 +81,9 @@ export default function AlunoWaiverPage() {
               <div className="w-14 h-14 rounded-2xl bg-[rgba(212,168,71,0.06)] border border-[rgba(212,168,71,0.1)] flex items-center justify-center mx-auto mb-4">
                 <Clock className="w-7 h-7 text-[var(--gold)]" />
               </div>
-              <h4 className="font-bold mb-1">Ainda não há termo disponível</h4>
+              <h4 className="font-bold mb-1">{t("semTermoTitulo")}</h4>
               <p className="text-sm text-[var(--text-secondary)] max-w-sm mx-auto">
-                Sua academia ainda não publicou o termo de responsabilidade. Ele aparecerá aqui quando disponível.
+                {t("semTermoDesc")}
               </p>
             </div>
           ) : minhaAssinatura ? (
@@ -86,15 +91,15 @@ export default function AlunoWaiverPage() {
               <div className="w-16 h-16 rounded-full bg-green-600/15 border border-green-600/30 flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="w-8 h-8 text-green-400" />
               </div>
-              <h4 className="font-bold text-lg mb-1">Termo assinado!</h4>
+              <h4 className="font-bold text-lg mb-1">{t("assinadoTitulo")}</h4>
               <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Versão {termo.versao} assinada em {new Date(minhaAssinatura.assinadoEm).toLocaleDateString("pt-BR")}.
+                {t("assinadoDesc").replace("{versao}", String(termo.versao)).replace("{data}", new Date(minhaAssinatura.assinadoEm).toLocaleDateString(intlLocales[locale]))}.
               </p>
               <div className="max-w-md mx-auto text-left rounded-xl p-4" style={{ background: "var(--bg-surface)" }}>
-                <p className="text-xs text-[var(--text-muted)] mb-1">Assinado como</p>
+                <p className="text-xs text-[var(--text-muted)] mb-1">{t("assinadoComo")}</p>
                 <p className="text-sm font-bold">{minhaAssinatura.nomeCompleto}</p>
                 <p className="text-[10px] text-[var(--text-muted)] mt-2">
-                  CPF e dados de assinatura armazenados de forma segura para fins legais.
+                  {t("cpfNota")}
                 </p>
               </div>
             </div>
@@ -104,7 +109,7 @@ export default function AlunoWaiverPage() {
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-bold">{termo.titulo}</h4>
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-[rgba(212,168,71,0.1)] text-[var(--gold)] font-semibold">
-                    Versão {termo.versao}
+                    {t("versaoBadge").replace("{versao}", String(termo.versao))}
                   </span>
                 </div>
                 <div className="text-sm text-[var(--white-muted)] leading-relaxed whitespace-pre-line max-h-72 overflow-y-auto pr-2">
@@ -113,24 +118,23 @@ export default function AlunoWaiverPage() {
               </div>
 
               <form onSubmit={assinar} className="glass-card p-6 space-y-4">
-                <h4 className="font-bold">Assinar termo</h4>
+                <h4 className="font-bold">{t("assinarTitulo")}</h4>
                 <p className="text-xs text-[var(--text-secondary)]">
-                  Ao assinar, você declara que leu e concorda com o termo acima. A assinatura é registrada digitalmente
-                  (nome, CPF, data e dispositivo) e vale como assinatura para todos os fins legais.
+                  {t("assinarDesc")}
                 </p>
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">Nome completo</label>
+                  <label className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">{t("nomeLabel")}</label>
                   <input
                     type="text"
                     required
                     className="input-field"
-                    placeholder="Seu nome completo"
+                    placeholder={t("nomePlaceholder")}
                     value={nomeCompleto}
                     onChange={(e) => setNomeCompleto(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">CPF</label>
+                  <label className="block text-xs font-semibold text-[var(--white-muted)] mb-1.5">{t("cpfLabel")}</label>
                   <input
                     type="text"
                     required
@@ -146,7 +150,7 @@ export default function AlunoWaiverPage() {
                   disabled={assinando}
                   className="btn-gold px-8 py-3.5 text-sm font-bold w-full disabled:opacity-50 active:scale-[0.98]"
                 >
-                  {assinando ? "Assinando..." : "Assinar termo"}
+                  {assinando ? t("assinando") : t("assinarBtn")}
                 </button>
               </form>
             </>

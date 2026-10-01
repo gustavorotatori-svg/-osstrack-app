@@ -1,16 +1,31 @@
 "use client"
 
+import { useT } from "@/lib/use-t"
+
 export function DonoScreenshotDemo() {
+  const t = useT("pagDemoDono")
+  const tShort = useT("mesesShort")
+
   const stats = [
-    { value: "47", label: "Alunos", color: "#60a5fa" },
-    { value: "3", label: "Professores", color: "#a855f7" },
-    { value: "312", label: "Presenças", color: "#22c55e" },
-    { value: "89", label: "Este Mês", color: "#d4a84b" },
+    { value: "47", labelKey: "statAlunos", color: "#60a5fa" },
+    { value: "3", labelKey: "statProfessores", color: "#a855f7" },
+    { value: "312", labelKey: "statPresencas", color: "#22c55e" },
+    { value: "89", labelKey: "statEsteMes", color: "#d4a84b" },
   ]
 
-  const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"]
+  const meses = [0, 1, 2, 3, 4, 5]
   const dados = [180, 210, 195, 245, 290, 312]
   const maxDado = Math.max(...dados, 1)
+
+  const quickActions = ["acaoTurmas", "acaoAlunos", "acaoPresencas", "acaoGraduacoes"]
+
+  const faixas = [
+    { faixa: "Branca", count: 2, pct: 33, cor: "#e5e5e5" },
+    { faixa: "Azul", count: 2, pct: 33, cor: "#2563eb" },
+    { faixa: "Roxa", count: 1, pct: 17, cor: "#9333ea" },
+    { faixa: "Marrom", count: 1, pct: 17, cor: "#92400e" },
+  ]
+  const totalFaixas = faixas.reduce((acc, f) => acc + f.count, 0)
 
   const presencas = [
     { aluno: "Rafael Oliveira", data: "17/06", status: "confirmed" },
@@ -28,7 +43,7 @@ export function DonoScreenshotDemo() {
           <div style={{ width: 20, height: 20, borderRadius: 6, background: "linear-gradient(135deg, #d4a84b, #b8912e)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 900, color: "#000" }}>O</div>
           <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.8)" }}>OssTrack</span>
         </div>
-        <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>dono</span>
+        <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em" }}>{t("perfil")}</span>
       </div>
 
       {/* Scrollable */}
@@ -41,7 +56,7 @@ export function DonoScreenshotDemo() {
           position: "relative", overflow: "hidden",
         }}>
           <div style={{ position: "relative", zIndex: 1 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: "#d4a84b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>DONO</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "#d4a84b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>{t("dono")}</div>
             <div style={{ fontSize: 18, fontWeight: 900 }}>Academia Modelo</div>
             <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 2 }}>Carlos Silva</div>
           </div>
@@ -49,12 +64,12 @@ export function DonoScreenshotDemo() {
 
         {/* Quick actions */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 12 }}>
-          {["Turmas", "Alunos", "Presenças", "Graduações"].map((label) => (
-            <div key={label} style={{
+          {quickActions.map((key) => (
+            <div key={key} style={{
               padding: "8px 4px", borderRadius: 10, textAlign: "center",
               background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)",
             }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.6)" }}>{label}</div>
+              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.6)" }}>{t(key)}</div>
             </div>
           ))}
         </div>
@@ -62,9 +77,9 @@ export function DonoScreenshotDemo() {
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 8, marginBottom: 12 }}>
           {stats.map((s) => (
-            <div key={s.label} style={{ padding: "12px", borderRadius: 12, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
+            <div key={s.labelKey} style={{ padding: "12px", borderRadius: 12, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
               <div style={{ fontSize: 20, fontWeight: 900, color: s.color }}>{s.value}</div>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: 2 }}>{s.label}</div>
+              <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.05em", marginTop: 2 }}>{t(s.labelKey)}</div>
             </div>
           ))}
         </div>
@@ -75,14 +90,14 @@ export function DonoScreenshotDemo() {
           padding: "8px 12px", borderRadius: 10, fontSize: 11, fontWeight: 700, color: "#22c55e",
           background: "rgba(34,197,94,0.05)", border: "1px solid rgba(34,197,94,0.1)",
         }}>
-          <span>+29% crescimento vs mês anterior</span>
+          <span>{t("crescimento").replace("{pct}", "29")}</span>
         </div>
 
         {/* Chart */}
         <div style={{ padding: 16, borderRadius: 16, border: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.01)", marginBottom: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-            <span style={{ fontSize: 11, fontWeight: 800 }}>Presenças por Mês</span>
-            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>Últimos 6 meses</span>
+            <span style={{ fontSize: 11, fontWeight: 800 }}>{t("presencasPorMes")}</span>
+            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>{t("ultimosMeses").replace("{n}", "6")}</span>
           </div>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 72 }}>
             {dados.map((v, i) => {
@@ -95,7 +110,7 @@ export function DonoScreenshotDemo() {
                     width: "100%", height, borderRadius: "6px 6px 0 0",
                     background: isCurrent ? "linear-gradient(180deg, #d4a84b 0%, rgba(201,168,76,0.4) 100%)" : "rgba(255,255,255,0.08)",
                   }} />
-                  <span style={{ fontSize: 7, color: "rgba(255,255,255,0.3)" }}>{meses[i]}</span>
+                  <span style={{ fontSize: 7, color: "rgba(255,255,255,0.3)" }}>{tShort(String(meses[i]))}</span>
                 </div>
               )
             })}
@@ -105,15 +120,10 @@ export function DonoScreenshotDemo() {
         {/* Alunos section */}
         <div style={{ padding: 16, borderRadius: 16, border: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.01)", marginBottom: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-            <span style={{ fontSize: 11, fontWeight: 800 }}>Alunos por Faixa</span>
-            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>6 total</span>
+            <span style={{ fontSize: 11, fontWeight: 800 }}>{t("alunosPorFaixa")}</span>
+            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>{t("total").replace("{n}", String(totalFaixas))}</span>
           </div>
-          {[
-            { faixa: "Branca", count: 2, pct: 33, cor: "#e5e5e5" },
-            { faixa: "Azul", count: 2, pct: 33, cor: "#2563eb" },
-            { faixa: "Roxa", count: 1, pct: 17, cor: "#9333ea" },
-            { faixa: "Marrom", count: 1, pct: 17, cor: "#92400e" },
-          ].map((f) => (
+          {faixas.map((f) => (
             <div key={f.faixa} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 10, fontWeight: 700, width: 56, flexShrink: 0, color: f.cor }}>
                 {f.faixa === "Branca" ? "⬜" : f.faixa === "Azul" ? "🟦" : f.faixa === "Roxa" ? "🟪" : "🟫"} {f.faixa}
@@ -128,7 +138,7 @@ export function DonoScreenshotDemo() {
 
         {/* Presenças recentes */}
         <div style={{ padding: 16, borderRadius: 16, border: "1px solid rgba(255,255,255,0.04)", background: "rgba(255,255,255,0.01)" }}>
-          <span style={{ fontSize: 11, fontWeight: 800, display: "block", marginBottom: 10 }}>Presenças Recentes</span>
+          <span style={{ fontSize: 11, fontWeight: 800, display: "block", marginBottom: 10 }}>{t("presencasRecentes")}</span>
           {presencas.map((p) => (
             <div key={`${p.aluno}-${p.data}`} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
               <div>
@@ -139,7 +149,7 @@ export function DonoScreenshotDemo() {
                 fontSize: 9, fontWeight: 700, padding: "2px 8px", borderRadius: 6,
                 background: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.15)",
               }}>
-                Presente
+                {t("presente")}
               </span>
             </div>
           ))}

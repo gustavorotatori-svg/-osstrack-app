@@ -16,7 +16,7 @@ type MestreData = {
 } | null
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
-const CATEGORIA_LABELS: Record<string, string> = { adulto: "🥋 Adulto", master: "🏆 Master", infantil: "⭐ Infantil" }
+const CATEGORIA_LABEL_KEYS: Record<string, string> = { adulto: "mestreDoMesCatAdulto", master: "mestreDoMesCatMaster", infantil: "mestreDoMesCatInfantil" }
 const CATEGORIA_COLORS: Record<string, string> = { adulto: "#60a5fa", master: "#a855f7", infantil: "#f97316" }
 
 export function MestreDoMesCard() {
@@ -54,7 +54,7 @@ export function MestreDoMesCard() {
                 style={{ background: CATEGORIA_COLORS[cat] }}
               />
               <div className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{ color: CATEGORIA_COLORS[cat] }}>
-                {CATEGORIA_LABELS[cat]}
+                {t(CATEGORIA_LABEL_KEYS[cat])}
               </div>
               {m ? (
                 <>
@@ -76,7 +76,7 @@ export function MestreDoMesCard() {
           onClick={() => router.push("/dashboard/aluno/ranking")}
           className="inline-flex items-center gap-1 text-xs text-[var(--gold)] font-semibold hover:underline"
         >
-          Ver ranking completo →
+          {t("mestreDoMesVerRanking")}
         </button>
       </div>
     </div>

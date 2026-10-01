@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { AlertTriangleIcon } from "./icons"
+import { useT } from "@/lib/use-t"
 
 export function ErrorFallback({
   error,
@@ -10,6 +11,7 @@ export function ErrorFallback({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const t = useT("shared")
   useEffect(() => {
     console.error(error)
   }, [error])
@@ -20,15 +22,15 @@ export function ErrorFallback({
         <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-6">
           <AlertTriangleIcon className="w-6 h-6 text-red-400" />
         </div>
-        <h2 className="text-lg font-bold mb-2">Algo deu errado</h2>
+        <h2 className="text-lg font-bold mb-2">{t("erroTitulo")}</h2>
         <p className="text-sm text-[var(--white-muted)] leading-relaxed mb-6">
-          Não foi possível carregar esta página. Tente novamente.
+          {t("erroDesc")}
         </p>
         <button
           onClick={reset}
           className="btn-gold px-6 py-3 rounded-xl font-bold text-sm"
         >
-          Tentar novamente
+          {t("tentarNovamente")}
         </button>
       </div>
     </div>

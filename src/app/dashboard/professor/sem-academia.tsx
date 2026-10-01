@@ -11,6 +11,7 @@ import { PageTransition } from "@/components/ui/page-transition"
 export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: string }) {
   const router = useRouter()
   const t = useT("professor.dashboard")
+  const ts = useT("professor.semAcademia")
   const [busca, setBusca] = useState("")
   const [resultados, setResultados] = useState<{ id: string; nome: string; cidade: string }[]>([])
   const [buscando, setBuscando] = useState(false)
@@ -23,7 +24,7 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
       const res = await fetch(`/api/academias?q=${encodeURIComponent(q)}`)
       const data = await res.json()
       setResultados(data)
-    } catch { toast.error("Erro ao buscar academias"); setResultados([]) }
+    } catch { toast.error(ts("erroBuscar")); setResultados([]) }
     setBuscando(false)
   }
 
@@ -42,8 +43,8 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
         <div className="max-w-2xl mx-auto mt-12 px-6 text-center">
           <div className="hero">
             <div className="relative z-10">
-              <div className="label text-[var(--gold)] mb-2">PROFESSOR</div>
-              <h1 className="hero-title">{t("titulo")}</h1>
+              <div className="label text-[var(--gold)] mb-2">{ts("rotulo")}</div>
+              <h1 className="hero-title">{ts("titulo")}</h1>
               <p className="hero-sub">{nome} · {faixa}</p>
             </div>
           </div>
@@ -52,22 +53,22 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
             <div className="w-16 h-16 rounded-2xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center mx-auto mb-4">
               <MapPin className="w-7 h-7 text-[var(--gold)]" />
             </div>
-            <h2 className="h3 mb-2">Você ainda não está vinculado a uma academia</h2>
+            <h2 className="h3 mb-2">{ts("semVinculo")}</h2>
             <p className="text-sm text-[var(--text-secondary)] mb-6">
-              Encontre sua academia para começar a usar o OssTrack
+              {ts("semVinculoDesc")}
             </p>
 
             <div className="relative mb-4">
               <input
                 type="text"
                 className="input pl-10"
-                placeholder="Buscar academia..."
-                aria-label="Buscar academia"
+                placeholder={ts("placeholderBusca")}
+                aria-label={ts("buscarAria")}
                 value={busca}
                 onChange={(e) => buscar(e.target.value)}
               />
               <Search className="w-4 h-4 absolute left-3 top-3.5 text-[var(--text-muted)]" />
-              {buscando && <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">Buscando...</span>}
+              {buscando && <span className="absolute right-3 top-3 text-xs text-[var(--gold)]">{t("buscando")}</span>}
             </div>
 
             {resultados.length > 0 && (
@@ -82,7 +83,7 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
                       onClick={() => solicitarVinculo(acad.id)}
                       className="btn btn-primary text-xs py-2 px-4 min-h-0"
                     >
-                      Solicitar
+                      {t("solicitar")}
                     </button>
                   </div>
                 ))}
@@ -91,7 +92,7 @@ export function ProfessorSemAcademia({ nome, faixa }: { nome: string; faixa: str
 
             {busca.length >= 2 && resultados.length === 0 && !buscando && (
               <p className="text-xs text-[var(--text-secondary)]">
-                Nenhuma academia encontrada. Tente outro termo.
+                {ts("nenhumaEncontrada")}
               </p>
             )}
           </div>

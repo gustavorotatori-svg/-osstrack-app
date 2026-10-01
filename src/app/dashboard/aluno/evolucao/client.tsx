@@ -14,6 +14,8 @@ type Props = {
 
 export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) {
   const t = useT("aluno.evolucao")
+  const td = useT("dashboard")
+  const tad = useT("aluno.dashboard")
 
   if (!graduacoes || graduacoes.length === 0) {
     return (
@@ -22,7 +24,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
           <div className="max-w-5xl mx-auto space-y-4">
             <div className="glass-card p-8 text-center">
               <FileSearch className="w-10 h-10 mb-3 mx-auto text-[var(--text-secondary)]" />
-              <p className="text-sm text-[var(--text-secondary)]">Nenhuma graduação disponível</p>
+              <p className="text-sm text-[var(--text-secondary)]">{t("semGraduacao")}</p>
             </div>
           </div>
         </PageTransition>
@@ -66,7 +68,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
           <div className="absolute top-[-60px] right-[-60px] w-40 h-40 bg-[var(--gold)]/5 rounded-full blur-3xl" />
           <div className="absolute bottom-[-40px] left-[-40px] w-32 h-32 bg-[var(--gold)]/3 rounded-full blur-3xl" />
           <div className="relative z-10">
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">Evolução</span>
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--gold)]">{td("evolucao")}</span>
             <h1 className="text-2xl font-black tracking-tight">{t("title")}</h1>
             <p className="text-xs text-[var(--text-secondary)] mt-1">{t("subtitle")}</p>
           </div>
@@ -88,7 +90,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
               <span className="live-dot" />
             </div>
             <div className="stat-glass-value text-lg">{mediaMensal}</div>
-            <div className="stat-glass-label">média/mês</div>
+            <div className="stat-glass-label">{t("mediaMes")}</div>
           </div>
           <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
@@ -96,7 +98,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
               <span className={`w-1.5 h-1.5 rounded-full ${diasDesdeInicio > 30 ? "bg-emerald-500" : "bg-gray-500"} inline-block`} />
             </div>
             <div className="stat-glass-value text-lg">{diasDesdeInicio}</div>
-            <div className="stat-glass-label">dias ativo</div>
+            <div className="stat-glass-label">{t("diasAtivo")}</div>
           </div>
           <div className="stat-glass">
             <div className="flex items-center justify-between mb-2">
@@ -113,9 +115,9 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-[var(--gold)]" />
-              <span className="section-header mb-0">Aulas por mês</span>
+              <span className="section-header mb-0">{t("aulasPorMes")}</span>
             </div>
-            <span className="text-[10px] text-[var(--text-muted)]">últimos 6 meses</span>
+            <span className="text-[10px] text-[var(--text-muted)]">{t("ultimos6Meses")}</span>
           </div>
           <div className="flex items-end gap-2 h-28">
             {presencasMensais.map((m, i) => {
@@ -169,7 +171,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
                         <div className="h-full bg-gradient-to-r from-[var(--gold-dim)] via-[var(--gold)] to-[var(--gold)] rounded-full transition-all duration-700" style={{ width: `${progress}%` }} />
                       </div>
                       <div className="flex justify-between text-[10px] text-[var(--text-secondary)] mt-1">
-                        <span>{aluno.totalAulas}/{totalClassesNeeded} aulas</span>
+                        <span>{t("progressoAulas").replace("{atual}", String(aluno.totalAulas)).replace("{total}", String(totalClassesNeeded))}</span>
                         <span className="text-[var(--gold)] font-semibold">{Math.round(progress)}%</span>
                       </div>
                     </div>
@@ -185,26 +187,26 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
           <div className="glass-card p-5">
             <div className="flex items-center gap-2 mb-3">
               <Target className="w-4 h-4 text-[var(--gold)]" />
-              <span className="section-header mb-0">Projeção</span>
+              <span className="section-header mb-0">{t("projecao")}</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="text-center p-4 rounded-xl bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
-                  <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">Próxima Faixa</div>
+                  <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">{tad("proximaFaixa")}</div>
                 <div className="text-lg font-black">{getBeltEmoji(nextGrad.faixa)} {nextGrad.faixa}</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
-                  <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">Aulas Restantes</div>
+                  <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">{t("aulasRestantes")}</div>
                 <div className="text-lg font-black text-[var(--gold)]">{aulasRestantes}</div>
               </div>
               <div className="text-center p-4 rounded-xl bg-[rgba(255,255,255,0.02)] border border-[rgba(255,255,255,0.06)]">
-                <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">Previsão</div>
+                <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-wide mb-1">{t("previsao")}</div>
                 <div className="text-lg font-black text-emerald-400">
                   {dataProxima ? dataProxima.toLocaleDateString("pt-BR", { month: "short", year: "numeric" }) : "---"}
                 </div>
               </div>
             </div>
             <div className="mt-3 text-[10px] text-[var(--text-secondary)] text-center">
-              Com base na sua média de {aulasPorDia.toFixed(1)} aulas/dia ({mediaMensal} aulas/mês)
+              {t("baseProjecao").replace("{dia}", aulasPorDia.toFixed(1)).replace("{mes}", String(mediaMensal))}
             </div>
           </div>
         )}
@@ -213,7 +215,7 @@ export function EvolutionClient({ aluno, graduacoes, presencasMensais }: Props) 
         <div className="glass-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <BarChart3 className="w-4 h-4 text-[var(--gold)]" />
-            <span className="section-header mb-0">Ritmo</span>
+            <span className="section-header mb-0">{t("ritmo")}</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {steps.map((faixa, i) => {

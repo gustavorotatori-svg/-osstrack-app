@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { GiftIcon } from "@/components/ui/icons"
 import { getBeltColor } from "@/lib/utils"
+import { useT } from "@/lib/use-t"
 
 type Aniversariante = {
   id: string
@@ -13,6 +14,8 @@ type Aniversariante = {
 }
 
 export function BirthdaysCard() {
+  const t = useT("gamification")
+  const tMeses = useT("meses")
   const [aniversariantes, setAniversariantes] = useState<Aniversariante[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -25,13 +28,13 @@ export function BirthdaysCard() {
 
   if (loading || aniversariantes.length === 0) return null
 
-  const nomeMes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][new Date().getMonth()]
+  const nomeMes = tMeses(String(new Date().getMonth()))
 
   return (
     <div className="glass-card-accent p-5" style={{"--accent-color": "var(--belt-vermelha)"} as React.CSSProperties}>
       <div className="flex items-center gap-2 mb-3">
         <GiftIcon className="w-5 h-5 text-pink-400" />
-        <span className="section-header mb-0">Aniversariantes de {nomeMes}</span>
+        <span className="section-header mb-0">{t("birthdaysTitulo").replace("{mes}", nomeMes)}</span>
         <span className="badge ml-auto">{aniversariantes.length}</span>
       </div>
       <div className="flex flex-wrap gap-2">

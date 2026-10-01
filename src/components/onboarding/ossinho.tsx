@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
 import { X } from "lucide-react"
 
 function OssinhoIcon({ size = 48 }: { size?: number }) {
@@ -94,6 +95,8 @@ function getTipId(role: string, pathname: string): string | null {
 
 export function Ossinho({ role, pathname }: { role: string; pathname: string }) {
   const tBase = useT("ossinho")
+  const tOnboarding = useT("onboarding")
+  const { locale } = useLocale()
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState<Set<string>>(new Set())
   const [tip, setTip] = useState<OssinhoTip | null>(null)
@@ -147,7 +150,7 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role, pathname, dismissed])
+  }, [role, pathname, dismissed, locale])
 
   function dismiss() {
     if (!tip) return
@@ -174,8 +177,8 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             <div className="relative bg-[var(--dark-card)] border border-[var(--gold)]/20 rounded-2xl p-4 shadow-2xl shadow-black/40">
               <button
                 onClick={dismiss}
-                aria-label="Fechar dica"
-                title="Fechar dica"
+                aria-label={tOnboarding("ossinhoFecharDica")}
+                title={tOnboarding("ossinhoFecharDica")}
                 className="absolute -top-2.5 -right-2.5 w-9 h-9 rounded-full bg-[var(--dark-border)] border border-[var(--gold)]/20 flex items-center justify-center hover:bg-[var(--gold)]/20 transition-colors"
               >
                 <X className="w-4 h-4 text-[var(--white-muted)]" />
@@ -211,7 +214,7 @@ export function Ossinho({ role, pathname }: { role: string; pathname: string }) 
             className="w-12 h-12 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform active:scale-95"
             role="button"
             tabIndex={0}
-            aria-label="Fechar dica"
+            aria-label={tOnboarding("ossinhoFecharDica")}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault()

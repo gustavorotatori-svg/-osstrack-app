@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import { usePushNotifications } from "@/lib/use-push"
+import { useT } from "@/lib/use-t"
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -27,70 +28,44 @@ function detectDevice(): DeviceType {
   return "other"
 }
 
-const STEPS: Record<DeviceType, { icon: string; title: string; instructions: string[] }> = {
-  "android-chrome": {
-    icon: "📱",
-    title: "Adicionar à Tela Inicial",
-    instructions: [
-      "Toque no menu ⋮ (três pontinhos) no canto superior direito",
-      "Role até encontrar a opção 'Adicionar à tela inicial'",
-      "Toque em 'Adicionar' para confirmar",
-      "Pronto! O ícone do OssTrack aparecerá na sua tela inicial",
-    ],
-  },
-  "ios-safari": {
-    icon: "🍎",
-    title: "Adicionar à Tela de Início",
-    instructions: [
-      "Toque no ícone de Compartilhar ↑ na barra inferior do Safari",
-      "Role a lista e toque em 'Adicionar à Tela de Início'",
-      "Edite o nome (opcional) e toque em 'Adicionar' no canto superior direito",
-      "Pronto! O ícone do OssTrack aparecerá na sua tela inicial",
-    ],
-  },
-  "desktop-chrome": {
-    icon: "💻",
-    title: "Instalar no Computador",
-    instructions: [
-      "Clique no ícone de instalar 🖥️ na barra de endereço (canto direito)",
-      "Ou clique no menu ⋮ → 'Instalar OssTrack'",
-      "Clique em 'Instalar' na janela que aparecer",
-      "Pronto! O OssTrack abrirá como uma janela separada",
-    ],
-  },
-  "desktop-edge": {
-    icon: "💻",
-    title: "Instalar no Computador",
-    instructions: [
-      "Clique no ícone de instalar na barra de endereço",
-      "Ou clique no menu ⋯ → 'Aplicativos' → 'Instalar este site como um aplicativo'",
-      "Clique em 'Instalar' na janela que aparecer",
-      "Pronto! O OssTrack abrirá como uma janela separada",
-    ],
-  },
-  "desktop-other": {
-    icon: "💻",
-    title: "Adicionar aos Favoritos",
-    instructions: [
-      "Pressione Ctrl+D (Windows/Linux) ou Cmd+D (Mac) para favoritar",
-      "Para melhor experiência, use Chrome ou Edge para instalar como aplicativo",
-      "No Chrome: clique no ícone 🖥️ na barra de endereço",
-      "No Edge: clique em ⋯ → 'Aplicativos' → 'Instalar este site'",
-    ],
-  },
-  "other": {
-    icon: "📲",
-    title: "Adicionar à Tela Inicial",
-    instructions: [
-      "Abra o menu do navegador (⋮ ou ⋯)",
-      "Procure por 'Adicionar à tela inicial' ou 'Instalar aplicativo'",
-      "Confirme a instalação",
-      "Pronto! O ícone do OssTrack estará na sua tela inicial",
-    ],
-  },
+function buildSteps(t: (k: string) => string): Record<DeviceType, { icon: string; title: string; instructions: string[] }> {
+  return {
+    "android-chrome": {
+      icon: "📱",
+      title: t("android.titulo"),
+      instructions: [t("android.i1"), t("android.i2"), t("android.i3"), t("android.i4")],
+    },
+    "ios-safari": {
+      icon: "🍎",
+      title: t("ios.titulo"),
+      instructions: [t("ios.i1"), t("ios.i2"), t("ios.i3"), t("ios.i4")],
+    },
+    "desktop-chrome": {
+      icon: "💻",
+      title: t("chrome.titulo"),
+      instructions: [t("chrome.i1"), t("chrome.i2"), t("chrome.i3"), t("chrome.i4")],
+    },
+    "desktop-edge": {
+      icon: "💻",
+      title: t("edge.titulo"),
+      instructions: [t("edge.i1"), t("edge.i2"), t("edge.i3"), t("edge.i4")],
+    },
+    "desktop-other": {
+      icon: "💻",
+      title: t("outro.titulo"),
+      instructions: [t("outro.i1"), t("outro.i2"), t("outro.i3"), t("outro.i4")],
+    },
+    "other": {
+      icon: "📲",
+      title: t("generic.titulo"),
+      instructions: [t("generic.i1"), t("generic.i2"), t("generic.i3"), t("generic.i4")],
+    },
+  }
 }
 
 export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
+  const t = useT("pwa.step")
+  const STEPS = buildSteps(t)
   const [step, setStep] = useState<"pwa" | "push">("pwa")
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [installed, setInstalled] = useState(false)
@@ -159,7 +134,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
             <div>
               <h2 className="text-xl font-extrabold">{pwaStep.title}</h2>
               <p className="text-sm text-[var(--text-secondary)] mt-1">
-                Adicione o OssTrack à sua área de trabalho para acessar rápido como um app nativo
+                {t("subtitle")}
               </p>
             </div>
 
@@ -176,7 +151,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
 
             {installed && (
               <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
-                <p className="text-sm text-emerald-400 font-semibold">✓ Instalado com sucesso!</p>
+                <p className="text-sm text-emerald-400 font-semibold">{t("instalado")}</p>
               </div>
             )}
 
@@ -187,7 +162,7 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
                   className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97]"
                   style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
                 >
-                  Instalar Agora
+                  {t("instalarAgora")}
                 </button>
               )}
 
@@ -200,12 +175,12 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
                 }`}
                 style={installed || !canAutoInstall ? { background: "var(--gold)", color: "#000", fontWeight: 700 } : {}}
               >
-                {installed ? "Continuar →" : canAutoInstall ? "Pular por enquanto" : "Já adicionei! Continuar →"}
+                {installed ? t("continuar") : canAutoInstall ? t("pular") : t("jaAdicionei")}
               </button>
             </div>
 
             <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
-              Depois de instalar, você pode acessar o OssTrack de qualquer lugar com um toque
+              {t("rodape")}
             </p>
           </>
         ) : (
@@ -213,9 +188,9 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
             <div className="text-5xl mb-2">🔔</div>
 
             <div>
-              <h2 className="text-xl font-extrabold">Não perca nenhum treino</h2>
+              <h2 className="text-xl font-extrabold">{t("pushTitle")}</h2>
               <p className="text-sm text-[var(--text-secondary)] mt-1">
-                Ative as notificações para receber lembretes de check-in, novas missões e convites
+                {t("pushDesc")}
               </p>
             </div>
 
@@ -224,19 +199,19 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
                 <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>1</span>
                 </div>
-                <p className="text-sm text-[var(--text)]">Lembrete diário de check-in</p>
+                <p className="text-sm text-[var(--text)]">{t("push1")}</p>
               </div>
               <div className="flex items-start gap-3 py-2.5">
                 <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>2</span>
                 </div>
-                <p className="text-sm text-[var(--text)]">Missões diárias e conquistas</p>
+                <p className="text-sm text-[var(--text)]">{t("push2")}</p>
               </div>
               <div className="flex items-start gap-3 py-2.5">
                 <div className="w-6 h-6 rounded-full bg-[var(--gold)]/10 flex items-center justify-center shrink-0 mt-0.5">
                   <span className="text-[10px] font-bold" style={{ color: "var(--gold)" }}>3</span>
                 </div>
-                <p className="text-sm text-[var(--text)]">Convites de academia e turma</p>
+                <p className="text-sm text-[var(--text)]">{t("push3")}</p>
               </div>
             </div>
 
@@ -247,19 +222,19 @@ export function PwaInstallStep({ onComplete }: { onComplete: () => void }) {
                 className="w-full py-3.5 rounded-xl text-sm font-bold transition-all active:scale-[0.97] disabled:opacity-50"
                 style={{ background: "var(--gold)", color: "#000", fontWeight: 700 }}
               >
-                {push.loading ? "Ativando..." : "Ativar Notificações"}
+                {push.loading ? t("ativando") : t("ativarNotif")}
               </button>
 
               <button
                 onClick={handleSkip}
                 className="w-full py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.97] border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--border-hover)]"
               >
-                Agora não
+                {t("agoraNao")}
               </button>
             </div>
 
             <p className="text-[10px] text-[var(--text-muted)] leading-relaxed">
-              Você pode ativar ou desativar as notificações a qualquer momento nas configurações
+              {t("pushRodape")}
             </p>
           </>
         )}

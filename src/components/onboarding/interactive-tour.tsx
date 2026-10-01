@@ -5,45 +5,59 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { GiIcon, CrownIcon, SparklesIcon, TargetIcon } from "@/components/ui/icons"
 import { useEscape } from "@/lib/use-escape"
+import { useT } from "@/lib/use-t"
 
-const STEPS = [
-  {
-    icon: <GiIcon className="w-8 h-8" />,
-    color: "#60a5fa",
-    title: "Faça seu primeiro check-in",
-    desc: "Toque no botão vermelho e confirme sua presença. Funciona por GPS ou código.",
-    action: "Ir para Check-in",
-    href: "/dashboard/aluno/checkin",
-  },
-  {
-    icon: <CrownIcon className="w-8 h-8" />,
-    color: "var(--gold)",
-    title: "Acompanhe sua Jornada",
-    desc: "Veja seu streak, nível XP e aulas restantes para o próximo grau.",
-    action: "Ver Jornada",
-    href: "/dashboard/aluno",
-  },
-  {
-    icon: <TargetIcon className="w-8 h-8" />,
-    color: "#a855f7",
-    title: "Cumpra Missões Diárias",
-    desc: "Ganhe XP extra completando missões. Elas renovam todo dia!",
-    action: "Ver Missões",
-    href: "/dashboard/aluno",
-  },
-  {
-    icon: <SparklesIcon className="w-8 h-8" />,
-    color: "#f97316",
-    title: "Desbloqueie Conquistas",
-    desc: "Streak de 5 dias, 10 aulas no mês, madrugador... cada conquista vira um badge.",
-    action: "Ver Conquistas",
-    href: "/dashboard/aluno/conquistas",
-  },
-]
+type TourStep = {
+  icon: React.ReactNode
+  color: string
+  title: string
+  desc: string
+  action: string
+  href: string
+}
+
+function buildSteps(t: (key: string) => string): TourStep[] {
+  return [
+    {
+      icon: <GiIcon className="w-8 h-8" />,
+      color: "#60a5fa",
+      title: t("interactiveTourStep1Title"),
+      desc: t("interactiveTourStep1Desc"),
+      action: t("interactiveTourStep1Acao"),
+      href: "/dashboard/aluno/checkin",
+    },
+    {
+      icon: <CrownIcon className="w-8 h-8" />,
+      color: "var(--gold)",
+      title: t("interactiveTourStep2Title"),
+      desc: t("interactiveTourStep2Desc"),
+      action: t("interactiveTourStep2Acao"),
+      href: "/dashboard/aluno",
+    },
+    {
+      icon: <TargetIcon className="w-8 h-8" />,
+      color: "#a855f7",
+      title: t("interactiveTourStep3Title"),
+      desc: t("interactiveTourStep3Desc"),
+      action: t("interactiveTourStep3Acao"),
+      href: "/dashboard/aluno",
+    },
+    {
+      icon: <SparklesIcon className="w-8 h-8" />,
+      color: "#f97316",
+      title: t("interactiveTourStep4Title"),
+      desc: t("interactiveTourStep4Desc"),
+      action: t("interactiveTourStep4Acao"),
+      href: "/dashboard/aluno/conquistas",
+    },
+  ]
+}
 
 export function InteractiveTour({ onFinish }: { onFinish: () => void }) {
+  const t = useT("onboarding")
   const [step, setStep] = useState(0)
   const router = useRouter()
+  const STEPS = buildSteps(t)
 
   useEscape(skip, true)
 
@@ -110,7 +124,7 @@ export function InteractiveTour({ onFinish }: { onFinish: () => void }) {
 
           <div className="flex gap-2">
             <button onClick={skip} className="flex-1 py-2.5 rounded-xl text-xs font-bold text-[var(--text-muted)] hover:text-white transition-colors">
-              Pular
+              {t("interactiveTourPular")}
             </button>
             <button onClick={handleAction} className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-[var(--gold)] text-black hover:shadow-lg hover:shadow-[var(--gold)]/20 transition-all active:scale-95">
               {current.action}

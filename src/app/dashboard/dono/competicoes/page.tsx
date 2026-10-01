@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { BackButton } from "@/components/ui/back-button"
 import { DashboardShell } from "@/components/dashboard/shell"
+import { useT } from "@/lib/use-t"
+import { useLocale } from "@/components/layout/providers"
+import { intlLocales } from "@/lib/i18n"
 
 interface Competicao {
   id: string
@@ -29,10 +32,18 @@ interface Aluno {
 }
 
 const medalhas = { ouro: "🥇", prata: "🥈", bronze: "🥉", participou: "🏅" }
+const posicoes = [
+  { value: "ouro", label: "posOuro" },
+  { value: "prata", label: "posPrata" },
+  { value: "bronze", label: "posBronze" },
+  { value: "participou", label: "posParticipou" },
+] as const
 
 export default function CompeticoesPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const t = useT("dono.competicoes")
+  const { locale } = useLocale()
   const [competicoes, setCompeticoes] = useState<Competicao[]>([])
   const [alunos, setAlunos] = useState<Aluno[]>([])
   const [showForm, setShowForm] = useState(false)
@@ -90,7 +101,7 @@ export default function CompeticoesPage() {
   }
 
   async function excluirCompeticao(id: string) {
-    if (!confirm("Excluir esta competição?")) return
+    if (!confirm(t("confirmarExcluir"))) return
     await fetch(`/api/competicoes?id=${id}`, { method: "DELETE" })
     setCompeticoes((prev) => prev.filter((c) => c.id !== id))
   }
@@ -120,12 +131,12 @@ export default function CompeticoesPage() {
 
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-black tracking-tight gradient-gold-text">Competições & Torneios</h1>
-            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>Registre competições e acompanhe resultados</p>
+            <h1 className="text-2xl font-black tracking-tight gradient-gold-text">{t("title")}</h1>
+            <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>{t("subtitle")}</p>
           </div>
           {role !== "aluno" && (
             <button onClick={() => setShowForm(!showForm)} className="btn-gold text-sm px-5 py-2.5">
-              {showForm ? "Cancelar" : "+ Nova Competição"}
+              {showForm ? t("cancelar") : t("novaCompeticao")}
             </button>
           )}
         </div>
@@ -133,33 +144,33 @@ export default function CompeticoesPage() {
         {showForm && (
           <form onSubmit={criarCompeticao} className="glass-card p-6 mb-8 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input name="nome" placeholder="Nome do torneio" required className="input-field" />
+              <input name="nome" placeholder={t("placeholderNome")} required className="input-field" />
               <input name="data" type="date" required className="input-field" />
-              <input name="local" placeholder="Local (opcional)" className="input-field" />
-              <select name="faixa" aria-label="Faixa" className="input-field">
-                <option value="">Todas as faixas</option>
+              <input name="local" placeholder={t("placeholderLocal")} className="input-field" />
+              <select name="faixa" aria-label={t("faixa")} className="input-field">
+                <option value="">{t("todasFaixas")}</option>
                 <option value="Branca">Branca</option>
                 <option value="Azul">Azul</option>
                 <option value="Roxa">Roxa</option>
                 <option value="Marrom">Marrom</option>
                 <option value="Preta">Preta</option>
               </select>
-              <select name="categoria" aria-label="Categoria" className="input-field">
-                <option value="">Todas as categorias</option>
+              <select name="categoria" aria-label={t("categoria")} className="input-field">
+                <option value="">{t("todasCategorias")}</option>
                 <option value="adulto">Adulto</option>
                 <option value="infantil">Infantil</option>
                 <option value="master">Master</option>
               </select>
             </div>
-            <button type="submit" className="btn-gold text-sm px-6 py-2.5">Salvar</button>
+            <button type="submit" className="btn-gold text-sm px-6 py-2.5">{t("salvar")}</button>
           </form>
         )}
 
         {competicoes.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">🏆</div>
-            <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text)" }}>Nenhuma competição registrada</h2>
-            <p className="text-xs" style={{ color: "var(--text-muted)" }}>Registre torneios para acompanhar o desempenho dos alunos</p>
+            <h2 className="text-lg font-bold mb-1" style={{ color: "var(--text)" }}>{t("nenhumaCompeticao")}</h2>
+            <p className="text-xs" style={{ color: "var(--text-muted)" }}>{t("descEmpty")}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -169,13 +180,13 @@ export default function CompeticoesPage() {
                   <div>
                     <h3 className="text-base font-bold" style={{ color: "var(--text)" }}>{comp.nome}</h3>
                     <div className="flex items-center gap-2 mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
-                      <span>📅 {new Date(comp.data).toLocaleDateString("pt-BR")}</span>
+                      <span>📅 {new Date(comp.data).toLocaleDateString(intlLocales[locale])}</span>
                       {comp.local && <span>• 📍 {comp.local}</span>}
                       {comp.faixa && <span>• 🥋 {comp.faixa}</span>}
                     </div>
                   </div>
                   {role !== "aluno" && (
-                    <button onClick={() => excluirCompeticao(comp.id)} className="text-xs text-[var(--red)] hover:underline">Excluir</button>
+                    <button onClick={() => excluirCompeticao(comp.id)} className="text-xs text-[var(--red)] hover:underline">{t("excluir")}</button>
                   )}
                 </div>
 
@@ -190,23 +201,23 @@ export default function CompeticoesPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>Nenhum participante registrado</p>
+                  <p className="text-xs mt-2" style={{ color: "var(--text-muted)" }}>{t("nenhumParticipante")}</p>
                 )}
 
                 {role !== "aluno" && (
                   <div className="mt-3 pt-3 border-t border-[var(--border)]">
-                    <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: "var(--text-muted)" }}>Adicionar participante</p>
+                    <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: "var(--text-muted)" }}>{t("adicionarParticipante")}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {alunos.filter((a) => !comp.participacoes.find((p) => p.aluno.id === a.id)).slice(0, 8).map((aluno) => (
                         <div key={aluno.id} className="flex gap-1">
-                          {(["ouro", "prata", "bronze", "participou"] as const).map((pos) => (
+                          {posicoes.map((pos) => (
                             <button
-                              key={pos}
-                              onClick={() => adicionarParticipacao(comp.id, aluno.id, pos)}
+                              key={pos.value}
+                              onClick={() => adicionarParticipacao(comp.id, aluno.id, pos.value)}
                               className="text-[10px] px-2 py-1 rounded border border-[var(--border)] hover:border-[var(--gold)] transition-colors"
-                              title={`${aluno.nome} - ${pos}`}
+                              title={t("posicaoAria").replace("{nome}", aluno.nome).replace("{posicao}", t(pos.label))}
                             >
-                              {medalhas[pos]} {aluno.nome.split(" ")[0]}
+                              {medalhas[pos.value]} {aluno.nome.split(" ")[0]}
                             </button>
                           ))}
                         </div>
