@@ -21,9 +21,23 @@ export async function POST(req: NextRequest) {
     if (!ipCheck.allowed) {
       return NextResponse.json({ error: "Muitas tentativas. Tente novamente em 1 minuto." }, { status: 429 })
     }
-    const emailCheck = await checkRateLimit(`mobile:email:${email}`, "login")
+    const emailCheck = await checkRateLimit(`mobile:email:${email.toLowerCase()}`, "login")
     if (!emailCheck.allowed) {
       return NextResponse.json({ error: "Muitas tentativas para este e-mail. Tente novamente em 1 minuto." }, { status: 429 })
+    }
+
+    // ReCAPTCHA verification (same as web login)
+    if (process.env.RECAPTCHA_SECRET_KEY) {
+      const recaptchaToken = body.recaptchaToken
+      if (!recaptchaToken) {
+        return NextResponse.json({ error: "reCAPTCHA é obrigatório" }, { status: 400 })
+      }
+      const params = new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: recaptchaToken })
+      const verifyRes = await fetch("https://www.google.com/recaptcha/api/siteverify", { method: "POST", body: params })
+      const verifyData = await verifyRes.json()
+      if (!verifyData.success || (verifyData.score && verifyData.score < 0.5)) {
+        return NextResponse.json({ error: "Falha na verificação de segurança" }, { status: 403 })
+      }
     }
 
     const user = await prisma.usuario.findUnique({

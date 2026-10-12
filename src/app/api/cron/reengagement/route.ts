@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { notificarUsuario } from "@/lib/notificar"
 import { sendEmail, renderEmailLayout } from "@/lib/email"
+import { verifyCronAuth } from "@/lib/cron-auth"
 
 export const maxDuration = 60
 
@@ -32,11 +33,8 @@ async function notificar(alvo: Alvo, titulo: string, descricao: string, link: st
 
 export async function GET(req: Request) {
   try {
-    const isVercelCron = req.headers.get("x-vercel-cron")
-    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
-    if (!isVercelCron && !isCronWithSecret) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-    }
+    const authError = await verifyCronAuth(req)
+    if (authError) return authError
 
     const hoje = new Date()
     const tresDiasAtras = new Date(hoje.getTime() - 3 * 24 * 60 * 60 * 1000)

@@ -28,7 +28,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Notificação não encontrada" }, { status: 404 })
   }
 
-  // Extract professor ID from notification description
+  if (notificacao.tipo !== "solicitacao_professor") {
+    return NextResponse.json({ error: "Notificação inválida" }, { status: 400 })
+  }
+
   const match = notificacao.descricao.match(/\(id:([a-z0-9]+)\)/)
   if (!match) {
     return NextResponse.json({ error: "Não foi possível identificar o professor" }, { status: 400 })
@@ -41,6 +44,14 @@ export async function POST(req: Request) {
 
   if (!professor) {
     return NextResponse.json({ error: "Professor não encontrado" }, { status: 404 })
+  }
+
+  if (professor.role !== "professor") {
+    return NextResponse.json({ error: "Usuário não é professor" }, { status: 400 })
+  }
+
+  if (professor.academiaId) {
+    return NextResponse.json({ error: "Professor já vinculado a uma academia" }, { status: 400 })
   }
 
   await prisma.notificacao.update({

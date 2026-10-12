@@ -43,7 +43,21 @@ export async function sendEmail(params: {
   }
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+}
+
 export function renderEmailLayout(title: string, body: string, cta?: { label: string; url: string }) {
+  const safeTitle = escapeHtml(title)
+  const safeBody = escapeHtml(body)
+  const safeCta = cta
+    ? `<p style="text-align:center"><a class="btn" href="${escapeHtml(cta.url)}">${escapeHtml(cta.label)}</a></p>`
+    : ""
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -59,9 +73,9 @@ export function renderEmailLayout(title: string, body: string, cta?: { label: st
 <div class="container">
   <div class="logo">OssTrack</div>
   <div class="card">
-    <h1>${title}</h1>
-    <p>${body}</p>
-    ${cta ? `<p style="text-align:center"><a class="btn" href="${cta.url}">${cta.label}</a></p>` : ""}
+    <h1>${safeTitle}</h1>
+    <p>${safeBody}</p>
+    ${safeCta}
   </div>
   <div class="footer">OssTrack — Sua jornada no tatame começa aqui.</div>
 </div></body></html>`

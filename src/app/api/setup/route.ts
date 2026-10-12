@@ -4,21 +4,16 @@ import prisma from "@/lib/prisma"
 
 export async function POST(request: Request) {
   try {
-    // Protected: only allowed in development or with explicit flag
-    if (process.env.NODE_ENV === "production" && !process.env.ALLOW_SETUP) {
+    if (process.env.NODE_ENV === "production") {
       return NextResponse.json({ error: "Não disponível em produção" }, { status: 403 })
     }
 
-    // Same-Origin check (CSRF protection)
-    const origin = request.headers.get("origin") || request.headers.get("referer") || ""
-    const allowedOrigins = [
-      "http://localhost:3000",
-      "https://osstrack-app.vercel.app",
-      "https://osstrack.app",
-      "https://osstrack.com.br",
-    ]
-    if (!allowedOrigins.some((o) => origin.startsWith(o))) {
-      return NextResponse.json({ error: "Origem não permitida" }, { status: 403 })
+    if (!process.env.SETUP_SECRET) {
+      return NextResponse.json({ error: "SETUP_SECRET não configurado" }, { status: 403 })
+    }
+    const authHeader = request.headers.get("authorization")
+    if (authHeader !== `Bearer ${process.env.SETUP_SECRET}`) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
 
     const body = await request.json().catch(() => ({}))

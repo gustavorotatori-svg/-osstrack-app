@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
+import { verifyCronAuth } from "@/lib/cron-auth"
 
 export async function GET(req: Request) {
   try {
-    const isVercelCron = req.headers.get("x-vercel-cron")
-    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
-    if (!isVercelCron && !isCronWithSecret) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
-    }
+    const authError = await verifyCronAuth(req)
+    if (authError) return authError
 
     const logs = await prisma.cronLog.findMany({
       orderBy: { rodouEm: "desc" },

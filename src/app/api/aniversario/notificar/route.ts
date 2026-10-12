@@ -4,15 +4,12 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { sendPushToUser } from "@/lib/webpush"
 import { handleApiError } from "@/lib/api-error"
+import { verifyCronAuth } from "@/lib/cron-auth"
 
 export async function POST(req: NextRequest) {
   try {
-    // Allow Vercel cron (x-vercel-cron header set by Vercel infra),
-    // custom cron trigger via CRON_SECRET header, or authenticated admin
-    const isVercelCron = req.headers.get("x-vercel-cron") === "1"
-    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
-
-    if (!isVercelCron && !isCronWithSecret) {
+    const authError = await verifyCronAuth(req)
+    if (authError) {
       const session = await getServerSession(authOptions)
       if (!session || session.user.role !== "dono") {
         return NextResponse.json({ error: "Não autorizado" }, { status: 401 })

@@ -12,6 +12,11 @@ export async function GET() {
 
     const academia = await prisma.academia.findUnique({
       where: { id: session.user.academiaId },
+      select: {
+        id: true, nome: true, endereco: true, cidade: true, estado: true,
+        lat: true, lng: true, raio: true, responsavel: true, telefone: true,
+        logo: true, createdAt: true,
+      },
     })
 
     if (!academia) return NextResponse.json({ error: "Academia não encontrada" }, { status: 404 })

@@ -3,7 +3,12 @@ import crypto from "crypto"
 const KEY_HEX = process.env.CPF_ENCRYPTION_KEY || ""
 
 function getKey(): Buffer | null {
-  if (!KEY_HEX) return null
+  if (!KEY_HEX) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("CPF_ENCRYPTION_KEY é obrigatório em produção")
+    }
+    return null
+  }
   const key = Buffer.from(KEY_HEX, "hex")
   return key.length === 32 ? key : null
 }

@@ -49,6 +49,27 @@ export async function POST(req: Request) {
 
     const finalProfessorId = professorId === "me" ? session.user.id : professorId
     let finalTurmaId = turmaId
+
+    if (finalProfessorId && finalProfessorId !== session.user.id) {
+      const prof = await prisma.usuario.findUnique({
+        where: { id: finalProfessorId },
+        select: { academiaId: true, role: true },
+      })
+      if (!prof || prof.academiaId !== session.user.academiaId || prof.role !== "professor") {
+        return NextResponse.json({ error: "Professor não encontrado na sua academia" }, { status: 400 })
+      }
+    }
+
+    if (finalTurmaId) {
+      const turma = await prisma.turma.findUnique({
+        where: { id: finalTurmaId },
+        select: { academiaId: true },
+      })
+      if (!turma || turma.academiaId !== session.user.academiaId) {
+        return NextResponse.json({ error: "Turma não encontrada na sua academia" }, { status: 400 })
+      }
+    }
+
     if (!finalTurmaId && turmaNome) {
       const turma = await prisma.turma.create({
         data: {
@@ -90,7 +111,8 @@ export async function PUT(req: Request) {
     if (!parsed.success || !body.id) {
       return NextResponse.json({ error: "id obrigatório" }, { status: 400 })
     }
-    const { id, ...updateData } = body
+    const { id } = body
+    const updateData = parsed.data as Record<string, unknown>
     Object.keys(updateData).forEach((k) => updateData[k] === undefined && delete updateData[k])
 
     if (!id) return NextResponse.json({ error: "id obrigatório" }, { status: 400 })

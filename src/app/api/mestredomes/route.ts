@@ -3,15 +3,14 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { notificarUsuario } from "@/lib/notificar"
+import { verifyCronAuth } from "@/lib/cron-auth"
 
 const CATEGORIAS = ["adulto", "master", "infantil"]
 
 export async function POST(req: NextRequest) {
   try {
-    const isVercelCron = req.headers.get("x-vercel-cron") === "1"
-    const isCronWithSecret = process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
-
-    if (!isVercelCron && !isCronWithSecret) {
+    const isCron = (await verifyCronAuth(req)) === null
+    if (!isCron) {
       const session = await getServerSession(authOptions)
       if (!session || session.user.role !== "dono") {
         return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
@@ -19,7 +18,7 @@ export async function POST(req: NextRequest) {
     }
 
     const now = new Date()
-    const mes = isVercelCron || isCronWithSecret
+    const mes = isCron
       ? now.getMonth()
       : now.getMonth() + 1
     const ano = mes === 0 ? now.getFullYear() - 1 : now.getFullYear()

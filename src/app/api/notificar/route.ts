@@ -5,12 +5,22 @@ import prisma from "@/lib/prisma"
 import { sendPushToUser } from "@/lib/webpush"
 import { handleApiError } from "@/lib/api-error"
 import { notificarSchema } from "@/lib/validation"
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    }
+    if (!["dono", "professor"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Não autorizado" }, { status: 403 })
+    }
+
+    const ip = getClientIp(req)
+    const rl = await checkRateLimit(`notificar:${session.user.id}:${ip}`, "notificar")
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas" }, { status: 429 })
     }
 
     const body = await req.json()

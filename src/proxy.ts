@@ -37,9 +37,10 @@ export async function proxy(req: NextRequest) {
       pathname.startsWith("/api/cron") ||
       pathname === "/api/aniversario/notificar" ||
       pathname === "/api/mestredomes"
-    const isVercelCron = req.headers.get("x-vercel-cron") === "1"
-    const hasCronSecret = !!process.env.CRON_SECRET && req.headers.get("x-cron-secret") === process.env.CRON_SECRET
-    if (!isAuthenticated && !(isCronPath && (isVercelCron || hasCronSecret))) {
+    const isCronAuthorized =
+      !!process.env.CRON_SECRET &&
+      req.headers.get("authorization") === `Bearer ${process.env.CRON_SECRET}`
+    if (!isAuthenticated && !(isCronPath && isCronAuthorized)) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
     return NextResponse.next()

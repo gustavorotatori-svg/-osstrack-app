@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Muitas tentativas de login. Tente novamente em 1 minuto.")
         }
 
-        const emailCheck = await checkRateLimit(`email:${credentials.email}`, "login")
+        const emailCheck = await checkRateLimit(`email:${credentials.email.toLowerCase()}`, "login")
         if (!emailCheck.allowed) {
           throw new Error("Muitas tentativas para este e-mail. Tente novamente em 1 minuto.")
         }

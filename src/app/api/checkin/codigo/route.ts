@@ -4,12 +4,19 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prisma"
 import { handleApiError } from "@/lib/api-error"
 import { checkinCodigoSchema } from "@/lib/validation"
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions)
     if (!session || !session.user.academiaId) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
+    }
+
+    const ip = getClientIp(req)
+    const rl = await checkRateLimit(`checkin:${session.user.id}:${ip}`, "checkin-codigo")
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Muitas tentativas" }, { status: 429 })
     }
 
     const body = await req.json()
