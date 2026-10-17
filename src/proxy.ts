@@ -7,7 +7,7 @@ export async function proxy(req: NextRequest) {
   const publicPaths = [
     "/", "/login", "/cadastro", "/convite",
     "/ajuda", "/lgpd", "/termos",
-    "/api/auth", "/api/academias", "/api/leads", "/api/professores", "/ebook", "/horarios",
+    "/api/auth", "/api/academias", "/api/leads", "/api/professores", "/api/health", "/ebook", "/horarios",
     "/recuperar-senha", "/redefinir-senha", "/email-confirmado",
     "/sitemap.xml", "/robots.txt",
     "/manifest.webmanifest", "/screenshot",
