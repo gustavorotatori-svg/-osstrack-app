@@ -40,7 +40,7 @@ export function PullToRefresh({ children, className = "" }: { children: ReactNod
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
-      style={{ touchAction: "pan-x" }}
+      style={{ touchAction: "pan-y" }}
     >
       {pullDist > 0 && (
         <div

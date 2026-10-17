@@ -35,7 +35,7 @@ export function OssTransition() {
           resolveQueue = null
         }
         setShow(false)
-      }, 350)
+      }, 120)
     }
     const onEnd = () => {
       clearTimers()

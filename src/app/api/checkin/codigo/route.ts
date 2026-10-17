@@ -51,10 +51,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Código inválido ou expirado" }, { status: 400 })
     }
 
-    await prisma.checkinCodigo.update({
-      where: { id: codigoValido.id },
+    const consumed = await prisma.checkinCodigo.updateMany({
+      where: { id: codigoValido.id, usado: false },
       data: { usado: true, usadoPor: session.user.id },
     })
+
+    if (consumed.count === 0) {
+      return NextResponse.json({ error: "Código inválido ou expirado" }, { status: 400 })
+    }
 
     const presenca = await prisma.presenca.create({
       data: {

@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,4 +18,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npx prisma generate
       - run: echo "NEXTAUTH_SECRET=$(openssl rand -hex 32)" >> $GITHUB_ENV
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm test
       - run: npm run build

@@ -1,9 +1,11 @@
-const CACHE_NAME = "osstrack-v1"
+const CACHE_NAME = "osstrack-v2"
 const STATIC_ASSETS = [
   "/",
   "/icon-192.svg",
   "/icon-512.svg",
 ]
+
+const PRIVATE_PREFIXES = ["/api/", "/dashboard/"]
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -24,17 +26,24 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return
 
-  if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const clone = response.clone()
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone))
-          return response
-        })
-        .catch(() => caches.match(event.request))
-    )
+  const url = new URL(event.request.url)
+  if (url.origin !== self.location.origin) return
+
+  const isPrivate = PRIVATE_PREFIXES.some((p) => url.pathname.startsWith(p))
+  if (isPrivate) {
+    event.respondWith(fetch(event.request))
+    return
   }
+
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        const clone = response.clone()
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone))
+        return response
+      })
+      .catch(() => caches.match(event.request))
+  )
 })
 
 self.addEventListener("push", (event) => {

@@ -30,7 +30,10 @@ export function NotificacoesClient({ role }: { role: string }) {
   const router = useRouter()
 
   useEffect(() => {
-    fetch("/api/notificacoes").then((r) => r.json()).then(setNotificacoes)
+    fetch("/api/notificacoes")
+      .then((r) => r.json())
+      .then(setNotificacoes)
+      .catch(() => {})
   }, [])
 
   const filtradas = useMemo(() => {

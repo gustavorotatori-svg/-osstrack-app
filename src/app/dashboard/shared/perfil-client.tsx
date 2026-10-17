@@ -43,9 +43,12 @@ export default function PerfilClient({ role }: { role: string }) {
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    fetch("/api/perfil").then((r) => r.json()).then((d) => {
-      setData(d); setNome(d.nome); setTelefone(d.telefone || ""); setDataNascimento(d.dataNascimento || ""); setAvatarUrl(d.avatar || "")
-    })
+    fetch("/api/perfil")
+      .then((r) => r.json())
+      .then((d) => {
+        setData(d); setNome(d.nome); setTelefone(d.telefone || ""); setDataNascimento(d.dataNascimento || ""); setAvatarUrl(d.avatar || "")
+      })
+      .catch(() => {})
   }, [])
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {

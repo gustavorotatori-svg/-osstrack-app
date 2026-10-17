@@ -1,34 +1,17 @@
-"use client"
+import { redirect } from "next/navigation"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/lib/auth"
 
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { useT } from "@/lib/use-t"
+export default async function DashboardRedirect() {
+  const session = await getServerSession(authOptions)
 
-export default function DashboardRedirect() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  const t = useT("shared")
+  if (!session) {
+    redirect("/login")
+  }
 
-  useEffect(() => {
-    if (status === "loading") return
-    if (!session) {
-      router.push("/login")
-      return
-    }
-    const role = session.user.role
-    if (role === "aluno") router.push("/dashboard/aluno")
-    else if (role === "professor") router.push("/dashboard/professor")
-    else if (role === "dono") router.push("/dashboard/dono")
-    else router.push("/login")
-  }, [session, status, router])
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 gradient-gold rounded-xl animate-pulse" />
-        <p className="text-sm text-[var(--white-muted)]">{t("redirecionando")}</p>
-      </div>
-    </div>
-  )
+  const role = session.user.role
+  if (role === "aluno") redirect("/dashboard/aluno")
+  else if (role === "professor") redirect("/dashboard/professor")
+  else if (role === "dono") redirect("/dashboard/dono")
+  else redirect("/login")
 }

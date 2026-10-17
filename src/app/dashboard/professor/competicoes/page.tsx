@@ -54,6 +54,7 @@ export default function ProfessorCompeticoesPage() {
       fetch("/api/competicoes").then((r) => r.json()),
       fetch("/api/academia/alunos").then((r) => r.json()),
     ]).then(([c, a]) => { setCompeticoes(c); setAlunos(a.alunos || a || []); setLoading(false) })
+      .catch(() => setLoading(false))
   }, [session])
 
   async function criarCompeticao(e: React.FormEvent<HTMLFormElement>) {

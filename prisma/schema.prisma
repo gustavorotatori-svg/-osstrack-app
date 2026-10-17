@@ -172,6 +172,7 @@ model Cobranca {
 
   @@index([academiaId, status])
   @@index([alunoId, status])
+  @@index([status, dataVencimento])
 }
 
 model Turma {
@@ -294,6 +295,8 @@ model ProgressoSemanal {
   concluida Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([alunoId, semanaInicio])
 }
 
 model MissaoDiaria {
@@ -309,6 +312,8 @@ model MissaoDiaria {
   pontos      Int      @default(10)
   resetToken  String?
   createdAt   DateTime @default(now())
+
+  @@index([alunoId, dia])
 }
 
 model PostagemMural {

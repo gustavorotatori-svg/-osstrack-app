@@ -63,7 +63,7 @@ export default function CompeticoesPage() {
       setCompeticoes(c)
       setAlunos(a.alunos || a || [])
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [session])
 
   async function criarCompeticao(e: React.FormEvent<HTMLFormElement>) {
