@@ -13,6 +13,28 @@ import { useT } from "@/lib/use-t"
 
 import { getNivelInfo } from "@/lib/disciplina"
 
+function compressImage(file: File, maxSize: number, quality: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const scale = Math.min(1, maxSize / Math.max(img.width, img.height))
+      const w = Math.round(img.width * scale)
+      const h = Math.round(img.height * scale)
+      const canvas = document.createElement("canvas")
+      canvas.width = w
+      canvas.height = h
+      const ctx = canvas.getContext("2d")
+      if (!ctx) { reject(new Error("no canvas")); return }
+      ctx.drawImage(img, 0, 0, w, h)
+      resolve(canvas.toDataURL("image/jpeg", quality))
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("load failed")) }
+    img.src = url
+  })
+}
+
 type PerfilData = {
   id: string; nome: string; email: string; telefone: string | null; avatar: string | null
   faixa: string; grau: number; dataInicio: string | null
@@ -56,10 +78,14 @@ export default function PerfilClient({ role }: { role: string }) {
     if (!file) return
     if (file.size > 5 * 1024 * 1024) { alert(t("max5mb")); return }
     setUploading(true)
-    const reader = new FileReader()
-    reader.onload = () => { setAvatarUrl(reader.result as string); setUploading(false) }
-    reader.onerror = () => { setUploading(false); alert(t("erroLerArquivo")) }
-    reader.readAsDataURL(file)
+    try {
+      const dataUrl = await compressImage(file, 200, 0.8)
+      setAvatarUrl(dataUrl)
+    } catch {
+      alert(t("erroLerArquivo"))
+    } finally {
+      setUploading(false)
+    }
   }
 
   async function salvar() {

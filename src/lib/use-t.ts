@@ -1,11 +1,12 @@
 import { useMemo } from "react"
 import { useLocale } from "@/components/layout/providers"
-import { t } from "@/lib/i18n"
+import { useMessages, translate } from "@/lib/i18n-provider"
 
 export function useT(namespace?: string) {
   const { locale } = useLocale()
+  const { messages } = useMessages()
   return useMemo(
-    () => (key: string) => t(locale, namespace ? `${namespace}.${key}` : key),
-    [locale, namespace]
+    () => (key: string) => translate(messages, locale, namespace ? `${namespace}.${key}` : key),
+    [messages, locale, namespace]
   )
 }

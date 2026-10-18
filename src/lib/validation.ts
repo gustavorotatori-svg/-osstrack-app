@@ -101,7 +101,7 @@ export const confirmPresencaSchema = z.object({
 export const perfilUpdateSchema = z.object({
   nome: z.string().min(1).max(120).optional(),
   telefone: z.string().max(20).nullable().optional(),
-  avatar: z.string().max(500).nullable().optional(),
+  avatar: z.string().max(100000).nullable().optional(),
   dataNascimento: z.string().max(10).nullable().optional(),
   faixa: z.string().max(30).optional(),
   grau: z.coerce.number().int().min(0).max(10).optional(),

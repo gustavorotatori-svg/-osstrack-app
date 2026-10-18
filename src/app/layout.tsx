@@ -4,7 +4,11 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { Providers } from "@/components/layout/providers"
 import { CookieConsent } from "@/components/layout/cookie-consent"
-import { t } from "@/lib/i18n"
+import pt from "../../messages/pt.json"
+
+const skipText = (pt as Record<string, unknown>).shared
+  ? ((pt as unknown as Record<string, Record<string, string>>).shared.skipToContent || "Pular para o conteúdo")
+  : "Pular para o conteúdo"
 
 const title = "OssTrack — Sua jornada no tatame"
 const description =
@@ -74,7 +78,7 @@ export default function RootLayout({
         <link rel="mask-icon" href="/icon-192.svg" color="#d4a847" />
       </head>
       <body className="antialiased">
-        <a id="skip-to-content" href="#main-content">{t("pt", "shared.skipToContent")}</a>
+        <a id="skip-to-content" href="#main-content">{skipText}</a>
         <div id="main-content">
         <Providers>
           {children}

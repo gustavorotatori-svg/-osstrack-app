@@ -5,6 +5,7 @@ import { ReactNode, createContext, useContext, useState, useEffect, useCallback 
 import { MotionConfig } from "framer-motion"
 import { Toaster } from "sonner"
 import type { Locale } from "@/lib/i18n"
+import { TranslationsProvider } from "@/lib/i18n-provider"
 
 type ThemePref = "dark" | "light"
 type Theme = "dark" | "light"
@@ -112,22 +113,24 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
       <LocaleContext.Provider value={{ locale, setLocale }}>
-        <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
-          <MotionConfig reducedMotion="user">
-            {children}
-          </MotionConfig>
-          <Toaster
-            position="top-center"
-            toastOptions={{
-              style: {
-                background: "var(--bg-surface)",
-                border: "1px solid var(--border)",
-                color: "var(--text)",
-                borderRadius: '12px',
-              },
-            }}
-          />
-        </ThemeContext.Provider>
+        <TranslationsProvider locale={locale}>
+          <ThemeContext.Provider value={{ theme, themePref: pref, cycleTheme }}>
+            <MotionConfig reducedMotion="user">
+              {children}
+            </MotionConfig>
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                style: {
+                  background: "var(--bg-surface)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text)",
+                  borderRadius: '12px',
+                },
+              }}
+            />
+          </ThemeContext.Provider>
+        </TranslationsProvider>
       </LocaleContext.Provider>
     </SessionProvider>
   )
