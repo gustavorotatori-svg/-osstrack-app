@@ -1,5 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer"
-import { readFileSync, existsSync } from "fs"
+import { readFileSync, writeFileSync, existsSync } from "fs"
 import { resolve } from "path"
 
 const SMTP_HOST = process.env.SMTP_HOST || "smtpout.secureserver.net"
@@ -8,6 +8,7 @@ const SMTP_USER = process.env.SMTP_USER || "passador@osstrack.com"
 const SMTP_PASS = process.env.SMTP_PASS
 const FROM_EMAIL = process.env.FROM_EMAIL || "passador@osstrack.com"
 const FROM_NAME = process.env.FROM_NAME || "OssTrack"
+const DAILY_LIMIT = parseInt(process.env.DAILY_LIMIT || "10", 10)
 
 interface Academy {
   nome: string
@@ -16,13 +17,32 @@ interface Academy {
   estado?: string
 }
 
+interface SentLog {
+  sent: string[]
+  lastSent: string
+  totalSent: number
+}
+
 function loadAcademias(): Academy[] {
   const file = resolve(__dirname, "academias.json")
   if (!existsSync(file)) {
-    console.error("Arquivo academias.json não encontrado em scripts/")
+    console.error("Arquivo academias.json não encontrado")
     process.exit(1)
   }
   return JSON.parse(readFileSync(file, "utf-8"))
+}
+
+function loadSentLog(): SentLog {
+  const file = resolve(__dirname, "sent.json")
+  if (!existsSync(file)) {
+    return { sent: [], lastSent: "", totalSent: 0 }
+  }
+  return JSON.parse(readFileSync(file, "utf-8"))
+}
+
+function saveSentLog(log: SentLog) {
+  const file = resolve(__dirname, "sent.json")
+  writeFileSync(file, JSON.stringify(log, null, 2))
 }
 
 function renderEmail(academia: Academy): string {
@@ -39,7 +59,7 @@ function renderEmail(academia: Academy): string {
   .btn { display: inline-block; background: linear-gradient(135deg, #c9a84c, #f5d77b); color: #000; font-weight: 800; font-size: 14px; padding: 12px 28px; border-radius: 12px; text-decoration: none; }
   .features { background: #1a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; }
   .feature { font-size: 14px; color: #ccc; margin: 8px 0; padding-left: 24px; position: relative; }
-  .feature::before { content: "✓"; position: absolute; left: 0; color: #c9a84c; font-weight: bold; }
+  .feature::before { content: "\\2713"; position: absolute; left: 0; color: #c9a84c; font-weight: bold; }
   .footer { text-align: center; padding: 24px 0 0; font-size: 12px; color: #555; }
   .unsubscribe { text-align: center; padding: 16px 0 0; font-size: 11px; color: #444; }
   .unsubscribe a { color: #666; }
@@ -73,26 +93,37 @@ async function sendOne(academia: Academy, transporter: Transporter): Promise<boo
     await transporter.sendMail({
       from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: academia.email,
-      subject: `OssTrack — Gerencie sua academia de Jiu-Jitsu (grátis)`,
+      subject: `OssTrack — Plataforma gratuita para sua academia de Jiu-Jitsu`,
       html: renderEmail(academia),
     })
-    console.log(`✓ Enviado: ${academia.nome} <${academia.email}>`)
+    console.log(`✓ ${academia.nome} <${academia.email}>`)
     return true
   } catch (err) {
-    console.error(`✗ Erro: ${academia.nome} <${academia.email}> —`, err instanceof Error ? err.message : err)
+    console.error(`✗ ${academia.nome} <${academia.email}> —`, err instanceof Error ? err.message : err)
     return false
   }
 }
 
 async function main() {
   if (!SMTP_PASS) {
-    console.error("Defina SMTP_PASS (senha do email passador@osstrack.com)")
-    console.error("Exemplo: $env:SMTP_PASS='sua_senha'; npx tsx scripts/send-outreach.ts")
+    console.error("Defina SMTP_PASS")
     process.exit(1)
   }
 
   const academias = loadAcademias()
-  console.log(`Carregadas ${academias.length} academias\n`)
+  const sentLog = loadSentLog()
+  const sentSet = new Set(sentLog.sent)
+
+  const pending = academias.filter((a) => !sentSet.has(a.email))
+  console.log(`Total: ${academias.length} | Já enviados: ${sentLog.sent.length} | Pendentes: ${pending.length}`)
+
+  if (pending.length === 0) {
+    console.log("Nenhuma academia pendente!")
+    return
+  }
+
+  const toSend = pending.slice(0, DAILY_LIMIT)
+  console.log(`Enviando até ${toSend.length} hoje (limite: ${DAILY_LIMIT})\n`)
 
   const transporter = nodemailer.createTransport({
     host: SMTP_HOST,
@@ -104,19 +135,25 @@ async function main() {
   await transporter.verify()
   console.log("SMTP conectado!\n")
 
-  const limit = parseInt(process.argv[2] || "0", 10)
-  const toSend = limit > 0 ? academias.slice(0, limit) : academias
-
   let ok = 0
   let fail = 0
   for (const academia of toSend) {
     const success = await sendOne(academia, transporter)
-    if (success) ok++
-    else fail++
+    if (success) {
+      ok++
+      sentLog.sent.push(academia.email)
+    } else {
+      fail++
+    }
     await new Promise((r) => setTimeout(r, 2000))
   }
 
-  console.log(`\nResultado: ${ok} enviados, ${fail} falharam`)
+  sentLog.lastSent = new Date().toISOString().split("T")[0]
+  sentLog.totalSent += ok
+  saveSentLog(sentLog)
+
+  console.log(`\n${ok} enviados, ${fail} falharam`)
+  console.log(`Progresso: ${sentLog.sent.length}/${academias.length} academias alcançadas`)
 }
 
 main().catch((err) => {

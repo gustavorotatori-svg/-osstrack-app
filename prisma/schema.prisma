@@ -614,3 +614,14 @@ model CronLog {
 
   @@index([tipo, rodouEm])
 }
+
+model OutreachSent {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nome      String
+  cidade    String?
+  estado    String?
+  sentAt    DateTime @default(now())
+
+  @@index([sentAt])
+}
