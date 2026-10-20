@@ -71,6 +71,22 @@ export async function GET(request: Request) {
               continue
             }
 
+            if (
+              fromEmail.includes("mailer-daemon") ||
+              fromEmail.includes("postmaster") ||
+              fromEmail.includes("bounce") ||
+              subject.includes("Delivery Status Notification") ||
+              subject.includes("Undelivered") ||
+              subject.includes("Returned mail") ||
+              subject.includes("Delivery failure") ||
+              subject.includes("Mail delivery failed") ||
+              body.includes("automatically generated Delivery Status Notification") ||
+              body.includes("Delivery to the following recipients failed")
+            ) {
+              skipped++
+              continue
+            }
+
             const match = findBestReply(body, subject)
             const replyBody = match ? match.rule.response : getDefaultReply()
             const matchedRule = match ? match.rule.id : null
