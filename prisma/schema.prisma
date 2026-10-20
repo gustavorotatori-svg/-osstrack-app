@@ -625,3 +625,18 @@ model OutreachSent {
 
   @@index([sentAt])
 }
+
+model AutoReplyLog {
+  id          String   @id @default(cuid())
+  fromEmail   String
+  fromName    String?
+  subject     String
+  bodyPreview String
+  matchedRule String?
+  responseSent Boolean  @default(false)
+  repliedAt   DateTime?
+  processedAt DateTime @default(now())
+
+  @@index([fromEmail])
+  @@index([processedAt])
+}
