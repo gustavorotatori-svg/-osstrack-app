@@ -44,6 +44,10 @@ const ACADEMIAS = [
   { nome: "Toca do Urso", email: "tocadoursojiu@hotmail.com", cidade: "Ponta Porã", estado: "MS" },
   { nome: "Fusão Escola de Jiu-Jitsu", email: "rogeriomoreirabjj.rm@gmail.com", cidade: "Paço do Lumiar", estado: "MA" },
   { nome: "CT G2", email: "petersonprocopio87@gmail.com", cidade: "São José de Ribamar", estado: "MA" },
+  { nome: "Halfão Martins Academy", email: "halfaobjj@gmail.com", cidade: "Colatina", estado: "ES" },
+  { nome: "FC Combate", email: "fccombate.jj@gmail.com", cidade: "Vila Velha", estado: "ES" },
+  { nome: "CTE Domo", email: "contato@ctedomo.com.br", cidade: "Vitória", estado: "ES" },
+  { nome: "Studio HR Jiu Jitsu Academy", email: "heliorezendelima@gmail.com", cidade: "Tefé", estado: "AM" },
 ]
 
 function renderEmail(nome: string, cidade: string): string {
