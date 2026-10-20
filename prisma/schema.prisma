@@ -622,8 +622,20 @@ model OutreachSent {
   cidade    String?
   estado    String?
   sentAt    DateTime @default(now())
+  openedAt  DateTime?
+  clickedAt DateTime?
 
   @@index([sentAt])
+  @@index([openedAt])
+}
+
+model RelatorioEnvio {
+  id        String   @id @default(cuid())
+  tipo      String
+  enviadoEm DateTime @default(now())
+  dados     Json
+
+  @@index([tipo, enviadoEm])
 }
 
 model AutoReplyLog {

@@ -50,7 +50,7 @@ const ACADEMIAS = [
   { nome: "Studio HR Jiu Jitsu Academy", email: "heliorezendelima@gmail.com", cidade: "Tefé", estado: "AM" },
 ]
 
-function renderEmail(nome: string, cidade: string): string {
+function renderEmail(nome: string, cidade: string, trackingId: string): string {
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
@@ -84,11 +84,12 @@ function renderEmail(nome: string, cidade: string): string {
       <div class="feature">Suporte a 14 idiomas</div>
     </div>
     <p>Sem custos, sem contratos, sem pegadinhas. Apenas crie uma conta e comece a usar.</p>
-    <p style="text-align:center"><a class="btn" href="https://osstrack.com.br/cadastro">Criar Conta Grátis</a></p>
+    <p style="text-align:center"><a class="btn" href="https://osstrack.com.br/api/cron/outreach/click?id=${trackingId}">Criar Conta Grátis</a></p>
     <p style="font-size:13px; color:#666; text-align:center">Qualquer dúvida, é só responder este email.</p>
   </div>
   <div class="footer">OssTrack — Sua jornada no tatame começa aqui.</div>
   <div class="unsubscribe">Se não quiser mais receber emails, <a href="mailto:passador@osstrack.com?subject=Remover">clique aqui</a>.</div>
+  <img src="https://osstrack.com.br/api/cron/outreach/open?id=${trackingId}" width="1" height="1" alt="" style="display:none">
 </div></body></html>`
 }
 
@@ -124,15 +125,15 @@ export async function GET(request: Request) {
 
     for (const academia of pending) {
       try {
+        const record = await prisma.outreachSent.create({
+          data: { email: academia.email, nome: academia.nome, cidade: academia.cidade, estado: academia.estado },
+        })
+
         await transporter.sendMail({
           from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
           to: academia.email,
           subject: "OssTrack — Plataforma gratuita para sua academia de Jiu-Jitsu",
-          html: renderEmail(academia.nome, academia.cidade),
-        })
-
-        await prisma.outreachSent.create({
-          data: { email: academia.email, nome: academia.nome, cidade: academia.cidade, estado: academia.estado },
+          html: renderEmail(academia.nome, academia.cidade, record.id),
         })
 
         ok++
