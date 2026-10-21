@@ -22,7 +22,7 @@ export async function GET(request: Request) {
   try {
     const doisDiasAtras = new Date(Date.now() - 48 * 60 * 60 * 1000)
 
-    const [novosAlunos, novosProfessores, novosDonos, novasAcademias, novosLeads, emailsEnviados, emailsAbertos, emailsClicados, autoReplies] =
+    const [novosAlunos, novosProfessores, novosDonos, novasAcademias, novosLeads, emailsEnviados, emailsAbertos, emailsClicados, emailsBounced, autoReplies, pageViews2d] =
       await Promise.all([
         prisma.usuario.count({
           where: { role: "ALUNO", createdAt: { gte: doisDiasAtras } },
@@ -48,41 +48,66 @@ export async function GET(request: Request) {
         prisma.outreachSent.count({
           where: { clickedAt: { gte: doisDiasAtras } },
         }),
+        prisma.outreachSent.count({
+          where: { bouncedAt: { gte: doisDiasAtras } },
+        }),
         prisma.autoReplyLog.count({
           where: { processedAt: { gte: doisDiasAtras } },
         }),
+        prisma.pageView.count({
+          where: { createdAt: { gte: doisDiasAtras } },
+        }),
       ])
 
-    const [totalAlunos, totalAcademias, totalOutreach, totalAbertos, totalClicados] = await Promise.all([
+    const [totalAlunos, totalAcademias, totalOutreach, totalAbertos, totalClicados, totalBounced, totalPageViews, visitantesUnicos] = await Promise.all([
       prisma.usuario.count({ where: { role: "ALUNO" } }),
       prisma.academia.count(),
       prisma.outreachSent.count(),
       prisma.outreachSent.count({ where: { openedAt: { not: null } } }),
       prisma.outreachSent.count({ where: { clickedAt: { not: null } } }),
+      prisma.outreachSent.count({ where: { bouncedAt: { not: null } } }),
+      prisma.pageView.count(),
+      prisma.pageView.findMany({
+        where: { createdAt: { gte: doisDiasAtras } },
+        select: { ip: true },
+        distinct: ["ip"],
+      }).then(r => r.length),
     ])
 
-    const naoAbertos = totalOutreach - totalAbertos
-    const taxaAbertura = totalOutreach > 0 ? Math.round((totalAbertos / totalOutreach) * 100) : 0
+    const entregues = totalOutreach - totalBounced
+    const naoAbertos = entregues - totalAbertos
+    const taxaEntrega = totalOutreach > 0 ? Math.round((entregues / totalOutreach) * 100) : 0
+    const taxaAbertura = entregues > 0 ? Math.round((totalAbertos / entregues) * 100) : 0
     const taxaClique = totalAbertos > 0 ? Math.round((totalClicados / totalAbertos) * 100) : 0
 
+    const topPages = await prisma.pageView.groupBy({
+      by: ["path"],
+      where: { createdAt: { gte: doisDiasAtras } },
+      _count: { path: true },
+      orderBy: { _count: { path: "desc" } },
+      take: 5,
+    })
+
+    const bouncedList = await prisma.outreachSent.findMany({
+      where: { bouncedAt: { not: null } },
+      select: { email: true, nome: true, cidade: true, bounceReason: true },
+      orderBy: { bouncedAt: "desc" },
+      take: 10,
+    })
+
+    const naoAbertosList = await prisma.outreachSent.findMany({
+      where: { bouncedAt: null, openedAt: null },
+      select: { email: true, nome: true, cidade: true, estado: true },
+      take: 20,
+    })
+
     const dados = {
-      novosAlunos,
-      novosProfessores,
-      novosDonos,
-      novasAcademias,
-      novosLeads,
-      emailsEnviados,
-      emailsAbertos,
-      emailsClicados,
-      autoReplies,
-      totalAlunos,
-      totalAcademias,
-      totalOutreach,
-      totalAbertos,
-      totalClicados,
-      naoAbertos,
-      taxaAbertura,
-      taxaClique,
+      novosAlunos, novosProfessores, novosDonos, novasAcademias, novosLeads,
+      emailsEnviados, emailsAbertos, emailsClicados, emailsBounced, autoReplies,
+      pageViews2d, visitantesUnicos,
+      totalAlunos, totalAcademias, totalOutreach, totalAbertos, totalClicados, totalBounced,
+      totalPageViews, entregues, naoAbertos,
+      taxaEntrega, taxaAbertura, taxaClique,
     }
 
     await prisma.relatorioEnvio.create({
@@ -103,38 +128,58 @@ export async function GET(request: Request) {
   .divider { border-top: 1px solid #222; margin: 20px 0; }
   .section { color: #ccc; font-size: 14px; margin: 8px 0; }
   .section strong { color: #fff; }
-  .alert { background: #2a1a1a; border: 1px solid #442222; border-radius: 8px; padding: 12px; color: #ff8888; font-size: 13px; margin: 12px 0; }
   .good { color: #88ff88; }
   .warn { color: #ffaa44; }
+  .bad { color: #ff6666; }
+  .list { font-size: 12px; color: #888; margin: 8px 0; }
+  .list li { margin: 4px 0; }
 </style></head><body>
 <div class="container">
   <div class="logo">OssTrack — Relatório</div>
   <div class="card">
-    <h2>📊 Últimos 2 dias</h2>
-
+    <h2>👥 Novos Usuários (2 dias)</h2>
     <div class="stat-grid">
-      <div class="stat"><div class="stat-num">${novosAlunos}</div><div class="stat-label">Novos Alunos</div></div>
-      <div class="stat"><div class="stat-num">${novosProfessores}</div><div class="stat-label">Novos Professores</div></div>
-      <div class="stat"><div class="stat-num">${novosDonos}</div><div class="stat-label">Novos Donos</div></div>
-      <div class="stat"><div class="stat-num">${novasAcademias}</div><div class="stat-label">Novas Academias</div></div>
+      <div class="stat"><div class="stat-num">${novosAlunos}</div><div class="stat-label">Alunos</div></div>
+      <div class="stat"><div class="stat-num">${novosProfessores}</div><div class="stat-label">Professores</div></div>
+      <div class="stat"><div class="stat-num">${novosDonos}</div><div class="stat-label">Donos</div></div>
+      <div class="stat"><div class="stat-num">${novasAcademias}</div><div class="stat-label">Academias</div></div>
     </div>
 
     <div class="divider"></div>
-    <h2>📧 Prospecção (Outreach)</h2>
-    <div class="section">Enviados: <strong>${emailsEnviados}</strong></div>
-    <div class="section">Abertos: <strong>${emailsAbertos}</strong> <span class="${taxaAbertura > 30 ? "good" : "warn"}">(${taxaAbertura}%)</span></div>
-    <div class="section">Cliques: <strong>${emailsClicados}</strong> <span class="${taxaClique > 10 ? "good" : "warn"}">(${taxaClique}%)</span></div>
-    <div class="section">Auto-respostas: <strong>${autoReplies}</strong></div>
-
-    ${naoAbertos > 0 ? `<div class="alert">⚠️ ${naoAbertos} emails NÃO abertos de ${totalOutreach} enviados</div>` : ""}
+    <h2>🌐 Visitas (2 dias)</h2>
+    <div class="stat-grid">
+      <div class="stat"><div class="stat-num">${pageViews2d}</div><div class="stat-label">Page Views</div></div>
+      <div class="stat"><div class="stat-num">${visitantesUnicos}</div><div class="stat-label">Visitantes Únicos</div></div>
+    </div>
+    ${topPages.length > 0 ? `<ul class="list">${topPages.map(p => `<li>${p.path}: ${p._count.path} views</li>`).join("")}</ul>` : ""}
 
     <div class="divider"></div>
-    <h2>📈 Totais Gerais</h2>
-    <div class="section">Total de alunos: <strong>${totalAlunos}</strong></div>
-    <div class="section">Total de academias: <strong>${totalAcademias}</strong></div>
-    <div class="section">Outreach enviado: <strong>${totalOutreach}</strong></div>
-    <div class="section">Taxa de abertura: <strong>${taxaAbertura}%</strong></div>
-    <div class="section">Taxa de clique: <strong>${taxaClique}%</strong></div>
+    <h2>📧 Prospecção</h2>
+    <div class="section">Enviados: <strong>${totalOutreach}</strong></div>
+    <div class="section">Entregues: <strong class="${taxaEntrega > 90 ? "good" : "bad"}">${entregues}</strong> (${taxaEntrega}%)</div>
+    <div class="section">Bounced (falharam): <strong class="${totalBounced > 0 ? "bad" : "good"}">${totalBounced}</strong></div>
+    <div class="section">Abertos: <strong>${totalAbertos}</strong> <span class="${taxaAbertura > 30 ? "good" : "warn"}">(${taxaAbertura}% dos entregues)</span></div>
+    <div class="section">Cliques: <strong>${totalClicados}</strong> <span class="${taxaClique > 10 ? "good" : "warn"}">(${taxaClique}%)</span></div>
+    <div class="section">Não abertos: <strong class="warn">${naoAbertos}</strong></div>
+    <div class="section">Auto-respostas: <strong>${autoReplies}</strong></div>
+
+    ${bouncedList.length > 0 ? `
+    <div class="divider"></div>
+    <h2>❌ Bounced (não entregues)</h2>
+    <ul class="list">${bouncedList.map(b => `<li>${b.email} (${b.nome}, ${b.cidade})</li>`).join("")}</ul>
+    ` : ""}
+
+    ${naoAbertosList.length > 0 ? `
+    <div class="divider"></div>
+    <h2>📭 Não Abertos</h2>
+    <ul class="list">${naoAbertosList.map(n => `<li>${n.email} (${n.nome}, ${n.cidade}/${n.estado})</li>`).join("")}</ul>
+    ` : ""}
+
+    <div class="divider"></div>
+    <h2>📈 Totais</h2>
+    <div class="section">Alunos: <strong>${totalAlunos}</strong></div>
+    <div class="section">Academias: <strong>${totalAcademias}</strong></div>
+    <div class="section">Page Views total: <strong>${totalPageViews}</strong></div>
   </div>
 </div></body></html>`
 
@@ -148,7 +193,7 @@ export async function GET(request: Request) {
     await transporter.sendMail({
       from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
       to: REPORT_TO,
-      subject: `OssTrack — Relatório: ${novosAlunos} alunos, ${novasAcademias} academias (2 dias)`,
+      subject: `OssTrack: ${novosAlunos} alunos | ${pageViews2d} visitas | ${taxaEntrega}% entrega | ${totalBounced} bounced`,
       html,
     })
 

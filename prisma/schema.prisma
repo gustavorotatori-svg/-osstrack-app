@@ -624,9 +624,22 @@ model OutreachSent {
   sentAt    DateTime @default(now())
   openedAt  DateTime?
   clickedAt DateTime?
+  bouncedAt DateTime?
+  bounceReason String?
 
   @@index([sentAt])
   @@index([openedAt])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
 }
 
 model RelatorioEnvio {

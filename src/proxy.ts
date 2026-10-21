@@ -1,8 +1,21 @@
 import { getToken } from "next-auth/jwt"
 import { NextRequest, NextResponse } from "next/server"
 
+const TRACKED_PATHS = new Set(["/", "/cadastro", "/login", "/precos", "/funcionalidades", "/ajuda"])
+
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
+
+  if (TRACKED_PATHS.has(pathname)) {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || req.headers.get("x-real-ip") || "unknown"
+    const userAgent = req.headers.get("user-agent") || "unknown"
+    fetch(`${req.nextUrl.origin}/api/track/view`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: pathname, ip, userAgent }),
+      keepalive: true,
+    }).catch(() => {})
+  }
 
   const publicPaths = [
     "/", "/login", "/cadastro", "/convite",

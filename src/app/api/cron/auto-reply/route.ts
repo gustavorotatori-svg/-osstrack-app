@@ -83,6 +83,22 @@ export async function GET(request: Request) {
               body.includes("automatically generated Delivery Status Notification") ||
               body.includes("Delivery to the following recipients failed")
             ) {
+              const bounceMatch = body.match(/[\w.+-]+@[\w-]+\.[\w.]+/g)
+              if (bounceMatch) {
+                for (const bouncedEmail of bounceMatch) {
+                  if (!bouncedEmail.includes("osstrack.com") && !bouncedEmail.includes("mailer-daemon")) {
+                    try {
+                      await prisma.outreachSent.update({
+                        where: { email: bouncedEmail.toLowerCase() },
+                        data: {
+                          bouncedAt: new Date(),
+                          bounceReason: body.slice(0, 500),
+                        },
+                      })
+                    } catch {}
+                  }
+                }
+              }
               skipped++
               continue
             }
