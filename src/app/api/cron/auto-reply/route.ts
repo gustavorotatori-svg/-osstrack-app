@@ -75,11 +75,17 @@ export async function GET(request: Request) {
               fromEmail.includes("mailer-daemon") ||
               fromEmail.includes("postmaster") ||
               fromEmail.includes("bounce") ||
+              fromEmail.includes("noreply") ||
+              fromEmail.includes("no-reply") ||
               subject.includes("Delivery Status Notification") ||
               subject.includes("Undelivered") ||
               subject.includes("Returned mail") ||
               subject.includes("Delivery failure") ||
               subject.includes("Mail delivery failed") ||
+              subject.includes("Message Delivery Failure") ||
+              subject.includes("Out of Office") ||
+              subject.includes("Auto-Reply") ||
+              subject.includes("Automatic reply") ||
               body.includes("automatically generated Delivery Status Notification") ||
               body.includes("Delivery to the following recipients failed")
             ) {
@@ -99,6 +105,7 @@ export async function GET(request: Request) {
                   }
                 }
               }
+              seenIds.add(fromEmail)
               skipped++
               continue
             }
