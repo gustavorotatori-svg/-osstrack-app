@@ -266,7 +266,7 @@ function CadastroContent() {
         consentimentoResponsavel: form.consentimentoResponsavel,
         recaptchaToken: recaptchaToken || undefined,
       }
-      if (form.professorId) body.professorId = form.professorId
+      if (form.professorId && form.role === "aluno") body.professorId = form.professorId
       if (form.role === "dono") {
         body.academia = {
           nome: form.academiaNome, endereco: form.academiaEndereco, cidade: form.academiaCidade,
@@ -434,7 +434,6 @@ function CadastroContent() {
               {form.professorId && (
                 <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-3 text-center">
                   <p className="text-sm text-emerald-400 font-semibold">{t("step2Dono.convidadoProfessor")}</p>
-                  <p className="text-xs text-[var(--text-secondary)] mt-1">{t("step2Dono.convidadoProfessorDesc")}</p>
                 </div>
               )}
             </div>
