@@ -5,21 +5,16 @@ import { motion } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { useEffect, useState } from "react"
 
-export function Hero({ stats }: { stats?: { academias: number; alunos: number; retencao: number } }) {
+export function Hero() {
   const t = useT("hero")
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     ;(async () => setMounted(true))()
   }, [])
 
-  function formatStat(n: number) {
-    if (n >= 10000) return `${(n / 1000).toFixed(0)}K+`
-    if (n >= 1000) return `${(n / 1000).toFixed(1).replace(".0", "")}K+`
-    return String(n)
-  }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-5 overflow-hidden" style={{ background: "var(--bg)" }}>
+    <section className="relative min-h-[85svh] pt-28 pb-16 flex items-center justify-center px-5 overflow-hidden" style={{ background: "var(--bg)" }}>
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, var(--gold-dim) 0%, transparent 60%)" }} />
 
       {/* Jiu-Jitsu belts background — 8 faixas reais animando de cima e de baixo */}
@@ -53,13 +48,13 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         {/* OssTrack */}
-        <h1 className={`text-[clamp(4rem,15vw,10rem)] font-black leading-[0.85] tracking-[-0.04em] mb-2 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+        <h1 className={`text-[clamp(3rem,9vw,6rem)] font-black leading-[0.85] tracking-[-0.04em] mb-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
           <span style={{ color: "var(--text)" }}>Oss</span>
           <span className="gradient-gold-text">Track</span>
         </h1>
 
         {/* Tagline */}
-        <h2 className={`text-base md:text-lg font-normal max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
+        <h2 className={`text-2xl md:text-4xl font-extrabold max-w-2xl mx-auto leading-relaxed transition-all duration-700 delay-150 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-secondary)" }}>
           {t("titulo2")}
         </h2>
         <p className={`text-xs md:text-sm max-w-md mx-auto mt-2 leading-relaxed transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ color: "var(--text-muted)" }}>
@@ -87,22 +82,7 @@ export function Hero({ stats }: { stats?: { academias: number; alunos: number; r
           </Link>
         </div>
 
-        {/* Stats — agora obtidos do banco de dados */}
-        {stats && (stats.academias > 0 || stats.alunos > 0) && (
-          <div className={`flex items-center justify-center gap-4 sm:gap-8 md:gap-16 mt-20 transition-all duration-700 delay-300 ${mounted ? "opacity-100" : "opacity-0"}`}>
-            {[
-              { value: mounted ? formatStat(stats.academias) : "0", label: t("statsAcademias") },
-              { value: mounted ? formatStat(stats.alunos) : "0", label: t("statsAlunos") },
-              { value: mounted ? `${stats.retencao}%` : "0%", label: t("statsRetencao") },
-            ].map((stat, i) => (
-              <div key={stat.label} className="text-center relative">
-                <div className="text-3xl md:text-4xl font-black gradient-gold-text">{stat.value}</div>
-                <div className="text-xs mt-1.5 tracking-wide uppercase font-semibold" style={{ color: "var(--text-secondary)" }}>{stat.label}</div>
-                {i < 2 && <div className="hidden md:block absolute top-1/2 -translate-y-1/2 w-px h-8" style={{ left: "calc(100% + 2.5rem)", background: "var(--border)" }} />}
-              </div>
-            ))}
-          </div>
-        )}
+
       </div>
     </section>
   )

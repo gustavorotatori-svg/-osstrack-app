@@ -71,12 +71,12 @@ const quickActions = [
 
 const mockPresencas = Array.from({ length: 60 }, (_, i) => {
   const d = new Date()
-  d.setDate(d.getDate() - Math.floor(Math.random() * 120))
+  d.setDate(d.getDate() - Math.floor((i * 7) % 120))
   return {
     id: String(i),
     data: d.toISOString().split("T")[0],
     horario: "18:30",
-    status: Math.random() > 0.25 ? "confirmed" : "missed",
+    status: i % 4 !== 0 ? "confirmed" : "missed",
     turma: "Jiu-Jitsu",
   }
 })
@@ -105,7 +105,6 @@ export function ScreenshotDemo() {
 
   const gl = getGamificationLevel(pontosVal)
   const levelInfo = getLevelInfo(totalAulas)
-  const proximoTitulo = gamificationLevels[gl.level]?.titleKey ?? "nivelProximo"
 
   return (
     <div className="h-full flex flex-col bg-[#0a0a0a] text-white overflow-hidden">
@@ -171,7 +170,7 @@ export function ScreenshotDemo() {
             <span className="text-xs font-bold">{t(gl.titleKey)}</span>
           </div>
           <span className="text-[10px] text-[var(--text-muted)]">
-            {t("xpBarra").replace("{atual}", pontosVal.toLocaleString()).replace("{faltam}", gl.next.toLocaleString())}
+            {t("xpBarra").replace("{atual}", gl.current.toLocaleString()).replace("{faltam}", gl.next.toLocaleString())}
           </span>
         </div>
         <div className="h-1.5 rounded-full bg-[rgba(255,255,255,0.04)] overflow-hidden">
@@ -181,7 +180,7 @@ export function ScreenshotDemo() {
           <span className="text-[10px] text-[var(--text-muted)]">
             {gl.next === Infinity
               ? t("nivelMaximo")
-              : t("faltam").replace("{n}", String(Math.ceil((gl.next - gl.current) / 50))).replace("{nivel}", t(proximoTitulo))}
+              : `${Math.ceil((gl.next - gl.current) / 50)} check-ins → ${t("nivelLv").replace("{n}", String(gl.level + 1))}`}
           </span>
           <span className="text-[10px] text-[var(--text-muted)]">
             {t("aulasGrau").replace("{aulas}", "8").replace("{proxFaixa}", "200")}

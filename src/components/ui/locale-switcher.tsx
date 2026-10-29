@@ -23,20 +23,15 @@ export function LocaleSwitcher() {
   const { locale, setLocale } = useLocale()
 
   return (
-    <div className="flex items-center gap-0.5 flex-wrap">
-      {locales.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => setLocale(l.code)}
-          className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-all min-h-[32px] ${
-            locale === l.code
-              ? "text-[var(--gold)] bg-[rgba(201,168,76,0.1)]"
-              : "text-[var(--gray)] hover:text-[var(--white-muted)]"
-          }`}
-        >
-          {l.label}
-        </button>
+    <select
+      aria-label="Idioma / Language"
+      value={locale}
+      onChange={(event) => setLocale(event.target.value as typeof locale)}
+      className="rounded-lg border border-[var(--dark-border)] bg-[var(--bg)] px-2 py-2 text-xs font-semibold text-[var(--text)] min-h-10 shrink-0"
+    >
+      {locales.map((language) => (
+        <option key={language.code} value={language.code}>{language.label}</option>
       ))}
-    </div>
+    </select>
   )
 }

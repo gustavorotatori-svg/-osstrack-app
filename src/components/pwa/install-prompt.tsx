@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback } from "react"
 import { SmartphoneIcon, BellIcon, BellOffIcon } from "@/components/ui/icons"
 import { usePushNotifications } from "@/lib/use-push"
+import { useSession } from "next-auth/react"
+import { usePathname } from "next/navigation"
 import { useT } from "@/lib/use-t"
 
 interface BeforeInstallPromptEvent extends Event {
@@ -49,6 +51,8 @@ function registerSw() {
 
 export function InstallPrompt() {
   const t = useT("pwa.installPrompt")
+  const { status } = useSession()
+  const pathname = usePathname()
   const { install, canInstall, isIOS, isStandalone } = useInstall()
   const { permission, subscribed, loading, subscribe, unsubscribe } = usePushNotifications()
   const [showPrompt, setShowPrompt] = useState(false)
@@ -85,7 +89,7 @@ export function InstallPrompt() {
     setPushDismissed(true)
   }
 
-  if (isStandalone || dismissed) return null
+  if (status !== "authenticated" || !pathname.startsWith("/dashboard") || isStandalone || dismissed) return null
 
   async function handleInstall() {
     const ok = await install()

@@ -134,10 +134,17 @@ export const authOptions: NextAuthOptions = {
 
       if (token.authVersion !== undefined && token.id) {
         const dbUser = await prisma.usuario
-          .findUnique({ where: { id: token.id as string }, select: { authVersion: true } })
+          .findUnique({ where: { id: token.id as string }, select: { authVersion: true, role: true, academiaId: true, faixa: true, grau: true, academia: { select: { nome: true } } } })
           .catch(() => null)
         if (dbUser && dbUser.authVersion !== token.authVersion) {
           throw new Error("Sessão revogada")
+        }
+        if (dbUser) {
+          token.role = dbUser.role as UserRole
+          token.academiaId = dbUser.academiaId
+          token.academiaNome = dbUser.academia?.nome || null
+          token.faixa = dbUser.faixa
+          token.grau = dbUser.grau
         }
       }
 

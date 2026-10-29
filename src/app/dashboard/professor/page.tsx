@@ -8,47 +8,25 @@ export default async function ProfessorDashboard() {
   const session = await getServerSession(authOptions)
   if (!session || session.user.role !== "professor") redirect("/login")
 
-  let professor = await prisma.usuario.findUnique({
+  const professor = await prisma.usuario.findUnique({
     where: { id: session.user.id },
     include: { academia: true },
   })
 
   if (!professor) redirect("/login")
 
-  // Professor sem academia → cria automaticamente
   if (!professor.academia) {
-    const novaAcademia = await prisma.academia.create({
-      data: {
-        nome: `Academia do ${professor.nome.split(" ")[0]}`,
-        endereco: "",
-        cidade: "",
-        estado: "",
-        lat: 0,
-        lng: 0,
-        raio: 200,
-        responsavel: professor.nome,
-        telefone: professor.telefone || "",
-      },
-    })
-    await prisma.usuario.update({
-      where: { id: professor.id },
-      data: { academiaId: novaAcademia.id },
-    })
-    await prisma.graduacao.create({
-      data: {
-        academiaId: novaAcademia.id,
-        categoria: "adulto",
-        faixa: "Branca",
-        graus: 4,
-        aulasPorGrau: 20,
-        aulasProxFx: 100,
-      },
-    })
-    const updated = await prisma.usuario.findUnique({
-      where: { id: session.user.id },
-      include: { academia: true },
-    })
-    if (updated) professor = updated
+    return (
+      <section className="mx-auto max-w-lg px-6 py-12">
+        <h1 className="text-2xl font-bold">Vínculo com a academia</h1>
+        <p className="mt-4 text-[var(--text-secondary)]">
+          Sua conta está pronta. O acesso às turmas e aos alunos será liberado após a aprovação do dono da academia.
+        </p>
+        <p className="mt-3 text-sm text-[var(--text-secondary)]">
+          Se você já escolheu uma academia no cadastro, a solicitação foi enviada ao responsável. Atualize esta página após a aprovação.
+        </p>
+      </section>
+    )
   }
 
   const academia = professor.academia!

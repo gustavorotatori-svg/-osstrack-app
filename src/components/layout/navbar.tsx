@@ -29,12 +29,12 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-6xl mx-auto flex items-center">
-        <Link href="/" className="flex items-center gap-3 font-extrabold text-xl tracking-tight group shrink-0 mr-10">
+        <Link href="/" className="flex items-center gap-3 font-extrabold text-xl tracking-tight group shrink-0 mr-auto md:mr-6">
           <span className="w-10 h-10 gradient-gold rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shrink-0 shadow-lg shadow-[var(--gold)]/10" />
           <span className={`hidden sm:inline transition-colors ${scrolled ? "text-white" : "text-[var(--text)]"}`}>OssTrack</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
+        <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
           {[
             { href: "/#recursos", label: t("recursos") },
             { href: "/#funciona", label: t("comoFunciona") },
@@ -43,7 +43,7 @@ export function Navbar() {
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm transition-colors ${scrolled ? "text-white/80 hover:text-white" : "text-[var(--text-secondary)] hover:text-[var(--text)]"}`}
+              className={`text-sm whitespace-nowrap transition-colors ${scrolled ? "text-white/80 hover:text-white" : "text-[var(--text-secondary)] hover:text-[var(--text)]"}`}
             >
               {l.label}
             </Link>

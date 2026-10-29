@@ -8,6 +8,7 @@ import { notificarUsuario } from "@/lib/notificar"
 import { sendEmail, renderEmailLayout } from "@/lib/email"
 import { LGPD_VERSAO, TERMOS_VERSAO } from "@/lib/lgpd"
 import { encryptCpf } from "@/lib/cpf-crypto"
+import { resolveProfessorAccess, RegistrationAccessError } from "@/lib/registration-access"
 
 async function enviarEmailBoasVindas(opts: { to: string; nome: string; role: string; academiaNome?: string }) {
   const primeiroNome = opts.nome.split(" ")[0]
@@ -205,12 +206,7 @@ export async function POST(request: Request) {
           },
         })
 
-        if (professorId) {
-          await tx.usuario.update({
-            where: { id: professorId },
-            data: { academiaId: novaAcademia.id },
-          })
-        }
+
 
         // Marca convite DENTRO da transação
         if (codigoConvite) {
@@ -235,9 +231,10 @@ export async function POST(request: Request) {
     if (role === "professor") {
       // Usa transação para evitar academia órfã se a criação do usuário falhar
       const result = await prisma.$transaction(async (tx) => {
-        let academiaId = acId || null
+        const access = await resolveProfessorAccess(tx, { academiaId: acId, codigoConvite, email })
+        let academiaId = access.academiaId
 
-        if (!academiaId) {
+        if (!academiaId && !access.approvalOwnerId) {
           const novaAcademia = await tx.academia.create({
             data: {
               nome: `Academia do ${nome.split(" ")[0]}`,
@@ -296,23 +293,30 @@ export async function POST(request: Request) {
             usuarioId: professor.id,
             tipo: "boas_vindas",
             titulo: "Bem-vindo, professor!",
-            descricao: "Sua conta foi criada. Crie sua primeira turma e comece a gerenciar seus alunos.",
+            descricao: access.approvalOwnerId ? "Sua solicitação foi enviada ao dono da academia. Aguarde a aprovação para acessar turmas e alunos." : "Sua conta foi criada. Crie sua primeira turma e comece a gerenciar seus alunos.",
             link: "/dashboard/professor",
           },
         })
 
-        return { academiaId, userId: professor.id }
+        if (access.approvalOwnerId) {
+          await tx.notificacao.create({ data: {
+            usuarioId: access.approvalOwnerId,
+            tipo: "solicitacao_professor",
+            titulo: "Solicitação de Professor",
+            descricao: `O professor ${nome} (id:${professor.id}) solicita vincular-se à sua academia.`,
+            link: "/dashboard/dono",
+          } })
+        }
+        return { academiaId, userId: professor.id, approvalPending: !!access.approvalOwnerId }
       })
 
-      // Marca convite após criação confirmada (fora da transaction por ser não-crítico)
-      if (codigoConvite) await marcarConviteUsado(codigoConvite)
 
       const emailSent = await enviarEmailVerificacao({ to: email, nome, token: emailVerificationToken, userId: result.userId })
       if (!emailSent) await ativarSemVerificacao(result.userId)
 
       enviarEmailBoasVindas({ to: email, nome, role: "professor" }).catch(() => {})
 
-      return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: emailSent })
+      return NextResponse.json({ redirect: "/dashboard/professor", verificationRequired: emailSent, approvalPending: result.approvalPending })
     }
 
     const usuario = await prisma.usuario.create({
@@ -364,6 +368,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ redirect: "/dashboard/aluno", verificationRequired: emailSent })
   } catch (error: unknown) {
+    if (error instanceof RegistrationAccessError) return NextResponse.json({ error: error.message }, { status: 403 })
     const err = error instanceof Error ? error : new Error(String(error))
     console.error("Register error:", err.message || error)
     const msg = err.message?.includes("connect") ? "Erro de conexão com o banco de dados" : "Erro interno do servidor"

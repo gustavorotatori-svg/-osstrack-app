@@ -489,6 +489,7 @@ function CadastroContent() {
                   <p className="text-xs font-semibold"
                     style={{ color: ROLE_CARDS.find(c => c.role === form.role)?.color }}>{t("step2Aluno.academiaSelecionada")}</p>
                   <p className="text-sm font-medium">{form.academiaNome}</p>
+                  {!form.codigoConvite && <p className="mt-2 text-xs text-[var(--text-secondary)]">O dono da academia precisa aprovar seu vínculo antes do acesso às turmas e aos alunos.</p>}
                 </div>
               )}
             </div>

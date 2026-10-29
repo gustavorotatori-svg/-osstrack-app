@@ -31,7 +31,7 @@ export function Footer() {
               Pronto para transformar sua academia?
             </h3>
             <p className="text-sm mb-5 max-w-md mx-auto" style={{ color: "var(--text-secondary)" }}>
-               Junte-se a centenas de academias que já usam o OssTrack. Gratuito. Sem limites. Sem pegadinha.
+               Organize sua academia com alunos, professores e presenças em um só lugar. Gratuito. Sem mensalidade.
             </p>
             <Link
               href="/cadastro"

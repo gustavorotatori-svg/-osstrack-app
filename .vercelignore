@@ -1,0 +1,19 @@
+# Only application sources belong in a deployment.
+.migration-private/
+.env*
+.git/
+.vercel/
+node_modules/
+.next/
+output/
+temp/
+test-results/
+playwright-report/
+scripts/
+*.log
+*.tsbuildinfo
+*.md
+cookie*
+login-headers.txt
+vercel-*.txt
+apps/mobile/

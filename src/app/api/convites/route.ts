@@ -18,7 +18,12 @@ export async function POST(request: Request) {
     }
     const { tipo } = parsed.data
 
-    // TODO: no future, limitar tipos de convite por role se necessário
+    if (tipo === "professor") {
+      const owner = await prisma.usuario.findUnique({ where: { id: session.user.id }, select: { role: true, academiaId: true } })
+      if (owner?.role !== "dono" || !owner.academiaId || owner.academiaId !== session.user.academiaId) {
+        return NextResponse.json({ error: "Somente o dono pode convidar professores para a academia." }, { status: 403 })
+      }
+    }
 
     const codigo = crypto.randomBytes(8).toString("hex")
     const baseUrl = process.env.NEXTAUTH_URL || "https://osstrack.com.br"
