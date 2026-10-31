@@ -22,7 +22,11 @@ export function publicAddress(ip: string): boolean {
 export async function fetchPublic(url: string, remaining = 3): Promise<string> {
   const u = new URL(url)
   if (u.protocol !== "https:" || u.username || u.password || u.port && u.port !== "443" || isIP(u.hostname) || !u.hostname.includes(".")) throw new Error("unsafe_source")
-  const ips = await lookup(u.hostname, { all: true })
+  let dnsTimer: NodeJS.Timeout | undefined
+  const ips = await Promise.race([
+    lookup(u.hostname, { all: true }),
+    new Promise<never>((_, reject) => { dnsTimer = setTimeout(() => reject(new Error("source_dns_timeout")), 5000) }),
+  ]).finally(() => { if (dnsTimer) clearTimeout(dnsTimer) })
   if (!ips.length || ips.some(x => !publicAddress(x.address))) throw new Error("unsafe_source")
   const address = ips.find(ip => ip.family === 4) || ips[0]
   // Pin the validated IP so a second DNS lookup cannot rebind to a private service.
