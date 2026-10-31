@@ -31,7 +31,7 @@ export async function fetchPublic(url: string, remaining = 3): Promise<string> {
   const address = ips.find(ip => ip.family === 4) || ips[0]
   // Pin the validated IP so a second DNS lookup cannot rebind to a private service.
   const r = await new Promise<{ status: number; type: string; location?: string; body: string }>((resolve, reject) => {
-    const req = httpsRequest({ hostname: address.address, family: address.family, servername: u.hostname, path: u.pathname + u.search, signal: AbortSignal.timeout(10000), headers: { host: u.host, "user-agent": "OssTrackResearch/1.0 (+https://osstrack.com.br)", accept: "text/html,application/json" } }, res => {
+    const req = httpsRequest({ hostname: u.hostname, family: address.family, lookup: (_host, options, callback) => { if (options.all) callback(null, ips); else callback(null, address.address, address.family) }, servername: u.hostname, path: u.pathname + u.search, signal: AbortSignal.timeout(10000), headers: { host: u.host, "user-agent": "OssTrackResearch/1.0 (+https://osstrack.com.br)", accept: "text/html,application/json" } }, res => {
       const chunks: Buffer[] = []; let size = 0
       res.on("data", (chunk: Buffer) => { size += chunk.length; if (size > 2500000) req.destroy(new Error("source_too_large")); else chunks.push(chunk) })
       res.on("end", () => resolve({ status: res.statusCode || 0, type: String(res.headers["content-type"] || ""), location: res.headers.location, body: Buffer.concat(chunks).toString("utf8") }))
