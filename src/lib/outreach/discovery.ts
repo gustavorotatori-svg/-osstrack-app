@@ -90,21 +90,48 @@ export function siteProspect(html: string, source: string, c: City): Prospect | 
   const tokens = normalize(title).split(" ").filter(t => t.length >= 4 && !/academia|jiu|jitsu|brazilian|contato|home|escola|inicio|treinamento/.test(t))
   const contacts = emails(text + " " + $("a[href^='mailto:']").map((_, a) => $(a).attr("href")).get().join(" "))
     .filter(e => !/noreply|no-reply|example|exemplo|wixpress|sentry/.test(e) && (e.split("@")[1] === host || tokens.some(t => normalize(e.split("@")[0]).replace(/ /g, "").includes(t))))
-  if (contacts.length !== 1 || !/rua|avenida|\bav\b|endereco|localizacao/.test(n)) return null
+  const addressMatch = new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${normalize(c.name)}\\b.{0,25}\\b${c.uf.toLowerCase()}\\b`).test(n)
+  if (contacts.length !== 1 || !addressMatch) return null
   return { nome: title, email: contacts[0], cidade: c.name, estado: c.uf, populacao: c.population, populationSource: populationSource(c), source, checkedAt: new Date().toISOString().slice(0, 10), independent: true, qualification: "Site da própria escola: modalidade, cidade/UF, endereço e contato comercial de domínio próprio ou alinhado ao nome da marca. Operação local inferida; páginas com grandes redes/franquias são recusadas. Porte em alunos não comprovado." }
+}
+async function websiteSeeds() {
+  // Historical directories discover URLs only. Never import their old emails as qualified contacts.
+  const html = await fetchPublic("https://forum.bjjforum.com.br/viewtopic.php?start=15&t=3410")
+  const $ = load(html)
+  return [...new Set($("a.postlink").map((_, a) => {
+    try { const u = new URL($(a).attr("href") || ""); u.protocol = "https:"; return u.href } catch { return "" }
+  }).get().filter(u => u && !directories.test(new URL(u).hostname) && !excludedBrand.test(normalize(u))))]
 }
 export async function discover(cursor: number, blocked: Set<string>, budgetMs = 110000, progress?: (found: Prospect[], cursor: number) => Promise<void>) {
   const started = Date.now(); const municipality = await cities(); const found: Prospect[] = []; const errors: string[] = []
   try { found.push(...registryProspects(await fetchPublic(REGISTRY), municipality).filter(p => !blocked.has(p.email))) } catch { errors.push("registry_unavailable") }
   await progress?.(found, cursor)
   let searched = 0; const targets = municipality.filter(c => c.population >= 20000)
+  let seeds: string[] = []
+  try { seeds = await websiteSeeds() } catch { errors.push("website_directory_unavailable") }
+  // Rotate over current first-party websites, confirming all facts again on every visit.
+  let inspected = 0
+  while (inspected < Math.min(32, seeds.length) && Date.now() - started < budgetMs * 0.75) {
+    const url = seeds[(cursor + inspected) % seeds.length]; inspected++
+    try {
+      const html = await fetchPublic(url); const $ = load(html); $("script,style,nav").remove(); $("br").replaceWith(" "); $("p,div,span,a,address,footer").append(" ")
+      const n = normalize($("body").text())
+      const matches = municipality.filter(c => new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${normalize(c.name)}\\b.{0,25}\\b${c.uf.toLowerCase()}\\b`).test(n))
+      if (matches.length === 1) {
+        const p = siteProspect(html, url, matches[0])
+        if (p && !blocked.has(p.email) && !found.some(x => x.email === p.email)) found.push(p)
+      }
+    } catch { /* Dead or changed historical URLs do not qualify. */ }
+    await progress?.(found, cursor + inspected)
+  }
+  cursor += inspected
   while (searched < 48 && Date.now() - started < budgetMs && found.length < 50) {
     const c = targets[(cursor + searched) % targets.length]; searched++
     try {
       const query = `academia jiu jitsu "${c.name}" "${c.uf}" contato email -gracie -alliance -checkmat`
       const html = await fetchPublic(`https://www.bing.com/search?format=rss&q=${encodeURIComponent(query)}`)
       const $ = load(html, { xml: true })
-      const links = $("item > link").map((_, a) => $(a).text().trim()).get().filter(u => u.startsWith("https://") && !directories.test(new URL(u).hostname)).slice(0, 4)
+      const links = $("item").filter((_, a) => normalize($(a).find("title,description").text()).includes(normalize(c.name))).find("link").map((_, a) => $(a).text().trim()).get().filter(u => u.startsWith("https://") && !directories.test(new URL(u).hostname)).slice(0, 4)
       if (!$("item").length) errors.push(`search_no_results:${c.code}`)
       for (const url of links) { if (Date.now() - started > budgetMs) break; try { const p = siteProspect(await fetchPublic(url), url, c); if (p && !blocked.has(p.email) && !found.some(x => x.email === p.email)) found.push(p) } catch { /* Offline sources remain unqualified. */ } }
     } catch (error) { errors.push(`search_failed:${c.code}:${error instanceof Error ? error.message : "unknown"}`) }
