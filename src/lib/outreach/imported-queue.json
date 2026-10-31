@@ -1,0 +1,321 @@
+[
+  {
+    "nome": "Jungle Escola de Jiu-Jitsu",
+    "email": "ejj.jungle@gmail.com",
+    "cidade": "Marília",
+    "estado": "SP",
+    "populacao": 247992,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/marilia.html",
+    "source": "https://www.jungleescolajiujitsu.com.br/",
+    "checkedAt": "2026-10-28",
+    "independent": true,
+    "qualification": "Marca local própria, uma unidade publicada e professores próprios; e-mail público no site oficial. Sem indicação de franquia de grande rede no site."
+  },
+  {
+    "nome": "Carcará Jiu-Jitsu",
+    "email": "contato@carcarajiujitsu.com",
+    "cidade": "Campina Grande",
+    "estado": "PB",
+    "populacao": 446720,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pb/campina-grande.html",
+    "source": "https://www.carcarabjj.com.br/",
+    "checkedAt": "2026-10-28",
+    "independent": false,
+    "qualification": "Centro de treinamento de marca local, endereço e e-mail comercial publicados no site oficial. Sem indicação de grande rede. Suspenso: domínio sem MX; exige novo contato verificado."
+  },
+  {
+    "nome": "Escola Yahweh Jireh de Judô e Jiu-Jitsu",
+    "email": "judoyahwehjireh@gmail.com",
+    "cidade": "Campina Grande",
+    "estado": "PB",
+    "populacao": 446720,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pb/campina-grande.html",
+    "source": "https://playsport.com/escolayahwehjirehdejudejiujitsu_ag_53f94af6",
+    "checkedAt": "2026-10-28",
+    "independent": true,
+    "qualification": "Escola local do professor Humáximo Silva, endereço e contato comercial públicos. Fonte diretório esportivo; sem indicação de grande rede."
+  },
+  {
+    "nome": "Moa Academia de Jiu-Jítsu",
+    "email": "contato.moajiujitsu@gmail.com",
+    "cidade": "Indaiatuba",
+    "estado": "SP",
+    "populacao": 271322,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/indaiatuba.html",
+    "source": "https://www.efirma.com.br/empresas/sp/indaiatuba/esportes-academias/moa-academia-jiu-jitsu-jardim-morada-sol",
+    "checkedAt": "2026-10-28",
+    "independent": true,
+    "qualification": "Microempresa ativa, matriz e marca própria; contato comercial público na ficha cadastral atualizada em agosto de 2026. Sem indicação de grande rede."
+  },
+  {
+    "nome": "Instituto Mushin Jiu-Jitsu",
+    "email": "institutomushin@outlook.com",
+    "cidade": "Extremoz",
+    "estado": "RN",
+    "populacao": 70452,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/rn/extremoz.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "website": "https://institutomushin.wixsite.com/institutomushin/inicio",
+    "qualification": "Instituto local de marca própria, com endereço em Extremoz confirmado pelo site oficial. Contato público no registro da CBJJP; sem indicação de grande franquia nas fontes consultadas.",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  },
+  {
+    "nome": "Academia Conexão Fitness",
+    "email": "conexaofitness@gmail.com",
+    "cidade": "Mossoró",
+    "estado": "RN",
+    "populacao": 279100,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/rn/mossoro",
+    "source": "https://conexaofitness.wixsite.com/site",
+    "qualification": "Academia local de marca própria, com jiu-jitsu adulto e infantil divulgado no site oficial. E-mail e endereço de Mossoró publicados no próprio site; sem indicação de grande rede.",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  },
+  {
+    "nome": "WCF Jiu-Jitsu",
+    "email": "wcfjiujitsubr@bol.com",
+    "cidade": "Campina Grande",
+    "estado": "PB",
+    "populacao": 446720,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pb/campina-grande.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://events.uaejjf.org/en/club/3480"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Marca própria e professor responsável Wilson Câmara; academia e endereço confirmados pela UAEJJF e oferta atual no Wellhub. Email exato publicado na CBJJP, sem corrigir domínio. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Leão Jiu-Jitsu",
+    "email": "academialeaojiujitsu@gmail.com",
+    "cidade": "Santana de Parnaíba",
+    "estado": "SP",
+    "populacao": 165193,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/santana-de-parnaiba.html",
+    "source": "https://leaojiujitsu.com.br/",
+    "additionalSources": [
+      "https://leaojiujitsu.com.br/"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Escola local desde 2016, endereço único publicado em Fazendinha; contato comercial no próprio site. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Equipe Miquinho de Jiu Jitsu",
+    "email": "miquinhobjj@gmail.com",
+    "cidade": "Botucatu",
+    "estado": "SP",
+    "populacao": 151600,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/botucatu.html",
+    "source": "https://www.solutudo.com.br/empresas/sp/botucatu/academias/equipe-miquinho-de-jiu-jitsu-6189",
+    "additionalSources": [
+      "https://am.fpjjcompetidor.com.br/info/academias.php"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Academia local de nome próprio, contato comercial público em ficha verificada em agosto de 2026. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "24X7 Jiu-Jitsu Academy",
+    "email": "24x7jiujitsu.academy@gmail.com",
+    "cidade": "Itajaí",
+    "estado": "SC",
+    "populacao": 302247,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sc/itajai.html",
+    "source": "https://maiscnpj.com.br/cnpj/52238241000177-aks-academia-de-jiu-jitsu-ltda",
+    "additionalSources": [
+      "https://letsroll.co/gym/24x7-jiu-jitsu-academy-itaja-sc"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Microempresa ativa de marca própria com dois sócios; endereço e modalidades confirmados por diretórios atuais. Email comercial cadastral público. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Águia Jiu Jitsu School",
+    "email": "contato.aguiajiujitsuschool@gmail.com",
+    "cidade": "Bragança Paulista",
+    "estado": "SP",
+    "populacao": 186631,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/braganca-paulista.html",
+    "source": "https://www.aguiajiujitsuschool.com/contato",
+    "additionalSources": [
+      "https://wellhub.com/pt-br/search/partners/aguia-gym-braganca-jardim-recreio-braganca-paulista/"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Escola de marca própria com contato no site oficial; unidade de Bragança confirmada pelo Wellhub. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Academia do Carlão",
+    "email": "academiadocarlao@gmail.com",
+    "cidade": "Atibaia",
+    "estado": "SP",
+    "populacao": 168162,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/atibaia.html",
+    "source": "https://academiadocarlao.com.br/jiu-jitsu-feminino-em-atibaia/",
+    "additionalSources": [
+      "https://academiadocarlao.com.br/jiu-jitsu-em-atibaia/"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Academia local de marca própria e CNPJ publicado, oferta de jiu-jitsu adulto e feminino e email comercial no próprio site. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Escola Galante de Jiu-Jítsu",
+    "email": "dgalante2020@gmail.com",
+    "cidade": "Franca",
+    "estado": "SP",
+    "populacao": 366534,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/franca.html",
+    "source": "https://www.efirma.com.br/empresa/escola-galante-jiu-jitsu",
+    "additionalSources": [
+      "https://escoladejiujitsugalante.com.br/"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Microempresa ativa com sócio Diego Galante, endereço confirmado pelo site oficial e contato comercial público cadastral. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "CTAM — Centro de Treinamento de Artes Marciais",
+    "email": "ctambotucatu@outlook.com",
+    "cidade": "Botucatu",
+    "estado": "SP",
+    "populacao": 151600,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/botucatu.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://acontecebotucatu.com.br/esportes/mestre-douglas-silva-conquista-faixa-coral-e-consolida-legado-historico-no-jiu-jitsu-em-botucatu/?e-page-5ca8fab=2"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Centro local do proprietário Douglas Silva, atividade confirmada em maio de 2026. Email comercial na CBJJP. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Alexandre Russo BJJ — Manimal AR",
+    "email": "alexandremapeli673@gmail.com",
+    "cidade": "Itápolis",
+    "estado": "SP",
+    "populacao": 40429,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/itapolis.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://am.fpjjcompetidor.com.br/info/academias.php"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Escola local de Alexandre Ricardo Mapeli, mesmo responsável/endereço/telefone presentes na lista FPJJ de academias filiadas 2026. Marca local distinta das grandes franquias excluídas. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Academia Suprema Jiu-Jitsu",
+    "email": "supremaajj@gmail.com",
+    "cidade": "São João de Meriti",
+    "estado": "RJ",
+    "populacao": 466487,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/rj/sao-joao-de-meriti.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://www.cylex.com.br/sao-joao-de-meriti/academia-suprema-jiu-jitsu-11821877.html"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Academia local de Luiz Fernando Luz, endereço confirmado em diretório atual, email público na CBJJP. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Team Ignácio Jiu-Jitsu",
+    "email": "cg.ignacio@gmail.com",
+    "cidade": "Botucatu",
+    "estado": "SP",
+    "populacao": 151600,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/botucatu.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://www.cbjjp.com/school-registered-2023"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Escola local identificada na página pública de academias certificadas com professor Carlos Guilherme Ignácio, endereço de Botucatu e email de contato. Confiança moderada: fonte federativa não informa data de atualização individual. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Shaolin Lucena BJJ",
+    "email": "lucenaartesmarciais@terra.com.br",
+    "cidade": "Santa Isabel",
+    "estado": "SP",
+    "populacao": 54775,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/santa-isabel.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://camarasantaisabel.sp.gov.br/noticias/camara-concede-medalha-ayrton-senna-ao-mestre-daniel-lucena/"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Academia/associação local fundada por Daniel Lucena, existência corroborada por homenagem municipal recente; email comercial na CBJJP. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Take Fight MMAK",
+    "email": "keducosta@yahoo.com.br",
+    "cidade": "Dourados",
+    "estado": "MS",
+    "populacao": 266950,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/ms/dourados.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "additionalSources": [
+      "https://sapl.dourados.ms.leg.br/materia/pesquisar-materia?ano=2026&materiaassunto_null=true&page=46"
+    ],
+    "checkedAt": "2026-10-29",
+    "independent": true,
+    "qualification": "Academia local de Eduardo Oliveira Costa, contato público na CBJJP e atividade corroborada por homenagem da Câmara em outubro de 2026 aos 16 anos da academia. Enquadramento de independência inferido da marca e operação local; sem indicação de grande rede nas fontes consultadas."
+  },
+  {
+    "nome": "Studio Team Wolf",
+    "email": "studioteamwolf@gmail.com",
+    "cidade": "Imperatriz",
+    "estado": "MA",
+    "populacao": 286383,
+    "source": "https://studioteamwolf.my.canva.site/",
+    "qualification": "Escola local fundada em 2023 pelos irmãos Wardson e Warisson Miranda, turmas de jiu-jitsu adulto e infantil, endereço e email no próprio site; marca própria sem indicação de grande franquia. Email normalizado apenas removendo caractere invisível de formatação do site.",
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/ma/imperatriz.html",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  },
+  {
+    "nome": "Escola Alfa Jiu Jitsu",
+    "email": "jiujitsualfa@gmail.com",
+    "cidade": "Parauapebas",
+    "estado": "PA",
+    "populacao": 312427,
+    "source": "https://casadosdados.com.br/solucao/cnpj/d-sadala-de-aguiar-ltda-58423298000122",
+    "qualification": "Empresa ativa de pequeno porte e marca própria, único sócio Diego Sadala de Aguiar e contato comercial cadastral público. Ensino de esportes e endereço local confirmados em cadastro atualizado setembro de 2026; independência inferida da marca/operação local.",
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pa/parauapebas.html",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  },
+  {
+    "nome": "Arena Jiu-Jitsu e Muay Thai",
+    "email": "arena.bjj.fitness@gmail.com",
+    "cidade": "Imperatriz",
+    "estado": "MA",
+    "populacao": 286383,
+    "source": "https://br.todosnegocios.com/pt/arena-jiu-jitsu-and-muay-thai-99-98173-7521",
+    "additionalSources": [
+      "https://elitefighter.com.br/ranking/federacao-de-jiu-jitsu-do-estado-do-maranhao"
+    ],
+    "qualification": "Academia local de Marcos Costa com endereço e email comercial publicados. Equipe Arena Jiu-Jitsu - Marcos Costa identificada separadamente das grandes redes no ranking FJJEM 2026; enquadramento local inferido.",
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/ma/imperatriz.html",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  },
+  {
+    "nome": "Associação Girão de Artes Marciais",
+    "email": "karategirao@gmail.com",
+    "cidade": "Parauapebas",
+    "estado": "PA",
+    "populacao": 312427,
+    "source": "https://associacaogirao.com.br/inscricoes/",
+    "qualification": "Associação local de artes marciais com turmas juvenis e adultas de jiu-jitsu na sede Minério e contato institucional publicado no próprio site. Projeto social com matrícula/gestão de alunos; sem indicação de grande franquia.",
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pa/parauapebas.html",
+    "checkedAt": "2026-10-29",
+    "independent": true
+  }
+]

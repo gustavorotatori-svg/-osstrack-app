@@ -61,12 +61,24 @@ export async function GET(request: Request) {
             if (!msg || !msg.source) continue
 
             const parsed = await simpleParser(msg.source)
-            const fromEmail = parsed.from?.value?.[0]?.address || ""
+            const fromEmail = (parsed.from?.value?.[0]?.address || "").trim().toLowerCase()
             const fromName = parsed.from?.value?.[0]?.name || ""
             const subject = parsed.subject || "(sem assunto)"
             const body = parsed.text || parsed.html || ""
 
+            // Process opt-outs even when this sender has received a previous reply.
+            const currentBody = body.split(/\n(?:On .*wrote:|Em .*escreveu:|>)/)[0]
+            const optout = /^(?:re:\s*)?(?:remover|unsubscribe|descadastrar|cancelar)(?:\b|$)/i.test(subject.trim()) || /(?:remova|remover|retire|retirar)\s+(?:meu|o meu|este)\s+(?:e-?mail|contato)|n[aã]o\s+(?:quero|desejo)\s+(?:mais\s+)?receber/i.test(currentBody)
+            if (fromEmail && optout) {
+              await prisma.autoReplyLog.create({ data: { fromEmail, fromName, subject, bodyPreview: currentBody.slice(0, 500), matchedRule: "unsubscribe", responseSent: false } })
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
+              seenIds.add(fromEmail)
+              skipped++
+              continue
+            }
+
             if (!fromEmail || fromEmail.includes("osstrack.com") || seenIds.has(fromEmail)) {
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
               skipped++
               continue
             }
@@ -106,6 +118,7 @@ export async function GET(request: Request) {
                 }
               }
               seenIds.add(fromEmail)
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
               skipped++
               continue
             }
@@ -143,6 +156,7 @@ export async function GET(request: Request) {
             })
 
             seenIds.add(fromEmail)
+            await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
             replied++
             processed++
           } catch {

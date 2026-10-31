@@ -6,55 +6,100 @@
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "www.osstrack.com.br" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "www.osstrack.com.br"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "osstrack.com" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "osstrack.com"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "www.osstrack.com" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "www.osstrack.com"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "osstrack.club" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "osstrack.club"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "www.osstrack.club" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "www.osstrack.club"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "osstrack.xyz" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "osstrack.xyz"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "www.osstrack.xyz" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "www.osstrack.xyz"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "osstrack.store" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "osstrack.store"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "destination": "https://osstrack.com.br/$1",
       "permanent": true,
-      "has": [{ "type": "host", "value": "www.osstrack.store" }]
+      "has": [
+        {
+          "type": "host",
+          "value": "www.osstrack.store"
+        }
+      ]
     }
   ],
   "crons": [
@@ -82,17 +127,13 @@
       "path": "/api/cron/lembrete-aula",
       "schedule": "0 8 * * *"
     },
-{
-    "path": "/api/cron/relatorio-semanal",
+    {
+      "path": "/api/cron/relatorio-semanal",
       "schedule": "0 13 * * 5"
     },
     {
       "path": "/api/cron/drip-emails",
       "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/cron/outreach",
-      "schedule": "0 14 * * *"
     },
     {
       "path": "/api/cron/auto-reply",
@@ -101,6 +142,22 @@
     {
       "path": "/api/cron/relatorio",
       "schedule": "0 9 */2 * *"
+    },
+    {
+      "path": "/api/cron/outreach/discover",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/outreach",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/outreach/recovery",
+      "schedule": "0 18 * * *"
+    },
+    {
+      "path": "/api/cron/outreach/monitor",
+      "schedule": "0 22 * * *"
     }
   ]
 }
