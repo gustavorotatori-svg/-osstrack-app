@@ -76,10 +76,13 @@ export async function runOutreach(mode: "send" | "discover") {
   const begin = Date.now(); const receipts: { email: string; status: string; messageId?: string }[] = []
   const result = { mode, day: brasiliaDay().day, searched: 0, discovered: 0, accepted: 0, errors: [] as string[], receipts }
   let smtp: ReturnType<typeof transport> | undefined
+  let stage = "qualification"
   try {
     const blocked = await blockedEmails()
     const pending = () => state.leads.filter(a => qualified(a) && !blocked.has(key(a.email)))
-    if (mode === "discover" || pending().length < DAILY_GOAL) {
+    const alreadyAccepted = (await outreachStatus()).accepted
+    if (mode === "discover" || pending().length < Math.max(0, DAILY_GOAL - alreadyAccepted)) {
+      stage = "discovery"
       const merge = async (found: Prospect[], cursor: number) => {
         state.cursor = cursor
         for (const candidate of found) {
@@ -94,6 +97,7 @@ export async function runOutreach(mode: "send" | "discover") {
       await merge(research.found, research.cursor)
     }
     if (mode === "send") {
+      stage = "smtp"
       smtp = transport(); await smtp.verify()
       for (const academy of pending()) {
         if (Date.now() - begin > 245000) { result.errors.push("time_budget_recovery_scheduled"); break }
@@ -134,9 +138,12 @@ export async function runOutreach(mode: "send" | "discover") {
     await save(state, true)
     return { ...result, receipts: undefined, status: await outreachStatus() }
   } catch (error) {
-    const code = error instanceof Error && /^[a-z_]+$/.test(error.message) ? error.message : "outreach_run_failed"
+    const err = error as Error & { code?: string; cause?: { code?: string } }
+    const diagnostic = { stage, name: err?.name, code: err?.code, causeCode: err?.cause?.code, reason: /^[a-z][a-z0-9_:-]{0,100}$/i.test(err?.message || "") ? err.message : undefined }
+    const code = diagnostic.reason || diagnostic.code || diagnostic.causeCode || "outreach_run_failed"
     state.lastError = code
-    await prisma.relatorioEnvio.create({ data: { tipo: "outreach-run", dados: json({ ...result, error: code }) } })
+    console.error("outreach_failure", diagnostic)
+    await prisma.relatorioEnvio.create({ data: { tipo: "outreach-run", dados: json({ ...result, error: code, diagnostic }) } })
     await save(state, true)
     throw new Error(code)
   } finally { smtp?.close() }
