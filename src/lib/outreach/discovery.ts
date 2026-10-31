@@ -6,6 +6,7 @@ import { excludedBrand, normalize, type Prospect } from "./policy"
 
 const POPULATION_URL = "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[all]"
 const REGISTRY = "https://www.cbjjp.com/school-registered-2023"
+const trustedProviders = new Set(["servicodados.ibge.gov.br", "dns.google", "www.cbjjp.com", "www.bing.com", "forum.bjjforum.com.br"])
 export interface City { name: string; uf: string; population: number; code: string; year: number }
 interface PopulationSeries { localidade: { id: string; nome: string }; serie: Record<string, string> }
 const priority = ["PA", "MA", "RN", "PB", "CE", "PE", "AL", "PI", "SE", "BA", "AM", "AC", "RO", "RR", "AP", "TO", "ES"]
@@ -22,6 +23,16 @@ export function publicAddress(ip: string): boolean {
 export async function fetchPublic(url: string, remaining = 3): Promise<string> {
   const u = new URL(url)
   if (u.protocol !== "https:" || u.username || u.password || u.port && u.port !== "443" || isIP(u.hostname) || !u.hostname.includes(".")) throw new Error("unsafe_source")
+  // Fixed public providers use the platform's HTTP transport. Candidate sites still
+  // use pinned, validated DNS below; a provider redirect is validated again.
+  if (trustedProviders.has(u.hostname)) {
+    const response = await fetch(u, { redirect: "manual", signal: AbortSignal.timeout(15000), headers: { "user-agent": "OssTrackResearch/1.0 (+https://osstrack.com.br)", accept: "text/html,application/json" } })
+    if (response.status >= 300 && response.status < 400 && remaining > 0) return fetchPublic(new URL(response.headers.get("location") || "", u).href, remaining - 1)
+    if (!response.ok || !/html|json|xml|text/.test(response.headers.get("content-type") || "")) throw new Error(`source_http_${response.status}`)
+    const chunks: Uint8Array[] = []; let bytes = 0; const reader = response.body!.getReader()
+    while (true) { const { done, value } = await reader.read(); if (done) break; bytes += value.length; if (bytes > 2500000) { await reader.cancel(); throw new Error("source_too_large") }; chunks.push(value) }
+    return Buffer.concat(chunks).toString("utf8")
+  }
   let dnsTimer: NodeJS.Timeout | undefined
   const ips = await Promise.race([
     lookup(u.hostname, { all: true }),
