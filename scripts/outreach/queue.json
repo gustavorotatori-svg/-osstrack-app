@@ -317,5 +317,65 @@
     "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pa/parauapebas.html",
     "checkedAt": "2026-10-29",
     "independent": true
+  },
+  {
+    "nome": "Academia BusterFit",
+    "email": "academiabusterfit@gmail.com",
+    "cidade": "Santana de Parnaíba",
+    "estado": "SP",
+    "populacao": 165193,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/santana-de-parnaiba.html",
+    "source": "https://www.academiabusterfit.com.br/",
+    "qualification": "Academia de marca própria com uma unidade publicada. O próprio site confirma jiu-jitsu, endereço e email comercial. Porte inferido da operação local; não há indicação de grande franquia.",
+    "checkedAt": "2026-10-31",
+    "independent": true
+  },
+  {
+    "nome": "CBL Barros Jiu-Jitsu",
+    "email": "jiujitsubarrosjj@gmail.com",
+    "cidade": "Itu",
+    "estado": "SP",
+    "populacao": 175483,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/itu.html",
+    "source": "https://www.efirma.com.br/empresas/sp/itu/esportes-academias/c-b-l-barros-jiu-jitsu-ltda-centro",
+    "qualification": "Microempresa ativa de Celio Benedito Leite de Barros, email comercial e endereço públicos. Professor também consta da lista FPJJ 2026; marca própria local, sem indicação de grande rede nas fontes consultadas.",
+    "checkedAt": "2026-10-31",
+    "independent": true
+  },
+  {
+    "nome": "CCI — Jiu-Jitsu de Mogi Mirim",
+    "email": "ccimogi@gmail.com",
+    "cidade": "Mogi Mirim",
+    "estado": "SP",
+    "populacao": 95929,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/mogi-mirim.html",
+    "source": "https://ccimogimirim.org.br/oficinas.html",
+    "qualification": "Organização local que oferece turmas/oficinas de jiu-jitsu infantil. Contato institucional e endereço no próprio site; projeto social de gestão de aulas compatível com a oferta gratuita, sem indicação de grande franquia.",
+    "checkedAt": "2026-10-31",
+    "independent": true
+  },
+  {
+    "nome": "Cavalo Jiu-Jitsu",
+    "email": "cristiano.cas.tilho@hotmail.com",
+    "cidade": "Mogi das Cruzes",
+    "estado": "SP",
+    "populacao": 472255,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/mogi-das-cruzes.html",
+    "source": "https://www.cbjjp.com/school-registered-2023",
+    "qualification": "Escola local de Cristiano Moreira de Castilho. Email comercial e endereço na CBJJP, nome e responsável corroborados pela lista FPJJ 2026; marca própria sem indicação de grande franquia.",
+    "checkedAt": "2026-10-31",
+    "independent": true
+  },
+  {
+    "nome": "Ookami BJJ",
+    "email": "ookamibjj@gmail.com",
+    "cidade": "Nilópolis",
+    "estado": "RJ",
+    "populacao": 155478,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/rj/nilopolis.html",
+    "source": "https://ookamibjj.webnode.page/",
+    "qualification": "Equipe própria com sede em Nilópolis e núcleos regionais divulgados no site. Turmas, professores e email comercial públicos; sem indicação de grande franquia. Porte de alunos não comprovado; enquadramento de operação local/regional inferido.",
+    "checkedAt": "2026-10-31",
+    "independent": true
   }
 ]

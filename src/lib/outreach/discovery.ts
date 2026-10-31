@@ -3,11 +3,12 @@ import { lookup, resolveMx } from "node:dns/promises"
 import { isIP } from "node:net"
 import { request as httpsRequest } from "node:https"
 import { excludedBrand, normalize, type Prospect } from "./policy"
+import snapshot from "./ibge-snapshot.json"
 
 const POPULATION_URL = "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[all]"
 const REGISTRY = "https://www.cbjjp.com/school-registered-2023"
 const trustedProviders = new Set(["servicodados.ibge.gov.br", "dns.google", "www.cbjjp.com", "www.bing.com", "forum.bjjforum.com.br"])
-export interface City { name: string; uf: string; population: number; code: string; year: number }
+export interface City { name: string; uf: string; population: number; code: string; year: number; evidence?: "live" | "verified_snapshot" }
 interface PopulationSeries { localidade: { id: string; nome: string }; serie: Record<string, string> }
 const priority = ["PA", "MA", "RN", "PB", "CE", "PE", "AL", "PI", "SE", "BA", "AM", "AC", "RO", "RR", "AP", "TO", "ES"]
 export function publicAddress(ip: string): boolean {
@@ -62,14 +63,23 @@ export async function hasMx(domain: string) {
   }
 }
 export async function cities(): Promise<City[]> {
-  const data = JSON.parse(await fetchPublic(POPULATION_URL))
-  const rows: PopulationSeries[] = data[0]?.resultados[0]?.series || []
-  if (rows.length < 5000) throw new Error("ibge_incomplete")
-  return rows.map(r => {
-    const [name, uf] = r.localidade.nome.split(/ - (?=[A-Z]{2}$)/)
-    const year = Math.max(...Object.keys(r.serie).map(Number))
-    return { name, uf, code: r.localidade.id, population: Number(r.serie[String(year)]), year }
-  }).filter(c => c.uf && c.population > 0 && c.population < 500000 && c.year >= new Date().getUTCFullYear() - 1)
+  let values: City[]
+  try {
+    const data = JSON.parse(await fetchPublic(POPULATION_URL))
+    const rows: PopulationSeries[] = data[0]?.resultados[0]?.series || []
+    if (rows.length < 5000) throw new Error("ibge_incomplete")
+    values = rows.map(r => {
+      const [name, uf] = r.localidade.nome.split(/ - (?=[A-Z]{2}$)/)
+      const year = Math.max(...Object.keys(r.serie).map(Number))
+      return { name, uf, code: r.localidade.id, population: Number(r.serie[String(year)]), year, evidence: "live" as const }
+    })
+  } catch {
+    if (Date.now() - Date.parse(snapshot.retrievedAt) > 366 * 86400000) throw new Error("ibge_snapshot_expired")
+    // An audited copy of official annual data keeps source outages from stopping
+    // the queue. Near-threshold cities require a successful live verification.
+    values = snapshot.cities.filter(c => c.population < 450000).map(c => ({ ...c, evidence: "verified_snapshot" as const }))
+  }
+  return values.filter(c => c.uf && c.population > 0 && c.population < 500000 && c.year >= new Date().getUTCFullYear() - 1)
     .sort((a, b) => (priority.indexOf(a.uf) < 0 ? 99 : priority.indexOf(a.uf)) - (priority.indexOf(b.uf) < 0 ? 99 : priority.indexOf(b.uf)) || b.population - a.population)
 }
 export function populationSource(c: City) { return `https://www.ibge.gov.br/cidades-e-estados/${c.uf.toLowerCase()}/${normalize(c.name).replace(/ /g, "-")}.html` }
@@ -119,6 +129,7 @@ async function websiteSeeds() {
 }
 export async function discover(cursor: number, blocked: Set<string>, budgetMs = 110000, progress?: (found: Prospect[], cursor: number) => Promise<void>) {
   const started = Date.now(); const municipality = await cities(); const found: Prospect[] = []; const errors: string[] = []
+  if (municipality[0]?.evidence === "verified_snapshot") errors.push("ibge_live_unavailable_using_verified_snapshot")
   try { found.push(...registryProspects(await fetchPublic(REGISTRY), municipality).filter(p => !blocked.has(p.email))) } catch { errors.push("registry_unavailable") }
   await progress?.(found, cursor)
   let searched = 0; const targets = municipality.filter(c => c.population >= 20000)

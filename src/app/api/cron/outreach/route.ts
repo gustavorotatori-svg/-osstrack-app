@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const mode = new URL(request.url).searchParams.get("mode")
     if (mode === "status") return NextResponse.json(await outreachStatus())
     if (mode === "source-check") {
-      try { return NextResponse.json({ ibge: "ok", eligibleCities: (await cities()).length }) }
+      try { const data = await cities(); return NextResponse.json({ ibge: data[0]?.evidence || "live", eligibleCities: data.length, populationYear: data[0]?.year }) }
       catch (error) { const e = error as Error & { code?: string }; return NextResponse.json({ ibge: "failed", name: e.name, code: e.code, detail: e.message.slice(0, 200) }, { status: 502 }) }
     }
     return NextResponse.json(await runOutreach("send"))
