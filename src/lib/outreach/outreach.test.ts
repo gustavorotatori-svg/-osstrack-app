@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { brasiliaDay, qualified, type Prospect } from "./policy"
-import { publicAddress, registryProspects, siteProspect, type City } from "./discovery"
+import { cities, fetchPublic, publicAddress, registryProspects, siteProspect, type City } from "./discovery"
 
 const city: City = { name: "Imperatriz", uf: "MA", population: 286383, code: "2105302", year: 2026 }
 const prospect: Prospect = { nome: "Wolf Jiu-Jitsu", email: "contato@wolf.com.br", cidade: city.name, estado: city.uf, populacao: city.population, populationSource: "https://www.ibge.gov.br/cidades-e-estados/ma/imperatriz.html", source: "https://wolf.com.br", checkedAt: "2026-10-31", independent: true, qualification: "Fonte própria" }
@@ -34,6 +34,22 @@ describe("outreach qualification", () => {
     for (const ip of ["127.0.0.1", "10.0.0.1", "172.16.0.1", "192.168.1.1", "169.254.169.254", "::1", "::ffff:127.0.0.1", "64:ff9b::7f00:1"]) expect(publicAddress(ip)).toBe(false)
     expect(publicAddress("170.84.40.178")).toBe(true)
     expect(publicAddress("64:ff9b::aa54:28b2")).toBe(true)
+  })
+  it("uses verified annual data during provider outages but refuses expired data", async () => {
+    vi.useFakeTimers(); vi.setSystemTime(new Date("2026-11-01T12:00:00Z"))
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network outage")))
+    try {
+      const data = await cities()
+      expect(data.length).toBeGreaterThan(5000)
+      expect(data.every(c => c.evidence === "verified_snapshot" && c.year === 2026 && c.population < 450000)).toBe(true)
+      vi.setSystemTime(new Date("2028-01-01T12:00:00Z"))
+      await expect(cities()).rejects.toThrow("ibge_snapshot_expired")
+    } finally { vi.useRealTimers(); vi.unstubAllGlobals() }
+  })
+  it("rejects a trusted provider redirect to an internal address", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(null, { status: 302, headers: { location: "https://127.0.0.1/metadata" } })))
+    try { await expect(fetchPublic("https://dns.google/resolve?name=example.com&type=MX")).rejects.toThrow("unsafe_source") }
+    finally { vi.unstubAllGlobals() }
   })
 })
 
