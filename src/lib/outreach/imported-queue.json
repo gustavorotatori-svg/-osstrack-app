@@ -317,5 +317,203 @@
     "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pa/parauapebas.html",
     "checkedAt": "2026-10-29",
     "independent": true
+  },
+  {
+    "nome": "CNTEAM Academia de Lutas",
+    "email": "academiacnteam@gmail.com",
+    "cidade": "Parnamirim",
+    "estado": "RN",
+    "source": "https://www.cnteam.com.br/",
+    "qualification": "Site próprio publica aulas de jiu-jitsu adulto/kids, endereço e email comercial. Marca local e planos próprios; independência e porte inferidos da operação local, sem indicação de grande rede.",
+    "populacao": 273952,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/rn/parnamirim.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[2403251]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Gade Combat Brazilian Jiu-Jitsu",
+    "email": "gadecombat@gmail.com",
+    "cidade": "Petrolina",
+    "estado": "PE",
+    "source": "https://casadosdados.com.br/solucao/cnpj/gade-combat-empreendimentos-esportivo-ltda-63426899000129",
+    "additionalSources": [
+      "https://cnpj.biz/63426899000129"
+    ],
+    "qualification": "Cadastro empresarial ativo de escola de jiu-jitsu, matriz local com um sócio, ME, endereço comercial e email público. Marca própria; independência inferida do cadastro, sem indicação de grande rede.",
+    "populacao": 422461,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/pe/petrolina.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[2611101]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Kings Jiu-Jitsu",
+    "email": "kings.bjjoficial@gmail.com",
+    "cidade": "Santos",
+    "estado": "SP",
+    "source": "https://kingsbjjoficial.wixsite.com/kingsbjj",
+    "qualification": "Site próprio publica academia de jiu-jitsu, uma unidade em Santos e email para contato. Marca local própria; porte e independência inferidos da operação, sem indicação de franquia.",
+    "populacao": 429528,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/santos.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3548500]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Octopus Jiu-Jitsu Team",
+    "email": "octopusjiujitsuteam@gmail.com",
+    "cidade": "Chapecó",
+    "estado": "SC",
+    "source": "https://octopusjiujitsu.wixsite.com/website",
+    "qualification": "Site próprio descreve equipe local criada por praticantes, professores próprios, aulas de jiu-jitsu, endereço e email comercial. Referência histórica à família Gracie não declara afiliação de rede. Porte e independência inferidos.",
+    "populacao": 289170,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sc/chapeco.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[4204202]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Aiyra Escola de Jiu-Jitsu Brasileiro",
+    "email": "auraejjb@gmail.com",
+    "cidade": "Indaiatuba",
+    "estado": "SP",
+    "source": "https://guiapj.com.br/cnae/8591100/municipio/6511",
+    "additionalSources": [
+      "https://www.efirma.com.br/empresa/aiyra-escola-jiu-jitsu",
+      "https://bjjlf.pro/aiyra-escola-de-jiu-jitsu-brasileiro"
+    ],
+    "qualification": "Escola de jiu-jitsu de marca própria em atividade, ME, dois sócios, matriz e contato comercial público. Equipe própria com resultados recentes no circuito. Independência inferida, sem evidência de grande rede.",
+    "populacao": 271322,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/indaiatuba.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3520509]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "B-Triad Jiu-Jitsu",
+    "email": "info.bryanalves@gmail.com",
+    "cidade": "São Vicente",
+    "estado": "SP",
+    "source": "https://casadosdados.com.br/solucao/cnpj/b-triad-escola-de-artes-marciais-ltda-68697596000164",
+    "additionalSources": [
+      "https://btriadjiujitsu.com.br/"
+    ],
+    "qualification": "Site próprio confirma aulas kids, juvenil e adultos no mesmo endereço do cadastro ativo. Um sócio, capital de mil reais, marca própria e email comercial público. Porte e independência inferidos da operação local.",
+    "populacao": 338253,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/sao-vicente.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3551009]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Vale BJJ Team",
+    "email": "valebjjteam@gmail.com",
+    "cidade": "Jacareí",
+    "estado": "SP",
+    "source": "https://www.solutudo.com.br/empresas/sp/jacarei/academias/marcondes-academia-de-lutas-ltda-30774879",
+    "additionalSources": [
+      "https://wellhub.com/pt-br/search/sp/jacarei--centro/queima-de-gordura/"
+    ],
+    "qualification": "Academia local ativa, razão social Marcondes Academia de Lutas - Vale BJJ Team. Contato comercial público e endereço; Wellhub confirma jiu-jitsu e infantil. Marca própria, independência e porte inferidos, sem indicação de rede.",
+    "populacao": 251848,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/jacarei.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3524402]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Plenitude Jiu-Jitsu",
+    "email": "totawilson@gmail.com",
+    "cidade": "São Vicente",
+    "estado": "SP",
+    "source": "https://www.solutudo.com.br/empresas/sp/s-vicente/academias/plenitude-jiu-jitsu-2146528",
+    "qualification": "Diretório comercial publica escola de jiu-jitsu do empresário Wilson Castela Duarte, endereço local, CNPJ e contato comercial. Marca própria local; porte e independência inferidos, não é confirmação de quantidade de alunos.",
+    "populacao": 338253,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/sao-vicente.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3551009]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Inside Therereh Academia",
+    "email": "insidethererehteam@gmail.com",
+    "cidade": "Itatiba",
+    "estado": "SP",
+    "source": "https://www.solutudo.com.br/empresas/sp/itatiba/academias/welington-de-paulo-lemes-58481",
+    "qualification": "Apresentação comercial da academia do professor Welington Therereh publica aulas de jiu-jitsu, horários, endereço e email comercial. Operação local própria; porte e independência inferidos. Sem indicação de grande rede nas fontes consultadas.",
+    "populacao": 127729,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/itatiba.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3523404]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Projeto de Jiu-Jitsu Formando Cidadão",
+    "email": "formandocidadao.guaruja@gmail.com",
+    "cidade": "Guarujá",
+    "estado": "SP",
+    "source": "https://formandocidadaoguaruja.com.br/jiu-jitsu/",
+    "qualification": "Escola/projeto social local de aulas de jiu-jitsu para crianças/adolescentes, com endereço e email institucional no próprio site. Mesma categoria de projeto de ensino já atendida na campanha (CCI). Independência inferida da associação local; não é franquia.",
+    "populacao": 294780,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/guaruja.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3518701]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Jiu-Jitsu ADEFIL",
+    "email": "adefil.es.linhares@gmail.com",
+    "cidade": "Linhares",
+    "estado": "ES",
+    "source": "https://www.adefil.com.br/",
+    "qualification": "Associação local mantém aulas gratuitas de jiu-jitsu com voluntários; site próprio publica modalidade, endereço, equipe e email institucional. Projeto local de ensino, similar à categoria CCI já incluída; não é rede de academias. Porte da turma não certificado.",
+    "populacao": 185621,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/es/linhares.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3203205]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Jiu-Jitsu Crescendo para o Futuro",
+    "email": "associacaocrescendoparaofuturo@gmail.com",
+    "cidade": "Limeira",
+    "estado": "SP",
+    "source": "https://schm.os3ti.com/pt-br/eventos/todos-os-eventos/p2538-limeira-jiu-jitsu-open-2026-edicao/",
+    "additionalSources": [
+      "https://ecrie.com.br/sistema/conteudos/arquivo/a_137_17_5_11022025080400.pdf"
+    ],
+    "qualification": "Associação local de ensino de jiu-jitsu masculino/feminino em Limeira, plano de trabalho confirma sede e modalidade; página de evento de 2026 publica email institucional da organização. Projeto de ensino similar ao CCI já incluído. Independência inferida, não franquia.",
+    "populacao": 301780,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/limeira.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3526902]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
+  },
+  {
+    "nome": "Jiu-Jitsu Instituto Semear Unindo Forças",
+    "email": "institutosemear77@gmail.com",
+    "cidade": "Guarujá",
+    "estado": "SP",
+    "source": "https://mapa.cultura.gov.br/files/space/101927/o-instituto-semear-unindo-forcas-portfolio-1.pdf",
+    "qualification": "Portfólio da própria instituição em plataforma pública cultural confirma aulas de jiu-jitsu quarta/sexta, sede em Guarujá, CNPJ e email institucional. Projeto social local de ensino, similar ao CCI previamente incluído. Porte inferido da pequena operação descrita, sem indicação de rede.",
+    "populacao": 294780,
+    "populationSource": "https://www.ibge.gov.br/cidades-e-estados/sp/guaruja.html",
+    "populationApiSource": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[3518701]",
+    "populationYear": "2026",
+    "checkedAt": "2026-11-01",
+    "independent": true
   }
 ]
