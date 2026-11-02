@@ -41,3 +41,9 @@ node --env-file=.env --env-file=.env.outreach.local scripts/outreach-service.cjs
 O endpoint `/api/cron/outreach?mode=status` oferece o mesmo status e exige o segredo. Nunca use o endpoint de envio como teste de saúde. `OUTREACH_ENABLED=false` em novo deploy desabilita os workers. Não limpar reservas, recibos ou enviados para tentar novamente um resultado ambíguo.
 
 O relatório diário usa `REPORT_TO`, com o mesmo destinatário de relatório já definido no projeto quando a variável não existe. Se o SMTP estiver indisponível, o envio do alerta também pode falhar; consultar os logs Vercel e os registros persistentes. O monitor do chat pode atuar como conferência secundária, mas não é o executor da campanha.
+
+## Recuperação complementar às 20h
+
+A partir de 02/11/2026, a automação deste chat chama-se **OssTrack — completar meta diária**. Quando houver menos de 15 aceitos e nenhum worker ativo, deve pesquisar contatos adicionais, verificar critérios e fontes, abastecer a fila com trava e completar o restante pelo worker oficial. Meta já cumprida e estado saudável ficam silenciosos. Isso substitui a configuração anterior de conferência somente leitura.
+
+Essa recuperação complementar acessa arquivos locais e depende de computador ligado e aplicativo em execução. Os quatro jobs principais da Vercel continuam funcionando sem o computador. O diretório público atual CBJJE e os cadastros FBJJMMA são novas fontes de pesquisa revisada; ainda não foram integrados ao coletor automático na Vercel. Cadastros federativos não provam independência: verificar vínculos de rede, município e contato e não repetir a academia com outro email.
