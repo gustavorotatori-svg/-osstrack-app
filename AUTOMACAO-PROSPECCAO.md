@@ -24,6 +24,15 @@ O plano Hobby pode executar cada job dentro da hora agendada. Cada job tem frequ
 - Cruza enviados, usuários, log legado e descadastros. Pedidos de remoção por resposta são registrados como `AutoReplyLog.matchedRule = unsubscribe` pelo job existente de caixa de entrada.
 - SMTP aceito não comprova entrega. Relatórios não devem chamar ausência de bounce de entrega comprovada.
 
+## Qualidade comercial e tratamento de respostas
+
+- Cada novo contato deve ter um fato comercial verificável na página oficial da academia, com a mesma URL registrada como fonte; sem fato individualizado e pergunta contextual, não entra na fila de envio. A mensagem deve ser curta, consultiva (70–130 palavras), manter a oferta gratuita e não prometer recursos além dos já existentes.
+- Diretórios podem ajudar a localizar academias, mas a listagem isolada não comprova porte, independência nem um motivo personalizado para contato. O coletor rejeita cadastros sem evidência individualizada no site próprio. Não preencha a meta com leads genéricos.
+- Antes do envio, deduplicar pelo endereço e pela academia (nome/cidade), conferir usuários, envios/reservas, supressões, respostas de recusa e descadastros. Hard bounce e recusas não voltam à fila. SMTP ambíguo nunca é reenviado.
+- Respostas de prospectos não recebem resposta comercial automática. Interesse ou mensagem ambígua é encaminhada ao responsável para resposta humana; recusa fica registrada e suprimida; descadastro é respeitado. Não há sequência automática de follow-up sem cadência definida e consentimento operacional.
+- Monitorar separadamente hard/soft bounce, política, autenticação, limitação de volume, respostas positivas, recusas, descadastros e sinais de interesse. Aberturas/cliques são apenas sinais sujeitos a distorção; aceitação SMTP e ausência de bounce não provam chegada à caixa de entrada.
+- Não contornar bloqueios, reclamações ou pedidos de remoção com outro remetente/domínio. Se houver falhas de autenticação, política ou reputação, pausar e investigar SPF/DKIM/DMARC e configuração antes de retomar.
+
 ## Credenciais e proteção
 
 `OUTREACH_SMTP_HOST`, `OUTREACH_SMTP_PORT`, `OUTREACH_SMTP_USER`, `OUTREACH_SMTP_PASS` e `OUTREACH_ENABLED=true` estão configurados somente em Production. O remetente é validado como `passador@osstrack.com`. Preview não envia. O segredo `CRON_SECRET` autentica todos os endpoints; sessão de um dono de academia não autoriza executar a campanha global.

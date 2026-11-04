@@ -117,7 +117,25 @@ export function siteProspect(html: string, source: string, c: City): Prospect | 
     .filter(e => !/noreply|no-reply|example|exemplo|wixpress|sentry/.test(e) && (e.split("@")[1] === host || tokens.some(t => normalize(e.split("@")[0]).replace(/ /g, "").includes(t))))
   const addressMatch = new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${normalize(c.name)}\\b.{0,25}\\b${c.uf.toLowerCase()}\\b`).test(n)
   if (contacts.length !== 1 || !addressMatch) return null
-  return { nome: title, email: contacts[0], cidade: c.name, estado: c.uf, populacao: c.population, populationSource: populationSource(c), source, checkedAt: new Date().toISOString().slice(0, 10), independent: true, qualification: "Site da própria escola: modalidade, cidade/UF, endereço e contato comercial de domínio próprio ou alinhado ao nome da marca. Operação local inferida; páginas com grandes redes/franquias são recusadas. Porte em alunos não comprovado." }
+  const personalization = personalizationFromSite(n)
+  if (!personalization) return null
+  return { nome: title, email: contacts[0], cidade: c.name, estado: c.uf, populacao: c.population, populationSource: populationSource(c), source, checkedAt: new Date().toISOString().slice(0, 10), independent: true, qualification: "Site da própria escola: modalidade, cidade/UF, endereço e contato comercial de domínio próprio ou alinhado ao nome da marca. Operação local inferida; páginas com grandes redes/franquias são recusadas. Porte em alunos não comprovado.", ...personalization, personalizationSource: source }
+}
+
+function personalizationFromSite(text: string): Pick<Prospect, "personalization" | "personalizedQuestion"> | null {
+  if (/turmas? (?:de |para )?criancas|aulas? (?:de |para )?criancas|turmas? infantis|aulas? infantis|kids classes/.test(text)) {
+    return { personalization: "a página apresenta turmas infantis", personalizedQuestion: "Como vocês acompanham hoje as presenças e graduações das turmas infantis?" }
+  }
+  if (/aula experimental|aula gratis|aula gratuita|trial class/.test(text)) {
+    return { personalization: "o site convida novos alunos para uma aula experimental", personalizedQuestion: "Como vocês acompanham quem chega para a aula experimental e decide continuar?" }
+  }
+  if (/horarios? (?:das|de) (?:aulas|turmas|treinos)|grade de horarios|class schedule/.test(text)) {
+    return { personalization: "o site publica os horários das aulas", personalizedQuestion: "Como vocês controlam hoje a frequência dos alunos em cada horário?" }
+  }
+  if (/graduacao|faixas? (?:de jiu|dos alunos)|belt progression/.test(text)) {
+    return { personalization: "a página destaca o acompanhamento da graduação e das faixas", personalizedQuestion: "Como vocês acompanham hoje a frequência e a evolução das faixas?" }
+  }
+  return null
 }
 async function websiteSeeds() {
   // Historical directories discover URLs only. Never import their old emails as qualified contacts.

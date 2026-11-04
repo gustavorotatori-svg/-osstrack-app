@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
+import { createHash } from "node:crypto"
 import { ImapFlow } from "imapflow"
 import { simpleParser } from "mailparser"
 import nodemailer from "nodemailer"
 import prisma from "@/lib/prisma"
 import { verifyCronAuth } from "@/lib/cron-auth"
-import { findBestReply, getDefaultReply } from "@/lib/auto-reply"
+import { classifyProspectReply, findBestReply, getDefaultReply } from "@/lib/auto-reply"
 
 const IMAP_HOST = process.env.IMAP_HOST || "imap.secureserver.net"
 const IMAP_PORT = parseInt(process.env.IMAP_PORT || "993", 10)
@@ -38,6 +39,7 @@ export async function GET(request: Request) {
 
   let processed = 0
   let replied = 0
+  let routed = 0
   let skipped = 0
   let errors = 0
 
@@ -46,10 +48,6 @@ export async function GET(request: Request) {
     const lock = await client.getMailboxLock("INBOX")
 
     try {
-      const seenIds = new Set(
-        (await prisma.autoReplyLog.findMany({ select: { fromEmail: true } })).map((l) => l.fromEmail)
-      )
-
       const uids = await client.search({ seen: false }, { uid: true })
 
       if (uids && uids.length > 0) {
@@ -65,19 +63,25 @@ export async function GET(request: Request) {
             const fromName = parsed.from?.value?.[0]?.name || ""
             const subject = parsed.subject || "(sem assunto)"
             const body = parsed.text || parsed.html || ""
+            const messageKey = `${client.mailbox?.uidValidity || "inbox"}:${uid}:${parsed.messageId || ""}`
+            const logId = `inbound_${createHash("sha256").update(messageKey).digest("hex")}`
+            if (await prisma.autoReplyLog.findUnique({ where: { id: logId }, select: { id: true } })) {
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
+              skipped++
+              continue
+            }
 
             // Process opt-outs even when this sender has received a previous reply.
             const currentBody = body.split(/\n(?:On .*wrote:|Em .*escreveu:|>)/)[0]
             const optout = /^(?:re:\s*)?(?:remover|unsubscribe|descadastrar|cancelar)(?:\b|$)/i.test(subject.trim()) || /(?:remova|remover|retire|retirar)\s+(?:meu|o meu|este)\s+(?:e-?mail|contato)|n[aã]o\s+(?:quero|desejo)\s+(?:mais\s+)?receber/i.test(currentBody)
             if (fromEmail && optout) {
-              await prisma.autoReplyLog.create({ data: { fromEmail, fromName, subject, bodyPreview: currentBody.slice(0, 500), matchedRule: "unsubscribe", responseSent: false } })
+              await prisma.autoReplyLog.create({ data: { id: logId, fromEmail, fromName, subject, bodyPreview: currentBody.slice(0, 500), matchedRule: "unsubscribe", responseSent: false } })
               await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
-              seenIds.add(fromEmail)
               skipped++
               continue
             }
 
-            if (!fromEmail || fromEmail.includes("osstrack.com") || seenIds.has(fromEmail)) {
+            if (!fromEmail || fromEmail.includes("osstrack.com")) {
               await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
               skipped++
               continue
@@ -117,9 +121,27 @@ export async function GET(request: Request) {
                   }
                 }
               }
-              seenIds.add(fromEmail)
               await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
               skipped++
+              continue
+            }
+
+            const prospect = await prisma.outreachSent.findUnique({ where: { email: fromEmail }, select: { nome: true, cidade: true, estado: true } })
+            if (prospect) {
+              const matchedRule = classifyProspectReply(currentBody)
+              if (matchedRule === "positive_interest" || matchedRule === "prospect_reply") {
+                const transporter = nodemailer.createTransport({ host: SMTP_HOST, port: SMTP_PORT, secure: SMTP_PORT === 465, auth: { user: SMTP_USER, pass: SMTP_PASS } })
+                await transporter.sendMail({
+                  from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
+                  to: process.env.REPORT_TO || "gustavorotatori@gmail.com",
+                  subject: `OssTrack — resposta de prospecto: ${prospect.nome}`,
+                  text: `Categoria: ${matchedRule === "positive_interest" ? "interesse positivo" : "resposta para revisão"}\nAcademia: ${prospect.nome} (${prospect.cidade}/${prospect.estado})\nDe: ${fromEmail}\nAssunto: ${subject}\n\n${currentBody.slice(0, 2500)}\n\nResponder manualmente ao contato pelo email passador@osstrack.com.`,
+                })
+                routed++
+              }
+              await prisma.autoReplyLog.create({ data: { id: logId, fromEmail, fromName, subject, bodyPreview: currentBody.slice(0, 500), matchedRule, responseSent: false, repliedAt: new Date() } })
+              await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
+              processed++
               continue
             }
 
@@ -145,6 +167,7 @@ export async function GET(request: Request) {
 
             await prisma.autoReplyLog.create({
               data: {
+                id: logId,
                 fromEmail,
                 fromName,
                 subject,
@@ -155,7 +178,6 @@ export async function GET(request: Request) {
               },
             })
 
-            seenIds.add(fromEmail)
             await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
             replied++
             processed++
@@ -171,7 +193,7 @@ export async function GET(request: Request) {
 
     await client.logout()
 
-    return NextResponse.json({ processed, replied, skipped, errors })
+    return NextResponse.json({ processed, replied, routed, skipped, errors })
   } catch {
     try { await client.logout() } catch {}
     return NextResponse.json({ error: "Failed to process emails" }, { status: 500 })

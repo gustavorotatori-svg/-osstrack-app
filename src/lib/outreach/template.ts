@@ -1,7 +1,9 @@
-export function renderEmail(nome: string, cidade: string, trackingId: string): string {
+export function renderEmail(nome: string, cidade: string, trackingId: string, personalization: string, personalizedQuestion: string): string {
   const escape = (value: string) => value.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!))
   nome = escape(nome)
   cidade = escape(cidade)
+  personalization = escape(personalization)
+  personalizedQuestion = escape(personalizedQuestion)
   trackingId = encodeURIComponent(trackingId)
   return `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -23,21 +25,12 @@ export function renderEmail(nome: string, cidade: string, trackingId: string): s
 <div class="container">
   <div class="logo">OssTrack</div>
   <div class="card">
-    <h1>Olá, ${nome}! 👋</h1>
-    <p>Vi que vocês têm uma academia de Jiu-Jitsu em ${cidade} e queria apresentar uma ferramenta que pode ajudar no dia a dia de vocês.</p>
-    <p><strong>O OssTrack é 100% gratuito</strong> — uma plataforma completa para gerenciar sua academia:</p>
-    <div class="features">
-      <div class="feature">Check-in com geolocalização e QR code</div>
-      <div class="feature">Controle de frequência e presenças</div>
-      <div class="feature">Sistema de graduação e faixas</div>
-      <div class="feature">Dashboard para dono e professores</div>
-      <div class="feature">Mural de avisos e agenda de turmas</div>
-      <div class="feature">PWA — funciona como app no celular</div>
-      <div class="feature">Suporte a 14 idiomas</div>
-    </div>
-    <p>Sem custos, sem contratos, sem pegadinhas. Apenas crie uma conta e comece a usar.</p>
-    <p style="text-align:center"><a class="btn" href="https://osstrack.com.br/api/cron/outreach/click?id=${trackingId}">Criar Conta Grátis</a></p>
-    <p style="font-size:13px; color:#666; text-align:center">Qualquer dúvida, é só responder este email.</p>
+    <h1>Olá, ${nome}!</h1>
+    <p>Encontrei o site de vocês em ${cidade} e vi que ${personalization}. Esse detalhe me motivou a escrever porque o OssTrack ajuda a organizar alunos, presenças, graduações e horários da academia.</p>
+    <p>É gratuito para academias independentes pequenas e médias de Jiu-Jitsu. Se parte desse controle fica em planilhas ou mensagens, o sistema centraliza as informações para a equipe consultar.</p>
+    <p>${personalizedQuestion}</p>
+    <p style="text-align:center"><a class="btn" href="https://osstrack.com.br/api/cron/outreach/click?id=${trackingId}">Conhecer o OssTrack</a></p>
+    <p style="font-size:13px; color:#666; text-align:center">Se não for você quem cuida dessa parte, pode encaminhar para a pessoa responsável.</p>
   </div>
   <div class="footer">OssTrack — Sua jornada no tatame começa aqui.</div>
   <div class="unsubscribe">Se não quiser mais receber emails, <a href="mailto:passador@osstrack.com?subject=Remover">clique aqui</a>.</div>

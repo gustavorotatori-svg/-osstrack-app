@@ -255,4 +255,11 @@ O OssTrack é 100% gratuito para academias de Jiu-Jitsu.
 Fico à disposição! 🥋`
 }
 
+export function classifyProspectReply(text: string): "positive_interest" | "declined" | "prospect_reply" {
+  const normalized = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  if (/\b(nao (?:tenho|temos|tem) interesse|sem interesse|nao queremos|nao precisamos|ja temos (?:um )?(?:sistema|software|plataforma)|nao e do meu interesse|agradeco,? mas nao|pare de entrar em contato)\b/.test(normalized)) return "declined"
+  if (/\b(interessad[oa]s?|quero conhecer|quero testar|mande (?:mais )?informacoes|envie (?:mais )?informacoes|podemos conversar|vamos conversar|como faco para|gostaria de saber|me passa (?:o )?acesso)\b/.test(normalized)) return "positive_interest"
+  return "prospect_reply"
+}
+
 export { RULES }

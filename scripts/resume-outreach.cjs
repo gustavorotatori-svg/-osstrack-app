@@ -69,7 +69,9 @@ async function main() {
     seen.add(key);
     const fresh = Date.now() - Date.parse(`${a.checkedAt}T12:00:00Z`) < 30 * 86400000;
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(key) && a.independent === true && a.populacao > 0 && a.populacao < 500000 &&
-      a.source?.startsWith('https://') && a.populationSource?.startsWith('https://www.ibge.gov.br/') && fresh && !excludedBrands.test(a.nome);
+      a.source?.startsWith('https://') && a.populationSource?.startsWith('https://www.ibge.gov.br/') && fresh && !excludedBrands.test(a.nome) &&
+      typeof a.personalization === 'string' && a.personalization.trim().length >= 20 && a.personalizationSource === a.source &&
+      typeof a.personalizedQuestion === 'string' && a.personalizedQuestion.trim().length >= 20 && a.personalizedQuestion.trim().endsWith('?');
   });
   const selected = pending.slice(0, Math.max(0, dailyTarget - today));
   console.log(JSON.stringify({ mode: send ? 'send' : 'preview', day, registeredToday: today, pending: pending.length, selected: selected.map(a => ({ nome: a.nome, email: a.email, cidade: a.cidade, estado: a.estado })) }));
@@ -105,7 +107,7 @@ async function main() {
       try {
         const info = await transport.sendMail({ from: '"OssTrack" <passador@osstrack.com>', to: email,
           subject: 'OssTrack — Plataforma gratuita para sua academia de Jiu-Jitsu',
-          html: renderEmail(academy.nome, academy.cidade, reservation.id) });
+          html: renderEmail(academy.nome, academy.cidade, reservation.id, academy.personalization, academy.personalizedQuestion) });
         if (!info.accepted?.some(a => emailKey(String(a)) === email)) throw new Error('SMTP did not confirm acceptance');
         result.status = 'smtp_accepted'; result.messageId = info.messageId;
         saveReceipt();
