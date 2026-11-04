@@ -63,7 +63,8 @@ export async function GET(request: Request) {
             const fromName = parsed.from?.value?.[0]?.name || ""
             const subject = parsed.subject || "(sem assunto)"
             const body = parsed.text || parsed.html || ""
-            const messageKey = `${client.mailbox?.uidValidity || "inbox"}:${uid}:${parsed.messageId || ""}`
+            const mailboxUidValidity = client.mailbox && typeof client.mailbox === "object" ? client.mailbox.uidValidity : "inbox"
+            const messageKey = `${mailboxUidValidity}:${uid}:${parsed.messageId || ""}`
             const logId = `inbound_${createHash("sha256").update(messageKey).digest("hex")}`
             if (await prisma.autoReplyLog.findUnique({ where: { id: logId }, select: { id: true } })) {
               await client.messageFlagsAdd(uid, ["\\Seen"], { uid: true })
