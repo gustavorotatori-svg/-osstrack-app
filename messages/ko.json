@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "연속 기록 복구 오류",
     "birthdaysTitulo": "{mes} 생일자",
     "metaSemanalBadge": "주간",
-    "metaSemanalAulas": "{atual}/{max} 수업"
+    "metaSemanalAulas": "{atual}/{max} 수업",
+    "metaSemanalEditar": "목표 수정",
+    "metaSemanalSalvar": "저장",
+    "metaSemanalCancelar": "취소",
+    "metaSemanalAlvo": "주간 수업 횟수",
+    "metaSemanalDica": "일정에 맞는 목표를 선택하세요. 꾸준한 페이스가 더 오래 지속됩니다.",
+    "metaSemanalAgendar": "수업 일정 보기",
+    "metaSemanalErroSalvar": "목표를 저장하지 못했습니다. 다시 시도하세요."
   },
   "agendaDias": {
     "dom": "일",

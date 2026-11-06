@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Ошибка при восстановлении серии",
     "birthdaysTitulo": "Именинники: {mes}",
     "metaSemanalBadge": "Неделя",
-    "metaSemanalAulas": "{atual}/{max} занятий"
+    "metaSemanalAulas": "{atual}/{max} занятий",
+    "metaSemanalEditar": "Изменить цель",
+    "metaSemanalSalvar": "Сохранить",
+    "metaSemanalCancelar": "Отмена",
+    "metaSemanalAlvo": "Тренировок в неделю",
+    "metaSemanalDica": "Выберите цель, которая подходит вашему распорядку. Постоянный ритм легче поддерживать.",
+    "metaSemanalAgendar": "Посмотреть расписание занятий",
+    "metaSemanalErroSalvar": "Не удалось сохранить цель. Попробуйте ещё раз."
   },
   "agendaDias": {
     "dom": "Вс",

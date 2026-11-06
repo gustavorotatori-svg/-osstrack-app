@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Fel vid återställning av strecken",
     "birthdaysTitulo": "Födelsedagar i {mes}",
     "metaSemanalBadge": "Veckovis",
-    "metaSemanalAulas": "{atual}/{max} lektioner"
+    "metaSemanalAulas": "{atual}/{max} lektioner",
+    "metaSemanalEditar": "Ändra mål",
+    "metaSemanalSalvar": "Spara",
+    "metaSemanalCancelar": "Avbryt",
+    "metaSemanalAlvo": "Pass per vecka",
+    "metaSemanalDica": "Välj ett mål som passar din vardag. En jämn takt är lättare att hålla.",
+    "metaSemanalAgendar": "Visa träningsschemat",
+    "metaSemanalErroSalvar": "Målet kunde inte sparas. Försök igen."
   },
   "agendaDias": {
     "dom": "Sön",

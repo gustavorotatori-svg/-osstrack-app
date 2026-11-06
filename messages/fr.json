@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Erreur lors de la restauration de la série",
     "birthdaysTitulo": "Anniversaires en {mes}",
     "metaSemanalBadge": "Hebdomadaire",
-    "metaSemanalAulas": "{atual}/{max} cours"
+    "metaSemanalAulas": "{atual}/{max} cours",
+    "metaSemanalEditar": "Modifier l’objectif",
+    "metaSemanalSalvar": "Enregistrer",
+    "metaSemanalCancelar": "Annuler",
+    "metaSemanalAlvo": "Cours par semaine",
+    "metaSemanalDica": "Choisissez un objectif adapté à votre rythme. Une pratique régulière est plus facile à maintenir.",
+    "metaSemanalAgendar": "Voir le planning des cours",
+    "metaSemanalErroSalvar": "Impossible d’enregistrer l’objectif. Réessayez."
   },
   "agendaDias": {
     "dom": "Dim",

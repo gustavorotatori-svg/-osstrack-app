@@ -1602,7 +1602,14 @@
     "streakSalvageErroRestaurar": "Error restoring streak",
     "birthdaysTitulo": "Birthdays in {mes}",
     "metaSemanalBadge": "Weekly",
-    "metaSemanalAulas": "{atual}/{max} classes"
+    "metaSemanalAulas": "{atual}/{max} classes",
+    "metaSemanalEditar": "Adjust goal",
+    "metaSemanalSalvar": "Save",
+    "metaSemanalCancelar": "Cancel",
+    "metaSemanalAlvo": "Classes per week",
+    "metaSemanalDica": "Choose a goal that fits your routine. A steady pace is easier to maintain.",
+    "metaSemanalAgendar": "View class schedule",
+    "metaSemanalErroSalvar": "Could not save the goal. Please try again."
   },
   "agendaDias": {
     "dom": "Sun",

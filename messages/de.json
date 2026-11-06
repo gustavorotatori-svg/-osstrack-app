@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Fehler beim Wiederherstellen des Streaks",
     "birthdaysTitulo": "Geburtstage im {mes}",
     "metaSemanalBadge": "Wöchentlich",
-    "metaSemanalAulas": "{atual}/{max} Einheiten"
+    "metaSemanalAulas": "{atual}/{max} Einheiten",
+    "metaSemanalEditar": "Ziel anpassen",
+    "metaSemanalSalvar": "Speichern",
+    "metaSemanalCancelar": "Abbrechen",
+    "metaSemanalAlvo": "Einheiten pro Woche",
+    "metaSemanalDica": "Wähle ein Ziel, das zu deinem Alltag passt. Ein gleichmäßiger Rhythmus lässt sich leichter beibehalten.",
+    "metaSemanalAgendar": "Stundenplan ansehen",
+    "metaSemanalErroSalvar": "Das Ziel konnte nicht gespeichert werden. Bitte erneut versuchen."
   },
   "agendaDias": {
     "dom": "So",

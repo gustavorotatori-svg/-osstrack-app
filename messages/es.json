@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Error al restaurar la racha",
     "birthdaysTitulo": "Cumpleaños de {mes}",
     "metaSemanalBadge": "Semanal",
-    "metaSemanalAulas": "{atual}/{max} clases"
+    "metaSemanalAulas": "{atual}/{max} clases",
+    "metaSemanalEditar": "Ajustar meta",
+    "metaSemanalSalvar": "Guardar",
+    "metaSemanalCancelar": "Cancelar",
+    "metaSemanalAlvo": "Clases por semana",
+    "metaSemanalDica": "Elige una meta que se adapte a tu rutina. Un ritmo constante es más fácil de mantener.",
+    "metaSemanalAgendar": "Ver horario de clases",
+    "metaSemanalErroSalvar": "No se pudo guardar la meta. Inténtalo de nuevo."
   },
   "agendaDias": {
     "dom": "Dom",

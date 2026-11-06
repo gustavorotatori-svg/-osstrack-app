@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "लगातार उपस्थिति बहाल करने में त्रुटि",
     "birthdaysTitulo": "{mes} के जन्मदिन वाले",
     "metaSemanalBadge": "साप्ताहिक",
-    "metaSemanalAulas": "{atual}/{max} कक्षाएं"
+    "metaSemanalAulas": "{atual}/{max} कक्षाएं",
+    "metaSemanalEditar": "लक्ष्य बदलें",
+    "metaSemanalSalvar": "सहेजें",
+    "metaSemanalCancelar": "रद्द करें",
+    "metaSemanalAlvo": "प्रति सप्ताह कक्षाएँ",
+    "metaSemanalDica": "अपनी दिनचर्या के अनुसार लक्ष्य चुनें। नियमित गति बनाए रखना आसान होता है।",
+    "metaSemanalAgendar": "कक्षा समय-सारणी देखें",
+    "metaSemanalErroSalvar": "लक्ष्य सहेजा नहीं जा सका। फिर से कोशिश करें।"
   },
   "agendaDias": {
     "dom": "रवि",

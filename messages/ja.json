@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "連続記録の復元エラー",
     "birthdaysTitulo": "{mes}の誕生日",
     "metaSemanalBadge": "週間",
-    "metaSemanalAulas": "{atual}/{max} 节课"
+    "metaSemanalAulas": "{atual}/{max} 节课",
+    "metaSemanalEditar": "目標を変更",
+    "metaSemanalSalvar": "保存",
+    "metaSemanalCancelar": "キャンセル",
+    "metaSemanalAlvo": "週ごとのクラス数",
+    "metaSemanalDica": "無理のない目標を選びましょう。一定のペースは続けやすくなります。",
+    "metaSemanalAgendar": "クラス予定を見る",
+    "metaSemanalErroSalvar": "目標を保存できませんでした。もう一度お試しください。"
   },
   "agendaDias": {
     "dom": "日",

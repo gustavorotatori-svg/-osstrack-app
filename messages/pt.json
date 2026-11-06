@@ -1678,7 +1678,14 @@
     "streakSalvageErroRestaurar": "Erro ao restaurar streak",
     "birthdaysTitulo": "Aniversariantes de {mes}",
     "metaSemanalBadge": "Semanal",
-    "metaSemanalAulas": "{atual}/{max} aulas"
+    "metaSemanalAulas": "{atual}/{max} aulas",
+    "metaSemanalEditar": "Ajustar meta",
+    "metaSemanalSalvar": "Salvar",
+    "metaSemanalCancelar": "Cancelar",
+    "metaSemanalAlvo": "Aulas por semana",
+    "metaSemanalDica": "Escolha uma meta que caiba na sua rotina. Um ritmo constante é mais fácil de manter.",
+    "metaSemanalAgendar": "Ver agenda de aulas",
+    "metaSemanalErroSalvar": "Não foi possível salvar a meta. Tente novamente."
   },
   "agendaDias": {
     "dom": "Dom",

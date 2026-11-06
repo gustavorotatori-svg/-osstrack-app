@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "Fout bij herstellen van de streak",
     "birthdaysTitulo": "Verjaardagen in {mes}",
     "metaSemanalBadge": "Wekelijks",
-    "metaSemanalAulas": "{atual}/{max} lessen"
+    "metaSemanalAulas": "{atual}/{max} lessen",
+    "metaSemanalEditar": "Doel aanpassen",
+    "metaSemanalSalvar": "Opslaan",
+    "metaSemanalCancelar": "Annuleren",
+    "metaSemanalAlvo": "Lessen per week",
+    "metaSemanalDica": "Kies een doel dat bij je routine past. Een vast ritme is makkelijker vol te houden.",
+    "metaSemanalAgendar": "Bekijk het lesrooster",
+    "metaSemanalErroSalvar": "Het doel kon niet worden opgeslagen. Probeer het opnieuw."
   },
   "agendaDias": {
     "dom": "Zo",

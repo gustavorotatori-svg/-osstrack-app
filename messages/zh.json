@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "恢复连续记录时出错",
     "birthdaysTitulo": "{mes}的生日学员",
     "metaSemanalBadge": "每周",
-    "metaSemanalAulas": "{atual}/{max} 节课"
+    "metaSemanalAulas": "{atual}/{max} 节课",
+    "metaSemanalEditar": "调整目标",
+    "metaSemanalSalvar": "保存",
+    "metaSemanalCancelar": "取消",
+    "metaSemanalAlvo": "每周课程数",
+    "metaSemanalDica": "选择适合自己日常安排的目标。稳定的节奏更容易坚持。",
+    "metaSemanalAgendar": "查看课程安排",
+    "metaSemanalErroSalvar": "无法保存目标，请重试。"
   },
   "agendaDias": {
     "dom": "日",

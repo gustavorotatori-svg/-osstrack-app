@@ -1588,7 +1588,14 @@
     "streakSalvageErroRestaurar": "خطأ بترجيع السلسلة",
     "birthdaysTitulo": "مولّدين {mes}",
     "metaSemanalBadge": "أسبوعي",
-    "metaSemanalAulas": "{atual}/{max} حصة"
+    "metaSemanalAulas": "{atual}/{max} حصة",
+    "metaSemanalEditar": "تعديل الهدف",
+    "metaSemanalSalvar": "حفظ",
+    "metaSemanalCancelar": "إلغاء",
+    "metaSemanalAlvo": "الحصص في الأسبوع",
+    "metaSemanalDica": "اختر هدفًا يناسب روتينك. الحفاظ على وتيرة ثابتة أسهل.",
+    "metaSemanalAgendar": "عرض جدول الحصص",
+    "metaSemanalErroSalvar": "تعذر حفظ الهدف. حاول مرة أخرى."
   },
   "agendaDias": {
     "dom": "الأحد",
