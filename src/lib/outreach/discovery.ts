@@ -175,7 +175,13 @@ export async function discover(cursor: number, blocked: Set<string>, budgetMs = 
       const query = `academia jiu jitsu "${c.name}" "${c.uf}" contato email -gracie -alliance -checkmat`
       const html = await fetchPublic(`https://www.bing.com/search?format=rss&q=${encodeURIComponent(query)}`)
       const $ = load(html, { xml: true })
-      const links = $("item").filter((_, a) => normalize($(a).find("title,description").text()).includes(normalize(c.name))).find("link").map((_, a) => $(a).text().trim()).get().filter(u => u.startsWith("https://") && !directories.test(new URL(u).hostname)).slice(0, 4)
+      // The query already targets this municipality. Search result titles often
+      // omit the city even when the school's own page names it, so use the
+      // candidate URLs and let siteProspect verify locality, address, modality,
+      // public email, and a concrete personalization fact on the first-party site.
+      const links = $("item").map((_, item) => $(item).find("link").first().text().trim()).get()
+        .filter(u => { try { return u.startsWith("https://") && !directories.test(new URL(u).hostname) } catch { return false } })
+        .slice(0, 6)
       if (!$("item").length) errors.push(`search_no_results:${c.code}`)
       for (const url of links) { if (Date.now() - started > budgetMs) break; try { const p = siteProspect(await fetchPublic(url), url, c); if (p && !blocked.has(p.email) && !found.some(x => x.email === p.email)) found.push(p) } catch { /* Offline sources remain unqualified. */ } }
     } catch (error) { errors.push(`search_failed:${c.code}:${error instanceof Error ? error.message : "unknown"}`) }
