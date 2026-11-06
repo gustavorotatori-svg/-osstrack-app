@@ -112,9 +112,11 @@ export function siteProspect(html: string, source: string, c: City): Prospect | 
   const title = ($('meta[property="og:site_name"]').attr("content") || $("title").text() || $("h1").first().text()).split(/[|–—]/)[0].trim()
   const host = new URL(source).hostname.replace(/^www\./, "")
   if (directories.test(host) || !/jiu[ -]?jitsu|brazilian jiu/.test(n) || !n.includes(normalize(c.name)) || !new RegExp(`\\b${c.uf.toLowerCase()}\\b`).test(n) || excludedBrand.test(n) || /franquia|franchise|licenciad/.test(n) || title.length < 4 || title.length > 100) return null
-  const tokens = normalize(title).split(" ").filter(t => t.length >= 4 && !/academia|jiu|jitsu|brazilian|contato|home|escola|inicio|treinamento/.test(t))
+  // A published Gmail/Outlook address is a valid academy contact when it is
+  // present on the academy's own site. The first-party page itself establishes
+  // the association; requiring a matching email domain was excluding small gyms.
   const contacts = emails(text + " " + $("a[href^='mailto:']").map((_, a) => $(a).attr("href")).get().join(" "))
-    .filter(e => !/noreply|no-reply|example|exemplo|wixpress|sentry/.test(e) && (e.split("@")[1] === host || tokens.some(t => normalize(e.split("@")[0]).replace(/ /g, "").includes(t))))
+    .filter(e => !/noreply|no-reply|example|exemplo|wixpress|sentry/.test(e))
   const addressMatch = new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${normalize(c.name)}\\b.{0,25}\\b${c.uf.toLowerCase()}\\b`).test(n)
   if (contacts.length !== 1 || !addressMatch) return null
   const personalization = personalizationFromSite(n)
