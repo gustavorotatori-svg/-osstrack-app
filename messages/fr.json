@@ -9,14 +9,14 @@
   },
   "hero": {
     "titulo1": "Votre parcours",
-    "titulo2": "commence ici.",
-    "cta": "Commencer Gratuitement",
+    "titulo2": "Cours et présences organisés, simplement.",
+    "cta": "Créer mon académie gratuitement",
     "login": "Se connecter",
     "badge": "",
     "statsAcademias": "Académies",
     "statsAlunos": "Élèves actifs",
     "statsRetencao": "Rétention",
-    "subtitle": "Check-in GPS, Wellhub, progression par ceinture, classement, mur, finances et bien plus. Tout gratuit.",
+    "subtitle": "Gérez élèves, cours, présences et grades au même endroit — gratuit pour les académies indépendantes.",
     "verDemo": "Voir la démo complète"
   },
   "frases": [

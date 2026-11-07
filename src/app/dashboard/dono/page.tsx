@@ -14,17 +14,12 @@ export default async function DonoDashboard() {
 
   if (!academia) redirect("/login")
 
-  const totalAlunos = await prisma.usuario.count({
-    where: { academiaId: academia.id, role: "aluno" },
-  })
-
-  const totalProfessores = await prisma.usuario.count({
-    where: { academiaId: academia.id, role: "professor" },
-  })
-
-  const totalPresencas = await prisma.presenca.count({
-    where: { aluno: { academiaId: academia.id }, status: "confirmed" },
-  })
+  const [totalAlunos, totalProfessores, totalPresencas, totalTurmas] = await Promise.all([
+    prisma.usuario.count({ where: { academiaId: academia.id, role: "aluno" } }),
+    prisma.usuario.count({ where: { academiaId: academia.id, role: "professor" } }),
+    prisma.presenca.count({ where: { aluno: { academiaId: academia.id }, status: "confirmed" } }),
+    prisma.turma.count({ where: { academiaId: academia.id } }),
+  ])
 
   const alunos = await prisma.usuario.findMany({
     where: { academiaId: academia.id, role: "aluno" },
@@ -94,6 +89,7 @@ export default async function DonoDashboard() {
         totalAlunos,
         totalProfessores,
         totalPresencas,
+        totalTurmas,
       }}
       presencasMensais={presencasMensais}
       alunosPorCategoria={alunosPorCategoria.map((a) => ({ categoria: a.categoria, total: a._count }))}

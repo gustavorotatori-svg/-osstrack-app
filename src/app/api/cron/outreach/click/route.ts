@@ -14,5 +14,5 @@ export async function GET(request: Request) {
     } catch {}
   }
 
-  return NextResponse.redirect("https://osstrack.com.br/cadastro")
+  return NextResponse.redirect("https://osstrack.com.br/cadastro?utm_source=outreach&utm_medium=email")
 }

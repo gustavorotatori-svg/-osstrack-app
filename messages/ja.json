@@ -9,14 +9,14 @@
   },
   "hero": {
     "titulo1": "柔術の旅は",
-    "titulo2": "ここから始まる。",
-    "cta": "無料で始める",
+    "titulo2": "クラスと出席管理を、もっとシンプルに。",
+    "cta": "無料でアカデミーを始める",
     "login": "ログイン",
     "badge": "",
     "statsAcademias": "道場数",
     "statsAlunos": "アクティブな生徒",
     "statsRetencao": "定着率",
-    "subtitle": "GPSチェックイン、Wellhub、帯の進行、ランキング、サークル、会計など。すべて無料。",
+    "subtitle": "生徒、クラス、出席、昇級をひとつの場所で管理。独立系アカデミーは無料です。",
     "verDemo": "完全なデモを見る"
   },
   "frases": [

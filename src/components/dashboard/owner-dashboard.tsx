@@ -14,11 +14,12 @@ import { toast } from "sonner"
 import { useT } from "@/lib/use-t"
 import { useRouter } from "next/navigation"
 import { triggerOssTransition } from "@/components/ui/oss-transition"
+import { track } from "@vercel/analytics"
 
 type Props = {
   role: "dono" | "professor"
   academia: { nome: string; responsavel: string; rankingVisivel: boolean }
-  stats: { totalAlunos: number; totalProfessores: number; totalPresencas: number }
+  stats: { totalAlunos: number; totalProfessores: number; totalPresencas: number; totalTurmas?: number }
   presencasMensais: { mes: string; total: number }[]
   alunosPorCategoria: { categoria: string; total: number }[]
   alunos: { id: string; nome: string; faixa: string; grau: number; categoria: string }[]
@@ -44,6 +45,22 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
     fetch("/api/dashboard/inativos?dias=7").then((r) => r.json()).then((d) => setInativos(d.inativos || [])).catch((e) => console.error("inativos", e))
     fetch("/api/dashboard/retention").then((r) => r.json()).then(setRetention).catch((e) => console.error("retention", e))
   }, [])
+
+  useEffect(() => {
+    if (role !== "dono") return
+    track("owner_activation_state", {
+      has_class: Number((stats.totalTurmas ?? 0) > 0),
+      has_student: Number(stats.totalAlunos > 0),
+      has_attendance: Number(stats.totalPresencas > 0),
+    })
+  }, [role, stats.totalAlunos, stats.totalPresencas, stats.totalTurmas])
+
+  const onboardingSteps = [
+    { key: "turmas", label: td("acaoTurmas"), href: "/dashboard/dono/turmas", complete: (stats.totalTurmas ?? 0) > 0, cta: td("criarPrimeiraTurma") },
+    { key: "alunos", label: td("acaoAlunos"), href: "/dashboard/dono/alunos", complete: stats.totalAlunos > 0, cta: td("acaoAlunos") },
+    { key: "presencas", label: td("acaoPresencas"), href: "/dashboard/dono/presencas", complete: stats.totalPresencas > 0, cta: td("acaoPresencas") },
+  ]
+  const completedOnboardingSteps = onboardingSteps.filter((step) => step.complete).length
 
   const [rankingVisivel, setRankingVisivel] = useState(academia.rankingVisivel)
   const [toggling, setToggling] = useState(false)
@@ -129,7 +146,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
           </div>
 
           {/* First-action welcome for new users */}
-          {stats.totalAlunos === 0 && (
+          {role === "dono" && completedOnboardingSteps < onboardingSteps.length && (
             <div className="bg-gradient-to-r from-[var(--gold)]/10 to-amber-600/5 border border-[var(--gold)]/20 rounded-2xl p-6 text-center space-y-4">
               <div className="text-4xl">🥋</div>
               <h2 className="text-lg font-black" style={{ color: "var(--gold)" }}>
@@ -138,17 +155,17 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
               <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
                 {td("bemVindoDesc")}
               </p>
-              <div className="flex items-center justify-center gap-3 flex-wrap">
-                <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role === "dono" ? "dono" : "professor"}/turmas`) }}
-                  className="btn-gold px-6 py-3 text-sm font-bold inline-flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4" />
-                  {td("criarPrimeiraTurma")}
-                </button>
-                <button onClick={async () => { await triggerOssTransition(); router.push(`/dashboard/${role}/config`) }}
-                  className="px-6 py-3 rounded-xl text-sm font-bold border border-[var(--border)] text-[var(--text)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all inline-flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  {td("configurarAcademia")}
-                </button>
+              <p className="text-xs font-semibold text-[var(--text-muted)]">{completedOnboardingSteps}/3</p>
+              <div className="grid sm:grid-cols-3 gap-2 text-left">
+                {onboardingSteps.map((step, index) => (
+                  <button key={step.key} onClick={async () => { await triggerOssTransition(); router.push(step.href) }}
+                    aria-label={`${index + 1}. ${step.label}${step.complete ? " ✓" : `: ${step.cta}`}`}
+                    className={`rounded-xl border p-3 transition-colors ${step.complete ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400" : "border-[var(--border)] bg-[var(--bg-surface)] text-[var(--text)] hover:border-[var(--gold)]"}`}>
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{index + 1} · {step.complete ? "✓" : "○"}</span>
+                    <span className="mt-1 block text-sm font-bold">{step.label}</span>
+                    {!step.complete && <span className="mt-2 block text-xs font-semibold text-[var(--gold)]">{step.cta} →</span>}
+                  </button>
+                ))}
               </div>
             </div>
           )}

@@ -9,14 +9,14 @@
   },
   "hero": {
     "titulo1": "당신의 여정은",
-    "titulo2": "여기서 시작합니다.",
-    "cta": "무료 시작",
+    "titulo2": "수업과 출석을 간편하게 관리하세요.",
+    "cta": "무료로 내 도장 시작하기",
     "login": "로그인",
     "badge": "",
     "statsAcademias": "도장",
     "statsAlunos": "활성 학생",
     "statsRetencao": "유지율",
-    "subtitle": "GPS 체크인, Wellhub, 벨트 진행, 랭킹, 게시판, 재무 그리고 더 많은 기능. 전부 무료.",
+    "subtitle": "학생, 수업, 출석, 승급을 한곳에서 관리하세요 — 독립 도장에는 무료입니다.",
     "verDemo": "전체 데모 보기"
   },
   "frases": [

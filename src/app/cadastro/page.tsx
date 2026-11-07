@@ -82,6 +82,7 @@ function CadastroContent() {
   const [professores, setProfessores] = useState<{ id: string; nome: string }[]>([])
   const [buscaProf, setBuscaProf] = useState("")
   const [geoLoading, setGeoLoading] = useState(false)
+  const signupStartedTracked = useRef(false)
   const buscaTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const buscaProfTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
@@ -152,6 +153,13 @@ function CadastroContent() {
       if (roleChosen) setStep(2)
     })()
   }, [roleChosen])
+
+  useEffect(() => {
+    if (signupStartedTracked.current) return
+    signupStartedTracked.current = true
+    const source = searchParams.get("utm_source") === "outreach" ? "outreach" : searchParams.get("utm_source") === "site" ? "site" : "direct"
+    try { track("signup_started", { source }) } catch {}
+  }, [searchParams])
 
   function update(key: string, value: string | number | boolean) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -293,7 +301,10 @@ function CadastroContent() {
       if (!res.ok) { setError(data.error || t("errors.criacao")); setLoading(false); return }
 
       setLoading(false)
-      try { track("cadastro_concluido", { role: form.role as string }) } catch {}
+      try {
+        const source = searchParams.get("utm_source") === "outreach" ? "outreach" : searchParams.get("utm_source") === "site" ? "site" : "direct"
+        track("cadastro_concluido", { role: form.role as string, source })
+      } catch {}
       if (data.verificationRequired) {
         setVerificationPending(true)
       } else {

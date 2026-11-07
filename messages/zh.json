@@ -9,14 +9,14 @@
   },
   "hero": {
     "titulo1": "你的柔术之旅",
-    "titulo2": "从这里开始。",
-    "cta": "免费开始",
+    "titulo2": "轻松管理课程和出勤。",
+    "cta": "免费创建我的道馆",
     "login": "登录",
     "badge": "",
     "statsAcademias": "道馆",
     "statsAlunos": "活跃学员",
     "statsRetencao": "留存率",
-    "subtitle": "GPS 签到、Wellhub、腰带进度、排名、动态墙、财务等等，全部免费。",
+    "subtitle": "在一个平台管理学员、课程、出勤和晋级 — 独立道馆免费使用。",
     "verDemo": "查看完整演示"
   },
   "frases": [

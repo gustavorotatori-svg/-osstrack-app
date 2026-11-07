@@ -23,14 +23,14 @@
   },
   "hero": {
     "titulo1": "Your journey on the",
-    "titulo2": "Complete and free management for your Jiu-Jitsu academy.",
-    "cta": "Start Free",
+    "titulo2": "Keep classes and attendance organized without extra work.",
+    "cta": "Set up my free academy",
     "login": "Sign In",
     "badge": "The Jiu-Jitsu logbook",
     "statsAcademias": "Academies",
     "statsAlunos": "Active students",
     "statsRetencao": "Retention",
-    "subtitle": "GPS check-in, Wellhub, belt tracking, ranking, wall, finances and more. All free.",
+    "subtitle": "Manage students, classes, attendance and belt progress in one place — free for independent academies.",
     "verDemo": "View full demo"
   },
   "frases": [

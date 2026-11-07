@@ -4,6 +4,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { useT } from "@/lib/use-t"
 import { useEffect, useState } from "react"
+import { track } from "@vercel/analytics"
 
 export function Hero() {
   const t = useT("hero")
@@ -65,7 +66,7 @@ export function Hero() {
 
         {/* CTAs */}
         <div className={`flex items-center justify-center gap-4 flex-wrap transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <Link href="/cadastro" className="btn-gold px-10 py-4 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95">
+          <Link href="/cadastro?utm_source=site" onClick={() => track("landing_signup_click")} className="btn-gold px-10 py-4 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95">
             {t("cta")}
           </Link>
           <Link href="/login"
@@ -75,7 +76,7 @@ export function Hero() {
         </div>
 
         <div className={`mt-6 transition-all duration-700 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <Link href="/screenshot/demo"
+          <Link href="/screenshot/demo" onClick={() => track("landing_demo_click")}
             className="px-5 py-2.5 rounded-lg text-sm font-semibold inline-flex items-center gap-2 border border-[var(--dark-border)] hover:border-[var(--gold)] hover:text-[var(--gold)] transition-all duration-300" style={{ color: "var(--text-secondary)" }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             {t("verDemo")}
