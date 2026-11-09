@@ -1,6 +1,10 @@
 import { DonoScreenshotDemo } from "./client"
+import type { Metadata } from "next"
 
-export const metadata = { title: "OssTrack Dono Demo" }
+export const metadata: Metadata = {
+  title: "OssTrack Dono Demo",
+  robots: { index: false, follow: true },
+}
 
 export default function Page() {
   return (

@@ -1,6 +1,10 @@
 import { ScreenshotDemo } from "./client"
+import type { Metadata } from "next"
 
-export const metadata = { title: "OssTrack Demo" }
+export const metadata: Metadata = {
+  title: "OssTrack Demo",
+  robots: { index: false, follow: true },
+}
 
 export default function Page() {
   return (
