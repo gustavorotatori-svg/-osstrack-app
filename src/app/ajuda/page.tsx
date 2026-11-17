@@ -22,7 +22,7 @@ const faqSchema = {
     {
       "@type": "Question",
       name: "Quanto custa?",
-      acceptedAnswer: { "@type": "Answer", text: "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês." },
+      acceptedAnswer: { "@type": "Answer", text: "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Aluno do Mês." },
     },
     {
       "@type": "Question",

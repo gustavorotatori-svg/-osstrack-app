@@ -86,7 +86,7 @@
       "Daily missions & weekly goal",
       "Unlimited attendance history",
       "Academy ranking",
-      "Master of the Month",
+      "Student of the Month",
       "Achievements & belt progress"
     ],
     "tudoGratis": "Everything Free",
@@ -117,9 +117,9 @@
     "subtitulo": "Academy, professor and student: $0. Always free."
   },
   "testimonials": {
-    "titulo": "What the masters say",
+    "titulo": "What coaches say",
     "badge": "Testimonials",
-    "subtitulo": "Masters and professors who transformed their academy management — and their students' relationship with training."
+    "subtitulo": "Coaches and instructors who transformed their academy management — and their students' relationship with training."
   },
   "footer": {
     "descricao": "Your academy more organized, your students more motivated. All in one place, 100% free.",
@@ -322,7 +322,7 @@
       "todas": "All",
       "geral": "General",
       "adulto": "Adult",
-      "master": "Master",
+      "master": "Veterans",
       "infantil": "Kids",
       "esteMes": "This Month",
       "total": "Total",
@@ -1399,7 +1399,7 @@
       "step3Desc": "View your classes, schedules and enrolled students."
     },
     "dono": {
-      "title": "Welcome, Master!",
+      "title": "Welcome!",
       "step1Title": "Dashboard",
       "step1Desc": "Academy overview: students, attendance, metrics.",
       "step2Title": "Students",
@@ -1557,11 +1557,11 @@
     "guideStep2Title": "Streak (Sequence)",
     "guideStep2Desc": "The streak counts how many days in a row you train. Keeping an active streak gives you bonuses and shows your dedication. If you miss a day, the streak resets.",
     "guideStep3Title": "Levels (1 to 12)",
-    "guideStep3Desc": "There are 12 levels in total: Beginner → Warrior → Fighter → Blue Belt → Competitor → Athlete → Graduate → Expert → Master → Grandmaster → Legend → Kami. Each level requires more XP than the previous one.",
+    "guideStep3Desc": "There are 12 levels in total: Beginner → Warrior → Fighter → Blue Belt → Competitor → Athlete → Graduate → Expert → Veteran → Elite → Legend → Kami. Each level requires more XP than the previous one.",
     "guideStep4Title": "Daily Missions",
     "guideStep4Desc": "Every day you get missions like 'Train Today' or 'Early Bird'. Completing them guarantees extra XP. Weekly missions are more challenging but are worth more points.",
     "guideStep5Title": "Achievements",
-    "guideStep5Desc": "Achievements are special milestones: training 30 days, a 7-day streak, being Master of the Month, etc. Every unlocked achievement is worth a 50 XP bonus!",
+    "guideStep5Desc": "Achievements are special milestones: training 30 days, a 7-day streak, being Student of the Month, etc. Every unlocked achievement is worth a 50 XP bonus!",
     "levelUpNivel1": "Beginner",
     "levelUpNivel2": "Warrior",
     "levelUpNivel3": "Fighter",
@@ -1570,15 +1570,15 @@
     "levelUpNivel6": "Athlete",
     "levelUpNivel7": "Graduate",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Master",
-    "levelUpNivel10": "Grandmaster",
+    "levelUpNivel9": "Veteran",
+    "levelUpNivel10": "Elite",
     "levelUpNivel11": "Legend",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "You went from level {from} to level {to}!",
     "levelUpXpTotais": "{xp} XP total",
     "levelUpContinuar": "Continue",
     "mestreDoMesCatAdulto": "🥋 Adult",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veterans",
     "mestreDoMesCatInfantil": "⭐ Kids",
     "mestreDoMesAtualizado": "{categoria} — Student of the Month updated!",
     "mestreDoMesErro": "Error selecting student",
@@ -1802,7 +1802,7 @@
       },
       "dono": {
         "welcome": {
-          "title": "Welcome, Master!",
+          "title": "Welcome!",
           "desc": "Here you manage your entire academy: students, coaches, finances and reports."
         },
         "alunosDono": {
@@ -1969,7 +1969,7 @@
       "s3aBody": "Nothing motivates more than a streak. On OssTrack, the student sees the streak on fire — 3 days, 7 days, 30 days. Losing the streak hurts more than losing a match. Use that to your advantage. Create a \"Streak of the Month\" board at the academy. The student with the longest streak gets featured.",
       "s3bBody": "Ranking by number of attendances in the month (not by technical performance) encourages frequency without creating intimidation. The student who trained the most in the month gets recognition — it can be a sticker, a t-shirt, or simply the name on the board. On OssTrack, the ranking is automatic.",
       "s3cBody": "Celebrate small victories: the first week without missing, the first finish during free rolling, 30 classes completed. Every achievement becomes a notification in the student's app. They feel seen. On OssTrack, achievements are automatic and the student receives a virtual badge.",
-      "s3Tip": "🥋 OssTrack was built with real gamification: XP, levels 1 to 12, streak with fire, achievements, ranking and Master of the Month. All free.",
+      "s3Tip": "🥋 OssTrack was built with real gamification: XP, levels 1 to 12, streak with fire, achievements, ranking and Student of the Month. All free.",
       "s4Intro": "The biggest retention factor in a Jiu-Jitsu academy is the professor. Not the structure, not the price, not the location. It's the professor-student relationship.",
       "s4aBody": "When the professor uses OssTrack to congratulate, mark attendance and interact on the wall, the class engagement doubles. A professor who posts on the academy wall — a technique video, an announcement, a word of encouragement — creates a daily return flow for students.",
       "s4bBody": "A \"congratulations on your progress\" or \"great roll today\" said individually transforms the student's experience. Use OssTrack's data to know who trained, who's arriving late, who's disappearing — and act before the student gives up.",
@@ -1988,8 +1988,8 @@
       "s6IntroB": " that create anticipation and belonging.",
       "s6i1Label": "Group graduation:",
       "s6i1Text": "A ceremony every two months with belt awarding, family presence, photos. It's the most emotional moment on the academy calendar.",
-      "s6i2Label": "Master of the Month:",
-      "s6i2Text": "The student with the most attendances in the month gets featured on the wall, in the app and on the academy's social media. On OssTrack, Master of the Month is automatic.",
+      "s6i2Label": "Student of the Month:",
+      "s6i2Text": "The student with the most attendances in the month gets featured on the wall, in the app and on the academy's social media. On OssTrack, Student of the Month is automatic.",
       "s6i3Label": "Open classes and seminars:",
       "s6i3Text": "Invite a black belt from outside, run a seminar, a big immersion class on Saturday. It breaks the routine and renews enthusiasm.",
       "s6i4Label": "Year-end celebration:",
@@ -2019,7 +2019,7 @@
       "s8i2Label": "Academy wall:",
       "s8i2Text": "The professor posts, the student comments, likes appear. The community interacts even outside the mat.",
       "s8i3Label": "Smart notifications:",
-      "s8i3Text": "Training reminder, unlocked achievement, Master of the Month, level up. The student gets positive encouragement every day.",
+      "s8i3Text": "Training reminder, unlocked achievement, Student of the Month, level up. The student gets positive encouragement every day.",
       "s8i4Label": "Ranking and healthy competition:",
       "s8i4Text": "Students compete for attendance, not for performance. Everyone can win.",
       "s8i5Label": "100% free:",
@@ -2248,7 +2248,7 @@
     "faq1q": "What is OssTrack?",
     "faq1r": "OssTrack is a management and evolution platform for Jiu-Jitsu academies. We help academies, professors and students track attendance, belt progression, streaks, achievements and much more — all with a focus on motivation and discipline.",
     "faq2q": "How much does it cost?",
-    "faq2r": "Academies and professors pay nothing — it's free. All features are 100% free for students, including evolution charts, special achievements and Master of the Month.",
+    "faq2r": "Academies and professors pay nothing — it's free. All features are 100% free for students, including evolution charts, special achievements and Student of the Month.",
     "faq3q": "How does check-in work?",
     "faq3r": "The student opens the app at training time and taps 'Check In'. The platform uses the phone's geolocation to confirm the student is at the academy. The professor can also record attendance manually.",
     "faq4q": "Do I need a separate app?",
@@ -2386,7 +2386,7 @@
     "grausProgresso": "{atual}/{total} degrees",
     "proximaFaixa": "Next Belt",
     "aulasRestantes": "{n} classes left",
-    "mestreDoMes": "Master of the Month",
+    "mestreDoMes": "Student of the Month",
     "mestreSub": "{faixa} · {aulas} classes",
     "mestrePeriodo": "{mes} {ano}",
     "verRanking": "See full ranking →",
@@ -2426,8 +2426,8 @@
       "6": "Athlete",
       "7": "Graduate",
       "8": "Expert",
-      "9": "Master",
-      "10": "Grandmaster",
+      "9": "Veteran",
+      "10": "Elite",
       "11": "Legend",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Experienced",
       "5": "Advanced",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elite"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Invites by Type",
     "ultimosConvites": "Latest Invites"
   }
-}
+}

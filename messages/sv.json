@@ -74,7 +74,7 @@
       "Dagliga uppdrag och veckomål",
       "Obegränsad närvarohistoria",
       "Akademiranking",
-      "Månadens Mästare",
+      "Månadens Elev",
       "Bedrifter och bältesframsteg"
     ],
     "tudoGratis": "Allt Gratis",
@@ -105,7 +105,7 @@
   "testimonials": {
     "titulo": "Vad mästarna säger",
     "badge": "Omdömen",
-    "subtitulo": "Mästare och instruktörer som har förändrat hur deras akademier styrs — och elevernas relation till träningen."
+    "subtitulo": "Instruktörer som har förändrat hur deras akademier styrs — och elevernas relation till träningen."
   },
   "footer": {
     "descricao": "Din akademi mer organiserad, dina elever mer motiverade. Allt på ett ställe, 100% gratis.",
@@ -189,7 +189,7 @@
         "Mattan ljuger inte. Och idag visade du den att du är här.",
         "En runda i taget. En lektion i taget. Ett liv i taget.",
         "Utveckling är inte en sprint. Det är ett maraton av incheckningar. Och du har precis genomfört ännu en.",
-        "Mästaren finns i varje träningspass som ingen såg. Vi såg.",
+        "Tränaren finns i varje träningspass som ingen såg. Vi såg.",
         "Du behöver inte vara bäst. Du behöver vara bättre än igår. Och idag var du det.",
         "Oss. Tack för att du litar på processen. Det svarta bältet är bara början.",
         "Varje närvaro är en seger mot gårdagen. Du är närmare."
@@ -308,7 +308,7 @@
       "todas": "Alla",
       "geral": "Totalt",
       "adulto": "Vuxen",
-      "master": "Master",
+      "master": "Veteraner",
       "infantil": "Barn",
       "esteMes": "Denna Månad",
       "total": "Totalt",
@@ -1385,7 +1385,7 @@
       "step3Desc": "Visa dina klasser, tider och inskrivna elever."
     },
     "dono": {
-      "title": "Välkommen, Mästare!",
+      "title": "Välkommen!",
       "step1Title": "Dashboard",
       "step1Desc": "Översikt över din akademi: elever, närvaro, mätvärden.",
       "step2Title": "Elever",
@@ -1543,11 +1543,11 @@
     "guideStep2Title": "Streak (svit)",
     "guideStep2Desc": "Strecken räknar hur många dagar i rad du tränar. En aktiv svit ger bonus och visar din hängivelse. Missar du en dag börjar strecken om.",
     "guideStep3Title": "Nivåer (1 till 12)",
-    "guideStep3Desc": "Det finns 12 nivåer totalt: Nybörjare → Krigare → Kämpe → Blå bältet → Tävlande → Atlet → Graderad → Expert → Mästare → Grandmästare → Legend → Kami. Varje nivå kräver mer XP än den föregående.",
+    "guideStep3Desc": "Det finns 12 nivåer totalt: Nybörjare → Krigare → Kämpe → Blå bältet → Tävlande → Atlet → Graderad → Expert → Veteran → Elit → Legend → Kami. Varje nivå kräver mer XP än den föregående.",
     "guideStep4Title": "Dagliga uppdrag",
     "guideStep4Desc": "Varje dag får du uppdrag som \"Träna idag\" eller \"Tidig kattis\". Att klara dem ger extra XP. Veckouppdragen är svårare men ger fler poäng.",
     "guideStep5Title": "Bedrifter",
-    "guideStep5Desc": "Bedrifter är särskilda milstolpar: träna 30 dagar, streak på 7 dagar, bli Mästare av Månaden med mera. Varje upplåst bedrift ger 50 bonus-XP!",
+    "guideStep5Desc": "Bedrifter är särskilda milstolpar: träna 30 dagar, streak på 7 dagar, bli Månadens Elev med mera. Varje upplåst bedrift ger 50 bonus-XP!",
     "levelUpNivel1": "Nybörjare",
     "levelUpNivel2": "Krigare",
     "levelUpNivel3": "Kämpe",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "Atlet",
     "levelUpNivel7": "Graderad",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Mästare",
-    "levelUpNivel10": "Grandmästare",
+    "levelUpNivel9": "Veteran",
+    "levelUpNivel10": "Elit",
     "levelUpNivel11": "Legend",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Du gick från nivå {from} till nivå {to}!",
     "levelUpXpTotais": "{xp} XP totalt",
     "levelUpContinuar": "Fortsätt",
     "mestreDoMesCatAdulto": "🥋 Vuxna",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veteraner",
     "mestreDoMesCatInfantil": "⭐ Barn",
     "mestreDoMesAtualizado": "{categoria} — Månadens Elev är uppdaterad!",
     "mestreDoMesErro": "Fel vid val av elev",
@@ -1802,7 +1802,7 @@
       },
       "dono": {
         "welcome": {
-          "title": "Välkommen, mästare!",
+          "title": "Välkommen!",
           "desc": "Här hanterar du hela din akademi: elever, instruktörer, ekonomi och rapporter."
         },
         "alunosDono": {
@@ -1969,7 +1969,7 @@
       "s3aBody": "Inget motiverar som en svit. I OssTrack ser eleven sin streak i lågor — 3 dagar, 7 dagar, 30 dagar. Att förlora streken gör mer ont än att förlora en match. Använd det till din fördel. Sätt upp en \"Streak of the Month\"-tavla på akademin. Eleven med längst svit får ett synligt omnämnande.",
       "s3bBody": "Ranking baserad på antal närvaro i månaden (inte teknisk förmåga) uppmuntrar regelbundenhet utan att skapa avundsjuka. Eleven som tränat mest i månaden får uppmärksamhet — det kan vara ett klistermärke, en t-shirt eller bara namnet på tavlan. I OssTrack sker rankningen automatiskt.",
       "s3cBody": "Fira små segrar: första veckan utan att utebliva, första avslutet i fri rullning, 30 genomförda lektioner. Varje bedrift blir ett meddelande i elevens app. De känner sig sedda. I OssTrack är bedrifterna automatiska och eleven får en virtuell badge.",
-      "s3Tip": "🥋 OssTrack är byggt med riktig gamifiering: XP, nivåer 1 till 12, streak med lågor, bedrifter, ranking och Mästare av Månaden. Allt gratis.",
+      "s3Tip": "🥋 OssTrack är byggt med riktig gamifiering: XP, nivåer 1 till 12, streak med lågor, bedrifter, ranking och Månadens Elev. Allt gratis.",
       "s4Intro": "Den viktigaste faktorn för kvarhållning i en Jiu-Jitsu-akademi är instruktören. Inte lokalerna, inte priset, inte läget. Det är relationen mellan instruktör och elev.",
       "s4aBody": "När instruktören använder OssTrack för att gratulera, registrera närvaro och kommentera på muralen fördubblas klassens engagemang. En instruktör som publicerar på akademins mural — en teknikvideo, ett meddelande, en uppmuntran — skapar ett dagligt flöde av återkommande elever.",
       "s4bBody": "Ett \"gratulations på din utveckling\" eller \"fin rullning idag\", sagt personligen, förändrar elevens upplevelse. Använd OssTracks data för att se vem som tränat, vem som kommer sent och vem som försvinner — och agera innan eleven ger upp.",
@@ -1988,8 +1988,8 @@
       "s6IntroB": " som skapar förväntan och tillhörighet.",
       "s6i1Label": "Gemensam graderingsceremoni:",
       "s6i1Text": "Ceremoni två gånger per år med utdelning av bälten, familj närvarande och foton. Det är det mest känslomäktiga stunden i akademins kalender.",
-      "s6i2Label": "Mästare av Månaden:",
-      "s6i2Text": "Eleven med flest närvaro i månaden lyfts fram på muralen, i appen och i akademins sociala kanaler. I OssTrack sker Mästare av Månaden automatiskt.",
+      "s6i2Label": "Månadens Elev:",
+      "s6i2Text": "Eleven med flest närvaro i månaden lyfts fram på muralen, i appen och i akademins sociala kanaler. I OssTrack sker Månadens Elev automatiskt.",
       "s6i3Label": "Öppna lektioner och föreläsningar:",
       "s6i3Text": "Bjud in ett svart bälte utifrån, håll ett seminarium eller en intensiv lördagslektion. Det bryter rutiner och ger ny energi.",
       "s6i4Label": "Årsavslutning:",
@@ -2019,7 +2019,7 @@
       "s8i2Label": "Akademins mural:",
       "s8i2Text": "Instruktören publicerar, eleven kommenterar, gilla-markeringar dyker upp. Gemenskapen lever även utanför mattan.",
       "s8i3Label": "Smarta notiser:",
-      "s8i3Text": "Träningspåminnelse, upplåst bedrift, Mästare av Månaden, nivåuppgradering. Eleven får en positiv stimulans varje dag.",
+      "s8i3Text": "Träningspåminnelse, upplåst bedrift, Månadens Elev, nivåuppgradering. Eleven får en positiv stimulans varje dag.",
       "s8i4Label": "Ranking och sund tävlan:",
       "s8i4Text": "Elever tävlar om närvaro, inte om förmåga. Alla kan vinna.",
       "s8i5Label": "100 % gratis:",
@@ -2248,7 +2248,7 @@
     "faq1q": "Vad är OssTrack?",
     "faq1r": "OssTrack är en plattform för hantering och utveckling för Jiu-Jitsu-akademier. Vi hjälper akademier, instruktörer och elever att följa närvaro, bältesutveckling, streaks, bedrifter med mera — alltid med fokus på motivation och disciplin.",
     "faq2q": "Vad kostar det?",
-    "faq2r": "Akademier och instruktörer betalar ingenting — det är gratis. Alla funktioner är 100 % gratis för elever, inklusive utvecklingsgrafer, speciella bedrifter och Mästare av Månaden.",
+    "faq2r": "Akademier och instruktörer betalar ingenting — det är gratis. Alla funktioner är 100 % gratis för elever, inklusive utvecklingsgrafer, speciella bedrifter och Månadens Elev.",
     "faq3q": "Hur fungerar incheckningen?",
     "faq3r": "Eleven öppnar appen under träningen och trycker på \"Gör incheckning\". Plattformen använder telefonens geolokalisering för att bekräfta att eleven är på akademin. Instruktören kan även registrera närvaron manuellt.",
     "faq4q": "Behöver jag en separat app?",
@@ -2386,7 +2386,7 @@
     "grausProgresso": "{atual}/{total} grader",
     "proximaFaixa": "Nästa Bälte",
     "aulasRestantes": "{n} lektioner kvar",
-    "mestreDoMes": "Mästare av Månaden",
+    "mestreDoMes": "Månadens Elev",
     "mestreSub": "{faixa} · {aulas} lektioner",
     "mestrePeriodo": "{mes} {ano}",
     "verRanking": "Se hela rankningen →",
@@ -2426,8 +2426,8 @@
       "6": "Atlet",
       "7": "Graderad",
       "8": "Expert",
-      "9": "Mästare",
-      "10": "Grandmästare",
+      "9": "Veteran",
+      "10": "Elit",
       "11": "Legend",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Erfaren",
       "5": "Avancerad",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elit"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Inbjudningar per typ",
     "ultimosConvites": "Senaste Inbjudningar"
   }
-}
+}

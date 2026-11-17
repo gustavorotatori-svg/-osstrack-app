@@ -308,7 +308,7 @@
       "todas": "Alle",
       "geral": "Algemeen",
       "adulto": "Volwassen",
-      "master": "Master",
+      "master": "Veteranen",
       "infantil": "Jeugd",
       "esteMes": "Deze Maand",
       "total": "Totaal",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "Atleet",
     "levelUpNivel7": "Afgestudeerde",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Meester",
-    "levelUpNivel10": "Grootmeester",
+    "levelUpNivel9": "Veteraan",
+    "levelUpNivel10": "Elite",
     "levelUpNivel11": "Legende",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Je bent van niveau {from} naar niveau {to} gegaan!",
     "levelUpXpTotais": "{xp} XP in totaal",
     "levelUpContinuar": "Doorgaan",
     "mestreDoMesCatAdulto": "🥋 Volwassenen",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veteranen",
     "mestreDoMesCatInfantil": "⭐ Jeugd",
     "mestreDoMesAtualizado": "{categoria} — Leerling van de Maand bijgewerkt!",
     "mestreDoMesErro": "Fout bij selecteren van de leerling",
@@ -2426,8 +2426,8 @@
       "6": "Atleet",
       "7": "Afgestudeerde",
       "8": "Expert",
-      "9": "Meester",
-      "10": "Grootmeester",
+      "9": "Veteraan",
+      "10": "Elite",
       "11": "Legende",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Ervaren",
       "5": "Gevorderd",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elite"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Uitnodigingen per type",
     "ultimosConvites": "Laatste Uitnodigingen"
   }
-}
+}

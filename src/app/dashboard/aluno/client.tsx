@@ -83,7 +83,7 @@ function getGamificationLevel(pontos: number) {
 
 function getLevelInfo(totalAulas: number) {
   const thresholds = [0, 50, 150, 300, 500, 800, 1200]
-  const titles = ["Iniciante", "Regular", "Dedicado", "Experiente", "Avançado", "Elite", "Master"]
+  const titles = ["Iniciante", "Regular", "Dedicado", "Experiente", "Avançado", "Elite", "Referência"]
   for (let i = thresholds.length - 1; i >= 0; i--) {
     if (totalAulas >= thresholds[i]) {
       const current = totalAulas - thresholds[i]
@@ -353,7 +353,7 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
                 </div>
               </div>
 
-              {/* Missions + Mestre do Mês */}
+              {/* Missions + Aluno do Mês */}
               <MestreDoMesCard />
               <MetaSemanalCard />
               <StreakSalvage currentStreak={streak} pontos={pontos} />

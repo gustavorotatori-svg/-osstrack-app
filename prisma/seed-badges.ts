@@ -21,7 +21,7 @@ const badges = [
   { tipo: "streak", categoria: "streak", condicao: 30, nivel: 5, nivelLabel: "ouro", raridade: "raro", nome: "Inabalável", icone: "🛡️", descricao: "30 dias seguidos de treino" },
   { tipo: "streak", categoria: "streak", condicao: 50, nivel: 6, nivelLabel: "diamante", raridade: "epico", nome: "Mito da Consistência", icone: "💎", descricao: "50 dias seguidos de treino" },
   { tipo: "streak", categoria: "streak", condicao: 75, nivel: 7, nivelLabel: "diamante", raridade: "epico", nome: "Templo do Jiu-Jitsu", icone: "🏛️", descricao: "75 dias seguidos de treino" },
-  { tipo: "streak", categoria: "streak", condicao: 100, nivel: 8, nivelLabel: "diamante", raridade: "lendario", nome: "O Mestre dos Mestres", icone: "👑", descricao: "100 dias seguidos de treino" },
+  { tipo: "streak", categoria: "streak", condicao: 100, nivel: 8, nivelLabel: "diamante", raridade: "lendario", nome: "Lenda do Streak", icone: "👑", descricao: "100 dias seguidos de treino" },
 
   // ===== PRESENÇAS NO MÊS (comum → raro) =====
   { tipo: "presencas_mes", categoria: "presenca", condicao: 5, nivel: 1, nivelLabel: "bronze", raridade: "comum", nome: "Aluno do Mês I", icone: "📅", descricao: "5 presenças em um mês" },
@@ -40,10 +40,10 @@ const badges = [
   { tipo: "convites", categoria: "social", condicao: 10, nivel: 3, nivelLabel: "ouro", raridade: "raro", nome: "Embaixador", icone: "📢", descricao: "Convide 10 amigos" },
   { tipo: "convites", categoria: "social", condicao: 25, nivel: 4, nivelLabel: "diamante", raridade: "epico", nome: "Líder Comunitário", icone: "👑", descricao: "Convide 25 amigos" },
 
-  // ===== MESTRE DO MÊS (épico) =====
-  { tipo: "mestre_mes", categoria: "especial", condicao: 1, nivel: 1, nivelLabel: "ouro", raridade: "epico", nome: "Mestre do Mês I", icone: "🏆", descricao: "Seja Mestre do Mês 1 vez" },
-  { tipo: "mestre_mes", categoria: "especial", condicao: 3, nivel: 2, nivelLabel: "diamante", raridade: "epico", nome: "Mestre do Mês II", icone: "🏆", descricao: "Seja Mestre do Mês 3 vezes" },
-  { tipo: "mestre_mes", categoria: "especial", condicao: 6, nivel: 3, nivelLabel: "diamante", raridade: "lendario", nome: "Mestre do Ano", icone: "👑", descricao: "Seja Mestre do Mês 6 vezes" },
+  // ===== ALUNO DO MÊS (épico) =====
+  { tipo: "mestre_mes", categoria: "especial", condicao: 1, nivel: 1, nivelLabel: "ouro", raridade: "epico", nome: "Aluno do Mês I", icone: "🏆", descricao: "Seja Aluno do Mês 1 vez" },
+  { tipo: "mestre_mes", categoria: "especial", condicao: 3, nivel: 2, nivelLabel: "diamante", raridade: "epico", nome: "Aluno do Mês II", icone: "🏆", descricao: "Seja Aluno do Mês 3 vezes" },
+  { tipo: "mestre_mes", categoria: "especial", condicao: 6, nivel: 3, nivelLabel: "diamante", raridade: "lendario", nome: "Aluno do Ano", icone: "👑", descricao: "Seja Aluno do Mês 6 vezes" },
 
   // ===== GRADUAÇÃO (épico → lendário) =====
   { tipo: "faixa_azul", categoria: "graduacao", condicao: 1, nivel: 1, nivelLabel: "prata", raridade: "epico", nome: "Azul", icone: "🟦", descricao: "Alcance a faixa azul" },
@@ -54,7 +54,7 @@ const badges = [
   // ===== SEMANA COMPLETA (comum) =====
   { tipo: "semana_completa", categoria: "presenca", condicao: 1, nivel: 1, nivelLabel: "bronze", raridade: "comum", nome: "Semana Cheia I", icone: "📅", descricao: "Treine 5 dias em uma semana" },
   { tipo: "semana_completa", categoria: "presenca", condicao: 4, nivel: 2, nivelLabel: "prata", raridade: "comum", nome: "Semana Cheia II", icone: "📅", descricao: "Treine 5 dias em 4 semanas diferentes" },
-  { tipo: "semana_completa", categoria: "presenca", condicao: 10, nivel: 3, nivelLabel: "ouro", raridade: "raro", nome: "Mestre Semanal", icone: "🏆", descricao: "Treine 5 dias em 10 semanas diferentes" },
+  { tipo: "semana_completa", categoria: "presenca", condicao: 10, nivel: 3, nivelLabel: "ouro", raridade: "raro", nome: "Atleta Semanal", icone: "🏆", descricao: "Treine 5 dias em 10 semanas diferentes" },
 
   // ===== GUERREIRO (raro) =====
   { tipo: "feriado", categoria: "especial", condicao: 3, nivel: 1, nivelLabel: "prata", raridade: "raro", nome: "Guerreiro I", icone: "⚔️", descricao: "Treine em 3 feriados" },

@@ -88,7 +88,7 @@
       "Missões diárias e meta semanal",
       "Histórico ilimitado de presenças",
       "Ranking da academia",
-      "Mestre do Mês",
+      "Aluno do Mês",
       "Conquistas e progresso de faixa"
     ],
     "tudoGratis": "Tudo Grátis",
@@ -115,9 +115,9 @@
     "academiaCta": "Sou dono de academia"
   },
   "testimonials": {
-    "titulo": "O que dizem os mestres",
+    "titulo": "O que dizem os professores",
     "badge": "Depoimentos",
-    "subtitulo": "Mestres e professores que transformaram a gestão das suas academias — e a relação dos alunos com o treino."
+    "subtitulo": "Professores e instrutores que transformaram a gestão das suas academias — e a relação dos alunos com o treino."
   },
   "footer": {
     "descricao": "Sua academia mais organizada, seus alunos mais motivados. Tudo em um lugar só, 100% gratuito.",
@@ -320,7 +320,7 @@
       "todas": "Todas",
       "geral": "Geral",
       "adulto": "Adulto",
-      "master": "Master",
+      "master": "Veteranos",
       "infantil": "Infantil",
       "esteMes": "Este Mês",
       "total": "Total",
@@ -1421,7 +1421,7 @@
       },
       "dono": {
         "welcome": {
-          "title": "Bem-vindo, Mestre!",
+          "title": "Bem-vindo!",
           "desc": "Aqui você gerencia sua academia completa: alunos, professores, finanças e relatórios."
         },
         "alunosDono": {
@@ -1475,7 +1475,7 @@
       "step3Desc": "Visualize suas turmas, horários e alunos matriculados."
     },
     "dono": {
-      "title": "Bem-vindo, Mestre!",
+      "title": "Bem-vindo!",
       "step1Title": "Dashboard",
       "step1Desc": "Visão geral da sua academia: alunos, frequência, métricas.",
       "step2Title": "Alunos",
@@ -1633,11 +1633,11 @@
     "guideStep2Title": "Streak (Sequência)",
     "guideStep2Desc": "O streak conta quantos dias seguidos você treina. Manter uma sequência ativa te dá bônus e mostra sua dedicação. Se você faltar um dia, a sequência reinicia.",
     "guideStep3Title": "Níveis (1 a 12)",
-    "guideStep3Desc": "São 12 níveis no total: Iniciante → Guerreiro → Lutador → Faixa Azul → Competidor → Atleta → Graduado → Expert → Mestre → Grão-Mestre → Lenda → Kami. Cada nível exige mais XP que o anterior.",
+    "guideStep3Desc": "São 12 níveis no total: Iniciante → Guerreiro → Lutador → Faixa Azul → Competidor → Atleta → Graduado → Expert → Veterano → Elite → Lenda → Kami. Cada nível exige mais XP que o anterior.",
     "guideStep4Title": "Missões Diárias",
     "guideStep4Desc": "Todo dia você recebe missões como 'Treinar Hoje' ou 'Madrugador'. Completá-las garante XP extra. As missões semanais são mais desafiadoras mas valem mais pontos.",
     "guideStep5Title": "Conquistas",
-    "guideStep5Desc": "Conquistas são marcos especiais: treinar 30 dias, streak de 7 dias, ser Mestre do Mês, etc. Cada conquista desbloqueada rende 50 XP de bônus!",
+    "guideStep5Desc": "Conquistas são marcos especiais: treinar 30 dias, streak de 7 dias, ser Aluno do Mês, etc. Cada conquista desbloqueada rende 50 XP de bônus!",
     "levelUpNivel1": "Iniciante",
     "levelUpNivel2": "Guerreiro",
     "levelUpNivel3": "Lutador",
@@ -1646,15 +1646,15 @@
     "levelUpNivel6": "Atleta",
     "levelUpNivel7": "Graduado",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Mestre",
-    "levelUpNivel10": "Grão-Mestre",
+    "levelUpNivel9": "Veterano",
+    "levelUpNivel10": "Elite",
     "levelUpNivel11": "Lenda",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Você subiu do nível {from} para o nível {to}!",
     "levelUpXpTotais": "{xp} XP totais",
     "levelUpContinuar": "Continuar",
     "mestreDoMesCatAdulto": "🥋 Adulto",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veteranos",
     "mestreDoMesCatInfantil": "⭐ Infantil",
     "mestreDoMesAtualizado": "{categoria} — Aluno do Mês atualizado!",
     "mestreDoMesErro": "Erro ao selecionar aluno",
@@ -1967,7 +1967,7 @@
       "s3aBody": "Nada motiva mais que uma sequência. No OssTrack, o aluno vê o streak em chamas — 3 dias, 7 dias, 30 dias. Perder o streak dói mais que perder uma luta. Use isso a seu favor. Crie um mural “Streak do Mês” na academia. Aluno com maior streak ganha um destaque.",
       "s3bBody": "Ranking por número de presenças no mês (não por performance técnica) incentiva frequência sem gerar intimidação. O aluno que mais treinou no mês ganha um reconhecimento — pode ser um adesivo, uma camiseta, ou simplesmente o nome no quadro. No OssTrack, o ranking é automático.",
       "s3cBody": "Celebre pequenas vitórias: primeira semana sem faltar, primeira finalização no roll-livre, 30 aulas completadas. Cada conquista vira uma notificação no app do aluno. Ele se sente visto. No OssTrack, as conquistas são automáticas e o aluno recebe uma badge virtual.",
-      "s3Tip": "🥋 O OssTrack foi construído com gamificação de verdade: XP, níveis de 1 a 12, streak com fogo, conquistas, ranking e Mestre do Mês. Tudo gratuito.",
+      "s3Tip": "🥋 O OssTrack foi construído com gamificação de verdade: XP, níveis de 1 a 12, streak com fogo, conquistas, ranking e Aluno do Mês. Tudo gratuito.",
       "s4Intro": "O maior fator de retenção de uma academia de Jiu-Jitsu é o professor. Não é a estrutura, não é o preço, não é a localização. É a relação professor-aluno.",
       "s4aBody": "Quando o professor usa o OssTrack para dar parabéns, marcar presença e interagir no mural, o engajamento da turma dobra. O professor que publica no mural da academia — um vídeo de técnica, um aviso, um incentivo — cria um fluxo de retorno diário dos alunos.",
       "s4bBody": "Um “parabéns pela evolução” ou “ótima rolagem hoje” dito individualmente transforma a experiência do aluno. Use os dados do OssTrack para saber quem treinou, quem está chegando atrasado, quem está sumindo — e aja antes que o aluno desista.",
@@ -1986,8 +1986,8 @@
       "s6IntroB": " que criam expectativa e pertencimento.",
       "s6i1Label": "Graduação coletiva:",
       "s6i1Text": "Cerimônia bimestral com entrega de faixas, presença da família, fotos. É o momento mais emocionante do calendário da academia.",
-      "s6i2Label": "Mestre do Mês:",
-      "s6i2Text": "Aluno com mais presenças no mês ganha destaque no mural, no app e nas redes sociais da academia. No OssTrack, o Mestre do Mês é automático.",
+      "s6i2Label": "Aluno do Mês:",
+      "s6i2Text": "Aluno com mais presenças no mês ganha destaque no mural, no app e nas redes sociais da academia. No OssTrack, o Aluno do Mês é automático.",
       "s6i3Label": "Aulas abertas e palestras:",
       "s6i3Text": "Convidar um faixa-preta de fora, fazer um seminário, um aulão de imersão no sábado. Quebra a rotina e renova o entusiasmo.",
       "s6i4Label": "Confraternização de fim de ano:",
@@ -2017,7 +2017,7 @@
       "s8i2Label": "Mural da academia:",
       "s8i2Text": "Professor publica, aluno comenta, curtidas aparecem. A comunidade interage mesmo fora do tatame.",
       "s8i3Label": "Notificações inteligentes:",
-      "s8i3Text": "Lembrete de treino, conquista desbloqueada, Mestre do Mês, level up. O aluno recebe estímulo positivo todo dia.",
+      "s8i3Text": "Lembrete de treino, conquista desbloqueada, Aluno do Mês, level up. O aluno recebe estímulo positivo todo dia.",
       "s8i4Label": "Ranking e competição saudável:",
       "s8i4Text": "Alunos competem por presença, não por performance. Todo mundo pode ganhar.",
       "s8i5Label": "100% gratuito:",
@@ -2246,7 +2246,7 @@
     "faq1q": "O que é o OssTrack?",
     "faq1r": "O OssTrack é uma plataforma de gestão e evolução para academias de Jiu-Jitsu. Ajudamos academias, professores e alunos a acompanharem presenças, progressão nas faixas, streaks, conquistas e muito mais — tudo com foco em motivação e disciplina.",
     "faq2q": "Quanto custa?",
-    "faq2r": "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Mestre do Mês.",
+    "faq2r": "Academias e professores não pagam nada — é gratuito. Todas as funcionalidades são 100% gratuitas para alunos, incluindo gráficos de evolução, conquistas especiais e o Aluno do Mês.",
     "faq3q": "Como funciona o check-in?",
     "faq3r": "O aluno abre o app na hora do treino e toca em 'Fazer Check-in'. A plataforma usa a geolocalização do celular para confirmar que o aluno está na academia. O professor também pode registrar a presença manualmente.",
     "faq4q": "Preciso de um aplicativo separado?",
@@ -2384,7 +2384,7 @@
     "grausProgresso": "{atual}/{total} graus",
     "proximaFaixa": "Próxima Faixa",
     "aulasRestantes": "{n} aulas restantes",
-    "mestreDoMes": "Mestre do Mês",
+    "mestreDoMes": "Aluno do Mês",
     "mestreSub": "{faixa} · {aulas} aulas",
     "mestrePeriodo": "{mes} de {ano}",
     "verRanking": "Ver ranking completo →",
@@ -2424,8 +2424,8 @@
       "6": "Atleta",
       "7": "Graduado",
       "8": "Expert",
-      "9": "Mestre",
-      "10": "Grão-Mestre",
+      "9": "Veterano",
+      "10": "Elite",
       "11": "Lenda",
       "12": "Kami"
     },
@@ -2436,7 +2436,7 @@
       "4": "Experiente",
       "5": "Avançado",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elite"
     }
   },
   "pagDemoDono": {
@@ -2500,4 +2500,4 @@
     "convitesPorTipo": "Convites por tipo",
     "ultimosConvites": "Últimos Convites"
   }
-}
+}

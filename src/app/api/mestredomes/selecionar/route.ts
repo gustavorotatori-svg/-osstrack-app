@@ -48,8 +48,8 @@ export async function PUT(req: Request) {
     await notificarUsuario({
       usuarioId: mestre!.aluno.id,
       tipo: "conquista",
-      titulo: `Mestre do Mes - ${categoria}`,
-      descricao: `Parabens! Voce foi selecionado como Mestre do Mes (${categoria})! Continue assim!`,
+      titulo: `Aluno do Mes - ${categoria}`,
+      descricao: `Parabens! Voce foi selecionado como Aluno do Mes (${categoria})! Continue assim!`,
       link: "/dashboard/aluno/ranking",
     }).catch(() => {})
 

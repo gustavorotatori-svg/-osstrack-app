@@ -308,7 +308,7 @@
       "todas": "すべて",
       "geral": "総合",
       "adulto": "成人",
-      "master": "マスター",
+      "master": "ベテラン",
       "infantil": "子供",
       "esteMes": "今月",
       "total": "合計",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "アスリート",
     "levelUpNivel7": "黒帯",
     "levelUpNivel8": "エキスパート",
-    "levelUpNivel9": "マスター",
-    "levelUpNivel10": "グランドマスター",
+    "levelUpNivel9": "ベテラン",
+    "levelUpNivel10": "エリート",
     "levelUpNivel11": "レジェンド",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "レベル{from}からレベル{to}に上昇しました！",
     "levelUpXpTotais": "合計 {xp} XP",
     "levelUpContinuar": "続ける",
     "mestreDoMesCatAdulto": "🥋 成人",
-    "mestreDoMesCatMaster": "🏆 マスター",
+    "mestreDoMesCatMaster": "🏆 ベテラン",
     "mestreDoMesCatInfantil": "⭐ 子供",
     "mestreDoMesAtualizado": "{categoria} — 今月の優秀生徒を更新しました！",
     "mestreDoMesErro": "生徒の選択エラー",
@@ -2426,8 +2426,8 @@
       "6": "アスリート",
       "7": "黒帯",
       "8": "エキスパート",
-      "9": "マスター",
-      "10": "グランドマスター",
+      "9": "ベテラン",
+      "10": "エリート",
       "11": "レジェンド",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "経験者",
       "5": "上級者",
       "6": "エリート",
-      "7": "マスター"
+      "7": "エリート"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "タイプ別の招待",
     "ultimosConvites": "最近の招待"
   }
-}
+}

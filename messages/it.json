@@ -74,7 +74,7 @@
       "Missioni giornaliere e obiettivo settimanale",
       "Cronologia presenze illimitata",
       "Classifica dell'accademia",
-      "Maestro del Mese",
+      "Studente del Mese",
       "Conquiste e progresso cintura"
     ],
     "tudoGratis": "Tutto Gratis",
@@ -308,7 +308,7 @@
       "todas": "Tutte",
       "geral": "Generale",
       "adulto": "Adulto",
-      "master": "Master",
+      "master": "Veterani",
       "infantil": "Bambini",
       "esteMes": "Questo Mese",
       "total": "Totale",
@@ -1385,7 +1385,7 @@
       "step3Desc": "Visualizza le tue classi, orari e studenti iscritti."
     },
     "dono": {
-      "title": "Benvenuto, Maestro!",
+      "title": "Benvenuto!",
       "step1Title": "Dashboard",
       "step1Desc": "Panoramica della tua accademia: studenti, frequenza, metriche.",
       "step2Title": "Studenti",
@@ -1543,11 +1543,11 @@
     "guideStep2Title": "Serie (Sequenza)",
     "guideStep2Desc": "La serie conta quanti giorni consecutivi ti alleni. Mantenere una serie attiva ti dà bonus e mostra la tua dedizione. Se salti un giorno, la serie si azzera.",
     "guideStep3Title": "Livelli (da 1 a 12)",
-    "guideStep3Desc": "Ci sono 12 livelli in totale: Principiante → Guerriero → Combattente → Cintura Blu → Competitore → Atleta → Diplomato → Expert → Maestro → Gran Maestro → Leggenda → Kami. Ogni livello richiede più XP del precedente.",
+    "guideStep3Desc": "Ci sono 12 livelli in totale: Principiante → Guerriero → Combattente → Cintura Blu → Competitore → Atleta → Diplomato → Expert → Veterano → Elite → Leggenda → Kami. Ogni livello richiede più XP del precedente.",
     "guideStep4Title": "Missioni Giornaliere",
     "guideStep4Desc": "Ogni giorno ricevi missioni come \"Allenati oggi\" o \"Mattiniero\". Completarle garantisce XP extra. Le missioni settimanali sono più impegnative, ma valgono più punti.",
     "guideStep5Title": "Conquiste",
-    "guideStep5Desc": "Le conquiste sono traguardi speciali: allenarsi 30 giorni, serie di 7 giorni, essere Maestro del Mese, ecc. Ogni conquista sbloccata vale 50 XP bonus!",
+    "guideStep5Desc": "Le conquiste sono traguardi speciali: allenarsi 30 giorni, serie di 7 giorni, essere Studente del Mese, ecc. Ogni conquista sbloccata vale 50 XP bonus!",
     "levelUpNivel1": "Principiante",
     "levelUpNivel2": "Guerriero",
     "levelUpNivel3": "Combattente",
@@ -1556,17 +1556,17 @@
     "levelUpNivel6": "Atleta",
     "levelUpNivel7": "Diplomato",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Maestro",
-    "levelUpNivel10": "Gran Maestro",
+    "levelUpNivel9": "Veterano",
+    "levelUpNivel10": "Elite",
     "levelUpNivel11": "Leggenda",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Sei passato dal livello {from} al livello {to}!",
     "levelUpXpTotais": "{xp} XP totali",
     "levelUpContinuar": "Continua",
     "mestreDoMesCatAdulto": "🥋 Adulto",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veterani",
     "mestreDoMesCatInfantil": "⭐ Bambini",
-    "mestreDoMesAtualizado": "{categoria} — Alumno del Mese aggiornato!",
+    "mestreDoMesAtualizado": "{categoria} — Studente del Mese aggiornato!",
     "mestreDoMesErro": "Errore nella selezione dello studente",
     "mestreDoMesVazio": "Vuoto",
     "mestreDoMesGerenciar": "Gestisci gli Alunni del Mese",
@@ -1784,7 +1784,7 @@
       },
       "professor": {
         "welcome": {
-          "title": "Benvenuto, maestro!",
+          "title": "Benvenuto!",
           "desc": "Qui confermi le presenze, gestisci gli studenti e organizzi i tuoi corsi. Tutto a portata di mano."
         },
         "presencas": {
@@ -1802,7 +1802,7 @@
       },
       "dono": {
         "welcome": {
-          "title": "Benvenuto, maestro!",
+          "title": "Benvenuto!",
           "desc": "Qui gestisci tutta la tua accademia: studenti, istruttori, finanze e report."
         },
         "alunosDono": {
@@ -1969,7 +1969,7 @@
       "s3aBody": "Nulla motiva più di una serie. Su OssTrack lo studente vede la serie in fiamme — 3 giorni, 7 giorni, 30 giorni. Perdere la serie fa più male che perdere un combattimento. Usalo a tuo vantaggio. Crea un tabellone \"Serie del Mese\" in accademia. Lo studente con la serie più lunga riceve un riconoscimento.",
       "s3bBody": "Una classifica per numero di presenze nel mese (non per performance tecnica) incentiva la frequenza senza generare intimidazione. Lo studente che si è allenato di più nel mese riceve un riconoscimento — può essere una sticker, una maglietta o semplicemente il nome sul tabellone. Su OssTrack la classifica è automatica.",
       "s3cBody": "Celebra le piccole vittorie: la prima settimana senza assenze, la prima finitura nel rotolo libero, 30 lezioni completate. Ogni conquista diventa una notifica nell'app dello studente. Si sente visto. Su OssTrack le conquiste sono automatiche e lo studente riceve un badge virtuale.",
-      "s3Tip": "🥋 OssTrack è stato costruito con una gamification vera: XP, livelli da 1 a 12, serie con fiamme, conquiste, classifica e Maestro del Mese. Tutto gratis.",
+      "s3Tip": "🥋 OssTrack è stato costruito con una gamification vera: XP, livelli da 1 a 12, serie con fiamme, conquiste, classifica e Studente del Mese. Tutto gratis.",
       "s4Intro": "Il principale fattore di fidelizzazione di un'accademia di Jiu-Jitsu è l'insegnante. Non è la struttura, non è il prezzo, non è la posizione. È il rapporto insegnante-studente.",
       "s4aBody": "Quando l'insegnante usa OssTrack per fare complimenti, segnare le presenze e interagire sul muro, l'engagement della classe raddoppia. L'insegnante che pubblica sul muro dell'accademia — un video tecnico, un avviso, un'incoraggiamento — crea un flusso di ritorno quotidiano degli studenti.",
       "s4bBody": "Un \"complimenti per i tuoi progressi\" o \"ottimo rotolo oggi\" detto individualmente trasforma l'esperienza dello studente. Usa i dati di OssTrack per sapere chi si è allenato, chi arriva in ritardo, chi sta sparendo — e agisci prima che lo studente si arrenda.",
@@ -1988,8 +1988,8 @@
       "s6IntroB": " che creano aspettativa e appartenenza.",
       "s6i1Label": "Graduazione collettiva:",
       "s6i1Text": "Cerimonia ogni due mesi con consegna delle cinture, presenza della famiglia, foto. È il momento più emozionante del calendario dell'accademia.",
-      "s6i2Label": "Maestro del Mese:",
-      "s6i2Text": "Lo studente con più presenze nel mese viene messo in evidenza sul muro, nell'app e sui social dell'accademia. Su OssTrack il Maestro del Mese è automatico.",
+      "s6i2Label": "Studente del Mese:",
+      "s6i2Text": "Lo studente con più presenze nel mese viene messo in evidenza sul muro, nell'app e sui social dell'accademia. Su OssTrack il Studente del Mese è automatico.",
       "s6i3Label": "Lezioni aperte e seminari:",
       "s6i3Text": "Invitare una cintura nera da fuori, fare un seminario, una lezione grande di immersione il sabato. Spezza la routine e rinnova l'entusiasmo.",
       "s6i4Label": "Festa di fine anno:",
@@ -2019,7 +2019,7 @@
       "s8i2Label": "Muro dell'accademia:",
       "s8i2Text": "L'insegnante pubblica, lo studente commenta, compaiono i mi piace. La comunità interagisce anche fuori dal tatami.",
       "s8i3Label": "Notifiche intelligenti:",
-      "s8i3Text": "Promemoria di allenamento, conquista sbloccata, Maestro del Mese, salita di livello. Lo studente riceve uno stimolo positivo ogni giorno.",
+      "s8i3Text": "Promemoria di allenamento, conquista sbloccata, Studente del Mese, salita di livello. Lo studente riceve uno stimolo positivo ogni giorno.",
       "s8i4Label": "Classifica e competizione sana:",
       "s8i4Text": "Gli studenti competono per presenza, non per performance. Tutti possono vincere.",
       "s8i5Label": "100% gratis:",
@@ -2386,7 +2386,7 @@
     "grausProgresso": "{atual}/{total} gradi",
     "proximaFaixa": "Prossima Cintura",
     "aulasRestantes": "{n} lezioni rimanenti",
-    "mestreDoMes": "Maestro del Mese",
+    "mestreDoMes": "Studente del Mese",
     "mestreSub": "{faixa} · {aulas} lezioni",
     "mestrePeriodo": "{mes} {ano}",
     "verRanking": "Vedi la classifica completa →",
@@ -2426,8 +2426,8 @@
       "6": "Atleta",
       "7": "Diplomato",
       "8": "Expert",
-      "9": "Maestro",
-      "10": "Gran Maestro",
+      "9": "Veterano",
+      "10": "Elite",
       "11": "Leggenda",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Esperto",
       "5": "Avanzato",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elite"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Inviti per Tipo",
     "ultimosConvites": "Ultimi Inviti"
   }
-}
+}

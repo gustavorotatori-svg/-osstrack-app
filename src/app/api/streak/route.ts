@@ -137,7 +137,7 @@ export async function POST() {
           50: "🔥🔥 50 DIAS! Meio caminho andado pra faixa preta!",
           60: "⚡⚡ 60 DIAS! Ninguém para você!",
           75: "💀 75 DIAS! Besta-fera do tatame!",
-          100: "🎯🎯🎯 100 DIAS! VOCÊ É O MESTRE DOS MESTRES!",
+          100: "🎯🎯🎯 100 DIAS! VOCÊ É UMA LENDA!",
         }
         await notificarUsuario({
           usuarioId: session.user.id,

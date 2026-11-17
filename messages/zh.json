@@ -103,9 +103,9 @@
     "academiaCta": "我是道馆负责人"
   },
   "testimonials": {
-    "titulo": "大师们的评价",
+    "titulo": "教练评价",
     "badge": "用户反馈",
-    "subtitulo": "彻底改变了道馆管理和学员训练关系的教练与大师们。"
+    "subtitulo": "改变道馆管理和学员训练关系的教练与教师。"
   },
   "footer": {
     "descricao": "你的道馆更有序，你的学员更积极。一切尽在一个平台，100%免费。",
@@ -308,7 +308,7 @@
       "todas": "全部",
       "geral": "总体",
       "adulto": "成人",
-      "master": "大师",
+      "master": "资深组",
       "infantil": "少儿",
       "esteMes": "本月",
       "total": "总计",
@@ -1385,7 +1385,7 @@
       "step3Desc": "查看你的班级、时间和注册学员。"
     },
     "dono": {
-      "title": "欢迎，大师！",
+      "title": "欢迎！",
       "step1Title": "仪表盘",
       "step1Desc": "道馆概览：学员、频率、指标。",
       "step2Title": "学员",
@@ -1543,7 +1543,7 @@
     "guideStep2Title": "连续记录（Streak）",
     "guideStep2Desc": "连续记录计算你连续训练了多少天。保持连续记录可获得奖励加成，也体现你的坚持。如果漏掉一天，连续记录就会从头开始。",
     "guideStep3Title": "等级（1到12）",
-    "guideStep3Desc": "共有12个等级：新手 → 斗士 → 战士 → 蓝带 → 竞技者 → 运动健将 → 毕业生 → Expert → 大师 → 宗师 → 传奇 → Kami。每一个等级所需的XP都比上一个更多。",
+    "guideStep3Desc": "共有12个等级：新手 → 斗士 → 战士 → 蓝带 → 竞技者 → 运动健将 → 毕业生 → Expert → 资深选手 → 精英 → 传奇 → Kami。每一个等级所需的XP都比上一个更多。",
     "guideStep4Title": "每日任务",
     "guideStep4Desc": "每天你都会收到诸如“今天训练”或“早起训练”之类的任务。完成它们可确保获得额外XP。每周任务更具挑战，但奖励的点数也更多。",
     "guideStep5Title": "成就",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "运动健将",
     "levelUpNivel7": "毕业生",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "大师",
-    "levelUpNivel10": "宗师",
+    "levelUpNivel9": "资深选手",
+    "levelUpNivel10": "精英",
     "levelUpNivel11": "传奇",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "你从等级 {from} 升级到了等级 {to}！",
     "levelUpXpTotais": "共 {xp} XP",
     "levelUpContinuar": "继续",
     "mestreDoMesCatAdulto": "🥋 成人",
-    "mestreDoMesCatMaster": "🏆 大师",
+    "mestreDoMesCatMaster": "🏆 资深组",
     "mestreDoMesCatInfantil": "⭐ 少儿",
     "mestreDoMesAtualizado": "{categoria} — 月度之星已更新！",
     "mestreDoMesErro": "选择学员时出错",
@@ -2426,8 +2426,8 @@
       "6": "运动健将",
       "7": "毕业生",
       "8": "Expert",
-      "9": "大师",
-      "10": "宗师",
+      "9": "资深选手",
+      "10": "精英",
       "11": "传奇",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "老练",
       "5": "进阶",
       "6": "精英",
-      "7": "大师"
+      "7": "精英"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "按类型的邀请",
     "ultimosConvites": "最近的邀请"
   }
-}
+}

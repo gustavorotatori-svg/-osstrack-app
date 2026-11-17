@@ -6,6 +6,18 @@ import { handleApiError } from "@/lib/api-error"
 import { awardXp } from "@/lib/gamification"
 import { notificarUsuario } from "@/lib/notificar"
 
+function textoConquista(c: { tipo: string; nome: string; descricao: string }) {
+  const normalize = (value: string) => value
+    .replace(/Mestre do Mês/g, "Aluno do Mês")
+    .replace(/Mestre do Ano/g, "Aluno do Ano")
+    .replace(/O Mestre dos Mestres/g, "Lenda do Streak")
+    .replace(/Mestre dos Mestres/g, "Lenda do Streak")
+    .replace(/Mestre Semanal/g, "Atleta Semanal")
+    .replace(/\bMestre\b/g, "Veterano")
+    .replace(/\bGrão-Veterano\b/g, "Elite")
+  return { nome: normalize(c.nome), descricao: normalize(c.descricao) }
+}
+
 export async function POST() {
   try {
     const session = await getServerSession(authOptions)
@@ -110,15 +122,16 @@ export async function POST() {
         await prisma.alunoConquista.create({
           data: { alunoId: session.user.id, conquistaId: c.id, progresso: c.condicao },
         })
+        const texto = textoConquista(c)
         await notificarUsuario({
           usuarioId: session.user.id,
           tipo: "conquista",
-          titulo: `Nova Conquista: ${c.nome}`,
-          descricao: c.descricao,
+          titulo: `Nova Conquista: ${texto.nome}`,
+          descricao: texto.descricao,
           link: "/dashboard/aluno/conquistas",
         }).catch(() => {})
         await awardXp(session.user.id, 50)
-        novas.push(c.nome)
+        novas.push(texto.nome)
       } else if (jaTem && progresso > (desbloqueadasMap.get(c.id)?.progresso || 0)) {
         await prisma.alunoConquista.update({
           where: { alunoId_conquistaId: { alunoId: session.user.id, conquistaId: c.id } },
@@ -139,8 +152,10 @@ export async function POST() {
       if (c.tipo === "aulas") progressoAtual = totalAulas
       else if (c.tipo === "streak") progressoAtual = streak?.currentStreak || 0
       else if (c.tipo === "presencas_mes") progressoAtual = presencasMes
+      const texto = textoConquista(c)
       return {
         ...c,
+        ...texto,
         desbloqueada: !!ac,
         progresso: ac?.progresso || 0,
         progressoAtual,
@@ -169,6 +184,7 @@ export async function GET() {
         const ac = desbloqueadasMap.get(c.id)
         return {
           ...c,
+          ...textoConquista(c),
           desbloqueada: !!ac,
           progresso: ac?.progresso || 0,
         }

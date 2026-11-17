@@ -308,7 +308,7 @@
       "todas": "Alle",
       "geral": "Gesamt",
       "adulto": "Erwachsene",
-      "master": "Master",
+      "master": "Veteranen",
       "infantil": "Kinder",
       "esteMes": "Diesen Monat",
       "total": "Gesamt",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "Athlet",
     "levelUpNivel7": "Graduierter",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Meister",
-    "levelUpNivel10": "Großmeister",
+    "levelUpNivel9": "Veteran",
+    "levelUpNivel10": "Elite",
     "levelUpNivel11": "Legende",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Sie sind von Stufe {from} auf Stufe {to} aufgestiegen!",
     "levelUpXpTotais": "{xp} XP gesamt",
     "levelUpContinuar": "Weiter",
     "mestreDoMesCatAdulto": "🥋 Erwachsene",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Veteranen",
     "mestreDoMesCatInfantil": "⭐ Kinder",
     "mestreDoMesAtualizado": "{categoria} — Schüler des Monats aktualisiert!",
     "mestreDoMesErro": "Fehler beim Auswählen des Schülers",
@@ -2426,8 +2426,8 @@
       "6": "Athlet",
       "7": "Graduierter",
       "8": "Expert",
-      "9": "Meister",
-      "10": "Großmeister",
+      "9": "Veteran",
+      "10": "Elite",
       "11": "Legende",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Erfahren",
       "5": "Fortgeschritten",
       "6": "Elite",
-      "7": "Master"
+      "7": "Elite"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Einladungen nach Typ",
     "ultimosConvites": "Letzte Einladungen"
   }
-}
+}

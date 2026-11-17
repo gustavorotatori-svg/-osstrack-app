@@ -109,7 +109,7 @@ export default function ProfessorCompeticoesPage() {
               <input name="data" type="date" required className="input-field" />
               <input name="local" placeholder={t("placeholderLocal")} className="input-field" />
               <select name="faixa" aria-label={t("faixa")} className="input-field"><option value="">{t("todasFaixas")}</option><option value="Branca">Branca</option><option value="Azul">Azul</option><option value="Roxa">Roxa</option><option value="Marrom">Marrom</option><option value="Preta">Preta</option></select>
-              <select name="categoria" aria-label={t("categoria")} className="input-field"><option value="">{t("todasCategorias")}</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Master</option></select>
+              <select name="categoria" aria-label={t("categoria")} className="input-field"><option value="">{t("todasCategorias")}</option><option value="adulto">Adulto</option><option value="infantil">Infantil</option><option value="master">Veteranos</option></select>
             </div>
             <button type="submit" className="btn-gold text-sm px-6 py-2.5">{t("salvar")}</button>
           </form>

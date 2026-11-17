@@ -89,7 +89,7 @@ const mockConquistas = [
   { id: "5", nome: "Força", icone: "🌟", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: true },
   { id: "6", nome: "Campeão", icone: "🏆", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
   { id: "7", nome: "Raio", icone: "⚡", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
-  { id: "8", nome: "Mestre", icone: "👑", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
+  { id: "8", nome: "Veterano", icone: "👑", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
   { id: "9", nome: "Guerreiro", icone: "⚔️", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
   { id: "10", nome: "Lenda", icone: "🌊", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
   { id: "11", nome: "Fênix", icone: "🦅", iconeBloqueado: "🔒", descricao: "", tipo: "", categoria: "", condicao: 0, nivel: 1, nivelLabel: "", raridade: "", progressoMax: 0, desbloqueada: false },
@@ -250,7 +250,7 @@ export function ScreenshotDemo() {
                 </div>
               </div>
 
-              {/* Mestre do Mês — card (mesma classe do componente real) */}
+              {/* Aluno do Mês — destaque por presença */}
               <div className="card text-center relative overflow-hidden">
                 <div className="absolute top-[-30px] right-[-30px] w-32 h-32 bg-[var(--gold)]/5 rounded-full blur-3xl" />
                 <div className="relative p-5">

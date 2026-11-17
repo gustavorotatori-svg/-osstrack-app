@@ -73,7 +73,7 @@ export function RankingClient({ initialRanking, alunoId, belts, initialMestres, 
     <DashboardShell role="aluno">
       <PageTransition>
         <div className="max-w-5xl mx-auto space-y-4">
-          {/* Mestres do Mês — 3 categorias */}
+          {/* Alunos do Mês — 3 categorias */}
           <div className="grid grid-cols-3 gap-2.5">
             {CATEGORIAS.map((cat) => {
               const m = mestres?.[cat]

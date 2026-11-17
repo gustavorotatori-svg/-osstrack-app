@@ -45,7 +45,7 @@ const SEMANAIS_POOL = [
   { dia: 1, titulo: "Semana Cheia", descricao: "Complete 5 check-ins na semana", icone: "📅", pontos: 25 },
   { dia: 2, titulo: "Raio Contínuo", descricao: "Mantenha streak de 3+ dias durante a semana", icone: "⚡", pontos: 20 },
   { dia: 3, titulo: "Guerreiro de Fim de Semana", descricao: "Treine sábado E domingo", icone: "🌞", pontos: 30 },
-  { dia: 4, titulo: "Mestre da Turma", descricao: "Seja o primeiro a fazer check-in em 2 dias", icone: "👑", pontos: 15 },
+  { dia: 4, titulo: "Destaque da Turma", descricao: "Seja o primeiro a fazer check-in em 2 dias", icone: "👑", pontos: 15 },
 ]
 
 function pickRandom<T>(arr: T[], count: number): T[] {

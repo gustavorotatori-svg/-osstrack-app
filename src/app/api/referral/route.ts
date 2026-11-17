@@ -19,7 +19,7 @@ export async function GET() {
 
     // Badge baseado no número de indicações
     let badge = null
-    if (totalUsados >= 10) badge = { nome: "Mestre Indicador", icone: "👑", cor: "#c9a84c" }
+    if (totalUsados >= 10) badge = { nome: "Embaixador", icone: "👑", cor: "#c9a84c" }
     else if (totalUsados >= 5) badge = { nome: "Divulgador Pro", icone: "🔥", cor: "#f59e0b" }
     else if (totalUsados >= 3) badge = { nome: "Embaixador", icone: "⭐", cor: "#8b5cf6" }
     else if (totalUsados >= 1) badge = { nome: "Primeira Indicação", icone: "🎯", cor: "#10b981" }

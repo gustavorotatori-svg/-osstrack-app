@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma"
 import { notificarUsuario } from "@/lib/notificar"
 
 const LEVEL_THRESHOLDS = [0, 500, 1500, 3000, 5000, 7500, 10500, 14000, 18000, 22500, 28000, 35000]
-const TITLES = ["Iniciante", "Guerreiro", "Lutador", "Faixa Azul", "Competidor", "Atleta", "Graduado", "Expert", "Mestre", "Grão-Mestre", "Lenda", "Kami"]
+const TITLES = ["Iniciante", "Guerreiro", "Lutador", "Faixa Azul", "Competidor", "Atleta", "Graduado", "Expert", "Veterano", "Elite", "Lenda", "Kami"]
 
 function getLevel(pontos: number) {
   for (let i = LEVEL_THRESHOLDS.length - 1; i >= 0; i--) {

@@ -159,7 +159,7 @@ export default function CompeticoesPage() {
                 <option value="">{t("todasCategorias")}</option>
                 <option value="adulto">Adulto</option>
                 <option value="infantil">Infantil</option>
-                <option value="master">Master</option>
+                <option value="master">Veteranos</option>
               </select>
             </div>
             <button type="submit" className="btn-gold text-sm px-6 py-2.5">{t("salvar")}</button>

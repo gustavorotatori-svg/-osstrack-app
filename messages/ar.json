@@ -308,7 +308,7 @@
       "todas": "الكل",
       "geral": "عام",
       "adulto": "بالغ",
-      "master": "ماستر",
+      "master": "المخضرمون",
       "infantil": "أطفال",
       "esteMes": "هذا الشهر",
       "total": "المجموع",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "رياضي",
     "levelUpNivel7": "متخرّج",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "معلّم",
-    "levelUpNivel10": "كبير المعلّمين",
+    "levelUpNivel9": "مخضرم",
+    "levelUpNivel10": "النخبة",
     "levelUpNivel11": "أسطورة",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "طُلعت من مستوى {from} لمستوى {to}!",
     "levelUpXpTotais": "{xp} XP إجمالاً",
     "levelUpContinuar": "كمّل",
     "mestreDoMesCatAdulto": "🥋 بالغ",
-    "mestreDoMesCatMaster": "🏆 ماستر",
+    "mestreDoMesCatMaster": "🏆 المخضرمون",
     "mestreDoMesCatInfantil": "⭐ أطفال",
     "mestreDoMesAtualizado": "{categoria} — تم تحديث تلميذ الشهر!",
     "mestreDoMesErro": "خطأ باختيار التلميذ",
@@ -2426,8 +2426,8 @@
       "6": "رياضي",
       "7": "متخرّج",
       "8": "Expert",
-      "9": "معلّم",
-      "10": "كبير المعلّمين",
+      "9": "مخضرم",
+      "10": "النخبة",
       "11": "أسطورة",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "متمرّس",
       "5": "متقدّم",
       "6": "النخبة",
-      "7": "ماستر"
+      "7": "النخبة"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "الدعوات حسب النوع",
     "ultimosConvites": "آخر الدعوات"
   }
-}
+}

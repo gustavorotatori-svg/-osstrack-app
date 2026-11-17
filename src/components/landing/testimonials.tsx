@@ -5,7 +5,7 @@ import { useT } from "@/lib/use-t"
 
 const testimonialsData = [
   {
-    initials: "CM", name: "Carlos Mota", role: "Mestre — Iron BJJ Team",
+    initials: "CM", name: "Carlos Mota", role: "Professor — Iron BJJ Team",
     text: "O OssTrack nos fez perceber que cada presença é uma história. Meus alunos não faltam mais porque não querem quebrar o streak. O engajamento mudou completamente. Mas o mais bonito é ver eles celebrando cada conquista como se fosse a primeira.",
   },
   {
@@ -14,7 +14,7 @@ const testimonialsData = [
   },
   {
     initials: "PL", name: "Paulo Lima", role: "CEO — Serra JJ",
-    text: "Depois da pandemia, o engajamento tinha despencado. O OssTrack trouxe de volta. Os alunos competem pra ver quem tem o maior streak, disputam o Mestre do Mês. O tatame nunca esteve tão cheio.",
+    text: "Depois da pandemia, o engajamento tinha despencado. O OssTrack trouxe de volta. Os alunos competem pra ver quem tem o maior streak e se destacam como Aluno do Mês. O tatame nunca esteve tão cheio.",
   },
   {
     initials: "RM", name: "Ricardo Martins", role: "Professor — Titan JJ",

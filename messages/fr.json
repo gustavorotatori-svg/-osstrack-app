@@ -74,7 +74,7 @@
       "Missions quotidiennes et objectif hebdomadaire",
       "Historique illimité des présences",
       "Classement de l'académie",
-      "Mestre du Mois",
+      "Élève du Mois",
       "Exploits et progression de ceinture"
     ],
     "tudoGratis": "Tout Gratuit",
@@ -103,9 +103,9 @@
     "academiaCta": "Je suis propriétaire d'une académie"
   },
   "testimonials": {
-    "titulo": "Ce que disent les maîtres",
+    "titulo": "Ce que disent les professeurs",
     "badge": "Témoignages",
-    "subtitulo": "Des maîtres et professeurs qui ont transformé la gestion de leurs académies — et la relation des élèves avec l'entraînement."
+    "subtitulo": "Des professeurs et instructeurs qui ont transformé la gestion de leurs académies — et la relation des élèves avec l'entraînement."
   },
   "footer": {
     "descricao": "Votre académie mieux organisée, vos élèves plus motivés. Tout au même endroit, 100 % gratuit.",
@@ -308,7 +308,7 @@
       "todas": "Toutes",
       "geral": "Général",
       "adulto": "Adulte",
-      "master": "Master",
+      "master": "Vétérans",
       "infantil": "Enfant",
       "esteMes": "Ce Mois",
       "total": "Total",
@@ -1385,7 +1385,7 @@
       "step3Desc": "Visualisez vos groupes, horaires et élèves inscrits."
     },
     "dono": {
-      "title": "Bienvenue, Maître !",
+      "title": "Bienvenue !",
       "step1Title": "Tableau de bord",
       "step1Desc": "Vue d'ensemble de votre académie : élèves, assiduité, métriques.",
       "step2Title": "Élèves",
@@ -1543,11 +1543,11 @@
     "guideStep2Title": "Série (Séquence)",
     "guideStep2Desc": "La série compte le nombre de jours consécutifs où vous vous entraînez. Garder une série active vous offre des bonus et montre votre dedication. Si vous manquez un jour, la série repart de zéro.",
     "guideStep3Title": "Niveaux (1 à 12)",
-    "guideStep3Desc": "Il y a 12 niveaux au total : Débutant → Guerrier → Combattant → Ceinture Bleue → Compétiteur → Athlète → Diplômé → Expert → Maître → Grand Maître → Légende → Kami. Chaque niveau exige plus d'XP que le précédent.",
+    "guideStep3Desc": "Il y a 12 niveaux au total : Débutant → Guerrier → Combattant → Ceinture Bleue → Compétiteur → Athlète → Diplômé → Expert → Vétéran → Élite → Légende → Kami. Chaque niveau exige plus d'XP que le précédent.",
     "guideStep4Title": "Missions Quotidiennes",
     "guideStep4Desc": "Chaque jour, vous recevez des missions comme \"S'entraîner aujourd'hui\" ou \"Lève-tôt\". Les remplir garantit des XP supplémentaires. Les missions hebdomadaires sont plus difficiles, mais rapportent davantage de points.",
     "guideStep5Title": "Exploits",
-    "guideStep5Desc": "Les exploits sont des étapes spéciales : s'entraîner 30 jours, une série de 7 jours, être Maître du Mois, etc. Chaque exploit débloqué rapporte 50 XP bonus !",
+    "guideStep5Desc": "Les exploits sont des étapes spéciales : s'entraîner 30 jours, une série de 7 jours, être Élève du Mois, etc. Chaque exploit débloqué rapporte 50 XP bonus !",
     "levelUpNivel1": "Débutant",
     "levelUpNivel2": "Guerrier",
     "levelUpNivel3": "Combattant",
@@ -1556,15 +1556,15 @@
     "levelUpNivel6": "Athlète",
     "levelUpNivel7": "Diplômé",
     "levelUpNivel8": "Expert",
-    "levelUpNivel9": "Maître",
-    "levelUpNivel10": "Grand Maître",
+    "levelUpNivel9": "Vétéran",
+    "levelUpNivel10": "Élite",
     "levelUpNivel11": "Légende",
     "levelUpNivel12": "Kami",
     "levelUpSubiuDe": "Vous êtes passé du niveau {from} au niveau {to} !",
     "levelUpXpTotais": "{xp} XP au total",
     "levelUpContinuar": "Continuer",
     "mestreDoMesCatAdulto": "🥋 Adulte",
-    "mestreDoMesCatMaster": "🏆 Master",
+    "mestreDoMesCatMaster": "🏆 Vétérans",
     "mestreDoMesCatInfantil": "⭐ Enfant",
     "mestreDoMesAtualizado": "{categoria} — Élève du Mois mis à jour !",
     "mestreDoMesErro": "Erreur lors de la sélection de l'élève",
@@ -1802,7 +1802,7 @@
       },
       "dono": {
         "welcome": {
-          "title": "Bienvenue, maître !",
+          "title": "Bienvenue !",
           "desc": "Ici, tu gères toute ton académie : élèves, professeurs, finances et rapports."
         },
         "alunosDono": {
@@ -1969,7 +1969,7 @@
       "s3aBody": "Rien ne motive plus qu'une série. Sur OssTrack, l'élève voit sa série enflammée — 3 jours, 7 jours, 30 jours. Perdre sa série fait plus mal que perdre un combat. Utilisez-le à votre avantage. Créez un tableau « Série du Mois » dans l'académie. L'élève avec la plus longue série est mis en avant.",
       "s3bBody": "Un classement par nombre de présences sur le mois (et non par performance technique) encourage la fréquence sans générer d'intimidation. L'élève qui s'est le plus entraîné ce mois-ci reçoit une reconnaissance — un autocollant, un t-shirt, ou simplement son nom sur le tableau. Sur OssTrack, le classement est automatique.",
       "s3cBody": "Célébrez les petites victoires : la première semaine sans absence, la première finition en roulis libre, 30 cours validés. Chaque exploit devient une notification dans l'app de l'élève. Il se sent vu. Sur OssTrack, les exploits sont automatiques et l'élève reçoit un badge virtuel.",
-      "s3Tip": "🥋 OssTrack a été conçu avec une vraie gamification : XP, niveaux de 1 à 12, série avec flammes, exploits, classement et Maître du Mois. Tout est gratuit.",
+      "s3Tip": "🥋 OssTrack a été conçu avec une vraie gamification : XP, niveaux de 1 à 12, série avec flammes, exploits, classement et Élève du Mois. Tout est gratuit.",
       "s4Intro": "Le premier facteur de rétention d'une académie de Jiu-Jitsu, c'est le professeur. Ce n'est ni la structure, ni le prix, ni la localisation. C'est la relation professeur-élève.",
       "s4aBody": "Lorsque le professeur utilise OssTrack pour féliciter, pointer les présences et interagir sur le mur, l'engagement du groupe double. Un professeur qui publie sur le mur de l'académie — une vidéo technique, une annonce, un mot d'encouragement — crée un flux de retour quotidien des élèves.",
       "s4bBody": "Un \"félicitations pour votre progression\" ou \"excellent roulis aujourd'hui\" dit individuellement transforme l'expérience de l'élève. Utilisez les données d'OssTrack pour savoir qui s'est entraîné, qui arrive en retard, qui disparaît — et agissez avant que l'élève n'abandonne.",
@@ -1988,8 +1988,8 @@
       "s6IntroB": " qui créent de l'attente et un sentiment d'appartenance.",
       "s6i1Label": "Graduation collective :",
       "s6i1Text": "Une cérémonie tous les deux mois avec remise des ceintures, présence de la famille et photos. C'est le moment le plus émouvant du calendrier de l'académie.",
-      "s6i2Label": "Maître du Mois :",
-      "s6i2Text": "L'élève avec le plus de présences sur le mois est mis en avant sur le mur, dans l'app et sur les réseaux sociaux de l'académie. Sur OssTrack, le Maître du Mois est automatique.",
+      "s6i2Label": "Élève du Mois :",
+      "s6i2Text": "L'élève avec le plus de présences sur le mois est mis en avant sur le mur, dans l'app et sur les réseaux sociaux de l'académie. Sur OssTrack, le Élève du Mois est automatique.",
       "s6i3Label": "Cours ouverts et stages :",
       "s6i3Text": "Inviter une ceinture noire extérieure, organiser un séminaire, un grand cours d'immersion le samedi. Cela casse la routine et ravive l'enthousiasme.",
       "s6i4Label": "Fête de fin d'année :",
@@ -2019,7 +2019,7 @@
       "s8i2Label": "Mur de l'académie :",
       "s8i2Text": "Le professeur publie, l'élève commente, les j'aime apparaissent. La communauté interagit même en dehors du tatami.",
       "s8i3Label": "Notifications intelligentes :",
-      "s8i3Text": "Rappel d'entraînement, exploit débloqué, Maître du Mois, montée de niveau. L'élève reçoit une stimulation positive chaque jour.",
+      "s8i3Text": "Rappel d'entraînement, exploit débloqué, Élève du Mois, montée de niveau. L'élève reçoit une stimulation positive chaque jour.",
       "s8i4Label": "Classement et compétition saine :",
       "s8i4Text": "Les élèves se concurrencent par la présence, pas par la performance. Tout le monde peut gagner.",
       "s8i5Label": "100% gratuit :",
@@ -2248,7 +2248,7 @@
     "faq1q": "Qu'est-ce qu'OssTrack ?",
     "faq1r": "OssTrack est une plateforme de gestion et de progression pour les académies de Jiu-Jitsu. Nous aidons les académies, les professeurs et les élèves à suivre les présences, la progression des ceintures, les séries, les exploits et bien plus encore — le tout avec un accent sur la motivation et la discipline.",
     "faq2q": "Combien ça coûte ?",
-    "faq2r": "Les académies et les professeurs ne paient rien — c'est gratuit. Toutes les fonctionnalités sont 100% gratuites pour les élèves, y compris les graphiques de progression, les exploits spéciaux et le Maître du Mois.",
+    "faq2r": "Les académies et les professeurs ne paient rien — c'est gratuit. Toutes les fonctionnalités sont 100% gratuites pour les élèves, y compris les graphiques de progression, les exploits spéciaux et le Élève du Mois.",
     "faq3q": "Comment fonctionne le check-in ?",
     "faq3r": "L'élève ouvre l'app au moment de l'entraînement et appuie sur « Faire le Check-in ». La plateforme utilise la géolocalisation du téléphone pour confirmer que l'élève se trouve à l'académie. Le professeur peut aussi enregistrer la présence manuellement.",
     "faq4q": "Ai-je besoin d'une application séparée ?",
@@ -2386,7 +2386,7 @@
     "grausProgresso": "{atual}/{total} grades",
     "proximaFaixa": "Prochaine Ceinture",
     "aulasRestantes": "{n} cours restants",
-    "mestreDoMes": "Maître du Mois",
+    "mestreDoMes": "Élève du Mois",
     "mestreSub": "{faixa} · {aulas} cours",
     "mestrePeriodo": "{mes} {ano}",
     "verRanking": "Voir le classement complet →",
@@ -2426,8 +2426,8 @@
       "6": "Athlète",
       "7": "Diplômé",
       "8": "Expert",
-      "9": "Maître",
-      "10": "Grand Maître",
+      "9": "Vétéran",
+      "10": "Élite",
       "11": "Légende",
       "12": "Kami"
     },
@@ -2438,7 +2438,7 @@
       "4": "Expérimenté",
       "5": "Avancé",
       "6": "Élite",
-      "7": "Master"
+      "7": "Élite"
     }
   },
   "pagDemoDono": {
@@ -2502,4 +2502,4 @@
     "convitesPorTipo": "Invitations par Type",
     "ultimosConvites": "Dernières Invitations"
   }
-}
+}

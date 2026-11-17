@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
           await notificarUsuario({
             usuarioId: aluno.id,
             tipo: "conquista",
-            titulo: "Mestre do Mes!",
+            titulo: "Aluno do Mes!",
             descricao: `Voce foi o aluno com mais presencas em ${categoria} este mes! Parabens!`,
             link: "/dashboard/aluno/ranking",
           }).catch(() => {})
@@ -76,9 +76,9 @@ export async function POST(req: NextRequest) {
 
     await prisma.cronLog.create({ data: { tipo: "mestredomes" } }).catch(() => {})
 
-    return NextResponse.json({ message: "Mestres do Mês calculados!", results })
+    return NextResponse.json({ message: "Alunos do Mês calculados!", results })
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ error: "Erro ao calcular Mestres do Mês" }, { status: 500 })
+    return NextResponse.json({ error: "Erro ao calcular Alunos do Mês" }, { status: 500 })
   }
 }
