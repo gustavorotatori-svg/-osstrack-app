@@ -22,6 +22,7 @@ import { triggerOssTransition } from "@/components/ui/oss-transition"
 import { getNivelInfo } from "@/lib/disciplina"
 import { AttendanceHeatmap } from "@/components/ui/attendance-heatmap"
 import { StreakSalvage } from "@/components/gamification/streak-salvage"
+import { track } from "@vercel/analytics"
 
 type Props = {
   aluno: {
@@ -128,9 +129,18 @@ export function StudentDashboardClient({ aluno, graduacao, ultimasPresencas, con
     { label: ta("convidar"), icon: UserPlus, href: "#convites" },
   ]
 
-  const [section, setSection] = useState<"jornada" | "atividade" | "social">("jornada")
+  const [section, setSection] = useState<"jornada" | "atividade" | "social">(
+    totalAulas === 0 && aluno.academia ? "atividade" : "jornada",
+  )
   const [bannerDismissed, setBannerDismissed] = useState(false)
   const [waiver, setWaiver] = useState<{ termo: WaiverTermo; minhaAssinatura: WaiverAssinatura } | null>(null)
+
+  useEffect(() => {
+    track("student_activation_state", {
+      has_academy: Number(Boolean(aluno.academia)),
+      has_confirmed_attendance: Number(totalAulas > 0),
+    })
+  }, [aluno.academia, totalAulas])
 
   useEffect(() => {
     fetch("/api/waiver/termo")

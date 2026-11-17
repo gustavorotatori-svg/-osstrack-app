@@ -37,7 +37,11 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
   const [prospectStats, setProspectStats] = useState<{ stats: { total: number; usados: number; pendentes: number; expirados: number; conversao: number }; porTipo: { tipo: string; total: number }[]; ultimos: { id: string; tipo: string; codigo: string; usado: boolean; createdAt: string; expiresAt: string | null }[] } | null>(null)
   const [aniversariantes, setAniversariantes] = useState<{ id: string; nome: string; faixa: string; avatar: string | null; dia: number }[]>([])
   const [inativos, setInativos] = useState<{ id: string; nome: string; faixa: string; grau: number; avatar: string | null; ultimaPresenca: string | null; diasSemTreinar: number }[]>([])
-  const [retention, setRetention] = useState<{ cohorts: { mes: string; total: number; d1: number; d7: number; d30: number }[]; overall: { d1: number; d7: number; d30: number }; lastCohort: { mes: string; d1: number; d7: number; d30: number } | null } | null>(null)
+  const [retention, setRetention] = useState<{
+    cohorts: { mes: string; total: number; d1: number | null; d7: number | null; d30: number | null; eligible: { d1: number; d7: number; d30: number }; retained: { d1: number; d7: number; d30: number } }[]
+    overall: { d1: number | null; d7: number | null; d30: number | null; eligible: { d1: number; d7: number; d30: number }; retained: { d1: number; d7: number; d30: number } }
+    lastCohort: { mes: string; d1: number | null; d7: number | null; d30: number | null; eligible: { d1: number; d7: number; d30: number }; retained: { d1: number; d7: number; d30: number } } | null
+  } | null>(null)
 
   useEffect(() => {
     fetch("/api/prospectos").then((r) => r.json()).then(setProspectStats).catch((e) => console.error("prospectos", e))
@@ -364,7 +368,7 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                   <div className="section-header mb-0">{td("retencaoPorCoorte")}</div>
                   {retention?.lastCohort && (
                     <span className="badge font-mono">
-                      D1 {retention.lastCohort.d1}% · D7 {retention.lastCohort.d7}% · D30 {retention.lastCohort.d30}%
+                      D1 {retention.lastCohort.d1 === null ? "—" : `${retention.lastCohort.d1}%`} · D7 {retention.lastCohort.d7 === null ? "—" : `${retention.lastCohort.d7}%`} · D30 {retention.lastCohort.d30 === null ? "—" : `${retention.lastCohort.d30}%`}
                     </span>
                   )}
                 </div>
@@ -391,19 +395,22 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                               <td className="py-2.5 pr-3 font-semibold">{c.mes}</td>
                               <td className="text-right px-2 py-2.5 text-[var(--text-secondary)]">{c.total}</td>
                               <td className="text-right px-2 py-2.5">
-                                <span style={{ color: c.d1 >= 50 ? "#22c55e" : c.d1 >= 30 ? "#eab308" : "#ef4444" }}>
-                                  {c.d1}%
+                                <span style={{ color: c.d1 === null ? "var(--text-muted)" : c.d1 >= 50 ? "#22c55e" : c.d1 >= 30 ? "#eab308" : "#ef4444" }}>
+                                  {c.d1 === null ? "—" : `${c.d1}%`}
                                 </span>
+                                {c.eligible.d1 > 0 && <span className="block text-[9px] text-[var(--text-muted)]">{c.retained.d1}/{c.eligible.d1}</span>}
                               </td>
                               <td className="text-right px-2 py-2.5">
-                                <span style={{ color: c.d7 >= 30 ? "#22c55e" : c.d7 >= 15 ? "#eab308" : "#ef4444" }}>
-                                  {c.d7}%
+                                <span style={{ color: c.d7 === null ? "var(--text-muted)" : c.d7 >= 30 ? "#22c55e" : c.d7 >= 15 ? "#eab308" : "#ef4444" }}>
+                                  {c.d7 === null ? "—" : `${c.d7}%`}
                                 </span>
+                                {c.eligible.d7 > 0 && <span className="block text-[9px] text-[var(--text-muted)]">{c.retained.d7}/{c.eligible.d7}</span>}
                               </td>
                               <td className="text-right px-2 py-2.5">
-                                <span style={{ color: c.d30 >= 20 ? "#22c55e" : c.d30 >= 10 ? "#eab308" : "#ef4444" }}>
-                                  {c.d30}%
+                                <span style={{ color: c.d30 === null ? "var(--text-muted)" : c.d30 >= 20 ? "#22c55e" : c.d30 >= 10 ? "#eab308" : "#ef4444" }}>
+                                  {c.d30 === null ? "—" : `${c.d30}%`}
                                 </span>
+                                {c.eligible.d30 > 0 && <span className="block text-[9px] text-[var(--text-muted)]">{c.retained.d30}/{c.eligible.d30}</span>}
                               </td>
                             </tr>
                           ))}
@@ -412,15 +419,18 @@ export function OwnerDashboardClient({ role, academia, stats, presencasMensais, 
                     </div>
                     <div className="flex gap-3 mt-3 pt-3 border-t border-[rgba(255,255,255,0.05)]">
                       <div className="flex-1 text-center">
-                        <div className="text-lg font-black">{retention.overall.d1}%</div>
+                        <div className="text-lg font-black">{retention.overall.d1 === null ? "—" : `${retention.overall.d1}%`}</div>
+                        <div className="text-[10px] text-[var(--text-muted)]">{retention.overall.retained.d1}/{retention.overall.eligible.d1}</div>
                         <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D1</div>
                       </div>
                       <div className="flex-1 text-center">
-                        <div className="text-lg font-black">{retention.overall.d7}%</div>
+                        <div className="text-lg font-black">{retention.overall.d7 === null ? "—" : `${retention.overall.d7}%`}</div>
+                        <div className="text-[10px] text-[var(--text-muted)]">{retention.overall.retained.d7}/{retention.overall.eligible.d7}</div>
                         <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D7</div>
                       </div>
                       <div className="flex-1 text-center">
-                        <div className="text-lg font-black">{retention.overall.d30}%</div>
+                        <div className="text-lg font-black">{retention.overall.d30 === null ? "—" : `${retention.overall.d30}%`}</div>
+                        <div className="text-[10px] text-[var(--text-muted)]">{retention.overall.retained.d30}/{retention.overall.eligible.d30}</div>
                         <div className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)]">D30</div>
                       </div>
                     </div>
