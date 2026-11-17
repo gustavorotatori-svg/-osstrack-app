@@ -15,7 +15,7 @@ export function Plans() {
       descKey: "gratisDesc",
       featuresCount: 6,
       ctaKey: "gratisCta",
-      href: "/cadastro",
+      href: "/cadastro?tipo=dono&utm_source=site",
       tag: null,
     },
     {
@@ -37,7 +37,7 @@ export function Plans() {
       descKey: "academiaDesc",
       featuresCount: 7,
       ctaKey: "academiaCta",
-      href: "/cadastro",
+      href: "/cadastro?tipo=dono&utm_source=site",
       tag: null,
     },
   ]

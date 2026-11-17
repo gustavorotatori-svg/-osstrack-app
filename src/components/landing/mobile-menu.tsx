@@ -82,7 +82,7 @@ export function MobileMenu() {
                     {t("entrar")}
                   </Link>
                   <Link
-                    href="/cadastro"
+                    href="/cadastro?tipo=dono&utm_source=site"
                     onClick={() => setOpen(false)}
                     className="btn-gold w-full py-3.5 text-center block font-bold"
                   >

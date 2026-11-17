@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs/config";
 
 const nextConfig: NextConfig = {
+  // Align HTML/client assets with the Vercel deployment to prevent stale
+  // client bundles from posting Server Actions to a different build.
+  deploymentId: process.env.VERCEL_DEPLOYMENT_ID || undefined,
   poweredByHeader: false,
   async headers() {
     return [

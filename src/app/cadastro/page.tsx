@@ -113,7 +113,7 @@ function CadastroContent() {
   useEffect(() => {
     ;(async () => {
       const convite = searchParams.get("convite")
-      const tipo = searchParams.get("tipo") as RoleType | null
+      const tipo = (searchParams.get("tipo") || searchParams.get("role")) as RoleType | null
       const academiaId = searchParams.get("academiaId")
       const academiaNome = searchParams.get("academia")
       const professorId = searchParams.get("professorId")

@@ -34,7 +34,7 @@ export function Footer() {
                Organize sua academia com alunos, professores e presenças em um só lugar. Gratuito. Sem mensalidade.
             </p>
             <Link
-              href="/cadastro"
+              href="/cadastro?tipo=dono&utm_source=site"
               className="btn-gold px-8 py-3 text-sm font-bold inline-flex items-center gap-2 hover:scale-105 transition-transform active:scale-95"
             >
               Criar conta grátis

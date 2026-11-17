@@ -57,7 +57,7 @@ export function ExitIntentPopup() {
           {t("descricao")}
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="/cadastro" className="btn-primary px-6 py-3 text-sm font-bold">
+          <a href="/cadastro?tipo=dono&utm_source=site" className="btn-primary px-6 py-3 text-sm font-bold">
             {t("cta")}
           </a>
           <button onClick={handleDismiss} className="px-6 py-3 text-sm text-[var(--text-muted)] hover:text-white transition-colors">

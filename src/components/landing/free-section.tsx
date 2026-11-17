@@ -32,7 +32,7 @@ export function FreeSection() {
           transition={{ delay: 0.6, duration: 0.4 }}
         >
           <Link
-            href="/cadastro"
+            href="/cadastro?tipo=dono&utm_source=site"
             className="btn-gold px-12 py-5 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95 shadow-[0_8px_40px_rgba(212,168,71,0.2)]"
           >
             {t("cta")}

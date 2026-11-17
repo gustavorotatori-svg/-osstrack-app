@@ -110,7 +110,7 @@ export function EbookSection() {
             </div>
 
             <Link
-              href="/cadastro?ref=ebook"
+              href="/cadastro?tipo=dono&utm_source=site&ref=ebook"
               className="inline-flex items-center gap-2 btn-gold px-8 py-3.5 text-sm font-bold hover:scale-105 transition-transform active:scale-95"
             >
               <Download className="w-4 h-4" />

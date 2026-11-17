@@ -63,7 +63,7 @@ export function Navbar() {
               >
                 {t("entrar")}
               </Link>
-              <Link href="/cadastro" className="btn-gold px-4 py-2 text-sm">
+              <Link href="/cadastro?tipo=dono&utm_source=site" className="btn-gold px-4 py-2 text-sm">
                 {t("cadastro")}
               </Link>
             </div>
@@ -98,7 +98,7 @@ export function Navbar() {
               {t("dashboard")}
             </Link>
           ) : (
-            <Link href="/cadastro" className="btn-gold px-3 py-2 text-xs">
+            <Link href="/cadastro?tipo=dono&utm_source=site" className="btn-gold px-3 py-2 text-xs">
               {t("cadastro")}
             </Link>
           )}

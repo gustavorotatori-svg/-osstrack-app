@@ -66,7 +66,7 @@ export function Hero() {
 
         {/* CTAs */}
         <div className={`flex items-center justify-center gap-4 flex-wrap transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <Link href="/cadastro?utm_source=site" onClick={() => track("landing_signup_click")} className="btn-gold px-10 py-4 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95">
+          <Link href="/cadastro?tipo=dono&utm_source=site" onClick={() => track("landing_signup_click")} className="btn-gold px-10 py-4 text-base font-bold inline-block hover:scale-105 transition-transform active:scale-95">
             {t("cta")}
           </Link>
           <Link href="/login"

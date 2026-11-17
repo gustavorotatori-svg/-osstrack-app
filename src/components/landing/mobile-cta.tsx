@@ -26,7 +26,7 @@ export function MobileCta() {
     >
       <div className="px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))]" style={{ background: "color-mix(in srgb, var(--bg) 95%, transparent)", borderTop: "1px solid var(--border)" }}>
         <Link
-          href="/cadastro"
+          href="/cadastro?tipo=dono&utm_source=site"
           className="btn-gold w-full py-3.5 text-center block font-bold text-sm"
         >
           {t("cadastro")}
