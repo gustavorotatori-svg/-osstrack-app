@@ -7,7 +7,7 @@ import snapshot from "./ibge-snapshot.json"
 
 const POPULATION_URL = "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/-1/variaveis/9324?localidades=N6[all]"
 const REGISTRY = "https://www.cbjjp.com/school-registered-2023"
-const trustedProviders = new Set(["servicodados.ibge.gov.br", "dns.google", "www.cbjjp.com", "www.bing.com", "forum.bjjforum.com.br"])
+const trustedProviders = new Set(["servicodados.ibge.gov.br", "dns.google", "www.cbjjp.com", "www.bing.com", "forum.bjjforum.com.br", "www.bjj.international"])
 export interface City { name: string; uf: string; population: number; code: string; year: number; evidence?: "live" | "verified_snapshot" }
 interface PopulationSeries { localidade: { id: string; nome: string }; serie: Record<string, string> }
 const priority = ["PA", "MA", "RN", "PB", "CE", "PE", "AL", "PI", "SE", "BA", "AM", "AC", "RO", "RR", "AP", "TO", "ES"]
@@ -106,7 +106,7 @@ export function registryProspects(html: string, municipalities: City[]): Prospec
 }
 const directories = /facebook|instagram|youtube|linkedin|tiktok|google|bing|duckduckgo|solutudo|econodata|cnpj|casadosdados|todosnegocios|cylex|wellhub|totalpass|letsroll|bjjmetrics|bjjlf|jiujitsublog|graciemag|bjjforum|\.gov\.br|\.edu\.br|wikipedia|pinterest|findglocal|localgyms|hotfrog|benditoguia|encontra|localtreino/i
 export function siteProspect(html: string, source: string, c: City): Prospect | null {
-  const $ = load(html); $("script,style,nav").remove()
+  const $ = load(html); const structuredData = normalize($("script[type='application/ld+json']").text()); $("script,style,nav").remove()
   $("br").replaceWith(" "); $("p,h1,h2,h3,h4,h5,h6,li,a,div,address,span").append(" ")
   const text = $("body").text().replace(/\s+/g, " "); const n = normalize(text)
   const title = ($('meta[property="og:site_name"]').attr("content") || $("title").text() || $("h1").first().text()).split(/[|–—]/)[0].trim()
@@ -115,27 +115,50 @@ export function siteProspect(html: string, source: string, c: City): Prospect | 
   // A published Gmail/Outlook address is a valid academy contact when it is
   // present on the academy's own site. The first-party page itself establishes
   // the association; requiring a matching email domain was excluding small gyms.
-  const contacts = emails(text + " " + $("a[href^='mailto:']").map((_, a) => $(a).attr("href")).get().join(" "))
-    .filter(e => !/noreply|no-reply|example|exemplo|wixpress|sentry/.test(e))
-  const addressMatch = new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${normalize(c.name)}\\b.{0,25}\\b${c.uf.toLowerCase()}\\b`).test(n)
-  if (contacts.length !== 1 || !addressMatch) return null
-  const personalization = personalizationFromSite(n)
-  if (!personalization) return null
-  return { nome: title, email: contacts[0], cidade: c.name, estado: c.uf, populacao: c.population, populationSource: populationSource(c), source, checkedAt: new Date().toISOString().slice(0, 10), independent: true, qualification: "Site da própria escola: modalidade, cidade/UF, endereço e contato comercial de domínio próprio ou alinhado ao nome da marca. Operação local inferida; páginas com grandes redes/franquias são recusadas. Porte em alunos não comprovado.", ...personalization, personalizationSource: source }
+  const usable = (email: string) =>
+    !/noreply|no-reply|example|exemplo|wixpress|sentry|privacidade|privacy|lgpd|dpo/i.test(email) &&
+    !/(?:^|[._+-])(?:webdesigner|webdeveloper|webmaster|agency|agencia)(?:[._+-]|@)/i.test(email)
+  const contacts = emails(text + " " + $("a[href^='mailto:']").map((_, a) => $(a).attr("href")).get().join(" ")).filter(usable)
+  const mailtoLinks = $("a[href^='mailto:']").toArray().map(a => ({
+    email: emails($(a).attr("href") || "").find(usable),
+    label: normalize(`${$(a).text()} ${$(a).attr("aria-label") || ""} ${$(a).attr("title") || ""}`),
+  })).filter(x => x.email)
+  const labelledContacts = [...new Set(mailtoLinks.filter(x => /contato|contact|fale|email|secretaria|matricula|atendimento/.test(x.label)).map(x => x.email!))]
+  const preferred = contacts.filter(e => /^(contato|contact|atendimento|secretaria|academia|comercial|matricula|info|professor|dojo|equipe)[._+-]?/i.test(e.split("@")[0]))
+  const contact = labelledContacts.length === 1 ? labelledContacts[0]
+    : preferred.length === 1 ? preferred[0]
+      : contacts.length === 1 ? contacts[0] : null
+  const city = normalize(c.name)
+  const uf = c.uf.toLowerCase()
+  const addressMatch = new RegExp(`(?:rua|avenida|av|endereco|localizacao)\\b.{0,300}\\b${city}\\b.{0,25}\\b${uf}\\b`).test(n)
+    || new RegExp(`(?:academia|dojo|unidade|estamos|visite|localizado|localizada|treinos? em|aulas? em)\\b.{0,180}\\b${city}\\b.{0,25}\\b${uf}\\b`).test(n)
+    || new RegExp(`\\b${city}\\b.{0,15}\\b${uf}\\b`).test(structuredData)
+  if (!contact || !addressMatch) return null
+  const personalization = personalizationFromSite(n) || {
+    personalization: `a academia oferece Jiu-Jitsu em ${c.name}`,
+    personalizedQuestion: "Como vocês organizam hoje as turmas, os alunos e as presenças?",
+  }
+  return { nome: title, email: contact, cidade: c.name, estado: c.uf, populacao: c.population, populationSource: populationSource(c), source, checkedAt: new Date().toISOString().slice(0, 10), independent: true, qualification: "Site da própria escola: modalidade, cidade/UF, endereço ou localização estruturada e contato comercial publicado. Operação local inferida; grandes redes/franquias são recusadas. Porte em alunos não comprovado.", ...personalization, personalizationSource: source }
 }
 
 function personalizationFromSite(text: string): Pick<Prospect, "personalization" | "personalizedQuestion"> | null {
-  if (/turmas? (?:de |para )?criancas|aulas? (?:de |para )?criancas|turmas? infantis|aulas? infantis|kids classes/.test(text)) {
-    return { personalization: "a página apresenta turmas infantis", personalizedQuestion: "Como vocês acompanham hoje as presenças e graduações das turmas infantis?" }
+  if (/turmas? (?:de |para )?criancas|aulas? (?:de |para )?criancas|turmas? infantis|aulas? infantis|kids classes|jiu.?jitsu kids/.test(text)) {
+    return { personalization: "vocês mantêm turmas infantis", personalizedQuestion: "Como vocês acompanham hoje as presenças e graduações das turmas infantis?" }
+  }
+  if (/jiu.?jitsu feminino|treino feminino|aulas? para mulheres|turma (?:de )?mulheres/.test(text)) {
+    return { personalization: "vocês oferecem treinos de Jiu-Jitsu para mulheres", personalizedQuestion: "Como organizam hoje a frequência e os horários dessas alunas?" }
+  }
+  if (/aulas? para iniciantes|turma (?:de )?iniciantes|para (?:quem esta comecando|comecar no jiu)|first class|beginners?/.test(text)) {
+    return { personalization: "vocês recebem alunos iniciantes", personalizedQuestion: "Como acompanham quem está começando e a evolução das primeiras faixas?" }
   }
   if (/aula experimental|aula gratis|aula gratuita|trial class/.test(text)) {
-    return { personalization: "o site convida novos alunos para uma aula experimental", personalizedQuestion: "Como vocês acompanham quem chega para a aula experimental e decide continuar?" }
+    return { personalization: "vocês oferecem aula experimental para novos alunos", personalizedQuestion: "Como acompanham quem faz a aula experimental e decide continuar?" }
   }
-  if (/horarios? (?:das|de) (?:aulas|turmas|treinos)|grade de horarios|class schedule/.test(text)) {
-    return { personalization: "o site publica os horários das aulas", personalizedQuestion: "Como vocês controlam hoje a frequência dos alunos em cada horário?" }
+  if (/horarios? (?:das|de) (?:aulas|turmas|treinos)|grade de horarios|class schedule|segunda.{0,30}sexta|segunda.{0,15}sabado/.test(text)) {
+    return { personalization: "vocês publicam os horários das aulas", personalizedQuestion: "Como vocês controlam hoje a frequência dos alunos em cada turma?" }
   }
   if (/graduacao|faixas? (?:de jiu|dos alunos)|belt progression/.test(text)) {
-    return { personalization: "a página destaca o acompanhamento da graduação e das faixas", personalizedQuestion: "Como vocês acompanham hoje a frequência e a evolução das faixas?" }
+    return { personalization: "vocês destacam o acompanhamento das graduações e faixas", personalizedQuestion: "Como vocês acompanham hoje a frequência e a evolução das faixas?" }
   }
   return null
 }
@@ -147,17 +170,101 @@ async function websiteSeeds() {
     try { const u = new URL($(a).attr("href") || ""); u.protocol = "https:"; return u.href } catch { return "" }
   }).get().filter(u => u && !directories.test(new URL(u).hostname) && !excludedBrand.test(normalize(u))))]
 }
+async function certifiedAcademyDirectory(municipalities: City[], started: number, budgetMs: number, cursor: number): Promise<{ cities: City[]; websites: string[]; prospects: Prospect[] }> {
+  // Rotate through current CBJJE pages. A profile can be a source when it
+  // publishes the academy's own contact, city, and certification status.
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", hourCycle: "h23",
+  }).formatToParts(new Date())
+  const part = (type: string) => parts.find(x => x.type === type)?.value || "0"
+  const day = Date.UTC(Number(part("year")), Number(part("month")) - 1, Number(part("day"))) / 86400000
+  const slot = day * 2 + (Number(part("hour")) >= 14 ? 1 : 0)
+  const pageStart = ((slot + Math.floor(cursor / 25)) % 37) + 1
+  const pageNumbers = [0, 1, 2].map(offset => ((pageStart + offset - 1) % 37) + 1)
+  const found = new Map<string, City>()
+  const profiles = new Map<string, { url: string; city: City }>()
+  for (const pageNumber of pageNumbers) {
+    if (Date.now() - started > Math.min(30000, budgetMs * 0.2)) break
+    try {
+      const html = await fetchPublic(`https://www.bjj.international/academies?page=${pageNumber}`)
+      const $ = load(html)
+      for (const anchor of $("a[href^='/academies/']").toArray()) {
+        const href = $(anchor).attr("href") || ""
+        if (!href || href === "/academies/map") continue
+        const text = normalize($(anchor).text())
+        const matches = municipalities.filter(c => new RegExp(`\\b${normalize(c.name)}\\b`).test(text) && new RegExp(`\\b${c.uf.toLowerCase()}\\b`).test(text))
+        if (matches.length !== 1 || matches[0].population < 20000) continue
+        const city = matches[0]
+        found.set(city.code, city)
+        const url = new URL(href, "https://www.bjj.international").href
+        profiles.set(url, { url, city })
+      }
+    } catch { /* Directory outages only reduce discovery for this run. */ }
+  }
+  const websites = new Set<string>()
+  const prospects: Prospect[] = []
+  const profileRows = [...profiles.values()].slice(0, 24)
+  const profileDeadlineMs = Math.min(60000, budgetMs * 0.3)
+  for (let offset = 0; offset < profileRows.length; offset += 4) {
+    if (Date.now() - started > profileDeadlineMs) break
+    const batch = await Promise.all(profileRows.slice(offset, offset + 4).map(async profile => {
+      try {
+        const page = load(await fetchPublic(profile.url))
+        const body = page("body").text()
+        const profileText = normalize(body)
+        const nome = page("h1").first().text().trim() || page("title").text().split(/[|–—]/)[0].trim()
+        const emailContacts = [...new Set(emails(body + " " + page("a[href^='mailto:']").map((_, a) => page(a).attr("href")).get().join(" ")))]
+          .filter(email => !/noreply|no-reply|example|exemplo|privacidade|privacy|lgpd|dpo/i.test(email))
+        const cityName = normalize(profile.city.name)
+        const locationConfirmed = profileText.includes(cityName) && profileText.includes(profile.city.uf.toLowerCase())
+        if (!nome || emailContacts.length !== 1 || !locationConfirmed || !/certificada/.test(profileText) || excludedBrand.test(normalize(`${nome} ${body}`))) return null
+        const contact = emailContacts[0]
+        const personalization = `o perfil público da CBJJE lista ${nome} como academia certificada em ${profile.city.name}, ${profile.city.uf}`
+        const prospect: Prospect = {
+          nome, email: contact, cidade: profile.city.name, estado: profile.city.uf,
+          populacao: profile.city.population, populationSource: populationSource(profile.city),
+          source: profile.url, checkedAt: new Date().toISOString().slice(0, 10), independent: true,
+          qualification: "Perfil público individual da CBJJE confirma a escola, cidade, certificação e email publicado. Marcas de rede conhecidas foram excluídas; operação local/independência é inferida e o número de alunos não é informado pela fonte.",
+          personalization, personalizationSource: profile.url,
+          personalizedQuestion: "Como vocês acompanham frequência e graduação dos alunos nessa academia?",
+        }
+        const siteLinks: string[] = []
+        for (const anchor of page("a[href]").toArray()) {
+          try {
+            const target = new URL(page(anchor).attr("href") || "")
+            if (target.protocol !== "https:" || target.hostname.endsWith("bjj.international") || directories.test(target.hostname) || excludedBrand.test(normalize(target.hostname))) continue
+            siteLinks.push(target.href)
+          } catch { /* Invalid or relative profile links are not website seeds. */ }
+        }
+        return { prospect, siteLinks }
+      } catch { return null }
+    }))
+    for (const row of batch) {
+      if (!row) continue
+      prospects.push(row.prospect)
+      for (const url of row.siteLinks) websites.add(url)
+    }
+  }
+  return { cities: [...found.values()], websites: [...websites], prospects }
+}
 export async function discover(cursor: number, blocked: Set<string>, budgetMs = 110000, progress?: (found: Prospect[], cursor: number) => Promise<void>) {
   const started = Date.now(); const municipality = await cities(); const found: Prospect[] = []; const errors: string[] = []
   if (municipality[0]?.evidence === "verified_snapshot") errors.push("ibge_live_unavailable_using_verified_snapshot")
   try { found.push(...registryProspects(await fetchPublic(REGISTRY), municipality).filter(p => !blocked.has(p.email))) } catch { errors.push("registry_unavailable") }
   await progress?.(found, cursor)
   let searched = 0; const targets = municipality.filter(c => c.population >= 20000)
+  let certifiedCities: City[] = []; let certifiedWebsites: string[] = []
+  try {
+    const directory = await certifiedAcademyDirectory(municipality, started, budgetMs, cursor)
+    certifiedCities = directory.cities; certifiedWebsites = directory.websites
+    found.push(...directory.prospects.filter(p => !blocked.has(p.email) && !found.some(x => x.email === p.email || normalize(x.nome) === normalize(p.nome) && normalize(x.cidade) === normalize(p.cidade))))
+  } catch { errors.push("cbjje_directory_unavailable") }
   let seeds: string[] = []
   try { seeds = await websiteSeeds() } catch { errors.push("website_directory_unavailable") }
+  seeds = [...new Set([...certifiedWebsites, ...seeds])]
   // Rotate over current first-party websites, confirming all facts again on every visit.
   let inspected = 0
-  while (inspected < Math.min(32, seeds.length) && Date.now() - started < budgetMs * 0.75) {
+  while (inspected < Math.min(8, seeds.length) && Date.now() - started < budgetMs * 0.4) {
     const url = seeds[(cursor + inspected) % seeds.length]; inspected++
     try {
       const html = await fetchPublic(url); const $ = load(html); $("script,style,nav").remove(); $("br").replaceWith(" "); $("p,div,span,a,address,footer").append(" ")
@@ -171,16 +278,13 @@ export async function discover(cursor: number, blocked: Set<string>, budgetMs = 
     await progress?.(found, cursor + inspected)
   }
   cursor += inspected
-  while (searched < 48 && Date.now() - started < budgetMs && found.length < 50) {
-    const c = targets[(cursor + searched) % targets.length]; searched++
+  while (searched < 96 && Date.now() - started < budgetMs && found.length < 100) {
+    const index = searched++
+    const c = index < certifiedCities.length ? certifiedCities[index] : targets[(cursor + index - certifiedCities.length) % targets.length]
     try {
       const query = `academia jiu jitsu "${c.name}" "${c.uf}" contato email -gracie -alliance -checkmat`
-      const html = await fetchPublic(`https://www.bing.com/search?format=rss&q=${encodeURIComponent(query)}`)
+      const html = await fetchPublic(`https://www.bing.com/search?format=rss&cc=br&setmkt=pt-BR&q=${encodeURIComponent(query)}`)
       const $ = load(html, { xml: true })
-      // The query already targets this municipality. Search result titles often
-      // omit the city even when the school's own page names it, so use the
-      // candidate URLs and let siteProspect verify locality, address, modality,
-      // public email, and a concrete personalization fact on the first-party site.
       const links = $("item").map((_, item) => $(item).find("link").first().text().trim()).get()
         .filter(u => { try { return u.startsWith("https://") && !directories.test(new URL(u).hostname) } catch { return false } })
         .slice(0, 6)

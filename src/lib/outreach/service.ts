@@ -7,7 +7,7 @@ import suppressed from "./imported-suppressions.json"
 import legacy from "./legacy-sent.json"
 import { brasiliaDay, DAILY_GOAL, LOCK_ID, normalize, qualified, STATE_ID, type Prospect } from "./policy"
 import { discover, hasMx } from "./discovery"
-import { renderEmail } from "./template"
+import { renderEmail, renderText } from "./template"
 
 interface State { leads: Prospect[]; cursor: number; lease?: { token: string; until: number }; lastRun?: string; lastError?: string }
 const json = (value: unknown) => JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue
@@ -93,7 +93,7 @@ export async function runOutreach(mode: "send" | "discover") {
         }
         await save(state)
       }
-      const research = await discover(state.cursor, blocked, mode === "discover" ? 210000 : 100000, merge)
+      const research = await discover(state.cursor, blocked, mode === "discover" ? 210000 : 150000, merge)
       result.searched = research.searched; result.discovered = research.found.length; result.errors.push(...research.errors)
       await merge(research.found, research.cursor)
     }
@@ -103,6 +103,9 @@ export async function runOutreach(mode: "send" | "discover") {
       for (const academy of pending()) {
         if (Date.now() - begin > 245000) { result.errors.push("time_budget_recovery_scheduled"); break }
         const email = key(academy.email)
+        // pending() is a snapshot; skip a second email for the same academy
+        // after an earlier candidate from that academy was sent in this run.
+        if (blocked.has(email) || blocked.has(academyKey(academy))) continue
         try {
           if (!await hasMx(email.split("@")[1])) { academy.disabledReason = "no_mx"; await save(state); continue }
         } catch { result.errors.push("mx_unavailable"); continue }
@@ -118,7 +121,13 @@ export async function runOutreach(mode: "send" | "discover") {
         const receipt = { email, status: "reserved", messageId: undefined as string | undefined }; receipts.push(receipt)
         // Reservation is durable before SMTP; a crash cannot resend the same recipient.
         try {
-          const info = await smtp.sendMail({ from: '"OssTrack" <passador@osstrack.com>', to: email, subject: "OssTrack — Plataforma gratuita para sua academia de Jiu-Jitsu", html: renderEmail(academy.nome, academy.cidade, reservation.id, academy.personalization!, academy.personalizedQuestion!) })
+          const info = await smtp.sendMail({
+            from: '"Gustavo | OssTrack" <passador@osstrack.com>',
+            to: email,
+            subject: "Uma pergunta sobre as aulas",
+            text: renderText(academy.nome, academy.cidade, reservation.id, academy.personalization!, academy.personalizedQuestion!),
+            html: renderEmail(academy.nome, academy.cidade, reservation.id, academy.personalization!, academy.personalizedQuestion!),
+          })
           if (!info.accepted?.some((a: string) => key(String(a)) === email)) throw new Error("smtp_not_accepted")
           receipt.status = "smtp_accepted"; receipt.messageId = info.messageId; result.accepted++
           await prisma.relatorioEnvio.create({ data: { tipo: "outreach-receipt", dados: json({ ...receipt, recordId: reservation.id, at: new Date().toISOString() }) } })
